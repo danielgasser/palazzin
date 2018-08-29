@@ -103,7 +103,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="{!!asset('assets/js/libs/chosen/chosen.jquery.min.js')!!}"></script>
-@if (Request::is('/'))
+    @if (Request::is('/') || Request::is('login'))
         <style>
             body {
                 background-color: rgba(24,19,12,0.05);
@@ -114,7 +114,7 @@
                 background-size: cover;
             }
         </style>
-        @endif
+    @endif
     <style>
         .chosen-search>input {
             color: #000000 !important;
