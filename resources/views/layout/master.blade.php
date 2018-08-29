@@ -16,10 +16,8 @@
     <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-de.js')!!}"></script>
     <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-en-GB.js')!!}"></script>
     @endif
-    <script src="{!!asset('assets/js/libs/vegas/jquery.vegas.min.js')!!}"></script>
     <script src="{!!asset('assets/js/libs/montrezorro-bootstrap-checkbox-fa865ff/js/bootstrap-checkbox.js')!!}"></script>
     <link rel="shortcut icon" href="{!!asset('assets/img/favicon.ico')!!}" />
-    <link href="{!!asset('assets/js/libs/vegas/jquery.vegas.min.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/css/main.css')!!}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{!!asset('assets/css/stats_print.css')!!}" rel="stylesheet" media="mpdf" type="text/css" />
     <link href="{!!asset('assets/css/print.css')!!}" rel="stylesheet" media="print" type="text/css" />
@@ -109,6 +107,11 @@
         <style>
             body {
                 background-color: rgba(24,19,12,0.05);
+            }
+            #wrap {
+                background-image: url({!!asset('assets/img/bg_images/login/6tja0l4xj9.png')!!});
+                background-repeat: no-repeat;
+                background-size: cover;
             }
         </style>
         @endif
@@ -230,12 +233,13 @@
      var errors_modernizr = '{!!trans('errors.modernizr')!!}',
             urlTo = '{!!URL::to('/')!!}',
             otherClanRoleId = $.parseJSON('{!!$otherClanRoleId!!}'),
-            loginImg = urlTo + '{!!Setting::getStaticSettings()->setting_login_bg_image!!}',
             urlAssets = '{!!asset('')!!}',
-            bb_inside = ('{!!Request::is('/')!!}') ? urlAssets + '/img/bb.gif' : '',
+            settings = JSON.parse({!!json_encode($settingsJSON)!!}),
+            bgImg = '{!! asset('assets/') !!}' + settings.setting_login_bg_image,
             monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
             errors_cookies = '{!!trans('errors.cookies')!!}',
-         old_win = '{!!$isOldWin!!}';
+         route = '{!!Route::getFacadeRoot()->current()->uri()!!}';
+     old_win = '{!!$isOldWin!!}';
      </script>
     <script>
         window.onerror = function (msg, url, ln) {

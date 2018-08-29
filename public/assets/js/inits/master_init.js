@@ -14,17 +14,6 @@ jQuery(document).ready(function () {
     $.datepicker.setDefaults($.datepicker.regional['']);
 
     $('.checkbox').checkbox();
-    if (window.bb_inside !== '') {
-        $(function () {
-            $.vegas({
-                src: window.loginImg
-            });
-        });
-    }
-    $('body').bind('vegasload',
-        function(e, bg) {
-        }
-    );
     $('[data-toggle="popover"]').popover({
         html: true
     });

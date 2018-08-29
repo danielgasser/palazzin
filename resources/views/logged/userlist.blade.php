@@ -167,11 +167,10 @@
                     langRole = JSON.parse('{!!json_encode(Lang::get('roles'))!!}'),
                     cols = $('th'),
                     yl = [],
-                settings = JSON.parse({!!json_encode($settingsJSON)!!}),
-                wtf = '',
+                //settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                     families = JSON.parse('{!!json_encode($families)!!}'),
                     ml = [],
-                    route = '{!!Route::getFacadeRoot()->current()->uri()!!}';
+                    //route = '{!!Route::getFacadeRoot()->current()->uri()!!}';
         </script>
     <script src="{!!asset('assets/js/inits/search_user_tables_init.js')!!}"></script>
     <script src="{!!asset('assets/min/js/tables.min.js')!!}"></script>

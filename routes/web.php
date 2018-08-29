@@ -206,7 +206,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('user/profile/changepass', ['uses' => 'UserController@changePassword']);
     Route::get('user/reservation', ['uses' => 'ReservationController@getReservationsPerUser']);
 });
-
+Auth::routes();
 Route::post('/', ['uses' => 'UserController@postLogin']);
 
 Route::get('logout', function () {
@@ -221,3 +221,7 @@ Route::post('password/reset/{token}', 'RemindersController@postReset');
 Route::get('/cronjobs/reservations', 'ReservationController@cronReservation');
 Route::get('/cronjobs/bills', 'BillController@cronBills');
 Route::get('/cronjobs/birthdays', 'UserController@sendBirthdayMail');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
