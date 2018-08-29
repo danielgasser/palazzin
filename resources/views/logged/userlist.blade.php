@@ -166,8 +166,9 @@
                     langRole = '{!!json_encode(Lang::get('roles'))!!}',
                     cols = $('th'),
                     yl = [],
-                settings = JSON.parse({!!json_encode($settings)!!}),
-                    families = JSON.parse({!!json_encode($families)!!}),
+                settings = JSON.parse({!!json_encode($settingsJSON)!!}),
+                wtf = '',
+                    families = JSON.parse('{!!json_encode($families)!!}'),
                     ml = [],
                     route = '{!!Route::getFacadeRoot()->current()->uri()!!}';
         </script>

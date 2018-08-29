@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{!!URL::to('/')!!}">
-            <img src="{!!URL::to('/')!!}" title="{!!$settings['setting_app_owner']!!}" />
+            <img src="{!!URL::to('/')!!}{!!$settings['setting_app_logo']!!}" title="{!!$settings['setting_app_owner']!!}" />
             </a>
         </div>
         <div class="collapse navbar-collapse" id="main-nav-container">

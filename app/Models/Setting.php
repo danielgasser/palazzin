@@ -67,4 +67,12 @@ class Setting extends Model {
         return $this->all()->toArray();
     }
 
+    /**
+     *
+     * @return mixed
+     */
+    public function getSettingsJson () {
+        return $this->all()->first()->toJson();
+    }
+
 }

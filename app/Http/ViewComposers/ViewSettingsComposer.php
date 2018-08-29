@@ -19,5 +19,6 @@ class ViewSettingsComposer
     {
         $this->settings = \Setting::getStaticSettings();
         $view->with('settings', $this->settings->getSettingsArray()[0]);
+        $view->with('settingsJSON', $this->settings->getSettingsJson());
     }
 }

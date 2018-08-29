@@ -47,7 +47,7 @@
                 periods = {!!json_encode($periodsAll)!!},
                 roles = {!!$roles!!},
                 rolesTrans = {!!json_encode($rolesTrans)!!},
-                settings = {!!$settings!!},
+                settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                 langStrings = {!!json_encode($langStrings)!!},
                 langRes = {!!json_encode(Lang::get('reservation'))!!},
                 langUser = {!!json_encode(Lang::get('userdata'))!!},
