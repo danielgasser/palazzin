@@ -162,7 +162,7 @@
                     a = '#allReservations',
                     locale = '{!!Lang::get('formats.langlangjs')!!}',
                     langDialog = '{!!json_encode(Lang::get('dialog'))!!}',
-                    langUser = '{!!json_encode(array_merge(Lang::get('userdata'), Lang::get('profile')))!!}',
+                    langUser = JSON.parse('{!!json_encode(array_merge(Lang::get('userdata'), Lang::get('profile')))!!}'),
                     langRole = '{!!json_encode(Lang::get('roles'))!!}',
                     cols = $('th'),
                     yl = [],

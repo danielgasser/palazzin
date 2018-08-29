@@ -180,7 +180,7 @@ var fillUserTable = function (obj) {
         subTableWidth: $('.mailz>tbody>tr').innerWidth(),
         isAjax: true
     });
-    window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
+    //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
 };
 
 $(document).ready(function () {
@@ -194,7 +194,7 @@ $(document).ready(function () {
     window.fillSelect(y, window.yl, true);
     y.val(d.getFullYear());
     m.val(d.getMonth());
-    window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
+    //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
     $('#newsMessage').hide();
 });
 
@@ -256,8 +256,19 @@ var chk_me = function(e) {
 var searchIt = function (e) {
     var sl,
         field,
-        sortby;
-    if ($('#search_user').val().length < 3 && $('#clan_search').val().length === 0 && $('#family_search').val().length === 0 && $('#role_search').val().length === 0 || this.id ==='sendMessage') {
+        sortby,
+    search = {
+        search_user: $('#search_user').val(),
+        clan_search: $('#clan_search').val(),
+        family_search: $('#family_search').val(),
+        role_search: $('#role_search').val()
+    };
+    $.each(search, function (i, n) {
+        if (n == null) {
+            search[i] = '';
+        }
+    });
+    if (search.search_user.length < 3 && search.clan_search.length === 0 && search.family_search.length === 0 && search.role_search.length === 0 || this.id ==='sendMessage') {
         return false;
     }
     if ((e.target.hasOwnProperty('config'))) {
