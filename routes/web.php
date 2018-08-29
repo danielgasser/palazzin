@@ -28,7 +28,7 @@ Route::get('/', function ()  {
     return view('user.login');
 });
 
-Route::group(['before' => ['auth', 'applicationIsUp']], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('get-session', ['uses' => 'HomeController@getSession']);
     Route::get('infos', ['uses' => 'HomeController@showInfos']);
     Route::post('infos', ['uses' => 'HomeController@sendInfos']);

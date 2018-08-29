@@ -36,23 +36,24 @@ var initTiny = function () {
     });
 };
 
-var searchSortPaginate = function (url, searchStr, clan_search, sortField, orderByField, search_new, search_role, callback) {
+var searchSortPaginate = function (url, search, sortField, orderByField, callback) {
     "use strict";
-    var dummy = callback,
-        fam = (search_new !== null) ? search_new.split('|')[0] : '';
+    var dummy = callback;
+        //fam = (search_new !== null) ? search_new.split('|')[0] : '';
     $.ajax({
         type: 'POST',
         url: url,
         data: {
-            search_field: searchStr,
+            search_field: search.search_user,
             sort_field: sortField,
             order_by: orderByField,
-            family: fam,
-            clan: clan_search,
-            role: search_role,
+            family: search.family_search,
+            clan: search.clan_search,
+            role: search.role_search,
             user_id: $('#user_id').val()
         },
         success: function (d) {
+            $('#debug').html(d)
             dummy(d);
         }
     });
@@ -279,14 +280,7 @@ var searchIt = function (e) {
         field = 'user_name';
         sortby = 'ASC';
     }
-    if ($('#family_search').val() !== null) {
-        $('#clan_search').val('');
-    }
-    if ($('#role_search').val() !== null) {
-        $('#clan_search').val('');
-        $('#family_search').val('');
-    }
-    searchSortPaginate(urlTop, $('#search_user').val(), $('#clan_search').val(), field, sortby, $('#family_search').val(), $('#role_search').val(), fillUserTable);
+    searchSortPaginate(urlTop, search, field, sortby, fillUserTable);
 };
 $(document).keyup('#search_user', function (e) {
     "use strict";

@@ -364,38 +364,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return mixed
      */
     public function searchUser ($credentials) {
-        $input = $credentials['search_user'];
-        $clan = $credentials['search_clan'];
-        $family = $credentials['search_family'];
-        $role = $credentials['search_role'];
-        if (intval($clan) > 0 || intval($family) > 0) {
-            $users = self::where(function ($q) use ($input, $clan) {
-                foreach(self::$searchColumns as $s) {
-                    $q->orWhere($s, 'like', '%' . $input . '%');
-                }
-            })
-                ->where('clan_id', '=', $clan)
-                ->orWhere('family_code', '=', $family)
-                ->with('clans', 'families', 'roles')
-                ->orderBy($credentials['sort_field'], $credentials['order_by'])
-                ->get();
-        } else {
-            $users = self::where(function ($q) use ($input, $clan) {
-                foreach(self::$searchColumns as $s) {
-                    $q->orWhere($s, 'like', '%' . $input . '%');
-                }
-            })
-                ->with('clans', 'families', 'roles')
-                ->orderBy($credentials['sort_field'], $credentials['order_by'])
-                ->get();
+        $input = ($credentials['search_user'] == null) ? $input = '' : $credentials['search_user'];
+        $clan = ($credentials['search_clan'] == '0') ? $clan = '%' : $credentials['search_clan'];
+        $family = ($credentials['search_family'] == '0') ? $family = '%' : explode('|', $credentials['search_family'])[0];
+        $role = ($credentials['search_role'] == '0') ? $role = '%' : $credentials['search_role'];
+        if ($input == '' && $clan == '%' && $family == '%' && $role == '%') {
+            return $this->getAllUsers();
         }
-        if (intval($role) > 0) {
-            $users = self::join('role_user', 'users.id', '=', 'role_user.user_id')
-                ->where('role_user.role_id', '=', $role)
-                ->with('clans', 'families', 'roles')
-                ->orderBy($credentials['sort_field'], $credentials['order_by'])
-                ->get();
-        }
+        $users = self::where(function ($q) use ($input, $clan) {
+            foreach(self::$searchColumns as $s) {
+                $q->orWhere($s, 'like', '%' . $input . '%');
+            }
+        })
+            ->orWhere('clan_id', '=', $clan)
+            ->orWhere('family_code', '=', $family)
+            ->join('role_user', 'users.id', '=', 'role_user.user_id')
+            ->where('role_user.role_id', '=', $role)
+            //->select('roles.role_description', 'users.*', 'clans.*', 'families.*')
+            //->where('role_user.user_id', '=', $role)
+            ->with('clans', 'families', 'roles')
+            ->groupBy('users.id')
+            ->orderBy($credentials['sort_field'], $credentials['order_by'])
+            ->get();
         return $users;
     }
 

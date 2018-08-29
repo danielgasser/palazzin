@@ -150,6 +150,7 @@
         </table>
     </div>
 </div>
+<div id="debug"></div>
     @include('logged.dialog.user_delete')
     @include('logged.dialog.messagesent')
     @include('logged.dialog.fourchar')
@@ -163,7 +164,7 @@
                     locale = '{!!Lang::get('formats.langlangjs')!!}',
                     langDialog = '{!!json_encode(Lang::get('dialog'))!!}',
                     langUser = JSON.parse('{!!json_encode(array_merge(Lang::get('userdata'), Lang::get('profile')))!!}'),
-                    langRole = '{!!json_encode(Lang::get('roles'))!!}',
+                    langRole = JSON.parse('{!!json_encode(Lang::get('roles'))!!}'),
                     cols = $('th'),
                     yl = [],
                 settings = JSON.parse({!!json_encode($settingsJSON)!!}),

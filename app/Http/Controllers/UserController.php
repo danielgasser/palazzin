@@ -384,7 +384,7 @@ class UserController extends Controller
         ];
         array_unshift($clans[0] , trans('dialog.all'));
         $roles = [
-            Role::pluck('role_description', 'id')->toArray()
+            Role::where('role_guest', '=', '0')->pluck('role_description', 'id')->toArray()
         ];
         array_unshift($roles[0] , trans('dialog.all'));
         $families = [
@@ -431,6 +431,14 @@ class UserController extends Controller
                 ->select('country_name_' . trans('formats.langjs') . ' as country')
                 ->where('country_code', '=', $u->user_country_code)
                 ->first();
+            $u->roles->add([
+                'role_id' => $u->role_id,
+                'role_tax_annual' => $u->role_tax_annual,
+                'role_tax_night' => $u->role_tax_night,
+                'role_tax_stock' => $u->role_tax_stock,
+                'role_code' => $u->role_code,
+                'role_description' => $u->role_description,
+            ]);
         });
         return $users;
     }
