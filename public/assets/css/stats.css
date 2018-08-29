@@ -1,0 +1,163 @@
+.total {
+  color: #df7015 !important;
+  width: 8%; }
+
+.paid {
+  color: #169227 !important; }
+
+.unpaid {
+  color: #922825 !important; }
+
+hr {
+  margin-bottom: 0;
+  margin-top: 0; }
+
+.table {
+  background-color: white !important;
+  color: #000000 !important;
+  margin: 10px 0 !important; }
+
+.guests {
+  width: 100%;
+  text-align: left;
+  margin: 0; }
+
+table.tablesorter {
+  font-size: 16pt;
+  width: 100% !important;
+  background-color: white !important;
+  color: #000000 !important;
+  margin: 10px 0 !important; }
+
+#datatable-short thead tr th, .datatable-shorty thead tr th, #datatable-total thead tr th, #datatable thead tr th, [id^="datatable-year-"] thead tr th {
+  color: #000000;
+  background-color: #ffffff !important;
+  font-size: 16px;
+  border: 1px solid #909090; }
+
+.datatable_month thead tr th, .datatable_month tbody tr td {
+  color: #000000 !important;
+  font-size: 16px;
+  border: 1px solid #909090; }
+
+.datatableyear thead tr th, .datatableyear tbody tr td {
+  color: #000000 !important;
+  font-size: 16px;
+  border: 1px solid #909090; }
+
+#datatable-short tbody tr td, .datatable-shorty tbody tr td, #datatable-total tbody tr td, #datatable tbody tr td, [id^="datatable-year-"] tbody tr td {
+  color: #000000;
+  background-color: #ffffff !important;
+  font-size: 16px;
+  border: 1px solid #909090; }
+  #datatable-short tbody tr td hr, .datatable-shorty tbody tr td hr, #datatable-total tbody tr td hr, #datatable tbody tr td hr, [id^="datatable-year-"] tbody tr td hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #909090;
+    margin: 0 0 0.25em 0;
+    padding: 0; }
+
+h6 {
+  color: #000000;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 auto;
+  display: block; }
+
+#datatable-short tbody tr td:first-child, .datatable-shorty tbody tr td:first-child {
+  width: 1%; }
+
+#data-total-short .total, [id^="data-total-short_"] .total, .datatable-shorty .total, #data-short .total {
+  color: #df7015 !important;
+  width: 8%; }
+#data-total-short .paid, [id^="data-total-short_"] .paid, .datatable-shorty .paid, #data-short .paid {
+  color: #169227 !important; }
+#data-total-short .unpaid, [id^="data-total-short_"] .unpaid, .datatable-shorty .unpaid, #data-short .unpaid {
+  color: #922825 !important; }
+#data-total-short .roty, [id^="data-total-short_"] .roty, .datatable-shorty .roty, #data-short .roty {
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+  /* IE */
+  -ms-transform: rotate(-90deg);
+  /* Opera */
+  -o-transform: rotate(-90deg);
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }
+
+table.table-stats thead tr th {
+  font-size: 16px;
+  width: 8.166666667%;
+  border: 1px solid #909090; }
+
+table.table-stats thead tr th:first-child {
+  font-size: 16px;
+  width: 2%;
+  border: 1px solid #909090; }
+
+table.datatable_month thead tr th {
+  font-size: 16px;
+  width: 3.096774194%;
+  border: 1px solid #909090; }
+
+table.datatable_month tbody tr td {
+  font-size: 16px;
+  width: 3.096774194%;
+  border: 1px solid #909090; }
+
+table.datatable_month thead tr th:nth-child(1) {
+  font-size: 16px;
+  width: 4%;
+  border: 1px solid #909090; }
+
+.stats_select {
+  padding: 6px; }
+  .stats_select .label {
+    font-size: 16px; }
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-retroorange,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-retroorange {
+  background: #b7282e;
+  color: white;
+  font-weight: bold; }
+
+#choose_stats, .modal-dialog {
+  display: block; }
+  #choose_stats ul li, .modal-dialog ul li {
+    display: inline;
+    padding: 3px; }
+  #choose_stats ul li:after, .modal-dialog ul li:after {
+    content: "\00a0\00a0|"; }
+  #choose_stats ul li:last-child:after, .modal-dialog ul li:last-child:after {
+    content: ""; }
+
+#footer .container .btn-group {
+  display: block; }
+
+.pagebreak {
+  background-color: #18130c;
+  border: none; }
+
+#menu_stats {
+  position: fixed;
+  top: 39px;
+  z-index: 1000;
+  background: #fff;
+  width: 100%;
+  left: 0;
+  /* margin: 4% 4% 0 4%; */
+  padding: 0 4%;
+  border-bottom: 1px solid #ffffff; }
+
+#noview {
+  margin-top: 254px; }
+
+#mPDF_Print {
+  top: 301px; }
+
+.highcharts-container {
+  border: 1px solid #333; }
+
+/*# sourceMappingURL=stats.css.map */

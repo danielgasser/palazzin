@@ -1,0 +1,102 @@
+@import "bootstrap-variables";
+@import "vars";
+.posts-top {
+  border-bottom: 1px solid $color-h1;
+}
+#newsMessage {
+  margin-bottom: 2em;
+}
+#newstickerNewPost {
+    display: none;
+    margin-top: 5em;
+    padding: 15px;
+    border-bottom: 1px solid $brand-primary;
+}
+.new_comment_available {
+    -webkit-box-shadow: -7px -5px 24px -8px rgba(26,88,21,1);
+    -moz-box-shadow: -7px -5px 24px -8px rgba(26,88,21,1);
+    box-shadow: -7px -5px 24px -8px rgba(26,88,21,1);
+}
+#newsticker {
+    height: 560px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    margin: auto;
+    h1 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+    h2 {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    h3 {
+        font-size: 13px;
+        font-weight: bold;
+    }
+    h4 {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    h5 {
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+    h6 {
+        font-size: 12px;
+        font-weight: normal;
+        font-style: italic;
+    }
+    .glyphicon {
+        color: #A8A5A5;
+    }
+    .edit {
+        padding-left: 1em;
+        cursor: pointer;
+    }
+    .postrow {
+        margin-left: 0px;
+        border-bottom: 1px solid $brand-primary;
+        .posts {
+            border-right: 1px solid #CCCCCC;
+        }
+      .comments-titles {
+        display: block;
+        border-bottom: 1px solid #ffffff;
+      }
+        .comments {
+            font-style: italic;
+            color: #ffffff;
+            ul {
+                list-style-type: none;
+                margin: 0 0 1em 2.5em;
+                padding: 0;
+                li:before {
+                    content:"-";
+                    position:relative;
+                    left:-5px;
+                }
+                li {
+                    text-indent:-5px;
+                    padding: 0.2em;
+                }
+            }
+        }
+    }
+}
+.add_post {
+    float: left;
+    padding-left: 1em;
+}
+#comment-add {
+    padding-left: 0;
+}
+[id^="comment-add-area_"] {
+    padding-right: 0;
+    padding-bottom: 15px;
+    textarea {
+        resize: vertical;
+    }
+}

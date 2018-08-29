@@ -1,0 +1,152 @@
+.ui-datepicker-trigger {
+  display: none; }
+
+.raw-day {
+  float: left;
+  width: 13.75%;
+  padding: 0.25%;
+  position: relative;
+  border-top: 1px solid rgba(119, 119, 119, 0.85);
+  border-left: 1px solid rgba(119, 119, 119, 0.85); }
+  .raw-day .day-date {
+    position: relative;
+    border-bottom: 1px solid #b7282e;
+    padding: 2px 0 0 0;
+    text-align: left;
+    cursor: help; }
+  .raw-day .day-reserved-date {
+    border-bottom: 1px solid #b7282e;
+    padding: 2px 0 0 0;
+    margin-bottom: 2px; }
+  .raw-day .loading-day {
+    position: absolute;
+    top: 6px;
+    left: 66px;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    display: none; }
+    .raw-day .loading-day img {
+      width: 36px; }
+  .raw-day div {
+    max-height: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 0px; }
+    .raw-day div p {
+      margin: 0;
+      text-align: left;
+      overflow-y: auto; }
+
+.calday {
+  max-height: 162px;
+  min-height: 160px;
+  z-index: 999;
+  overflow: auto; }
+
+.raw-empty-day {
+  background-color: rgba(119, 119, 119, 0.4); }
+
+.kw {
+  padding: 0.25%;
+  width: 3.75%; }
+
+.false {
+  color: #777;
+  cursor: default !important; }
+
+.true {
+  color: inherit; }
+
+#timeliner {
+  width: 4px;
+  position: relative; }
+
+#timeliner-container {
+  overflow: auto;
+  width: 98%;
+  margin: 0 1%; }
+
+#show-periods {
+  cursor: pointer; }
+
+.year-label {
+  padding: 0.5%;
+  margin: 1% auto;
+  text-align: left;
+  min-height: 85px;
+  font-weight: normal;
+  /*  .year-label-arrow, .month-label-arrow {
+        margin: 7px 0 0 0;
+        min-width: 36px;
+        cursor: pointer;
+        width: 10%;
+    }
+    .year-label-arrow {
+        min-width: 40px;
+    }
+*/ }
+  .year-label .year-label-title {
+    margin: 2px auto;
+    padding: 4px 0; }
+    .year-label .year-label-title .cont-cal {
+      margin: 2px auto; }
+      .year-label .year-label-title .cont-cal .bt-right {
+        float: right; }
+      .year-label .year-label-title .cont-cal .bt-left {
+        float: left; }
+      .year-label .year-label-title .cont-cal select {
+        font-size: inherit; }
+      .year-label .year-label-title .cont-cal button {
+        width: 100%; }
+  .year-label .draw-month {
+    border-bottom: 1px solid rgba(119, 119, 119, 0.25);
+    border-right: 1px solid rgba(119, 119, 119, 0.25);
+    overflow: auto; }
+  .year-label .month-label {
+    width: 26%;
+    margin: 0 auto;
+    min-height: 85px;
+    float: left; }
+  .year-label .year-label-year {
+    float: left;
+    width: 63%; }
+    .year-label .year-label-year h2 {
+      margin: 0; }
+  .year-label .month-label-year {
+    float: left;
+    min-width: 40%; }
+    .year-label .month-label-year h2 {
+      margin: 0; }
+
+#_currentyear, #_currentmonth {
+  font-size: 1.25em; }
+
+.WO {
+  border: 1px solid #dd4200; }
+
+.WO-solid {
+  background-color: #dd4200;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0.24em; }
+
+.WO-text {
+  color: #dd4200; }
+
+.GU-img, .WO-img {
+  width: 16px;
+  margin-right: 8px; }
+
+.GU {
+  border: 1px solid #9032c6; }
+
+.GU-solid {
+  background-color: #9032c6;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0.24em; }
+
+.GU-text {
+  color: #9032c6; }
+
+/*# sourceMappingURL=calendar.css.map */

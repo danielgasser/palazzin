@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,mBACA;EACE,KAAK,EAAE,IAAI;EAAG,6BAA6B;EAC3C,MAAM,EAAE,IAAI;EAAE,+BAA+B;;AAG/C,yBACA;EACE,UAAU,EAAE,yBAAyB;;AAGvC,yBACA;EACE,UAAU,ECXA,OAAS",
+"sources": ["../scss/scrollbars.scss","../scss/vars.scss"],
+"names": [],
+"file": "scrollbars.css"
+}

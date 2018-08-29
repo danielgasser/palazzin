@@ -1,0 +1,84 @@
+.posts-top {
+  border-bottom: 1px solid #b7282e; }
+
+#newsMessage {
+  margin-bottom: 2em; }
+
+#newstickerNewPost {
+  display: none;
+  margin-top: 5em;
+  padding: 15px;
+  border-bottom: 1px solid #b7282e; }
+
+.new_comment_available {
+  -webkit-box-shadow: -7px -5px 24px -8px #1a5815;
+  -moz-box-shadow: -7px -5px 24px -8px #1a5815;
+  box-shadow: -7px -5px 24px -8px #1a5815; }
+
+#newsticker {
+  height: 560px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  margin: auto; }
+  #newsticker h1 {
+    font-size: 15px;
+    font-weight: bold; }
+  #newsticker h2 {
+    font-size: 14px;
+    font-weight: bold; }
+  #newsticker h3 {
+    font-size: 13px;
+    font-weight: bold; }
+  #newsticker h4 {
+    font-size: 12px;
+    font-weight: bold; }
+  #newsticker h5 {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: capitalize; }
+  #newsticker h6 {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: italic; }
+  #newsticker .glyphicon {
+    color: #A8A5A5; }
+  #newsticker .edit {
+    padding-left: 1em; }
+  #newsticker .postrow {
+    margin-left: 0px;
+    border-bottom: 1px solid #b7282e; }
+    #newsticker .postrow .posts {
+      border-right: 1px solid #CCCCCC; }
+    #newsticker .postrow .comments-titles {
+      display: block;
+      border-bottom: 1px solid #ffffff; }
+    #newsticker .postrow .comments {
+      font-style: italic;
+      color: #ffffff; }
+      #newsticker .postrow .comments ul {
+        list-style-type: none;
+        margin: 0 0 1em 2.5em;
+        padding: 0; }
+        #newsticker .postrow .comments ul li:before {
+          content: "-";
+          position: relative;
+          left: -5px; }
+        #newsticker .postrow .comments ul li {
+          text-indent: -5px;
+          padding: 0.2em; }
+
+.add_post {
+  float: left;
+  padding-left: 1em; }
+
+#comment-add {
+  padding-left: 0; }
+
+[id^="comment-add-area_"] {
+  padding-right: 0;
+  padding-bottom: 15px; }
+  [id^="comment-add-area_"] textarea {
+    resize: vertical; }
+
+/*# sourceMappingURL=posts.css.map */

@@ -1,0 +1,77 @@
+.error-container {
+  width: 68%;
+  margin: auto;
+  height: 214px; }
+  .error-container h1 {
+    text-align: center;
+    font-size: 12em;
+    font-variant: small-caps; }
+  .error-container #subtitle {
+    font-size: 25px;
+    margin-top: -39px;
+    font-style: italic;
+    text-align: center; }
+  .error-container #content {
+    color: #9b280b;
+    text-align: left; }
+    .error-container #content #error-code {
+      font-size: 1.52em; }
+    .error-container #content #error-status {
+      transform: rotate(-90deg);
+      transform-origin: left top 0;
+      text-align: left;
+      margin-top: 1px;
+      margin-left: 72px;
+      width: 42px !important;
+      font-size: 13px;
+      display: block; }
+    .error-container #content #error-text {
+      margin-top: -29px;
+      display: block; }
+
+.alert-success {
+  background-color: #ffffff;
+  border-color: #b7282e;
+  color: #000000; }
+
+#message h3, #message p, #message span {
+  color: #000000; }
+
+.modal-dialog {
+  color: #000000; }
+
+#error-wrap {
+  width: 100%;
+  position: fixed;
+  top: 42%;
+  left: 0%;
+  z-index: 10000; }
+  #error-wrap .alert-danger {
+    background-color: #b7282e; }
+  #error-wrap #errors {
+    width: auto;
+    margin: auto; }
+    #error-wrap #errors ul {
+      list-style-type: none;
+      padding-left: 0px; }
+      #error-wrap #errors ul li h3 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: white; }
+        #error-wrap #errors ul li h3 .glyphicon-warning-sign {
+          padding-right: 1.2em; }
+    #error-wrap #errors .error-field {
+      font-style: italic; }
+      #error-wrap #errors .error-field :before {
+        content: " '"; }
+      #error-wrap #errors .error-field :after {
+        content: "' "; }
+
+.close {
+  color: #fff;
+  opacity: 1;
+  text-shadow: none; }
+  .close:hover {
+    color: white; }
+
+/*# sourceMappingURL=errors.css.map */

@@ -1,0 +1,151 @@
+@import "mixins";
+@import "bootstrap-variables";
+@import "vars";
+div.mce-edit-area{
+    max-height: 350px;
+    overflow-y: auto;
+}
+input[readonly], input[disabled] {
+  border: 1px solid rgba($brand-primary, 0.4);
+}
+.form-control {
+  background-color: #fff;
+  background-image: none;
+  margin: 0.35em;
+  border: 1px solid $color-h1;
+  color: $color-form-el;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  -webkit-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+}
+.form-control:focus {
+  border-color: $brand-primary !important;
+  box-shadow: 0 0 5px rgba($brand-primary, 0.4) !important;
+}
+.btn-success {
+  background-color: $color-h1;
+  border: $color-form-el;
+}
+.btn-default {
+  background-color: $btn-default-bg;
+  border: 2px solid $color-h1;
+}
+.btn-success.disabled,
+.btn-success.disabled:hover,
+.btn-success.disabled:focus,
+.btn-success.disabled:active,
+.btn-success.disabled.active,
+.btn-success[disabled],
+.btn-success[disabled]:hover,
+.btn-success[disabled]:focus,
+.btn-success[disabled]:active,
+.btn-success[disabled].active,
+fieldset[disabled] .btn-success,
+fieldset[disabled] .btn-success:hover,
+fieldset[disabled] .btn-success:focus,
+fieldset[disabled] .btn-success:active,
+fieldset[disabled] .btn-success.active {
+  background-color: lighten($color-h1, 5%) !important;
+  border: $color-form-el !important;
+}
+.btn-success:hover, .btn-success:active, .btn-success:focus, .btn-success.active {
+  background-color: $color-h1;
+  border: $color-h1;
+}
+form {
+    .row {
+        margin-top: 0em;
+    }
+    .input-small {
+        display: inline;
+        width: 28.5%;
+    }
+    .input-medium {
+        display: inline;
+        width: 68.5%;
+        margin-left: 1.5%;
+    }
+    .double-line {
+        margin-top: 4px;
+        margin-bottom: 1px;
+    }
+    label {
+        /*white-space: nowrap;*/
+        display: block;
+      color: #333;
+    }
+    input:focus {
+        border-color: $color-h1 !important;
+        box-shadow: 0 0 5px rgba($color-h1, 0.4) !important;
+        -webkit-box-shadow: 0 0 5px rgba($color-h1, 0.4) !important;
+    }
+    fieldset {
+        border: 1px solid $color-h1;
+        padding: 0.75em 0.75em;
+        margin: 1em 0;
+        img {
+            width: 125px;
+            height: 125px;
+            display: block;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857;
+            color: #555555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+
+        }
+    }
+    legend {
+      border: none;
+      color: #333;
+        margin: 10px 0.5em 5px 0.5em;
+        padding: 0 0.25em;
+        width: auto;
+    }
+    :required {
+        border: 2px solid $color-h1;
+    }
+    .required {
+        border: 2px solid $color-h1;
+    }
+    .required-help-text {
+        width: 80%;
+        margin: auto;
+    }
+    .requ:after {
+        content: "*";
+        color: $color-h1;
+        float: right;
+    }
+    .inline-input-long {
+        float: left;
+        max-width: 71%;
+        border-left: none;
+    }
+    .inline-input-short {
+        float: left;
+        max-width: 29%;
+        border-right: none;
+    }
+    input[name=example] {
+        background-color: #ffffff !important;
+    }
+    .btn.active,
+    .btn:active,
+    .btn:focus {
+        outline: none;
+        -webkit-appearance:none;
+        border: 1px solid $brand-danger;
+    }
+}

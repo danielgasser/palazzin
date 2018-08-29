@@ -1,0 +1,225 @@
+#res_searcher {
+  position: fixed;
+  top: 90px;
+  width: 100%;
+  border-bottom: 1px solid white;
+  height: 127px; }
+  #res_searcher table {
+    margin-top: 6px; }
+    #res_searcher table thead tr th:nth-of-type(1), #res_searcher table thead tr td:nth-of-type(1), #res_searcher table tbody tr th:nth-of-type(1), #res_searcher table tbody tr td:nth-of-type(1) {
+      padding: 0 2px; }
+    #res_searcher table thead tr th, #res_searcher table thead tr td, #res_searcher table tbody tr th, #res_searcher table tbody tr td {
+      padding: 0 29px; }
+
+#allReservations {
+  position: relative;
+  top: 141px; }
+
+#resAllHead {
+  position: fixed;
+  width: 100%;
+  background: #fff;
+  height: 162px;
+  z-index: 1000;
+  top: 52px;
+  border-bottom: 1px solid #b7282e; }
+
+#editReservMenu {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  min-height: 334px;
+  background-color: #ffffff;
+  margin-left: 0;
+  margin-right: 0;
+  z-index: 10000;
+  border-bottom: 2px solid #b7282e;
+  display: none; }
+  #editReservMenu #leg h4 {
+    padding: 1em;
+    font-size: 20px;
+    text-align: center;
+    background-color: #b7282e;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0; }
+  #editReservMenu input:focus {
+    border-color: #b7282e;
+    -webkit-box-shadow: 4px 4px 3px 1px rgba(99, 169, 99, 0.5);
+    -moz-box-shadow: 4px 4px 3px 1px rgba(99, 169, 99, 0.5);
+    box-shadow: 4px 4px 3px 1px rgba(99, 169, 99, 0.5); }
+  #editReservMenu fieldset {
+    border: 1px solid #b7282e;
+    margin: 0.5em 0.65em;
+    padding: 0.5em; }
+  #editReservMenu legend {
+    background: #ffffff;
+    color: #000000;
+    font-size: 17px;
+    margin: 0px 0.5em 0px 0.5em; }
+  #editReservMenu label {
+    margin-right: 4px;
+    min-width: 62px;
+    color: #333333; }
+
+#keeperData tr {
+  cursor: pointer; }
+
+#p_show {
+  color: #000000; }
+
+#info_guest_num {
+  display: inline;
+  position: absolute;
+  left: 35%;
+  bottom: 2px;
+  margin-bottom: 5px;
+  font-weight: bold; }
+
+#guest-forms {
+  width: 99%;
+  margin-left: 2px; }
+
+#userlist {
+  overflow-x: auto;
+  max-height: 250px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0; }
+  #userlist li {
+    cursor: pointer; }
+
+.user_number_text {
+  float: right; }
+
+#guestForm {
+  /* position: absolute;
+   top: 251px;*/
+  overflow-y: auto;
+  max-height: 343px; }
+  #guestForm div {
+    padding-top: 0.35em; }
+  #guestForm label {
+    white-space: nowrap;
+    display: block; }
+
+#parentResActions {
+  min-height: 192px;
+  position: relative; }
+
+#resActions {
+  width: 100%;
+  /*  bottom: 0px;
+    position: absolute;*/ }
+
+#showAddGuest {
+  display: block; }
+
+#upper {
+  position: relative; }
+
+#lower {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  height: 100%; }
+
+.reservation-inter {
+  background: rgba(183, 40, 46, 0.5); }
+
+.first-reservation {
+  background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1%, rgba(255, 255, 255, 0.12) 25%, rgba(183, 40, 46, 0.25) 50%, rgba(183, 40, 46, 0.51) 100%);
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(1%, rgba(255, 255, 255, 0)), color-stop(25%, rgba(255, 255, 255, 0.12)), color-stop(50%, rgba(183, 40, 46, 0.25)), color-stop(100%, rgba(183, 40, 46, 0.51)));
+  background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1%, rgba(255, 255, 255, 0.12) 25%, rgba(183, 40, 46, 0.25) 50%, rgba(183, 40, 46, 0.51) 100%);
+  background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1%, rgba(255, 255, 255, 0.12) 25%, rgba(183, 40, 46, 0.25) 50%, rgba(183, 40, 46, 0.51) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1%, rgba(255, 255, 255, 0.12) 25%, rgba(183, 40, 46, 0.25) 50%, rgba(183, 40, 46, 0.51) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1%, rgba(255, 255, 255, 0.12) 25%, rgba(183, 40, 46, 0.25) 50%, rgba(183, 40, 46, 0.51) 100%);
+  background-size: cover;
+  border-right: 1px solid rgba(183, 40, 46, 0.5); }
+
+.last-reservation {
+  background: -moz-linear-gradient(-45deg, rgba(183, 40, 46, 0.5) 0%, rgba(183, 40, 46, 0.5) 1%, rgba(183, 40, 46, 0.25) 50%, rgba(255, 255, 255, 0.14) 72%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(183, 40, 46, 0.5)), color-stop(1%, rgba(183, 40, 46, 0.5)), color-stop(50%, rgba(183, 40, 46, 0.25)), color-stop(72%, rgba(255, 255, 255, 0.14)), color-stop(100%, rgba(255, 255, 255, 0)));
+  background: -webkit-linear-gradient(-45deg, rgba(183, 40, 46, 0.5) 0%, rgba(183, 40, 46, 0.5) 1%, rgba(183, 40, 46, 0.25) 50%, rgba(255, 255, 255, 0.14) 72%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(-45deg, rgba(183, 40, 46, 0.5) 0%, rgba(183, 40, 46, 0.5) 1%, rgba(183, 40, 46, 0.25) 50%, rgba(255, 255, 255, 0.14) 72%, rgba(255, 255, 255, 0) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(183, 40, 46, 0.5) 0%, rgba(183, 40, 46, 0.5) 1%, rgba(183, 40, 46, 0.25) 50%, rgba(255, 255, 255, 0.14) 72%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(135deg, rgba(183, 40, 46, 0.5) 0%, rgba(183, 40, 46, 0.5) 1%, rgba(183, 40, 46, 0.25) 50%, rgba(255, 255, 255, 0.14) 72%, rgba(255, 255, 255, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#805aa95a', endColorstr='#00ffffff', GradientType=1);
+  background-size: cover;
+  border-left: 1px solid rgba(183, 40, 46, 0.5); }
+
+.reserv {
+  border-bottom: 1px solid rgba(119, 119, 119, 0.25); }
+  .reserv a {
+    cursor: pointer; }
+
+#other_hoster_id {
+  display: inline-block;
+  vertical-align: middle; }
+
+.reserv-btn {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  overflow-y: hidden !important; }
+
+.btnReserv {
+  /*display: none;*/
+  display: block; }
+
+[id^="data"] {
+  overflow-x: hidden !important; }
+
+.day-date {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important; }
+
+.free-beds-more {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  display: none;
+  font-size: 0.96em;
+  margin-top: 10px;
+  border-top: 1px solid rgba(119, 119, 119, 0.5); }
+
+.free-bed {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important; }
+  .free-bed img {
+    width: 22px;
+    padding: 0px 0px 3px 3px; }
+
+.showBeds {
+  float: right; }
+  .showBeds div.arrow {
+    display: none; }
+  .showBeds .popover-content {
+    overflow: hidden; }
+
+span[class^="reservation_date_"] {
+  float: right; }
+
+span[class="reservation_guest_num"] {
+  position: relative;
+  display: block; }
+
+span[class="reservation_guest_num"]:after {
+  content: "";
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 82%; }
+
+#reset_res_inline {
+  font-size: 21px;
+  padding: 0 12px;
+  border: none;
+  background-color: transparent;
+  color: #b7282e; }
+
+/*# sourceMappingURL=reservation.css.map */

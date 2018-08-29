@@ -1,0 +1,56 @@
+.ap-theme-default {
+  color: #b7282e;
+  .ap-component-selector {
+    border-top: 1px solid #b7282e;
+    border-bottom: 1px solid #b7282e;
+  }
+  .ap-bg{
+    .ap-cont {
+      .ap-header {
+        &__title {
+          font-size: 100%;
+        }
+      }
+      .ap-content .ap-content- {
+        &middle {
+          .ap-component-section {
+            .ap-component .ap-component- {
+              &cont {
+                .ap-component-data {
+                  .ap-row-invalid {
+                    color: #ff3f3c;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .ap-button-cont {
+    float: none;
+    .ap-button {
+      background-color: white;
+      height: 3.2em;
+      border: .13333em solid #b7b7b7;
+      border-radius: .13333em;
+      color: black;
+      padding: 2%;
+      margin: 2%;
+      &:disabled {
+        background-color: transparent;
+        border: .13333em solid #b7b7b7;
+        cursor: not-allowed;
+        pointer-events: all;
+        color: #b7b7b7;
+      }
+      &:hover {
+        background-color: transparent !important;
+        color: #b7282e;
+        border: .13333em solid #b7282e;
+        text-decoration: none;
+      }
+    }
+  }
+}

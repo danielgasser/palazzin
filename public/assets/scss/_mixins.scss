@@ -1,0 +1,22 @@
+// font stuff
+
+@mixin bodyFont(){
+    font-family: 'PT Sans', sans-serif;
+}
+@mixin opal($set) {
+    opacity: $set;
+    filter: alpha(opacity=$set * 100);
+}
+
+@mixin roundedBorders($tl, $tr, $br, $bl, $border_size, $border_style, $border_color) {
+    border-radius: $tl $tr $br $bl;
+    -moz-border-radius: $tl $tr $br $bl;
+    -webkit-border-radius: $tl $tr $br $bl;
+    border: $border_size $border_style $border_color;
+}
+
+@mixin shadow($distance_x, $distance_y, $blur, $spread, $r, $g, $b, $o) {
+    -webkit-box-shadow: $distance_x $distance_y $blur $spread rgba($r, $g, $b, $o);
+    -moz-box-shadow:    $distance_x $distance_y $blur $spread rgba($r, $g, $b, $o);
+    box-shadow:         $distance_x $distance_y $blur $spread rgba($r, $g, $b, $o);
+}

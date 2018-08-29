@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,gFAAiF;EAC7E,gBAAgB,EAAE,kBAAyB;;AAE/C,sDAAsD;EAClD,MAAM,EAAE,4BAA4B;EACpC,aAAa,EAAE,cAAc;EAC7B,kBAAkB,EAAE,+CAA4C;EAChE,UAAU,EAAE,+CAA4C;EACxD,kBAAkB,EAAE,sEAAsE;EAC1F,aAAa,EAAE,sEAAsE;EACrF,UAAU,EAAE,sEAAsE;;AAEtF;;;;;;;;;;;;;;;;;;GAkBG",
+"sources": ["../scss/select2.scss"],
+"names": [],
+"file": "select2.css"
+}
