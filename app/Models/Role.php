@@ -112,6 +112,52 @@ class Role extends Model {
         return $rolesTrans;
     }
 
+    public static function getRolesTaxV3 ()
+    {
+        $arr = [];
+        $roles = self::select('id', 'role_tax_night')
+            ->orWhere('role_guest', '=', 1)
+            ->orWhere('role_code', '=', 'BB')
+            ->orWhere('role_code', '=', 'GU')
+            ->get();
+        foreach ($roles as $role) {
+            $arr[$role->id] = $role->role_tax_night;
+        }
+        return json_encode($arr);
+    }
+
+
+    /**
+     * Gets roles corresponding to clan
+     *
+     * @param $pid clan_id == user_id
+     * @return array
+     */
+    public static function getRolesForGuestV3 ($pid) {
+        $rolesTrans[] = trans('dialog.select');
+        if ($pid === true) {
+            $roles = Role::select('id', 'role_code', 'role_tax_night')
+                ->orWhere('role_guest', '=', 1)
+                ->orWhere('role_code', '=', 'BB')
+                ->orWhere('role_code', '=', 'AB')
+                ->orWhere('role_code', '=', 'GU')
+                ->orderBy('role_tax_night', 'desc')
+                ->get();
+        } else {
+            $roles = Role::select('id', 'role_code', 'role_tax_night')
+                ->orWhere('role_guest', '=', 1)
+                ->orWhere('role_code', '=', 'BB')
+                ->orWhere('role_code', '=', 'GU')
+                ->orderBy('role_tax_night', 'desc')
+                ->get();
+        }
+        foreach($roles as $role) {
+            $rolesTrans[$role->id] = trans('roles.' . $role->role_code . '_short');
+        }
+        return $rolesTrans;
+    }
+
+
     /**
      * Get guest roles exclusively
      *
@@ -126,6 +172,8 @@ class Role extends Model {
             ->orderBy('role_tax_night', 'desc')
             ->get();
     }
+
+
 
     public static function getRoleByRoleCode($roleCode)
     {

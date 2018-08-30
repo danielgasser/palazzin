@@ -60,8 +60,8 @@ class UserController extends Controller
             return Redirect::back()->withErrors([trans('login.wrong')]);
         }
         $rememberMe = ($stay == 'on') ? true : false;
-        if (Auth::attempt($credentials, $rememberMe) || Auth::viaRemember() && \User::checkUsersOldWinBrowser() == 0) {
-            $user = \User::find(Auth::id());
+        if (Auth::attempt($credentials, $rememberMe) || Auth::viaRemember() && User::checkUsersOldWinBrowser() == 0) {
+            $user = User::find(Auth::id());
             // If user is passive
             if ($user->user_active == 0) {
                 Auth::logout();
@@ -79,7 +79,7 @@ class UserController extends Controller
             $loginStat->user_id = $user->id;
             $loginStat->save();
             $visitor->deleteOnSuccess();
-            if (\User::isKeeper()) {
+            if (User::isKeeper()) {
                 return redirect('keeper/reservations');
             }
             // WHILE TESTs
@@ -126,11 +126,11 @@ class UserController extends Controller
     public function showProfile($id = null)
     {
         if ($id != null) {
-            $user = \User::find($id);
+            $user = User::find($id);
             $disabledForm = 'disabled';
             $requIred = ['', ''];
         } else {
-            $user = \User::find(Auth::id());
+            $user = User::find(Auth::id());
             $disabledForm = '';
             $requIred = ['requ', 'required'];
         }
@@ -184,7 +184,7 @@ class UserController extends Controller
         $file = null;
         $new_mail_message = '';
         Input::flash();
-        $user = \User::find(Input::get('id'));
+        $user = User::find(Input::get('id'));
         $user_old_email = $user->email;
         if (Input::hasFile('user_avatar')) {
             $file = Input::file('user_avatar');
@@ -276,7 +276,7 @@ class UserController extends Controller
         if (!isset($id) || !is_numeric($id)) {
             return Redirect::back();
         }
-        $u = \User::find($id);
+        $u = User::find($id);
         $clan = $u->getUserClanName($u->clan_id);
         $u->clan = $clan[0]->clan_description;
         //$families = DB::table('families')->where('clan_id', '=', $u->clan_id)->select('id', 'family_description')->get();
@@ -309,8 +309,12 @@ class UserController extends Controller
         foreach ($roles as $role) {
             $transRoles[$role->id] = trans('roles.' . $role->role_code);
         }
+        $clans = [
+            Clan::pluck('clan_description', 'id')->toArray()
+        ];
+        array_unshift($clans[0] , trans('dialog.select'));
         return view('logged.admin.useredit')
-            ->with('clans', [trans('dialog.select')] + Clan::pluck('clan_description', 'id'))
+            ->with('clans', $clans[0])
             ->with('user', $u)
             ->with('families', $chooseFam)
             ->with('countries', $countries)
@@ -326,7 +330,7 @@ class UserController extends Controller
     public function addRoleUser($id)
     {
         $i = Input::except('_token');
-        $user = \User::find($id);
+        $user = User::find($id);
         $r = DB::table('role_user')
             ->where('user_id', '=', $id)
             ->where('role_id', '=', $i['role_id'])
@@ -346,7 +350,7 @@ class UserController extends Controller
     public function deleteRoleUser()
     {
         $i = Input::except('_token');
-        $user = \User::find($i['id']);
+        $user = User::find($i['id']);
         $role = Role::find($i['role_id']);
         $validator = Validator::make(
             ['role_id' => $role->role_code . '|size:2'],
@@ -420,26 +424,6 @@ class UserController extends Controller
             'order_by' => $orderby
         ];
         $users = $user->searchUser($credentials);
-        $users->each(function ($u) {
-            $login = \LoginStat::where('user_id', '=', $u->getUserID())->orderBy('created_at', 'DESC')->skip(1)->first();
-            if (is_object($login)) {
-                $u->last_login = $login->created_at;
-            } else {
-                $u->last_login = '-';
-            }
-            $u->country = DB::table('countries')
-                ->select('country_name_' . trans('formats.langjs') . ' as country')
-                ->where('country_code', '=', $u->user_country_code)
-                ->first();
-            $u->roles->add([
-                'role_id' => $u->role_id,
-                'role_tax_annual' => $u->role_tax_annual,
-                'role_tax_night' => $u->role_tax_night,
-                'role_tax_stock' => $u->role_tax_stock,
-                'role_code' => $u->role_code,
-                'role_description' => $u->role_description,
-            ]);
-        });
         return $users;
     }
 
@@ -451,7 +435,7 @@ class UserController extends Controller
         $user = new User();
         Input::flash();
         $credentials = Input::get('mails');
-        $sendingUser = \User::find(Auth::id());
+        $sendingUser = User::find(Auth::id());
         $counter = 0;
         $totalMessages = sizeof($credentials);
         $text = Input::get('message_text');
@@ -485,7 +469,7 @@ class UserController extends Controller
      */
     public function changePassword()
     {
-        $user = \User::find(Auth::id());
+        $user = User::find(Auth::id());
         $validator = Validator::make(
             Input::except('old_pass'),
             [
@@ -532,7 +516,7 @@ class UserController extends Controller
     {
         $set = Setting::getStaticSettings();
         $today = new \DateTime();
-        $user = \User::where('user_birthday', '=', $today->format('Y-m-d') . ' 00:00:00')->get();
+        $user = User::where('user_birthday', '=', $today->format('Y-m-d') . ' 00:00:00')->get();
         if (is_object($user)) {
             foreach ($user as $u) {
                 $mail = [

@@ -86,7 +86,7 @@ var fillUserTable = function (obj) {
             userNew = (n.user_new === '0') ? 'registriert' : 'neu',
             fonlabelOne = (window.langUser.fonlabel[n.user_fon1_label] === undefined || window.langUser.fonlabel[n.user_fon1_label] === '') ? ' - ' : window.langUser.fonlabel[n.user_fon1_label];
         trStr += '<tr class="tr-body">' +
-            '<td><a href="https://palazzin.ch/user/profile/' + n.id + '">' +
+            '<td><a href="' + window.baseUrl + '/user/profile/' + n.id + '">' +
             '<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a></td>';
         if (window.location.href.indexOf('admin/users') > -1) {
             trStr += '<td><a href="' + window.urlTo + '/admin/users/edit/' + n.id + '">' +

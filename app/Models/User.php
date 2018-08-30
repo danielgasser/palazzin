@@ -357,6 +357,31 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->get();
     }
 
+    public function scopeCheckClan ($query, $clan)
+    {
+        if ($clan) {
+            return $query->where('clan_id', '=', $clan);
+        }
+    }
+
+    public function scopeCheckFamily ($query, $family)
+    {
+        if ($family) {
+            return $query->where('family_code', '=', $family);
+        }
+    }
+
+    public function scopeCheckUserRoles ($query, $role)
+    {
+        if ($role) {
+            return $query
+                ->where('role_user.role_id', '=', $role)
+                ->with('roles');
+        }
+    }
+
+
+
     /**
      * Search users by inputs
      *
@@ -365,27 +390,37 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function searchUser ($credentials) {
         $input = ($credentials['search_user'] == null) ? $input = '' : $credentials['search_user'];
-        $clan = ($credentials['search_clan'] == '0') ? $clan = '%' : $credentials['search_clan'];
-        $family = ($credentials['search_family'] == '0') ? $family = '%' : explode('|', $credentials['search_family'])[0];
-        $role = ($credentials['search_role'] == '0') ? $role = '%' : $credentials['search_role'];
+        $clan = $credentials['search_clan'];
+        $family = explode('|', $credentials['search_family'])[0];
+        $role = $credentials['search_role'];
         if ($input == '' && $clan == '%' && $family == '%' && $role == '%') {
             return $this->getAllUsers();
         }
+
         $users = self::where(function ($q) use ($input, $clan) {
             foreach(self::$searchColumns as $s) {
                 $q->orWhere($s, 'like', '%' . $input . '%');
             }
         })
-            ->orWhere('clan_id', '=', $clan)
-            ->orWhere('family_code', '=', $family)
-            ->join('role_user', 'users.id', '=', 'role_user.user_id')
-            ->where('role_user.role_id', '=', $role)
-            //->select('roles.role_description', 'users.*', 'clans.*', 'families.*')
-            //->where('role_user.user_id', '=', $role)
+            //->join('role_user', 'users.id', '=', 'role_user.user_id')
             ->with('clans', 'families', 'roles')
+            ->CheckClan($clan)
+            ->CheckFamily($family)
+            ->CheckUserRoles($role)
             ->groupBy('users.id')
-            ->orderBy($credentials['sort_field'], $credentials['order_by'])
             ->get();
+        $users->each(function ($u) {
+            $login = \LoginStat::where('user_id', '=', $u->getUserID())->orderBy('created_at', 'DESC')->skip(1)->first();
+            if (is_object($login)) {
+                $u->last_login = $login->created_at;
+            } else {
+                $u->last_login = '-';
+            }
+            $u->country = DB::table('countries')
+                ->select('country_name_' . trans('formats.langjs') . ' as country')
+                ->where('country_code', '=', $u->user_country_code)
+                ->first();
+        });
         return $users;
     }
 

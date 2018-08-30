@@ -1,6 +1,5 @@
 @extends('layout.master')
 @section('content')
-<h1>{!!trans('admin.user.title')!!}</h1>
 <div>
     {!!Form::open(array('url' => 'userlist', 'class' => 'form-inline', 'style' => 'margin-bottom: 2em', 'role'=> 'form', 'method' => 'post'))!!}
     <div class="row">
@@ -167,10 +166,9 @@
                     langRole = JSON.parse('{!!json_encode(Lang::get('roles'))!!}'),
                     cols = $('th'),
                     yl = [],
-                //settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                     families = JSON.parse('{!!json_encode($families)!!}'),
                     ml = [],
-                    //route = '{!!Route::getFacadeRoot()->current()->uri()!!}';
+                    baseUrl = '{!! URL::to('/') !!}';
         </script>
     <script src="{!!asset('assets/js/inits/search_user_tables_init.js')!!}"></script>
     <script src="{!!asset('assets/min/js/tables.min.js')!!}"></script>
