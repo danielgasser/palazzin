@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -108,7 +109,7 @@ class UserController extends Controller
         if ($visitor->setMaxFalseLogins()) {
             return view('errors.error')
                 ->with('error_title', trans('errors.title-too-much-logins'))
-                ->with('error_text', trans('errors.text-too-much-logins', ['master' => Constants::webMaster, 'master-mail' => Constants::webMasterMail, 'subject' => trans('errors.title-too-much-logins')]));
+                ->with('error_text', trans('errors.text-too-much-logins', ['master' => \Constants::webMaster, 'master-mail' => \Constants::webMasterMail, 'subject' => trans('errors.title-too-much-logins')]));
         }
         if ($validator->fails()) {
             Session::put('error', $validator);

@@ -7,6 +7,7 @@ use Setting;
 use User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Password;
 
 class RemindersController extends Controller
 {

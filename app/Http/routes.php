@@ -10,7 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
+/*
 Route::get('lang/{lang}', function ($lang) {
     $l = Session::put('chosenlang', $lang);
     return redirect(URL::previous());
@@ -60,15 +60,11 @@ Route::group(['before' => ['auth', 'applicationIsUp']], function () {
         Route::get('bill/search/users', ['uses' => 'BillController@searchAllBillsUser']);
     });
     Route::group(['before' => ['reservator, admin']], function () {
-        /**
-         * v3
-         */
+        // v3
         Route::get('reservation/get-per-period/{pId}', ['uses' => 'NewReservationController@getAllReservationInPeriod']);
         Route::get('new_reservation', ['uses' => 'NewReservationController@getNewReservations']);
         Route::get('reservation/month/v3', ['uses' => 'NewReservationController@getReservationsPerDateV3']);
-        /**
-         * v3
-         */
+        // v3
         Route::get('admin/stats', ['uses' => 'StatsController@showStatsMenu']);
         Route::get('admin/stats_bill', ['uses' => 'StatsController@showStatsBills']);
         // ToDo
@@ -225,3 +221,4 @@ Route::post('password/reset/{token}', 'RemindersController@postReset');
 Route::get('/cronjobs/reservations', 'ReservationController@cronReservation');
 Route::get('/cronjobs/bills', 'BillController@cronBills');
 Route::get('/cronjobs/birthdays', 'UserController@sendBirthdayMail');
+*/

@@ -213,11 +213,12 @@ Route::get('logout', function () {
     Auth::logout();
     return redirect('/');
 });
+/*
 Route::post('password', ['uses' => 'RemindersController@postRemind']);
 Route::get('password', 'RemindersController@getRemind');
 Route::get('password/reset/{token}', 'RemindersController@getReset');
 Route::post('password/reset/{token}', 'RemindersController@postReset');
-
+*/
 Route::get('/cronjobs/reservations', 'ReservationController@cronReservation');
 Route::get('/cronjobs/bills', 'BillController@cronBills');
 Route::get('/cronjobs/birthdays', 'UserController@sendBirthdayMail');

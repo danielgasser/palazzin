@@ -185,8 +185,7 @@
         }, true);
     </script>
     <script>
-        var settings = {!!$settings!!},
-            guestsDates = $('[id^="guests_date"]'),
+        var guestsDates = $('[id^="guests_date"]'),
             startDate,
             endDate,
             rolesTaxes = {!!$roles!!},

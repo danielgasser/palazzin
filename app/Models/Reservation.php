@@ -82,9 +82,80 @@ class Reservation extends Model {
      * @param $value
      * @return string
      */
-    public function getReservationEndedAtAttribute($value) {
+    public function getReservationEndedAtAttribute($value)
+    {
         setlocale(LC_ALL, trans('formats.langlang'));
         return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%Y_%m_%d');
+    }
+
+    /**
+     * Gets reservations by period dates (start/end)
+     *
+     * @param $periodID
+     * @return mixed
+     */
+    public function getReservationsPerPeriodV3 ($periodID) {
+        $periods =[];
+        for ($j = $periodID - 1; $j < $periodID + 5; $j++) {
+            $periods[] = $j;
+        }
+        $reservations = Reservation::whereIn('period_id', $periods)
+            ->join('users', 'users.id', '=', 'reservations.user_id')
+            ->select('reservations.id', 'user_id', 'user_id_ab', 'reservations.period_id', 'reservation_nights', 'reservation_started_at', 'reservation_ended_at', 'users.email', 'users.user_login_name')
+            ->with(array(
+                'guests' => function ($q) {
+                    $q->select('guests.id', 'reservation_id', 'guest_number', 'guest_night', 'guest_ended_at', 'guest_started_at', 'role_id');
+                },
+            ))
+            ->orderBy('reservation_started_at', 'asc')
+            ->get();
+        $ar = [];
+        $cu = new User();
+        $reservations->each(function ($r) use ($ar, $cu) {
+            if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
+                $cu = $cu->where('id', '=', $r->user_id_ab)->first();
+                $r->user_id_ab_name = $cu->user_login_name;
+            } else {
+                $r->user_id_ab_name = '';
+            }
+            $r->guests->each(function  ($j) use ($r) {
+                $role_tax = Role::find($j->role_id);
+                $j->role_tax_night = $role_tax->role_tax_night;
+                $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
+                $end = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                $checkEnd = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                $end->add(new DateInterval('P1D'));
+                $interval = new DateInterval('P1D');
+                $dateRange = new DatePeriod($start, $interval ,$end);
+                foreach($dateRange as $key => $date) {
+                    $d = explode('_', $date->format('Y_m_d'));
+                    $dd = intval($d[1]) - 1;
+                    $d[1] = ($dd < 10) ? '0' . $dd : $dd;
+                    if ($date < $checkEnd) {
+                        $r->{'occupiedBeds_' . implode('_', $d)} += $j->guest_number;
+                    } else {
+                        $r->{'occupiedBeds_' . implode('_', $d)} += 0;
+                    }
+                }
+            });
+            $start = new DateTime(str_replace('_', '-', $r->reservation_started_at));
+            $end = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
+            $checkEnd = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
+            $end->add(new DateInterval('P1D'));
+            $interval = new DateInterval('P1D');
+            $dateRange = new DatePeriod($start, $interval ,$end);
+            foreach($dateRange as $key => $date) {
+                $d = explode('_', $date->format('Y_m_d'));
+                $dd = intval($d[1]) - 1;
+                $d[1] = ($dd < 10) ? '0' . $dd : $dd;
+                if ($date < $checkEnd) {
+                    $r->{'occupiedBeds_' . implode('_', $d)} += 1;
+                } else {
+                    $r->{'occupiedBeds_' . implode('_', $d)} += 0;
+                }
+            }
+        });
+        return $reservations;
     }
 
     /**

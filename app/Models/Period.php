@@ -83,6 +83,10 @@ class Period extends Model {
         return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized(trans('formats.db-timestamp'));
     }
 
+    public function getPeriodStart()
+    {
+        return $this->period_start;
+    }
     /**
      *
      * @param $value
@@ -311,6 +315,19 @@ class Period extends Model {
             $d->modify($step);
         }
         return $d;
+    }
+
+    private function getNearestPeriod($s, $p)
+    {
+        $tl = $p->select('periods.id', 'periods.period_start')
+            ->where('period_start', '<', $s->format('Y-m-d'))
+            ->where('period_end', '>', $s->format('Y-m-d'))
+            ->first();
+        if (is_null($tl)) {
+            $s->modify('- 1 month');
+            $tl = $this->getNearestPeriod($s, $p);
+        }
+        return $tl;
     }
 
     /**

@@ -17,7 +17,7 @@ return array(
 	'active_url'           => '<span class="error-field">:attribute</span> ist keine gültige URL',
 	'after'                => '<span class="error-field">:attribute</span> muss nach :date sein',
 	'alpha'                => '<span class="error-field">:attribute</span> darf nur Buchstaben enthalten',
-	'alpha_dash'           => '<span class="error-field">:attribute</span> darf nur Buchstaben, Zahlen und Gednakenstriche (-) enthalten',
+	'alpha_dash'           => '<span class="error-field">:attribute</span> darf nur Buchstaben, Zahlen und Gedankenstriche (-) enthalten',
 	'alpha_num'            => '<span class="error-field">:attribute</span> nur Buchstaben, Zahlen enthalten',
 	'array'                => '<span class="error-field">:attribute</span> muss ein Feld sein',
 	'before'               => '<span class="error-field">:attribute</span> muss vor :date sein',

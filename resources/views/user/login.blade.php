@@ -50,7 +50,7 @@
         <div class="row">
             <div class="col-sm-4 col-md-4"></div>
             <div class="col-sm-4 col-md-4">
-                <a href="{!!URL::to('password')!!}">{!!trans('login.forgot')!!}?</a><br>
+                <a href="{!!URL::to('password/reset')!!}">{!!trans('login.forgot')!!}?</a><br>
                 <a href="{!!URL::to('help/pl')!!}">{!!trans('login.login_prob')!!}?</a>
             </div>
             <div class="col-sm-4 col-md-4"></div>

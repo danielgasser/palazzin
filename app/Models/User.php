@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -480,7 +481,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return mixed
      */
     public function getSimpleUsersList () {
-        return \User::select('user_login_name', 'email')
+        return User::select('user_login_name', 'email')
             ->orderBy('user_login_name', 'asc')
             ->get();
     }
@@ -492,7 +493,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return mixed
      */
     public function getSimpleUsersListByClan ($clan_id) {
-        return \User::select('user_login_name', 'email')
+        return User::select('user_login_name', 'email')
             ->where('clan_id', '=', $clan_id)
             ->orderBy('user_login_name', 'asc')
             ->get();
@@ -505,7 +506,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return mixed
      */
     public function getSimpleUsersListByNotThisClan ($clan_id) {
-        return \User::select('id', 'user_login_name', 'email')
+        return User::select('id', 'user_login_name', 'email')
             ->whereNotIn('clan_id', [$clan_id])
             ->orderBy('user_login_name', 'asc')
             ->get();
@@ -569,5 +570,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         return 0;
     }
-
 }

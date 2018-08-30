@@ -16,7 +16,7 @@ return array(
     'checklist' => 'Benutzer-Checkliste',
     'reservation' => 'Kalender & Reservierung',
     'new_reservation' => 'Reservierung',
-    'password' => 'Passwort vergessen',
+    'password/reset' => 'Passwort vergessen',
     'pl' => 'Anmelde-Probleme',
     '/' => 'Welcome ',
     'admin/settings' => 'Globale Einstellungen',

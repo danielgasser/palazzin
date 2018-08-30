@@ -15,6 +15,7 @@ return array(
     'pass' => 'Passwort',
     'pass_confirm' => 'Passwort bestätigen',
     'email' => 'E-Mail',
+    'new_pass_email' => 'Gib Deine E-Mail Adresse ein. Eine E-Mail mit Instruktionen wird Dir zugesandt.',
     'email2' => 'E-Mail 2',
     'fon_label' => 'Art N° :n',
     'fonalllabel' => 'Art N°',
