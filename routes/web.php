@@ -223,6 +223,5 @@ Route::get('/cronjobs/reservations', 'ReservationController@cronReservation');
 Route::get('/cronjobs/bills', 'BillController@cronBills');
 Route::get('/cronjobs/birthdays', 'UserController@sendBirthdayMail');
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@getHome')->name('home');

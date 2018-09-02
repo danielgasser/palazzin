@@ -2,7 +2,7 @@
 {{-- Todo replace Session:: with session() over all --}}
 @section('content')
     <h1>{!! trans('navigation.' . Route::getFacadeRoot()->current()->uri()) !!}</h1>
-        @if (session('error')))
+        @if (session('error'))
             <div id="error-wrap">
                 <div id="errors" class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert">
