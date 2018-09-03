@@ -10,6 +10,8 @@ return array(
     'profile' => 'Profil',
     'admin' => 'Administration',
     'news' => 'News-Ticker',
+    'back' => 'Zurück',
+    'latest' => 'News',
     'bill' => 'Rechnungen',
     'userlist' => 'Benutzerliste',
     'pricelist' => 'Preise',
@@ -18,7 +20,7 @@ return array(
     'new_reservation' => 'Reservierung',
     'password/reset' => 'Passwort vergessen',
     'pl' => 'Anmelde-Probleme',
-    '/' => 'Welcome ',
+    '/' => 'Willkommen ',
     'admin/settings' => 'Globale Einstellungen',
     'admin/settings/help' => 'Globale Einstellungen - Hilfetexte',
     'admin/stats' => 'Statistiken',
@@ -55,5 +57,5 @@ return array(
     'help' => 'Hilfe',
     'help/{topic?}' => 'Hilfe',
     'today_is' => 'Heute ist der ',
-    'none' => 'Keine Hilfe verfügbar'
+    'none' => 'Keine Hilfe verfügbar',
 );

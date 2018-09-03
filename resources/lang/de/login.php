@@ -11,5 +11,5 @@ return array(
     'login_prob' => 'Probleme bei der Anmeldung',
     'wrong' => 'Benutzername oder Passwort stimmen nicht',
     'forgot' => 'Passwort vergessen',
-    'RoomApp_Welcome' => '<h3>Herzlich Willkommen bei &copy;RoomApp@Palazzin AG</h3>'
+    'RoomApp_Welcome' => '<h1>Herzlich Willkommen bei &copy;RoomApp@Palazzin AG</h1>'
 );

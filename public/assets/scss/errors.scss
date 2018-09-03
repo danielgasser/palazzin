@@ -58,15 +58,20 @@
 #error-wrap {
   width: 100%;
   position: fixed;
-  top: 42%;
+  top: 0;
   left: 0%;
   z-index: 10000;
+  height: 100%;
   .alert-danger {
     background-color: $color-h1;
   }
   #errors {
-    width: auto;
-    margin: auto;
+    width: 50%;
+    height: 14%;
+    position: fixed;
+    top: 39vh;
+    margin: auto 25%;
+    border-radius: 10px;
     ul {
       list-style-type: none;
       padding-left: 0px;

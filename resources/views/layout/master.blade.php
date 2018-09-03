@@ -257,7 +257,10 @@
                 $('#noview-master').remove();
             }
         });
-
+        jQuery(document).on('click', '#errors>.close', function () {
+            $('#error-wrap').hide();
+            console.log(this)
+        });
     </script>
 
    @show
