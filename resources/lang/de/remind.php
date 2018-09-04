@@ -6,7 +6,7 @@
  * Time: 20:21
  */
 return array(
-    'title' => 'Passwort vergessen',
-    'send' => 'Erneuern',
+    'title' => 'Passwort zurücksetzen',
+    'send' => 'Anfordern',
     'user_send_man' => '"Neues Passwort erstellen" versenden'
 );

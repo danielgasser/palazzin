@@ -17,7 +17,7 @@ return array(
 
 	"user" => "Kein Benutzer mit dieser E-Mail Adresse gefunden",
 
-	"token" => "zurücksetzten des Passwortes fehlgeschlagen. Bitte versuche es erneut.",
+	"token" => "Zurücksetzten des Passwortes fehlgeschlagen. Bitte versuche es erneut.",
 
 	"sent" => "Passwort Erinnerung gesendet!",
 
