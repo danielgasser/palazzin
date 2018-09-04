@@ -102,10 +102,10 @@
                             </table>
                          </td>
                          <td>@if(isset($user->user_www) && !empty($user->user_www))<a href="http://{!!$user->user_www!!}" target="_blank">{!!$user->user_www_label!!}</a>@else Keine Website @endif</td>
-                         <td>{!!$user->user_address or ''!!}</td>
-                         <td>{!!$user->user_zip or ''!!}</td>
-                         <td>{!!$user->user_city or ''!!}</td>
-                         <td>{!!$user->country->country or ''!!}</td>
+                         <td>{!!$user->user_address ?? ''!!}</td>
+                         <td>{!!$user->user_zip ?? ''!!}</td>
+                         <td>{!!$user->user_city ?? ''!!}</td>
+                         <td>{!!$user->country->country ?? ''!!}</td>
                          <td>
                              <table class="table fonz">
                                 <tbody>

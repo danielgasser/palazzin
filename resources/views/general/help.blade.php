@@ -14,7 +14,7 @@
         @if(strlen($helptext) > 0)
                 <div class="topics col-sm-12 col-md-12">
                     <div id="topic_text">
-                        {!!$helptext or ''!!}
+                        {!!$helptext ?? ''!!}
                     </div>
                 </div>
         @else

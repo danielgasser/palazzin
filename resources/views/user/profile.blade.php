@@ -137,7 +137,7 @@
                             </ul>
                         </div>
                         @endif
-                        {!!Form::hidden('user_fon1_label', $user->user_fon1_label or 'home', array('class' => 'form-control ' . $requIred[1]))!!}
+                        {!!Form::hidden('user_fon1_label', $user->user_fon1_label ?? 'home', array('class' => 'form-control ' . $requIred[1]))!!}
                         {!!Form::text('user_fon1_label_show', (strlen($user->user_fon1_label) > 0) ? trans('userdata.fonlabel.' . $user->user_fon1_label) : trans('userdata.fonlabel.x'), array('class' => 'form-control required inline-input-long' . ' ' . trans('userdata.fonlabel.' . $user->user_fon1_label), 'disabled'))!!}
                         {!!Form::text('user_fon1', (isset($user->user_fon1)) ? $user->user_fon1 : Input::old('user_fon1'), array('class' => 'form-control required inline-input-long' . ' ' . trans('userdata.fon', array('n' => 1)), $disabledForm))!!}
                     </div>

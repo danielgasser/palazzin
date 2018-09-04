@@ -43,15 +43,15 @@
     <div class="container">
         <div id="noview" class="error-container">
 
-            <h1>{!!$error_title or ''!!}
+            <h1>{!!$error_title ?? ''!!}
             </h1>
             <div id="subtitle">{!!trans('errors.subtitle')!!}...</div>
 
             <div id="content">
                 <h3>
-                    <span id="error-code">{!!$error_code or ''!!}|</span>
+                    <span id="error-code">{!!$error_code ?? ''!!}|</span>
                     <span id="error-status">{!!trans('errors.status')!!}</span>
-                    <span id="error-text">{!!$error_text or ''!!}</span>
+                    <span id="error-text">{!!$error_text ?? ''!!}</span>
                 </h3>
                 @if($error_text == '')
                 <div class="error">
