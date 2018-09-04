@@ -18,3 +18,4 @@ Route::get('news', function () {
 });
 Auth::routes();
 
+Route::get('/home', 'HomeController@getHome')->name('home')->middleware('auth');

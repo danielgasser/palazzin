@@ -1,64 +1,86 @@
 @extends('layout.master')
+
 @section('content')
-        {!!trans('login.RoomApp_Welcome')!!}
-        {!! Form::open(array('url' => 'login'), array('class' => 'form-inline')) !!}
-        {{ csrf_field() }}
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4">
-                <h1>{!!trans('login.login')!!}</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                    <form method="POST" action="{{ route('login') }}" aria-label="{{ __('login.login') }}">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <h1>{{ __('login.login') }}</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                            <label for="email">{{ __('userdata.user_login_name') . ' ' . __('dialog.or') . ' ' . __('userdata.email') }}</label>
+
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                                {{ Form::hidden('new_comment', (isset($_GET['new_comment'])) ? $_GET['new_comment'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) }}
+                                {{ Form::hidden('new_comment_user_id', (isset($_GET['new_comment_user_id'])) ? $_GET['new_comment_user_id'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('userdata.pass') }}</label>
+
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 login-checkbox">
+                                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label>
+                                    {{ __('login.stay') }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <button id="login-btn" type="submit" class="btn btn-primary">
+                                    {{ __('login.login') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #b7282e;"> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <a class="btn btn-default" style="width: 100%;" href="{{ route('password.request') }}">{{ __('login.forgot') }}?</a>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <a class="btn btn-default" style="width: 100%;" href="{{URL::to('help/pl')}}">{{trans('login.login_prob')}}?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-sm-4 col-md-4"></div>
         </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4">
-                {!! Form::label('user_login_name', trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email')) !!}
-                {{--- Changed for local dev ---}}
-                {!! Form::text('user_login_name', null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) !!}
-                {!! Form::hidden('new_comment', (isset($_GET['new_comment'])) ? $_GET['new_comment'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) !!}
-                {!! Form::hidden('new_comment_user_id', (isset($_GET['new_comment_user_id'])) ? $_GET['new_comment_user_id'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) !!}
-            </div>
-            <div class="col-sm-4 col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4">
-                {!! Form::label('password',  trans('userdata.pass')) !!}
-                {{--- Changed for local dev ---}}
-                {!! Form::password('password', array('class' => 'form-control', 'placeholder' => trans('userdata.pass'))) !!}
-            </div>
-            <div class="col-sm-4 col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4 stay_tuned">
-                <label>
-                    <input class="checkbox" name="stay_tuned" id="stay_tuned" type="checkbox" /><span style="color: #333">{!!trans('login.stay')!!}</span>
-                </label>
-            </div>
-            <div class="col-sm-4 col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4">
-                {!! Form::submit(trans('login.login'), ['class' => 'btn btn-default hundertpro']) !!}
-                {!! Form::close() !!}
-            </div>
-            <div class="col-sm-4 col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-md-4"></div>
-            <div class="col-sm-4 col-md-4">
-                <a href="{!!URL::to('password/reset')!!}">{!!trans('login.forgot')!!}?</a><br>
-                <a href="{!!URL::to('help/pl')!!}">{!!trans('login.login_prob')!!}?</a>
-            </div>
-            <div class="col-sm-4 col-md-4"></div>
-        </div>
+    </div>
+</div>
+@endsection
 @section('scripts')
     @parent
     <script>
-        var oldie = '{!!$isOldWin!!}';
+        var oldie = '{{$isOldWin}}';
         $(document).ready(function(){
             if (oldie === '1') {
                 $('#old_ie').modal({backdrop: 'static', keyboard: false})
@@ -67,5 +89,3 @@
         window.localStorage.clear();
     </script>
 @stop
-@stop
-

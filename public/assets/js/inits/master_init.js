@@ -13,7 +13,6 @@ jQuery(document).ready(function () {
     displayTexts.hide();
     $.datepicker.setDefaults($.datepicker.regional['']);
 
-    $('.checkbox').checkbox();
     $('[data-toggle="popover"]').popover({
         html: true
     });

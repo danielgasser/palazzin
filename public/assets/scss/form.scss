@@ -149,3 +149,50 @@ form {
         border: 1px solid $brand-danger;
     }
 }
+input[type=checkbox] {
+  position: relative;
+  visibility: hidden;
+  cursor: pointer;
+  margin-left: 13px !important;
+}
+.login-checkbox {
+  min-height: 48px !important;
+  label {
+    font-weight: bold;
+    display: inline-block !important;
+    position: absolute;
+    left: 77px;
+    top: 1vh;
+  }
+}
+
+input[type=checkbox]:after {
+  display: block;
+  content: "Nein";
+  position: absolute;
+  top: 0;
+  right: -30px;
+  visibility: visible;
+  height: 30px;
+  line-height: 30px;
+  width: 50px;
+  text-align: center;
+  border-radius: 4px;
+  background: $brand-danger;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+input[type=checkbox]:checked:after {
+  content: "Ja";
+  background: $brand-success;
+}
+
+.btn-primary {
+  background-color: $brand-danger;
+}
+#login-btn {
+  width: 100%;
+  margin-left: 5px !important;
+}

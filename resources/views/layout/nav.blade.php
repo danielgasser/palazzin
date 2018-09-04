@@ -63,7 +63,7 @@
                            <li><a href="{!!URL::to('user/bills')!!}">{!!trans('navigation.user/bills')!!}</a></li>
                        @endif
                         <li class="divider"></li>
-                        <li><a href="{!!URL::to('logout')!!}">Logout</a></li>
+                        <li><a id="logout_user" href="{!!URL::to('logout')!!}">Logout</a></li>
                     </ul>
                 </li>
             @else
@@ -83,4 +83,13 @@
         </div>
     </div>
 </nav>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    {{ csrf_field() }}
+</form>
+    <script>
+        $(document).on('click', '#logout_user', function (e) {
+            e.preventDefault();
+            $('#logout-form').submit();
+        });
+    </script>
 @show
