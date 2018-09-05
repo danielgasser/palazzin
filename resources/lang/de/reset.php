@@ -7,7 +7,8 @@
  */
 return array(
     'title' => 'Neues Passwort erstellen',
-    'send' => 'Erneuern',
+    'Send' => 'Erneuern',
+    'send' => 'erneuern',
     'texts' => array(
         'reset_pass' => 'Um Dein Passwort zurück zu setzen, Klicke auf folgenden Link:</p><p>:site (Dieser Link verfällt nach :exp :time.)</p>',
         'new_pass' => '<p>Hallo :name</p>

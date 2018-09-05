@@ -76,6 +76,7 @@ form {
         /*white-space: nowrap;*/
         display: block;
       color: #333;
+      font-size: 1.2em;
     }
     input:focus {
         border-color: $color-h1 !important;
@@ -141,11 +142,12 @@ form {
     input[name=example] {
         background-color: #ffffff !important;
     }
-    .btn.active,
-    .btn:active,
-    .btn:focus {
-        outline: none;
-        -webkit-appearance:none;
+  .btn:focus, .btn:active:focus, .btn.active:focus {
+      outline: 5px auto $brand-danger !important;
+      outline-offset: -2px;
+      -webkit-appearance:none;
+      box-shadow: none;
+      -webkit-box-shadow: none;
         border: 1px solid $brand-danger;
     }
 }

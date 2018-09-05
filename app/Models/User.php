@@ -6,11 +6,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
-    use Authenticatable, CanResetPassword;
+    use Authenticatable, CanResetPassword, Notifiable;
 
 	/**
 	 * The database table used by the model.
@@ -569,5 +570,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
         }
         return 0;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $user = User::where('email', '=', \Illuminate\Support\Facades\Input::get('email'))->firstOrFail();
+        $this->notify(new ResetPasswordNotification($token, $user));
     }
 }

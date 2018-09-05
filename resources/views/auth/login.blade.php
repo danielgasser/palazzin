@@ -15,13 +15,13 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                            <label for="email">{{ __('userdata.user_login_name') . ' ' . __('dialog.or') . ' ' . __('userdata.email') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('userdata.user_login_name') . ' ' . __('dialog.or') . ' ' . __('userdata.email') }}</label>
 
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="usernameOrEmail" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="usernameOrEmail" value="{{ old('email') }}" required autofocus>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('usernameOrEmail'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('usernameOrEmail') }}</strong>
                                     </span>
                                 @endif
                                 {{ Form::hidden('new_comment', (isset($_GET['new_comment'])) ? $_GET['new_comment'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) }}

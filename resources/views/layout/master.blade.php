@@ -18,7 +18,6 @@
     @endif
     <script src="{!!asset('assets/js/libs/montrezorro-bootstrap-checkbox-fa865ff/js/bootstrap-checkbox.js')!!}"></script>
     <link rel="shortcut icon" href="{!!asset('assets/img/favicon.ico')!!}" />
-    <link href="{!!asset('assets/css/main.css')!!}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{!!asset('assets/css/stats_print.css')!!}" rel="stylesheet" media="mpdf" type="text/css" />
     <link href="{!!asset('assets/css/print.css')!!}" rel="stylesheet" media="print" type="text/css" />
     <!--link href="{!!asset('assets/css/font-awesome/fontawesome-all.min.css')!!}" rel="stylesheet" type="text/css" /-->
@@ -98,6 +97,7 @@
     <link href="{!!asset('assets/js/libs/tablesorter/themes/black/style.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/js/libs/montrezorro-bootstrap-checkbox-fa865ff/css/bootstrap-checkbox.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/js/libs/chosen/chosen.css')!!}" rel="stylesheet" type="text/css" />
+    <link href="{!!asset('assets/css/main.css')!!}" rel="stylesheet" media="screen" type="text/css" />
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -109,9 +109,20 @@
                 background-color: rgba(24,19,12,0.05);
             }
             #wrap {
-                background-image: url({!!asset('assets/img/bg_images/login/6tja0l4xj9.png')!!});
+                position: relative;
+            }
+            #wrap:after {
+                content: "";
+                background: url({!!asset('assets/img/bg_images/login/6tja0l4xj9.png')!!});
                 background-repeat: no-repeat;
-                background-size: cover;
+                background-size: 100% 96%;
+                opacity: 0.5;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                position: absolute;
+                z-index: -1;
             }
         </style>
     @endif
@@ -136,7 +147,6 @@
 </head>
 @show
 <body>
-
     @if (Request::is('reservation'))
  @include('logged.reservation_edit')
     @endif
@@ -154,7 +164,7 @@
         </div>
     </div>
     @section('errors')
-     @if(sizeof($errors) > 0)
+     @if(Session::has('error'))
         <div id="error-wrap">
            <div id="errors" class="alert alert-danger" role="alert">
                 <button type="button" class="close" data-dismiss="alert">
@@ -162,7 +172,7 @@
                 <span class="sr-only">Close</span>
                 </button>
                 <ul>
-                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!$errors->first()!!}!</h3></li>
+                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!Session::get('error')!!}!</h3></li>
                 </ul>
            </div>
         </div>
@@ -180,6 +190,15 @@
         </div>
          {!!Session::forget('res_error')!!}
      @endif
+         @if (Session::has('info_message'))
+             <div data-alert class="alert alert-success" role="alert">
+                 <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">
+                     <span aria-hidden="true">&times</span>
+                     <span class="sr-only">Close</span>
+                 </button>
+                 <h3><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;{!!Session::get('info_message')!!}!</h3>
+             </div>
+         @endif
     @show
     @section('navigation')
         @include('layout.nav')
