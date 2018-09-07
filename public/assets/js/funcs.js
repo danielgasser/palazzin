@@ -92,8 +92,11 @@ var countIt = function (el) {
     return total;
 };
 
-var smallerThenTen = function (i) {
+var smallerThenTen = function (i, space) {
     "use strict";
+    if (space) {
+        return (i < 10) ? '&nbsp;&nbsp;' + i : i;
+    }
     return (i < 10) ? '0' + i : i;
 };
 

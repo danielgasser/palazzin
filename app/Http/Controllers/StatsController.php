@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Bill;
-use App\Http\Requests\Request;
 use LoginStat;
 use Reservation;
 use Illuminate\Support\Facades\Input;
 use Response;
+use Request;
 
 class StatsController extends Controller
 {

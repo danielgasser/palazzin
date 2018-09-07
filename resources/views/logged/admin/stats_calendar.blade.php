@@ -38,8 +38,7 @@
         <link href="/assets/js/libs/bootstrap_switch/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
         <script src="/assets/js/libs/bootstrap_switch/js/bootstrap-switch.js"></script>
         <script>
-            var settings = {!!App::make('GlobalSettings')->getSettings()!!},
-                    langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
+            var langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                     checkedYear = [],
                     all_charts = [],
                     showYear = [],
@@ -98,12 +97,11 @@
                 for (var i = 1; i < 32; i += 1) {
                     monthDays.push(i);
                 }
-                $("[name^='year']").bootstrapSwitch({
-                    onColor: 'retroorange',
-                    onText: 'An',
-                    offText: 'Aus'
+                $("[name^='year']").bootstrapToggle({
+                    on: 'An',
+                    off: 'Aus'
                 });
-                $('[name^="year"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     showYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
@@ -121,7 +119,7 @@
             });
             $(document).on('click', '#getYears', function () {
                 if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('switchChange.bootstrapSwitch');
+                    $('[name^="year"]').trigger('change');
                 }
                 window.getStatsData('/admin/stats_calendar_total_day', checkedYear, window.fillTable);
             });

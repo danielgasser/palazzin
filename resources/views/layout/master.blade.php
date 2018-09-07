@@ -16,7 +16,8 @@
     <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-de.js')!!}"></script>
     <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-en-GB.js')!!}"></script>
     @endif
-    <script src="{!!asset('assets/js/libs/montrezorro-bootstrap-checkbox-fa865ff/js/bootstrap-checkbox.js')!!}"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <link rel="shortcut icon" href="{!!asset('assets/img/favicon.ico')!!}" />
     <link href="{!!asset('assets/css/stats_print.css')!!}" rel="stylesheet" media="mpdf" type="text/css" />
     <link href="{!!asset('assets/css/print.css')!!}" rel="stylesheet" media="print" type="text/css" />
@@ -95,7 +96,6 @@
         </style>
     @endif
     <link href="{!!asset('assets/js/libs/tablesorter/themes/black/style.css')!!}" rel="stylesheet" type="text/css" />
-    <link href="{!!asset('assets/js/libs/montrezorro-bootstrap-checkbox-fa865ff/css/bootstrap-checkbox.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/js/libs/chosen/chosen.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/css/main.css')!!}" rel="stylesheet" media="screen" type="text/css" />
     <!--[if lt IE 9]>
@@ -142,11 +142,13 @@
          <script src="{!!asset('assets/js/libs/tinymce/js/tinymce/langs/de.js')!!}"></script>
    <script src="{!!asset('assets/js/libs/modernizr/modernizr.custom.42303.js')!!}"></script>
     @if(Request::is('new_reservation'))
-        <link href="{!!asset('assets/scss/v3/new_reservation.css')!!}" rel="stylesheet" type="text/css" />
+        <link href="{!!asset('assets/css/new_reservation.css')!!}" rel="stylesheet" type="text/css" />
     @endif
 </head>
 @show
 <body>
+{!! var_dump(Session::all()) !!}
+<div id="hideAll"></div>
     @if (Request::is('reservation'))
  @include('logged.reservation_edit')
     @endif
@@ -164,7 +166,7 @@
         </div>
     </div>
     @section('errors')
-     @if(Session::has('error'))
+     @if($errors->any())
         <div id="error-wrap">
            <div id="errors" class="alert alert-danger" role="alert">
                 <button type="button" class="close" data-dismiss="alert">
@@ -172,7 +174,7 @@
                 <span class="sr-only">Close</span>
                 </button>
                 <ul>
-                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!Session::get('error')!!}!</h3></li>
+                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!$errors->first()!!}!</h3></li>
                 </ul>
            </div>
         </div>

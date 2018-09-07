@@ -53,7 +53,7 @@
                     onText: 'An',
                     offText: 'Aus'
                 });
-                $('[name^="year"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
                         if ($(n).is(':checked')) {
@@ -67,7 +67,7 @@
             })
             $(document).on('click', '#getYears', function () {
                 if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('switchChange.bootstrapSwitch');
+                    $('[name^="year"]').trigger('change');
                 }
                 window.getStatsData('/admin/stats_login', checkedYear, window.fillTable);
             });

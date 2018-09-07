@@ -44,12 +44,11 @@
     <script>
         $(document).ready(function () {
             'use strict';
-            $("[name^='year']").bootstrapSwitch({
-                onColor: 'retroorange',
-                onText: 'An',
-                offText: 'Aus'
+            $("[name^='year']").bootstrapToggle({
+                on: 'An',
+                off: 'Aus'
             });
-            $('[name^="year"]').on('switchChange.bootstrapSwitch', function (event, state) {
+            $('[name^="year"]').on('change', function (event, state) {
                 checkedYear = [];
                 showYear = [];
                 $.each($('[name^="year"]'), function (i, n) {
@@ -65,7 +64,7 @@
             });
             $(document).on('click', '#getYears', function () {
                 if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('switchChange.bootstrapSwitch');
+                    $('[name^="year"]').trigger('change');
                 }
                 window.getStatsData('/admin/stats_bill_total_year', checkedYear, window.fillTable);
             });

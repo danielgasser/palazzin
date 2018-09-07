@@ -902,6 +902,8 @@ a {
     color: #781a1e;
     text-decoration: underline; }
   a:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
 figure {
@@ -2228,6 +2230,8 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
 output {
@@ -6164,48 +6168,21 @@ form .btn:focus, form .btn:active:focus, form .btn.active:focus {
   -webkit-box-shadow: none;
   border: 1px solid #b7282e; }
 
-input[type=checkbox] {
-  position: relative;
-  visibility: hidden;
-  cursor: pointer;
-  margin-left: 13px !important; }
-
-.login-checkbox {
-  min-height: 48px !important; }
-  .login-checkbox label {
-    font-weight: bold;
-    display: inline-block !important;
-    position: absolute;
-    left: 77px;
-    top: 1vh; }
-
-input[type=checkbox]:after {
-  display: block;
-  content: "Nein";
-  position: absolute;
-  top: 0;
-  right: -30px;
-  visibility: visible;
-  height: 30px;
-  line-height: 30px;
-  width: 50px;
-  text-align: center;
-  border-radius: 4px;
-  background: #b7282e;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer; }
-
-input[type=checkbox]:checked:after {
-  content: "Ja";
-  background: #1a861c; }
-
 .btn-primary {
   background-color: #b7282e; }
 
 #login-btn {
   width: 100%;
   margin-left: 5px !important; }
+
+.login-checkbox {
+  padding-left: 20px;
+  margin-bottom: 5px; }
+
+.toggle-group .btn-primary, .toggle-group .btn-default, .toggle .btn-primary, .toggle .btn-default {
+  border: none;
+  background-color: white;
+  color: black; }
 
 /*
 .sidr {
@@ -6295,6 +6272,16 @@ a {
 /*@import "stats";*/
 #newsMessage {
   display: none; }
+
+#hideAll {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: -1px;
+  z-index: 4999;
+  background-color: rgba(58, 58, 58, 0.5); }
 
 a:focus, a:active {
   outline: none;

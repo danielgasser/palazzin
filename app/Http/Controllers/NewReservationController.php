@@ -21,6 +21,7 @@ class NewReservationController extends Controller
     public function getNewReservations()
     {
         $user = User::find(Auth::id());
+        $user->makeSomethingWrong();
         $start = new \DateTime();
         $checkPeriod = Period::getCurrentPeriod();
         $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
@@ -52,5 +53,10 @@ class NewReservationController extends Controller
         $reservation = new Reservation();
         $periodID = Input::get('periodID');
         return $reservation->getReservationsPerPeriodV3($periodID);
+    }
+
+    public function saveReservations()
+    {
+        $credentials = request()->all();
     }
 }

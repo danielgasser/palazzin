@@ -35,8 +35,6 @@
         <script src="https://code.highcharts.com/modules/data.js"></script>
         <script src="https://code.highcharts.com/highcharts-3d.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <link href="/assets/js/libs/bootstrap_switch/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
-        <script src="/assets/js/libs/bootstrap_switch/js/bootstrap-switch.js"></script>
         <script src="/assets/js/libs/tableToExcel/tableToExcel.js"></script>
         <script src="/assets/min/js/admin.min.js"></script>
         <script src="/assets/js/stats/stats.js"></script>
@@ -44,12 +42,12 @@
         <script>
             $(document).ready(function(){
                 'use strict';
-                $("[name^='year']").bootstrapSwitch({
+                $("[name^='year']").bootstrapToggle({
                     onColor: 'retroorange',
-                    onText: 'An',
-                    offText: 'Aus'
+                    on: 'An',
+                    off: 'Aus'
                 });
-                $('[name^="year"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
                         if ($(n).is(':checked')) {
@@ -63,7 +61,7 @@
             })
             $(document).on('click', '#getYears', function () {
                 if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('switchChange.bootstrapSwitch');
+                    $('[name^="year"]').trigger('change');
                 }
                 window.getStatsData('/admin/stats_chron', checkedYear, window.fillTable);
             });

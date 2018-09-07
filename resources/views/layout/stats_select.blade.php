@@ -15,7 +15,7 @@ $j = 0;
 ?><div class="stats_select">
     <h4>Bitte wähle das/die gewünschte(n) Jahr(e) und klicke auf "Laden"</h4>
     @for($i = $start; $i <= ($start + $duration); $i++)
-        <div style="float: left; width: 107px; margin: 10px 0;"><span class="label" style="color: {!!$yearColors[$j]!!}">{!!$i!!}</span><input name="year[]" type="checkbox" value="{!!$i!!}" /></div>
+        <div style="float: left; width: 107px; margin: 10px 0;"><span class="label" style="color: {!!$yearColors[$j]!!}">{!!$i!!}</span><input name="year[]" data-toggle="toggle" type="checkbox" value="{!!$i!!}" /></div>
         <?php $j++;
         ?>
     @endfor

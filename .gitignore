@@ -10,3 +10,5 @@ yarn-error.log
 public/assets/css/test.css.map
 public/assets/css/test.css
 public/assets/scss/test.scss
+resources/views/errors/500.blade.php
+resources/views/errors/404.blade.php

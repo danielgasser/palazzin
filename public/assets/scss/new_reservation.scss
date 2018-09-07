@@ -1,3 +1,4 @@
+@import "bootstrap-variables";
 .form-control, .input-group-addon, button, input[readonly] {
   height: 2.0em;
   border: .13333em solid #b7b7b7;
@@ -69,8 +70,8 @@
   }
   &:hover {
     background-color: transparent !important;
-    color: #b7282e;
-    border: .13333em solid #b7282e;
+    color: $brand-danger;
+    border: .13333em solid $brand-danger;
   }
 }
 label {
@@ -95,7 +96,7 @@ label {
 }
 .bootstrap-datetimepicker-widget {
   table td.disabled, table td.disabled:hover {
-    color: #b7282e;
+    color: $brand-danger;
   }
 }
 .btn {
@@ -138,14 +139,14 @@ label {
   vertical-align: sub;
   background-color: transparent;
   font-size: 2em;
-  color: #b7282e;
+  color: $brand-danger;
   cursor: pointer;
   &:hover, &:focus, &:active {
     border: none;
     outline: none;
     box-shadow: none;
     background-color: transparent;
-    color: #b7282e;
+    color: $brand-danger;
   }
 }
 [id^="guest_title_"] {
@@ -160,23 +161,54 @@ label {
 /**
 
  */
-#free_beds {
+#free_beds_container {
   position: fixed;
-  width: auto;
-  top: 7.5vh;
-  right: 0;
-  z-index: 10000;
-  padding: 0.5vw;
-  cursor: pointer;
+  right: 0px;
+  z-index: 5000;
   background-color: white;
-  i {
-    font-size: 2.75em;
-    color: #000;
+  #free_beds {
+    position: fixed;
+    width: auto;
+    top: 13.5vh;
+    right: 0;
+    z-index: 10000;
+    padding: 0.5vw;
+    cursor: pointer;
+    background-color: $brand-danger;
+    color: white;
+    i {
+      font-size: 1.25em;
+      color: #fff;
+      padding: 0.2em 0.2em 0.2em 0.25em;
+    }
+    .text {
+      font-size: 1.25em;
+      writing-mode: vertical-rl;
+      -webkit-writing-mode: vertical-rl;
+      -ms-writing-mode: rl-bt;
+      display: inherit;
+      padding: 0.2em 0.05em 0.2em 0.25em
+    }
   }
-}
-#all-free-beds {
-  .modal-dialog {
+
+  #all-free-beds {
+    position: absolute;
+    right: 0;
     width: 130px;
+    border: 2px solid $brand-danger;
+    padding: 0.35em;
+    max-height: 300px;
+    overflow-x: auto;
+    background-color: white;
+    display: none;
+    .tooMuchBeds {
+      color: #b7282e;
+      border: 2px solid #b7282e;
+      font-weight: bold;
+      padding: 0px 0 0 5px;
+      margin: 0 0 0 -5px;
+      border-left: none;
+    }
   }
 }
 #reservationInfo {

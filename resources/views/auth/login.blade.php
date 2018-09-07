@@ -44,10 +44,10 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12 login-checkbox">
-                                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 <label>
                                     {{ __('login.stay') }}
                                 </label>
+                                <input type="checkbox" data-onstyle="success" data-offstyle="warning" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                             </div>
                         </div>
 
@@ -85,6 +85,12 @@
             if (oldie === '1') {
                 $('#old_ie').modal({backdrop: 'static', keyboard: false})
             }
+        });
+        $(function() {
+            $("[name^='remember']").bootstrapToggle({
+                on: '<i class=\'fa fa-check\'></i> Ja',
+                off: '<i class=\'fa fa-times\'></i> Nein',
+            });
         })
         window.localStorage.clear();
     </script>
