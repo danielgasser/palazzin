@@ -24,7 +24,7 @@ class Period extends Model {
      *
      * @var array
      */
-    protected $fillable = array('period_start', 'period_end', 'clan_id');
+    protected $fillable = ['id', 'period_start', 'period_end', 'clan_id'];
 
 
     /**
@@ -86,6 +86,11 @@ class Period extends Model {
     public function getPeriodStart()
     {
         return $this->period_start;
+    }
+
+    public function getPeriodID()
+    {
+        return $this->id;
     }
     /**
      *

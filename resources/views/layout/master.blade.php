@@ -6,7 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    @if (Request::has('edit_reservation*'))
+        <title>{!!Lang::get('navigation.edit_reservation')!!}@Palazzin</title>
+    @else
     <title>{!!Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())!!}@Palazzin</title>
+    @endif
     <link rel="icon" href="{!!asset('assets/img/favicon.png')!!}" type="image/png" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <script src="{!!asset('assets/js/libs/jquery/jquery.2.1.1.min.js')!!}"></script>
@@ -144,10 +148,15 @@
     @if(Request::is('new_reservation'))
         <link href="{!!asset('assets/css/new_reservation.css')!!}" rel="stylesheet" type="text/css" />
     @endif
+    @if(Request::is('edit_reservation*'))
+        <link href="{!!asset('assets/css/new_reservation.css')!!}" rel="stylesheet" type="text/css" />
+    @endif
+    @if(Request::is('all_reservations'))
+        <link href="{!!asset('assets/css/all_reservation.css')!!}" rel="stylesheet" type="text/css" />
+    @endif
 </head>
 @show
 <body>
-{!! var_dump(Session::all()) !!}
 <div id="hideAll"></div>
     @if (Request::is('reservation'))
  @include('logged.reservation_edit')
@@ -178,20 +187,7 @@
                 </ul>
            </div>
         </div>
-     @elseif(Session::has('res_error'))
-        <div id="error-wrap">
-           <div id="errors" class="alert alert-danger" role="alert">
-                <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times</span>
-                <span class="sr-only">Close</span>
-                </button>
-                <ul>
-                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!Session::get('error')!!}!</h3></li>
-                </ul>
-           </div>
-        </div>
-         {!!Session::forget('res_error')!!}
-     @endif
+        @endif
          @if (Session::has('info_message'))
              <div data-alert class="alert alert-success" role="alert">
                  <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">

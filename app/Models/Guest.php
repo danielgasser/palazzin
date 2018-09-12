@@ -28,6 +28,9 @@ class Guest extends Model {
         'guest_ended_at',
         'guest_guests',
         'guest_num',
+        'guest_title',
+        'guest_tax',
+        'guest_tax_role_id'
     );
 
     /**
@@ -53,7 +56,7 @@ class Guest extends Model {
      */
     public function getGuestStartedAtAttribute ($value) {
         setlocale(LC_ALL, trans('formats.langlang'));
-        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%Y_%m_%d');
+        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%d.%m.%Y');
     }
 
     /**
@@ -63,7 +66,7 @@ class Guest extends Model {
      */
     public function getGuestEndedAtAttribute ($value) {
         setlocale(LC_ALL, trans('formats.langlang'));
-        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%Y_%m_%d');
+        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%d.%m.%Y');
     }
 
     /**

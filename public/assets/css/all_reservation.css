@@ -1,0 +1,51 @@
+[id^="all_reservations_"] {
+  border: 1px solid #b7282e;
+  padding: 23px; }
+
+.show_total_res {
+  border: .13333em solid #b7b7b7;
+  border-radius: .13333em;
+  padding: 2vh 0.36667em 0 0;
+  margin-bottom: 0.5em;
+  position: relative; }
+
+[id^="hide_guest_"], [id^="hide_res"] {
+  display: inline;
+  text-align: right;
+  border: none;
+  padding: 0 0.5em 0 0;
+  margin: 0;
+  height: 1em;
+  vertical-align: sub;
+  background-color: transparent;
+  font-size: 2em;
+  color: #b7282e;
+  cursor: pointer; }
+  [id^="hide_guest_"]:hover, [id^="hide_guest_"]:focus, [id^="hide_guest_"]:active, [id^="hide_res"]:hover, [id^="hide_res"]:focus, [id^="hide_res"]:active {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    color: #b7282e; }
+
+[id^="guests_date_"] {
+  border: 1px solid #b7b7b7;
+  margin-top: 2vh;
+  position: relative; }
+
+.hide-guest {
+  display: inline-block;
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  height: 27px;
+  padding: 0px 9px;
+  margin: 1px;
+  background-color: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  font-weight: bold; }
+  .hide-guest span {
+    display: inline-block; }
+
+/*# sourceMappingURL=all_reservation.css.map */

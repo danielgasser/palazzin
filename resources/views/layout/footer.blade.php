@@ -22,6 +22,7 @@
                           <li class="divider"></li>
                           <li><a href="{!!URL::to('admin/settings')!!}">{!!trans('navigation.admin/settings')!!}</a></li>
                     </ul>
+                  <a href="#" onclick="localStorage.clear()">clear</a>
               </div>
           @endif
 

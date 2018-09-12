@@ -16,13 +16,15 @@
             <ul id="main-nav" class="nav navbar-nav navbar-left multi-level">
             @if(Auth::check())
                 @if(User::isClerk())
-                    <li><a href="{!!URL::to('userlist')!!}">{!!trans('navigation.userlist')!!}</a></li>
-                    <li><a href="{!!URL::to('admin/bills')!!}">{!!trans('navigation.admin/bills')!!}</a></li>
-                    <li><a href="{!!URL::to('admin/bills/filelist')!!}">{!!trans('navigation.admin/bills/filelist')!!}</a></li>
+                    <li class="{!! Request::is('userlist') ? 'active' : '' !!}"><a href="{!!URL::to('userlist')!!}">{!!trans('navigation.userlist')!!}</a></li>
+                    <li class="{!! Request::is('admin/bills') ? 'active' : '' !!}"><a href="{!!URL::to('admin/bills')!!}">{!!trans('navigation.admin/bills')!!}</a></li>
+                    <li class="{!! Request::is('admin/bills/filelist') ? 'active' : '' !!}"><a href="{!!URL::to('admin/bills/filelist')!!}">{!!trans('navigation.admin/bills/filelist')!!}</a></li>
                 @else
-                    <li class="active"><a href="{!!URL::to('home')!!}">{!!trans('navigation.home')!!}</a></li>
-                    <li><a href="{!!URL::to('reservation')!!}">{!!trans('navigation.reservation')!!}</a></li>
-                    <li><a href="{!!URL::to('new_reservation')!!}">BETA {!!trans('navigation.new_reservation')!!}</a></li>
+                    <li class="{!! Request::is('home') ? 'active' : '' !!}"><a href="{!!URL::to('home')!!}">{!!trans('navigation.home')!!}</a></li>
+                    <li class="{!! Request::is('reservation') ? 'active' : '' !!}"><a href="{!!URL::to('reservation')!!}">{!!trans('navigation.reservation')!!}</a></li>
+                    <li class="{!! Request::is('new_reservation') ? 'active' : '' !!}"><a href="{!!URL::to('new_reservation')!!}">{!!trans('navigation.new_reservation')!!}</a></li>
+                    {{-- <li class="{!! Request::is('edit_reservation*') ? 'active' : '' !!}"><a href="{!!URL::to('edit_reservation')!!}">{!!trans('navigation.edit_reservation')!!}</a></li> --}}
+                    <li class="{!! Request::is('all_reservations') ? 'active' : '' !!}"><a href="{!!URL::to('all_reservations')!!}">{!!trans('navigation.all_reservations')!!}</a></li>
                     @if (Request::is('reservation'))
                         <li id="open-legend" class="dropdown-toggle">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{!!trans('dialog.legend')!!}<span class="caret"></span></a>
@@ -38,16 +40,16 @@
                             </ul>
                         </li>
                     @endif
-                    <li><a href="{!!URL::to('userlist')!!}">{!!trans('navigation.userlist')!!}</a></li>
-                    <li><a href="{!!URL::to('pricelist')!!}">{!!trans('navigation.pricelist')!!}</a></li>
+                    <li class="{!! Request::is('userlist') ? 'active' : '' !!}"><a href="{!!URL::to('userlist')!!}">{!!trans('navigation.userlist')!!}</a></li>
+                    <li class="{!! Request::is('pricelist') ? 'active' : '' !!}"><a href="{!!URL::to('pricelist')!!}">{!!trans('navigation.pricelist')!!}</a></li>
                     <li id="open-legend" class="dropdown-toggle">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">{!!trans('navigation.admin/stats')!!}<span class="caret"></span></a>
                         <ul class="dropdown-menu multi-level" role="menu">
-                            <li><a href="{!!URL::to('admin/stats_chron')!!}">Chronologische Anmeldungen (Gästebuch)</a></li>
-                            <li><a href="{!!URL::to('admin/stats_calendar')!!}">Jahreskalender (Logiernächte)</a></li>
-                            <li><a href="{!!URL::to('admin/stats_bill')!!}">Jahresabrechnung</a></li>
-                            <li><a href="{!!URL::to('admin/stats_login')!!}">Logindaten</a></li>
-                            <li><a href="{!!URL::to('admin/stats_list')!!}">Alle Statistiken (PDF)</a></li>
+                            <li class="{!! Request::is('admin/stats_chron') ? 'active' : '' !!}"><a href="{!!URL::to('admin/stats_chron')!!}">Chronologische Anmeldungen (Gästebuch)</a></li>
+                            <li class="{!! Request::is('admin/stats_calendar') ? 'active' : '' !!}"><a href="{!!URL::to('admin/stats_calendar')!!}">Jahreskalender (Logiernächte)</a></li>
+                            <li class="{!! Request::is('admin/stats_bill') ? 'active' : '' !!}"><a href="{!!URL::to('admin/stats_bill')!!}">Jahresabrechnung</a></li>
+                            <li class="{!! Request::is('admin/stats_login') ? 'active' : '' !!}"><a href="{!!URL::to('admin/stats_login')!!}">Logindaten</a></li>
+                            <li class="{!! Request::is('admin/stats_list') ? 'active' : '' !!}"><a href="{!!URL::to('admin/stats_list')!!}">Alle Statistiken (PDF)</a></li>
                         </ul>
                     </li>
                 @endif
@@ -57,20 +59,20 @@
                 <li class="dropdown-toggle">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{!!User::find(Auth::id())->user_first_name!!} {!!User::find(Auth::id())->user_name!!}<span class="caret"></span></a>
                     <ul class="dropdown-menu list-inline" role="menu">
-                       <li><a href="{!!URL::to('user/profile')!!}">{!!trans('address.your_m')!!} {!!trans('navigation.profile')!!}</a></li>
+                       <li class="{!! Request::is('user/profile') ? 'active' : '' !!}"><a href="{!!URL::to('user/profile')!!}">{!!trans('address.your_m')!!} {!!trans('navigation.profile')!!}</a></li>
                        @if(!User::isKeeper() && !User::isClerk())
-                            <li><a href="{!!URL::to('user/reservations')!!}">{!!trans('navigation.user/reservations')!!}</a></li>
-                           <li><a href="{!!URL::to('user/bills')!!}">{!!trans('navigation.user/bills')!!}</a></li>
+                            <li class="{!! Request::is('user/reservations') ? 'active' : '' !!}"><a href="{!!URL::to('user/reservations')!!}">{!!trans('navigation.user/reservations')!!}</a></li>
+                           <li class="{!! Request::is('user/bills') ? 'active' : '' !!}"><a href="{!!URL::to('user/bills')!!}">{!!trans('navigation.user/bills')!!}</a></li>
                        @endif
                         <li class="divider"></li>
                         <li><a id="logout_user" href="{!!URL::to('logout')!!}">Logout</a></li>
                     </ul>
                 </li>
             @else
-                        <li class="active"><a href="/">{!!trans('navigation./')!!}</a></li>
-                    <li class="active"><a href="{!!URL::to('login')!!}">{!!trans('navigation.login')!!}</a></li>
+                        <li class="{!! Request::is('navigation./') ? 'active' : '' !!}"><a href="/">{!!trans('navigation./')!!}</a></li>
+                    <li class="{!! Request::is('login') ? 'active' : '' !!}"><a href="{!!URL::to('login')!!}">{!!trans('navigation.login')!!}</a></li>
             @endif
-                    <li class="clear-nav-entry">
+                    <li class="clear-nav-entry{!!Request::is('/help/') ? ' active' : '' !!}">
                         <?php
                         $helper = explode('/', Route::getFacadeRoot()->current()->uri());
                         ?>
@@ -83,8 +85,8 @@
         </div>
     </div>
 </nav>
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    {{ csrf_field() }}
+<form id="logout-form" action="{!! route('logout') !!}" method="POST" style="display: none;">
+    {!! csrf_field() !!}
 </form>
     <script>
         $(document).on('click', '#logout_user', function (e) {

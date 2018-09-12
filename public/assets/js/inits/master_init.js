@@ -9,7 +9,6 @@ jQuery(document).ready(function () {
         p = [/ü/gi, /ä/gi, /ö/gi, /ò/gi, /é/gi, /è/gi, /à/gi, '-'],
         testBtn,
         replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'];
-    window.setNavActive('#main-nav li');
     displayTexts.hide();
     $.datepicker.setDefaults($.datepicker.regional['']);
 

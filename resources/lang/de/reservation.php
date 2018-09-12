@@ -90,7 +90,7 @@ return array(
         'not_primary_before' => 'Du bist nicht primärberechtigt.<br>Du kannst Dich erst :days Tage vor Deiner Anreise anmelden',
         'not_in_period' => 'Du bist nicht innerhalb einer Periode',
         'before_today' => 'Die Reservierung hat bereits begonnen. Du kannst die Anfangsdaten nicht mehr ändern',
-        'cross_reserv' => 'Du hast bereits eine Reservierung in dieser Zeitspanne oder Du kreuzt eine Deiner anderen Reservierungen.<br>Bitte bearbeite diese, indem Du im Kalender auf <i>bearbeiten</i> klickst',
+        'cross_reserv' => 'Du hast bereits eine Reservierung in dieser Zeitspanne oder Du kreuzt eine Deiner anderen Reservierungen.<br>Möchtest Du diese bearbeiten?',
         'no_guest_kind' => 'Art des Gastes ist leer',
         'yesterday' => 'Du kannst Reservierungen nicht mehr löschen, die in der Vergangenheit begonnen haben',
         'no_profile' => 'Du must Dein Profil vervollständigen, bevor Du reservieren kannst',

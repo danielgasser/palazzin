@@ -16,11 +16,10 @@
     @include('logged.dialog.free_beds')
     <a name="top"></a>
     <div id="reservationInfo">
-        <h1>{!!trans('reservation.title_short')!!}</h1>
+        <h1>{!!trans('navigation.new_reservation')!!}</h1>
         <h4></h4>
     </div>
     <div id="upper">
-        <div id="calendar"></div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div id="timeliner-container">
@@ -31,6 +30,7 @@
         </div>
         <form id="new_reservation" method="post" action="{!!  route('save_reservation')  !!}">
             {!! csrf_field() !!}
+            <input type="hidden" id="periodID" name="periodID" value="">
             <div class="row show_total_res arrow" id="show_res" style="display: none">
                 <div class="hide-guest" id="hide_all_res"><span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{!!trans('reservation.title_short')!!}</div>
                 <div class="col-md-2 col-sm-4 col-xs-12">
@@ -39,7 +39,7 @@
                         <input type="text" id="reservation_started_at" name="reservation_started_at" data-field="date"
                                data-startend="start" data-startendelem="#reservation_ended_at"
                                data-label="{!!trans('reservation.arrival')!!}" class="form-control show_reservation"
-                               placeholder="TT.MM.JJJJ" readonly/>
+                               placeholder="TT.MM.JJJJ" value="{!! old('reservation_started_at') !!}"/>
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-4 col-xs-12">
@@ -165,8 +165,8 @@
             </div>
         </form>
     </div>
+    @include('logged.dialog.reservation_exists')
     {{--
-    @include('logged.dialog.guest_empty')
     @include('logged.dialog.guest_nan')
     @include('logged.dialog.night_nan')
     @include('logged.dialog.no_delete_reservation')
@@ -194,24 +194,28 @@
             rolesTaxes = {!!$roles!!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
-            guestString = '{!!trans('reservation.guest')!!}',
             datePickersStart = [],
             periods = JSON.parse('{!!json_encode($periods)!!}'),
-            reservations = JSON.parse('{!!json_encode($reservations)!!}'),
             guestTitle = '{!!trans('reservation.guest_many_no_js.one')!!}: ',
             datePickersEnd = [],
             token = '{{ csrf_token() }}',
-            reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}');
+            reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}'),
+            afterValidation = '{!! ($errors->any()) !!}';
     </script>
     <script src="{!!asset('assets/js/v3/global_functions/funcs.js')!!}"></script>
     <script>
         $(document).ready(function () {
-            window.setNavActive('#main-nav li');
+            localStorage.setItem('new_res', '1');
+            if (afterValidation ==='1') {
+                localStorage.setItem('new_res', '0');
+                V3Reservation.init($(this).attr('data-period-id'), true);
+                let startDateString = '{!! old('reservation_started_at') !!}';
+                    startDate =
+            }
         })
     </script>
     <script src="{!!asset('assets/js/v3/V3Reservation.js')!!}"></script>
     <script>
-        $.holdReady(true);
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>

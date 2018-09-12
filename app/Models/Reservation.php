@@ -22,6 +22,7 @@ class Reservation extends Model {
      * @var array
      */
     protected $fillable = array(
+        'id',
         'reservation_started_at',
         'reservation_ended_at',
         'user_id',
@@ -74,7 +75,7 @@ class Reservation extends Model {
      */
     public function getReservationStartedAtAttribute($value) {
         setlocale(LC_ALL, trans('formats.langlang'));
-        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%Y_%m_%d');
+        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%d.%m.%Y');
     }
 
     /**
@@ -85,7 +86,36 @@ class Reservation extends Model {
     public function getReservationEndedAtAttribute($value)
     {
         setlocale(LC_ALL, trans('formats.langlang'));
-        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%Y_%m_%d');
+        return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized('%d.%m.%Y');
+    }
+
+    /**
+     * @param $value
+     * @param string $format
+     * @return array|bool
+     */
+    public function createDbDateFromInput ($value, $format = 'd.m.Y')
+    {
+        $valArray = [];
+        $values = [];
+        if (!is_array($value)) {
+            $values[] = $value;
+        } else {
+            $values = $value;
+        }
+        foreach($values as $v) {
+            $dateTime = DateTime::createFromFormat($format, $v);
+            $errors = DateTime::getLastErrors();
+            if (!empty($errors['warning_count']) || !empty($errors['error_count'])) {
+                return false;
+            }
+            if ($dateTime !== false) {
+                $valArray[] = \Carbon\Carbon::createFromFormat($format, $v)->setTime(0,0,0)->format('Y-m-d H:i:s');
+            } else {
+                return false;
+            }
+        }
+        return $valArray;
     }
 
     /**
@@ -109,53 +139,42 @@ class Reservation extends Model {
             ))
             ->orderBy('reservation_started_at', 'asc')
             ->get();
-        $ar = [];
-        $cu = new User();
-        $reservations->each(function ($r) use ($ar, $cu) {
-            if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
-                $cu = $cu->where('id', '=', $r->user_id_ab)->first();
-                $r->user_id_ab_name = $cu->user_login_name;
-            } else {
-                $r->user_id_ab_name = '';
-            }
-            $r->guests->each(function  ($j) use ($r) {
-                $role_tax = Role::find($j->role_id);
-                $j->role_tax_night = $role_tax->role_tax_night;
-                $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
-                $end = new DateTime(str_replace('_', '-', $j->guest_ended_at));
-                $checkEnd = new DateTime(str_replace('_', '-', $j->guest_ended_at));
-                $end->add(new DateInterval('P1D'));
-                $interval = new DateInterval('P1D');
-                $dateRange = new DatePeriod($start, $interval ,$end);
-                foreach($dateRange as $key => $date) {
-                    $d = explode('_', $date->format('Y_m_d'));
-                    $dd = intval($d[1]) - 1;
-                    $d[1] = ($dd < 10) ? '0' . $dd : $dd;
-                    if ($date < $checkEnd) {
-                        $r->{'occupiedBeds_' . implode('_', $d)} += $j->guest_number;
-                    } else {
-                        $r->{'occupiedBeds_' . implode('_', $d)} += 0;
-                    }
-                }
-            });
-            $start = new DateTime(str_replace('_', '-', $r->reservation_started_at));
-            $end = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
-            $checkEnd = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
-            $end->add(new DateInterval('P1D'));
-            $interval = new DateInterval('P1D');
-            $dateRange = new DatePeriod($start, $interval ,$end);
-            foreach($dateRange as $key => $date) {
-                $d = explode('_', $date->format('Y_m_d'));
-                $dd = intval($d[1]) - 1;
-                $d[1] = ($dd < 10) ? '0' . $dd : $dd;
-                if ($date < $checkEnd) {
-                    $r->{'occupiedBeds_' . implode('_', $d)} += 1;
-                } else {
-                    $r->{'occupiedBeds_' . implode('_', $d)} += 0;
-                }
-            }
-        });
-        return $reservations;
+        $reservations = self::setFreeBeds($reservations);
+        return $reservations->toJson();
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @param $uID
+     * @return mixed
+     */
+    public function checkExistentReservationV3($start, $end, $uID)
+    {
+        return self::where(function ($q) use ($start, $end, $uID) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '>=', $end);
+                $q->where('user_id', '=', $uID);
+            })
+            ->orWhere(function ($q) use ($start, $end, $uID) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $start);
+                $q->where('user_id', '=', $uID);
+            })
+            ->orWhere(function ($q) use ($start, $end, $uID) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '<=', $end);
+                $q->where('user_id', '=', $uID);
+            })
+            ->orWhere(function ($q) use ($start, $end, $uID) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $end);
+                $q->where('user_id', '=', $uID);
+            })
+            ->first();
     }
 
     /**
@@ -742,7 +761,7 @@ class Reservation extends Model {
     }
 
     /**
-     * Checks, if a reservation has started/ended before today
+     * Checks if a reservation has started/ended before today
      *
      * @param $start
      * @param $end
@@ -816,7 +835,7 @@ class Reservation extends Model {
      * @param $resId
      * @param $userIdAb
      * @param $start
-     * @return array
+     * @return mixed
      */
     public static function isAllowedInSecondaryPeriod ($resId, $userIdAb, $start) {
         $set = Setting::getStaticSettings();
@@ -848,7 +867,7 @@ class Reservation extends Model {
     }
 
     /**
-     * Gets start7end-date of the reservation allowed by primary user
+     * Gets start/end-date of the reservation allowed by primary user
      * @param $userId
      */
     public static function getDataForSecondaryReservationRequest ($userId) {
@@ -856,11 +875,12 @@ class Reservation extends Model {
             ->get();
         Tools::dd($counterResDates);
     }
+
     /**
-     *
      * @param $start
      * @param $end
      * @return int
+     * @throws Exception
      */
     public static function nightCounter ($start, $end) {
         $nightCounter = -1;
@@ -874,5 +894,46 @@ class Reservation extends Model {
             $nightCounter++;
         }
         return $nightCounter;
+    }
+
+    public static function setFreeBeds($reservations, $preFix = 'freeBeds_')
+    {
+        $ar = [];
+        $cu = new User();
+        $settings = Setting::getStaticSettings();
+        $reservations->each(function ($r) use ($ar, $cu, $preFix, $settings) {
+            if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
+                $cu = $cu->where('id', '=', $r->user_id_ab)->first();
+                $r->user_id_ab_name = $cu->user_login_name;
+            } else {
+                $r->user_id_ab_name = '';
+            }
+            $r->guests->each(function  ($j) use ($r, $preFix, $settings) {
+                $role_tax = Role::find($j->role_id);
+                $j->role_tax_night = $role_tax->role_tax_night;
+                $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
+                $end = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                $checkEnd = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                $end->add(new DateInterval('P1D'));
+                $interval = new DateInterval('P1D');
+                $dateRange = new DatePeriod($start, $interval ,$end);
+                foreach($dateRange as $key => $date) {
+                    $d = explode('_', $date->format('Y_m_d'));
+                    $dd = intval($d[1]) - 1;
+                    $d[1] = ($dd < 10) ? '0' . $dd : $dd;
+                    if ($date < $checkEnd) {
+                        $r->{$preFix . implode('_', $d)} += $j->guest_number;
+                    } else {
+                        $r->{$preFix . implode('_', $d)} += 0;
+                    }
+                }
+            });
+        });
+        return $reservations;
+    }
+
+    public function checkEarlyReservationOnOtherClan(Period $period, User $user)
+    {
+        $today = new DateTime();
     }
 }
