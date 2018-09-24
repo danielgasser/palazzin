@@ -140,9 +140,8 @@ class SettingController extends Controller
     ];
 
     /**
-     * Saves an existing setting
-     *
-     * @return mixed Redirect
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function setSettings()
     {
@@ -193,8 +192,7 @@ class SettingController extends Controller
             Period::calculatePeriods();
         }
         $set->update($inputs);
-        return Redirect::back()
-            ->with('globalSettings', $set->getSettings());
+        return redirect()->back()->with('info_message', 'Einstellungen gespeichert')->with('globalSettings', $set->getSettings());
     }
 
     /**

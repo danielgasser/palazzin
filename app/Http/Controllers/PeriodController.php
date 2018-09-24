@@ -22,9 +22,8 @@ class PeriodController extends Controller
      */
     public function calculatePeriods()
     {
-        if (User::isLoggedAdmin()) {
-            Period::calculatePeriods();
-        }
+        Period::calculatePeriods();
+        return redirect()->back()->with('info_message', 'Perioden berechnet');
     }
 
     /**

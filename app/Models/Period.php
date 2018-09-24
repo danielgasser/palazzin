@@ -103,11 +103,10 @@ class Period extends Model {
     }
 
     /**
-     *
-     * @param null $setting
      * @return mixed
+     * @throws Exception
      */
-    public static function calculatePeriods($setting = null){
+    public static function calculatePeriods(){
         $sets = Setting::getStaticSettings();
 
         self::$changingMonths = array(1, 4, 7, 9, 10);

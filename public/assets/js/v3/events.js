@@ -1,12 +1,12 @@
 $(document).on('click', '#timeliner > [id^="tl-"]', function (e) {
     let id = $(this).attr('id'),
-        today = new Date();
-    today.setHours(0, 0, 0, 0);
-    V3Reservation.init($(this).attr('data-period-id'), false);
+        dateString = id.split('-'),
+        startDate = new Date(dateString[1], (dateString[2] - 1), 1, 0, 0, 0);
+    V3Reservation.init($(this).attr('data-period-id'), false, startDate);
 });
 $(document).on('click', '#reset_reservation', function (e) {
     e.preventDefault();
-    $('#timeliner').show();
+    //$('#timeliner').show();
     $(window.guestsDates).hide();
     $('[id^="show_res"]').hide();
 });
@@ -209,11 +209,11 @@ jQuery(document).on('input propertychange paste change', '[id^="price_"]', funct
 });
 
 /**
- * Show occupied beds
+ * Show free beds
  */
-jQuery(document).on('click', '#free_beds', function () {
-    var freeBeds = $('#all-free-beds');
-    if (freeBeds.is(':visible')) {
+jQuery(document).on('click', '#free_beds', function (e, visible) {
+    let freeBeds = $('#all-free-beds');
+    if (freeBeds.is(':visible') || visible) {
         $(this).animate({
             right: '0px'
         }, 500);
@@ -221,16 +221,37 @@ jQuery(document).on('click', '#free_beds', function () {
         $('#hideAll').hide();
     } else {
         $(this).animate({
-            right: '130px'
+            right: '124px'
         }, 500);
         freeBeds.show(500);
         $('#hideAll').show();
     }
 });
 
+/**
+ * Show periods
+ */
+jQuery(document).on('click', '#timeliner-div', function (e, visible) {
+    let allPeriods = $('#timeliner');
+    if (allPeriods.is(':visible') || visible) {
+        $(this).animate({
+            left: '0px'
+        }, 500);
+        allPeriods.hide(500);
+        $('#hideAll').hide();
+    } else {
+        $(this).animate({
+            left: '129px'
+        }, 500);
+        allPeriods.show(500);
+        $('#hideAll').show();
+    }
+});
+
 jQuery(document).on('click', '#hideAll', function () {
     $(this).hide();
-    $('#free_beds').trigger('click')
+    $('#timeliner-div').trigger('click', true);
+    $('#free_beds').trigger('click', true);
 });
 jQuery(document).on('change', '#reservation_guest_num_total', function () {
     $.each($('[id^="free-beds_"]'), function (i, n) {
@@ -241,8 +262,8 @@ jQuery(document).on('change', '#reservation_guest_num_total', function () {
 /**
  * Show occupied beds
  */
-jQuery(document).on('click', '#save_reservation', function (e) {
-    //V3Reservation.saveReservation(e);
+jQuery(document).on('click', '#ap-button-cancel', function (e) {
+    console.log(this)
 });
 /**
  * Show occupied beds

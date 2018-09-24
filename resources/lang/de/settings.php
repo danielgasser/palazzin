@@ -11,6 +11,7 @@ return array(
     'calendar' => 'Kalender',
     'AppOwner' => 'App-Besitzer',
     'site' => 'App-Website',
+    'periods' => 'Perioden berechnen',
     'posts' => 'Nachrichten',
     'login_bg_img' => 'Hintergrund-Bilder',
     'setting_app_logo' => 'App-Logo',

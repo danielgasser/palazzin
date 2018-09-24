@@ -51,7 +51,7 @@ return array(
         'Jun',
         'Jul',
         'Aug',
-        'Sep',
+        'Sept',
         'Okt',
         'Nov',
         'Dez'

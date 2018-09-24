@@ -6,7 +6,7 @@
         <h4 class="modal-title">{!!trans('dialog.warning')!!}</h4>
       </div>
       <div class="modal-body">
-        <p>{!!trans('dialog.texts.warning_save_global_settings', array('site' => App::make('GlobalSettings')->getSettings()->setting_site_url))!!}</p>
+        <p>{!!trans('dialog.texts.warning_save_global_settings', array('site' => Setting::getStaticSettings()->setting_site_url))!!}</p>
       </div>
       <div class="modal-footer">
       <div class="modal-footer-text">

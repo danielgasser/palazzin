@@ -171,3 +171,6 @@ form {
     color: black;
   }
 }
+.input-error {
+  border: 3px solid $brand-danger !important;
+}

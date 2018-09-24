@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{!!asset('assets/css/v3/nehhkadam')!!}-AnyPicker/anypicker-all.min.css"
           rel="stylesheet" media="screen" type="text/css">
     <script type="text/javascript"
-            src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker.min.js"></script>
+            src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker.js"></script>
     <script type="text/javascript"
             src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker-i18n.js"></script>
     <link rel="stylesheet" href="{!!asset('assets/css/datepicker.css')!!}" rel="stylesheet" media="screen"
@@ -14,20 +14,13 @@
 
 @section('content')
     @include('logged.dialog.free_beds')
+    @include('logged.dialog.timeliner')
     <a name="top"></a>
     <div id="reservationInfo">
         <h1>{!!trans('navigation.new_reservation')!!}</h1>
-        <h4></h4>
     </div>
     <div id="upper">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div id="timeliner-container">
-                    <ul id="timeliner">
-                    </ul>
-                </div>
-            </div>
-        </div>
+    </div>
         <form id="new_reservation" method="post" action="{!!  route('save_reservation')  !!}">
             {!! csrf_field() !!}
             <input type="hidden" id="periodID" name="periodID" value="">
@@ -38,8 +31,8 @@
                         <label>{!!trans('reservation.arrival')!!}</label>
                         <input type="text" id="reservation_started_at" name="reservation_started_at" data-field="date"
                                data-startend="start" data-startendelem="#reservation_ended_at"
-                               data-label="{!!trans('reservation.arrival')!!}" class="form-control show_reservation"
-                               placeholder="TT.MM.JJJJ" value="{!! old('reservation_started_at') !!}"/>
+                               data-label="{!!trans('reservation.arrival')!!}" class="form-control show_reservation{{ $errors->has('reservation_started_at') ? ' input-error' : ''}}"
+                               placeholder="TT.MM.JJJJ" readonly value="{!! old('reservation_started_at') !!}"/>
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-4 col-xs-12">
@@ -47,8 +40,8 @@
                         <label>{!!trans('reservation.depart')!!}</label>
                         <input type="text" id="reservation_ended_at" name="reservation_ended_at" data-field="date"
                                data-startend="end" data-startendelem="#reservation_started_at"
-                               data-label="{!!trans('reservation.depart')!!}" class="form-control show_reservation"
-                               placeholder="TT.MM.JJJJ" readonly/>
+                               data-label="{!!trans('reservation.depart')!!}" class="form-control show_reservation{{ $errors->has('reservation_ended_at') ? ' input-error' : ''}}"
+                               placeholder="TT.MM.JJJJ" readonly value="{!! old('reservation_started_at') !!}"/>
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-6 col-xs-12">
@@ -61,14 +54,14 @@
                     <div class="form-group">
                         <label>{!!trans('bill.total_all_bill')!!}</label>
                         <div class="form-control v3-disabled show_reservation" id="reservation_costs_total">0.00</div>
-                        <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total">
+                        <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{!! old('hidden_reservation_costs_total') !!}">
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-4 col-xs-4">
                     <div class="form-group">
                         <label>{!!trans('validation.attributes.reservation_guest_num')!!}</label>
                         <div class="form-control v3-disabled show_reservation" id="reservation_guest_num_total">0</div>
-                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total">
+                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{!! old('hidden_reservation_guest_num_total') !!}">
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-4 col-xs-4">
@@ -86,40 +79,45 @@
                     </div>
                 </div>
             </div>
+            @php
+            $c = (old('reservation_guest_started_at') == null) ? 1 : count(old('reservation_guest_started_at'));
+            @endphp
+
+            @for($i = 0; $i < $c; $i++)
             <div id="guest_entries">
-                <div class="row" id="guests_date_0" style="display: none">
-                    <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_0"><span id="hide_guest_0" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_0">{!!trans('reservation.guest_many_no_js.one')!!}: </span>
+                <div class="row" id="guests_date_{!! $i !!}" style="display: none">
+                    <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{!! $i !!}"><span id="hide_guest_{!! $i !!}" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_{!! $i !!}">{!!trans('reservation.guest_many_no_js.one')!!}: </span>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label>{!!trans('reservation.arrival')!!}</label>
-                            <input type="text" id="reservation_guest_started_at_0" name="reservation_guest_started_at[]"
+                            <input type="text" id="reservation_guest_started_at_{!! $i !!}" name="reservation_guest_started_at[]"
                                    data-field="date" data-label="{!!trans('reservation.arrival')!!}"
-                                   class="form-control show_reservation_guest" placeholder="TT.MM.JJJJ" readonly/>
+                                   class="form-control show_reservation_guest{{ $errors->has('reservation_guest_started_at.' . $i) ? ' input-error' : ''}}" placeholder="TT.MM.JJJJ" readonly value="{!! old('reservation_guest_started_at.' . $i) !!}"/>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label>{!!trans('reservation.depart')!!}</label>
-                            <input type="text" id="reservation_guest_ended_at_0" name="reservation_guest_ended_at[]"
+                            <input type="text" id="reservation_guest_ended_at_{!! $i !!}" name="reservation_guest_ended_at[]"
                                    data-field="date" data-label="{!!trans('reservation.depart')!!}"
-                                   class="form-control show_reservation_guest" placeholder="TT.MM.JJJJ" readonly/>
+                                   class="form-control show_reservation_guest{{ $errors->has('reservation_guest_ended_at') ? ' input-error' : ''}}" placeholder="TT.MM.JJJJ" readonly value="{!! old('reservation_guest_ended_at.' . $i) !!}"/>
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label>{!!trans('reservation.nights')!!}</label>
-                            <div class="form-control v3-disabled show_reservation_guest" id="number_nights_0"></div>
-                            <input type="hidden" name="number_nights[]" id="hidden_number_nights_0">
+                            <div class="form-control v3-disabled show_reservation_guest" id="number_nights_{!! $i !!}"></div>
+                            <input type="hidden" name="number_nights[]" id="hidden_number_nights_{!! $i !!}" value="{!! old('number_nights.' . $i) !!}">
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-6 col-xs-12">
                         <div class="form-group">
                             <label>{!!trans('reservation.guest_kind')!!}</label>
-                            <select class="form-control show_reservation_guest" id="reservation_guest_guests_0"
+                            <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests') ? ' input-error' : ''}}" id="reservation_guest_guests_{!! $i !!}"
                                     name="reservation_guest_guests[]">
                                 @foreach($rolesTrans as $k => $r)
-                                    <option value="{!!$k!!}">{!!$r!!}</option>
+                                    <option {!! (old('reservation_guest_guests.' . $i) == $k) ? ' selected' : '' !!} value="{!!$k!!}">{!!$r!!}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -127,30 +125,29 @@
                     <div class="col-md-1 col-sm-3 col-xs-6">
                         <div class="form-group">
                             <label>{!!trans('roles.role_tax')!!}</label>
-                            <div class="form-control v3-disabled show_reservation_guest" id="reservation_guest_price_0"></div>
-                            <input type="hidden" name="reservation_guest_price[]" id="hidden_reservation_guest_price_0">
+                            <input class="form-control v3-disabled show_reservation_guest" type="number" name="reservation_guest_price[]" id="reservation_guest_price_{!! $i !!}" value="{!! old('reservation_guest_price.' . $i) !!}">
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-3 col-xs-6">
                         <div class="form-group">
                             <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
-                            <input class="form-control show_reservation_guest" id="reservation_guest_num_0"
+                            <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num') ? ' input-error' : ''}}" id="reservation_guest_num_{!! $i !!}"
                                    name="reservation_guest_num[]" type="number" min="1"
-                                   max="{!!$settings['setting_num_bed'] - 1!!}">
+                                   max="{!!$settings['setting_num_bed'] - 1!!}" value="{!! old('reservation_guest_num.' . $i) !!}">
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-3 col-xs-6">
                         <div class="form-group">
                             <label>{!!trans('reservation.price')!!}</label>
-                            <div class="form-control v3-disabled show_reservation_guest" id="price_0"></div>
-                            <input type="hidden" name="price[]" id="hidden_price_0">
+                            <div class="form-control v3-disabled show_reservation_guest" id="price_{!! $i !!}"></div>
+                            <input type="hidden" name="price[]" id="hidden_price_{!! $i !!}" value="{!! old('price.' . $i) !!}">
                         </div>
                     </div>
                     <div class="col-md-1 col-sm-3 col-xs-6">
                         <div class="form-group">
                             <label>&nbsp;</label>
                             <button title="{!!trans('dialog.add_on_upper')!!}"
-                                    class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_0" disabled><i
+                                    class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{!! $i !!}" disabled><i
                                         class="fas fa-plus"></i></button>
                         </div>
                     </div>
@@ -158,11 +155,12 @@
                         <div class="form-group">
                             <label>&nbsp;</label>
                             <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
-                                    id="remove_guest_0"><i class="fas fa-trash-alt"></i></button>
+                                    id="remove_guest_{!! $i !!}"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
+                @endfor
         </form>
     </div>
     @include('logged.dialog.reservation_exists')
@@ -182,7 +180,6 @@
     @parent
     <script>
         document.addEventListener('scroll', function (event) {
-            console.log('scrolling', event.target, event);
             if (event.target.id === 'idOfUl') { // or any other filtering condition
             }
         }, true);
@@ -194,8 +191,10 @@
             rolesTaxes = {!!$roles!!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
+            monthNames = JSON.parse('{!!json_encode(trans('calendar.month-names-short'))!!}'),
             datePickersStart = [],
             periods = JSON.parse('{!!json_encode($periods)!!}'),
+            periodID = periods[0].id,
             guestTitle = '{!!trans('reservation.guest_many_no_js.one')!!}: ',
             datePickersEnd = [],
             token = '{{ csrf_token() }}',
@@ -208,16 +207,19 @@
             localStorage.setItem('new_res', '1');
             if (afterValidation ==='1') {
                 localStorage.setItem('new_res', '0');
-                V3Reservation.init($(this).attr('data-period-id'), true);
-                let startDateString = '{!! old('reservation_started_at') !!}';
-                    startDate =
+                let startDateString = '{!! old('reservation_started_at') !!}'.split('.');
+                startDate = new Date(startDateString[2], (startDateString[1] - 1), startDateString[0], 0, 0, 0);
+                V3Reservation.init('{!! old('periodID') !!}', true, startDate);
+            } else {
+                V3Reservation.init(periodID, true, new Date());
             }
         })
     </script>
     <script src="{!!asset('assets/js/v3/V3Reservation.js')!!}"></script>
     <script>
-        V3Reservation.writeLocalStorage(periods);
+        //V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
+        console.log(periodID)
     </script>
     <script src="{!!asset('assets/js/v3/events.js')!!}"></script>
 @stop

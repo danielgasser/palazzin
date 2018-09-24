@@ -15,7 +15,7 @@ class beforeIsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isLoggedAdmin()) {
+        if (\User::isLoggedAdmin() || \User::isManager()) {
             return $next($request);
         }
         return redirect()->back()->withErrors(['error' => 'Nur für Administratoren']);

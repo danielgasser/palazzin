@@ -5500,15 +5500,6 @@ hr {
 .true {
   color: inherit; }
 
-#timeliner {
-  width: 4px;
-  position: relative; }
-
-#timeliner-container {
-  overflow: auto;
-  width: 98%;
-  margin: 0 1%; }
-
 #show-periods {
   cursor: pointer; }
 
@@ -5860,7 +5851,14 @@ span[class="reservation_guest_num"]:after {
 .alert-success {
   background-color: #ffffff;
   border-color: #b7282e;
-  color: #000000; }
+  color: #000000;
+  position: absolute;
+  z-index: 5000;
+  width: 66%;
+  margin: 39vh;
+  -webkit-box-shadow: -6px 8px 5px 0px #4b4b4b;
+  -moz-box-shadow: -6px 8px 5px 0px #4b4b4b;
+  box-shadow: -6px 8px 5px 0px #4b4b4b; }
 
 #message h3, #message p, #message span {
   color: #000000; }
@@ -6184,6 +6182,9 @@ form .btn:focus, form .btn:active:focus, form .btn.active:focus {
   background-color: white;
   color: black; }
 
+.input-error {
+  border: 3px solid #b7282e !important; }
+
 /*
 .sidr {
     h1 {
@@ -6226,18 +6227,6 @@ form .btn:focus, form .btn:active:focus, form .btn.active:focus {
     -o-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
     transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
 }*/
-::-webkit-scrollbar {
-  width: 12px;
-  /* for vertical scrollbars */
-  height: 12px;
-  /* for horizontal scrollbars */ }
-
-::-webkit-scrollbar-track {
-  background: rgba(137, 137, 137, 0.27); }
-
-::-webkit-scrollbar-thumb {
-  background: #b7282e; }
-
 a {
   color: #b7282e; }
 
@@ -6247,17 +6236,27 @@ a {
     background-color: #b7282e;
     color: white; }
   .navbar-default .navbar-nav > li > a {
-    color: #777; }
+    color: #333; }
   .navbar-default .navbar-nav > li > a:hover {
     background-color: #b7282e;
     color: white; }
 
+.navbar-toggle {
+  background-color: #b7282e;
+  padding: 6px 10px; }
+
+.icon-bar {
+  background-color: white !important; }
+
+.navbar-brand {
+  padding: 6px 15px !important; }
+
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
   border-color: #b7282e;
-  color: white; }
+  color: #333; }
 
 .dropdown-menu > li > a {
-  color: #777; }
+  color: #333; }
 
 .dropdown-menu > li > a:hover {
   background-color: #b7282e; }
@@ -6267,7 +6266,8 @@ a {
   width: 100%;
   z-index: 1001;
   border-radius: 0px;
-  border-bottom: 1px solid #b7282e; }
+  border-bottom: 1px solid #b7282e;
+  background-color: #ddd; }
 
 /*@import "stats";*/
 #newsMessage {
@@ -6580,7 +6580,7 @@ li.lang_active > a {
   width: 100%;
   height: 35px;
   font-size: 0.85em;
-  background-color: #f5f5f5;
+  background-color: #ccc;
   z-index: 1001;
   position: fixed;
   bottom: 0;

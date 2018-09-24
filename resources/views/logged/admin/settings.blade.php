@@ -4,6 +4,7 @@
 <h3><a href="{!!URL::to('admin/settings/help')!!}">{!!trans('settings.title_help')!!}</a></h3>
     {!!Form::model($setting, array('url' => 'admin/settings', 'class' => 'form-inline', 'id' => 'save-settings-form', 'files' => true))!!}
     {!!Form::hidden('id', $globalSettings->id)!!}
+{!! csrf_field() !!}
 
     <h3>{!!trans('settings.calendar')!!}:</h3>
 <div class="row">
@@ -182,6 +183,16 @@
     </div>
 </div>
 <hr>
+<h3>{!!trans('reservation.periods')!!}:</h3>
+<div class="row">
+
+    {{-- BG-Image --}}
+    {!!Form::label('setting_login_bg_image', trans('settings.setting_login_bg_image'), array('class' => 'col-sm-6 col-md-6'))!!}
+    <div class="col-sm-1 col-md-1">
+        <a class="btn btn-default" href="{!! route('calc-periods') !!}">{!! trans('settings.periods') !!}</a>
+    </div>
+</div>
+<hr>
 <h3>{!!trans('settings.title')!!} {!!trans('settings.go')!!}</h3>
 <div class="row">
     <div class="col-sm-2 col-md-3">
@@ -196,4 +207,3 @@
     @parent
         <script src="{!!asset('assets/min/js/admin.min.js')!!}"></script>
     @stop
-@stop

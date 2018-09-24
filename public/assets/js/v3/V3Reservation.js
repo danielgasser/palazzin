@@ -7,45 +7,50 @@ let V3Reservation = {
     tmpDatePickerInstance: {},
     disabledDates: [],
     langStrings: window.reservationStrings,
-    init: function (pID, afterValidation, dateString) {
+    init: function (pID, afterValidation, startDate) {
         V3Reservation.periodID = pID;
-        let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID));
+        let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
+            today = new Date();
+        today.setHours(0, 0, 0, 0);
         if (period === null) {
             V3Reservation.writeLocalStorage(window.periods);
             period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID));
         }
         $('#periodID').val(V3Reservation.periodID);
-        window.startDate = new Date(dateString[1], (dateString[2] - 1), 1, 0, 0, 0);
-        if (window.startDate < today) {
-            window.startDate = today;
+        if (startDate < today) {
+            startDate = today;
         }
         window.endDate = new Date(period.period_end);
-        window.startDate.setHours(0, 0, 0, 0);
+        startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
-        V3Reservation.getFreeBeds(window.startDate, window.endDate, false, 'reservation/get-per-period', 'freeBeds_');
-        $('#timeliner').hide();
+        V3Reservation.getFreeBeds(startDate, window.endDate, false, 'reservation/get-per-period', 'freeBeds_');
+        $('#timeliner-div').trigger('click', true);
+        $('#hideAll').hide();
         $(window.guestsDates).show();
         $('[id^="show_res"]').show();
         $('#reservationInfo>h4').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
-        V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], window.startDate, window.endDate, V3Reservation.periodID);
-        V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_0', '#reservation_guest_ended_at_0', '#number_nights_0'], window.startDate, window.endDate, V3Reservation.periodID);
+        V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], startDate, window.endDate, V3Reservation.periodID);
+        V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_0', '#reservation_guest_ended_at_0', '#number_nights_0'], startDate, window.endDate, V3Reservation.periodID);
     },
     getFreeBeds: function (start, end, edit, url , prefix) {
+        console.log(window.periods.find(function (obj) { return obj.id === V3Reservation.periodID; }));
+        let reservations = $.parseJSON(data);
+        if (reservations.length > 0) {
+            V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
+            if (!edit) {
+                V3Reservation.checkExistentReservation(start, end);
+            }
+        }
+        /*
         $.ajax({
             url: url,
             data: {
                 pID: V3Reservation.periodID
             },
             success: function (data) {
-                let reservations = $.parseJSON(data);
-                if (reservations.length > 0) {
-                    V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
-                    if (!edit) {
-                        V3Reservation.checkExistentReservation(start, end);
-                    }
-                }
             }
         })
+        */
     },
     writeFreeBedsStorage: function (objects, prefix, start, end) {
         let len = (Object.keys(objects).length)
@@ -159,26 +164,26 @@ let V3Reservation = {
         return arr;
     },
     checkReservationMaxDates: function (start, end, anyPickerStart, anyPickerEnd, onInit) {
-        let s = (typeof start !== 'object') ? new Date(V3Reservation.deFormatDate(start, '.', true)) : start,
-        e = (typeof end !== 'object') ? new Date(V3Reservation.deFormatDate(end, '.', true)) : end,
-        gs,
-        ge;
+        let startDate = (typeof start !== 'object') ? new Date(V3Reservation.deFormatDate(start, '.', true)) : start,
+        endDate = (typeof end !== 'object') ? new Date(V3Reservation.deFormatDate(end, '.', true)) : end,
+        startDateInput,
+        endDateInput;
         $.each($('[id^="reservation_guest_started_at_"]'), function (i, n) {
-            gs = new Date(V3Reservation.deFormatDate($(n).val(), '.', true));
-            ge = new Date(V3Reservation.deFormatDate($('#reservation_guest_ended_at_' + i).val(), '.', true));
-            if (s > gs || onInit) {
-                anyPickerStart[i + 1].setSelectedDate(s);
-                anyPickerStart[i + 1].setMinimumDate(s);
-                anyPickerStart[i + 1].setting.i18n.headerTitle = V3Reservation.langStrings.arrival + ': ' + V3Reservation.formatDate(s, true)
+            startDateInput = new Date(V3Reservation.deFormatDate($(n).val(), '.', true));
+            endDateInput = new Date(V3Reservation.deFormatDate($('#reservation_guest_ended_at_' + i).val(), '.', true));
+            if (startDate > startDateInput || onInit) {
+                anyPickerStart[i + 1].setSelectedDate(startDate);
+                anyPickerStart[i + 1].setMinimumDate(startDate);
+                anyPickerStart[i + 1].setting.i18n.headerTitle = V3Reservation.langStrings.arrival + ': ' + V3Reservation.formatDate(startDate, true)
             }
-            if (e < ge || onInit) {
-                anyPickerEnd[i + 1].setSelectedDate(e);
-                anyPickerEnd[i + 1].setMaximumDate(e);
-                anyPickerEnd[i + 1].setting.i18n.headerTitle = V3Reservation.langStrings.depart + ': ' + V3Reservation.formatDate(e, true)
+            if (endDate < endDateInput || onInit) {
+                anyPickerEnd[i + 1].setSelectedDate(endDate);
+                anyPickerEnd[i + 1].setMaximumDate(endDate);
+                anyPickerEnd[i + 1].setting.i18n.headerTitle = V3Reservation.langStrings.depart + ': ' + V3Reservation.formatDate(endDate, true)
             }
             V3Reservation.calcNights(start, end, '#number_nights_' + i);
         });
-        V3Reservation.calcNights(start, end, '#reservation_nights_total');
+        //V3Reservation.calcNights(start, end, '#reservation_nights_total');
     },
     setGuestHeaderText: function (id, dates, guestKind, numberGuest, numberNight) {
         let guest_kind = (guestKind == '0') ? '' : '&nbsp;x&nbsp;' + window.rolesTrans[guestKind],
@@ -215,16 +220,20 @@ let V3Reservation = {
             id,
             today = new Date(),
             selectedStartDate = start,
-            startEndDate = new Date(),
+            startEndDate = new Date(start.getTime()),
             selectedEndDate = end,
             period = $.parseJSON(window.localStorage.getItem('period_' + periodID)),
             periodStart = new Date(period.period_start),
             minStart,
+            maxStart = new Date(end.getTime()),
             maxEnd;
+        maxStart.setDate(maxStart.getDate() - 1);
         today.setHours(0, 0, 0, 0);
         minStart = (periodStart.getTime() < today) ? today : new Date(period.period_start);
         maxEnd = new Date(period.period_end);
         startEndDate.setDate(start.getDate() + 1);
+        $(els[0]).AnyPicker('destroy');
+        $(els[1]).AnyPicker('destroy');
         $(els[0]).AnyPicker({
             mode: 'datetime',
             inputDateTimeFormat: V3Reservation.globalDateFormat,
@@ -248,7 +257,7 @@ let V3Reservation = {
             {
                 id = this.elem.id.split('_')[4];
                 V3Reservation.datePickerStart = this;
-                sEndD = V3Reservation.datePickerStart.formatOutputDates(end, V3Reservation.globalDateFormat);
+                sEndD = V3Reservation.datePickerStart.formatOutputDates(maxStart, V3Reservation.globalDateFormat);
                 V3Reservation.datePickerStart.setMinimumDate(V3Reservation.datePickerStart.formatOutputDates(minStart, V3Reservation.globalDateFormat));
                 V3Reservation.datePickerStart.setMaximumDate(sEndD);
                 V3Reservation.datePickerStart.setSelectedDate(start);
@@ -268,11 +277,14 @@ let V3Reservation = {
                 V3Reservation.datePickerEnd.setMinimumDate(sStartD);
                 this.setting.i18n.headerTitle = V3Reservation.langStrings.arrival + ': ' + V3Reservation.formatDate(selectedStartDate, true);
                 if (this.elem.id.indexOf('guest') === -1) {
-                    V3Reservation.checkReservationMaxDates(selectedStartDate, selectedEndDate, window.datePickersStart, window.datePickersEnd);
                 }
+                V3Reservation.checkReservationMaxDates(selectedStartDate, selectedEndDate, window.datePickersStart, window.datePickersEnd);
                 V3Reservation.setGuestHeaderText(id, {start: $('#reservation_guest_started_at_' + id).val(), end: $('#reservation_guest_ended_at_' + id).val()}, $('#reservation_guest_guests_' + id).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
                 V3Reservation.calcNights(selectedStartDate, selectedEndDate, els[2]);
                 V3Reservation.calcAllPrices();
+            },
+            onHidePicker: function (a, b, c, d, e) {
+                console.log(a, b, c, d, e)
             }
         });
         $(els[1]).AnyPicker({
@@ -320,8 +332,8 @@ let V3Reservation = {
                 V3Reservation.datePickerStart.setMaximumDate(sEndD);
                 this.setting.i18n.headerTitle = V3Reservation.langStrings.depart + ': ' + V3Reservation.formatDate(selectedEndDate, true);
                 if (this.elem.id.indexOf('guest') === -1) {
-                    V3Reservation.checkReservationMaxDates(selectedStartDate, selectedEndDate, window.datePickersStart, window.datePickersEnd);
                 }
+                V3Reservation.checkReservationMaxDates(selectedStartDate, selectedEndDate, window.datePickersStart, window.datePickersEnd);
                 V3Reservation.setGuestHeaderText(id, {start: $('#reservation_guest_started_at_' + id).val(), end: $('#reservation_guest_ended_at_' + id).val()}, $('#reservation_guest_guests_' + id).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
                 V3Reservation.calcNights(selectedStartDate, selectedEndDate, els[2]);
                 V3Reservation.calcAllPrices();

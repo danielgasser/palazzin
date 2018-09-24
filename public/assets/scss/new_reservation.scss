@@ -10,20 +10,12 @@
 .cal-unit-container {
   margin-top: 4px;
   width: 100%;
-  height: 17vh;
+  height: 9vh;
   font-size: 2em;
-}
-#timeliner {
-  width: 100%;
-  height: auto;
-  max-height: 52vh;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
 }
 .GU-solid, .WO-solid {
   padding: 0.6vh;
-  font-size: 5vh;
+  font-size: 2.75vh;
 }
 .GU-solid:hover {
   background-color: rgba(144, 50, 198, 0.5);
@@ -168,33 +160,31 @@ label {
   background-color: white;
   #free_beds {
     position: fixed;
-    width: auto;
     top: 13.5vh;
     right: 0;
     z-index: 10000;
-    padding: 0.5vw;
     cursor: pointer;
     background-color: $brand-danger;
     color: white;
     i {
       font-size: 1.25em;
       color: #fff;
-      padding: 0.2em 0.2em 0.2em 0.25em;
+      padding: 0.45em 0.45em 0.45em 0.3em;
     }
     .text {
-      font-size: 1.25em;
+      font-size: 1.3em;
       writing-mode: vertical-rl;
       -webkit-writing-mode: vertical-rl;
       -ms-writing-mode: rl-bt;
       display: inherit;
-      padding: 0.2em 0.05em 0.2em 0.25em
+      padding: 0.2em 0.05em 0.2em 0.2em;
     }
   }
 
   #all-free-beds {
     position: absolute;
     right: 0;
-    width: 130px;
+    width: 125px;
     border: 2px solid $brand-danger;
     padding: 0.35em;
     max-height: 300px;
@@ -213,4 +203,44 @@ label {
 }
 #reservationInfo {
   padding: 0 0 0.25em 0;
+}
+#timeliner-container {
+  position: fixed;
+  left: 0;
+  z-index: 5000;
+  background-color: white;
+  #timeliner-div {
+    .text {
+      font-size: 1.35em;
+      writing-mode: vertical-rl;
+      -webkit-writing-mode: vertical-rl;
+      -ms-writing-mode: rl-bt;
+      display: inherit;
+      padding: 0.1em 0.05em 0.2em 0.1em;
+    }
+    i {
+      font-size: 1.25em;
+      color: #fff;
+      padding: 0.45em 0.45em 0.45em 0.3em;
+    }
+    cursor: pointer;
+    position: fixed;
+    left: 0px;
+    top: 13.5vh;
+    z-index: 5000;
+    overflow: auto;
+    color: white;
+    background-color: #b7282e;
+  }
+  #timeliner {
+    position: absolute;
+    left: 0;
+    border: 2px solid #b7282e;
+    padding: 0.135em;
+    max-height: 300px;
+    overflow-x: auto;
+    background-color: white;
+    display: none;
+    width: 129px;
+  }
 }

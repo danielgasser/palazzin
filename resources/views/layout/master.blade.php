@@ -278,6 +278,10 @@
             $('#error-wrap').hide();
             console.log(this)
         });
+        jQuery(document).on('click', 'body', function () {
+            $('.alert-success').hide();
+            console.log(this)
+        });
     </script>
 
    @show

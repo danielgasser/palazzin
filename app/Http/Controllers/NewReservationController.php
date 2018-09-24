@@ -73,6 +73,7 @@ class NewReservationController extends Controller
     {
         $credentials = request()->all();
         $validated = $request->validated();
+       // dd($validated);
         $period = new Period(['id' => $credentials['periodID']]);
         $user = User::find(Auth::id());
         $reservation = new Reservation();

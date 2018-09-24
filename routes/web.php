@@ -38,6 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Admin
     Route::group(['middleware' => 'admin'], function () {
         Route::get('password/new/{pass}', 'RemindersController@manualPass');
+        Route::get('admin/settings', 'SettingController@showSettings');
+        Route::get('admin/calc', 'PeriodController@calculatePeriods')->name('calc-periods');
+        Route::post('admin/settings', 'SettingController@setSettings')->name('save-settings');
     });
 
 });

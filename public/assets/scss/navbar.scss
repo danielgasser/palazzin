@@ -7,7 +7,7 @@
     color: white;
   }
   .navbar-nav>li>a {
-    color: #777;
+    color: #333;
   }
   .navbar-nav>li>a:hover {
     background-color: $color-h1;
@@ -15,12 +15,22 @@
   }
 
 }
+.navbar-toggle {
+  background-color: $brand-danger;
+  padding: 6px 10px;
+}
+.icon-bar {
+  background-color: white !important;
+}
+.navbar-brand {
+  padding: 6px 15px !important;
+}
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
   border-color: $color-h1;
-  color: white;
+  color: #333;
 }
 .dropdown-menu>li>a {
-  color: #777;
+  color: #333;
 }
 .dropdown-menu>li>a:hover {
   background-color: $color-h1;
@@ -31,4 +41,5 @@
   z-index: 1001;
   border-radius: 0px;
   border-bottom: 1px solid $color-h1;
+  background-color: #ddd;
 }
