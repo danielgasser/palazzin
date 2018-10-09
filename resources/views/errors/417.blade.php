@@ -56,14 +56,9 @@
         </div>
     </div>
 </div>
-<div id="footer">
-    <div class="container">
-        <div class="text-muted">created by
-            <a href="mailto:software@daniel-gasser.com">software@daniel-gasser.com</a>
-        </div>
-        <div class="text-muted">RoomApp &#169; by Daniel Gasser</div>
-    </div>
-</div>
+@section('footer')
+@include('layout.footer')
+@show
 
 </body>
 </html>

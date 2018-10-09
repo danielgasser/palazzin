@@ -13,7 +13,6 @@
 @stop
 
 @section('content')
-    @include('logged.dialog.free_beds')
     <a name="top"></a>
     <div id="reservationInfo">
         <h1>{!!trans('navigation.all_reservations')!!}</h1>

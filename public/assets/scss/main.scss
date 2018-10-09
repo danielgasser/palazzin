@@ -29,7 +29,7 @@
   height: 100%;
   top: 0px;
   left: -1px;
-  z-index: 4999;
+  z-index: 10;
   background-color: rgba(58, 58, 58, 0.5);
 }
 a {
@@ -484,8 +484,11 @@ li.lang_active > a {
   background: $breadcrumb-active-color;
 }
 
-li.dropdown-toggle:hover > ul.dropdown-menu {
+div:not(.main-nav-container) > li.dropdown-toggle:hover > ul.dropdown-menu {
   display: block;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: $brand-danger;
 }
 
 .panel-warning {

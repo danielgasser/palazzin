@@ -242,6 +242,7 @@
    @section('scripts')
     {{--<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>--}}
     <script src="{!!asset('assets/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')!!}"></script>
+    <script src="{!!asset('assets/js/nav.js')!!}"></script>
     <script src="{!!asset('assets/js/funcs.js')!!}"></script>
     <script src="{!!asset('assets/js/funcs_new.js')!!}"></script>
     <script src="{!!asset('assets/js/browser_check.js')!!}"></script>
@@ -276,11 +277,9 @@
         });
         jQuery(document).on('click', '#errors>.close', function () {
             $('#error-wrap').hide();
-            console.log(this)
         });
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();
-            console.log(this)
         });
     </script>
 

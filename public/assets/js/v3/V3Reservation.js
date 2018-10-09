@@ -34,7 +34,7 @@ let V3Reservation = {
     },
     getFreeBeds: function (start, end, edit, url , prefix) {
         console.log(window.periods.find(function (obj) { return obj.id === V3Reservation.periodID; }));
-        let reservations = $.parseJSON(data);
+        let reservations = window.periods.find(function (obj) { return obj.id === V3Reservation.periodID; });
         if (reservations.length > 0) {
             V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
             if (!edit) {

@@ -67,7 +67,7 @@
   }
 }
 label {
-  white-space: nowrap;
+  white-space: normal;
 }
 .show_total_res {
   border: .13333em solid #b7b7b7;
@@ -156,13 +156,13 @@ label {
 #free_beds_container {
   position: fixed;
   right: 0px;
-  z-index: 5000;
+  z-index: 10;
   background-color: white;
   #free_beds {
     position: fixed;
     top: 13.5vh;
     right: 0;
-    z-index: 10000;
+    z-index: 10;
     cursor: pointer;
     background-color: $brand-danger;
     color: white;
@@ -207,7 +207,7 @@ label {
 #timeliner-container {
   position: fixed;
   left: 0;
-  z-index: 5000;
+  z-index: 10;
   background-color: white;
   #timeliner-div {
     .text {
@@ -227,7 +227,7 @@ label {
     position: fixed;
     left: 0px;
     top: 13.5vh;
-    z-index: 5000;
+    z-index: 10;
     overflow: auto;
     color: white;
     background-color: #b7282e;

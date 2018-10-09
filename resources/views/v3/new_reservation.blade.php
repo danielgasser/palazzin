@@ -219,7 +219,6 @@
     <script>
         //V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
-        console.log(periodID)
     </script>
     <script src="{!!asset('assets/js/v3/events.js')!!}"></script>
 @stop
