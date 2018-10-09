@@ -32,7 +32,14 @@
 .alert-success {
   background-color: #ffffff;
   border-color: #b7282e;
-  color: #000000; }
+  color: #000000;
+  position: absolute;
+  z-index: 5000;
+  width: 66%;
+  margin: 39vh;
+  -webkit-box-shadow: -6px 8px 5px 0px #4b4b4b;
+  -moz-box-shadow: -6px 8px 5px 0px #4b4b4b;
+  box-shadow: -6px 8px 5px 0px #4b4b4b; }
 
 #message h3, #message p, #message span {
   color: #000000; }
@@ -43,14 +50,19 @@
 #error-wrap {
   width: 100%;
   position: fixed;
-  top: 42%;
+  top: 0;
   left: 0%;
-  z-index: 10000; }
+  z-index: 10000;
+  height: 100%; }
   #error-wrap .alert-danger {
     background-color: #b7282e; }
   #error-wrap #errors {
-    width: auto;
-    margin: auto; }
+    width: 50%;
+    height: 14%;
+    position: fixed;
+    top: 39vh;
+    margin: auto 25%;
+    border-radius: 10px; }
     #error-wrap #errors ul {
       list-style-type: none;
       padding-left: 0px; }

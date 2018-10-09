@@ -37,6 +37,11 @@
       text-align: left;
       overflow-y: auto; }
 
+.not-allowed {
+  pointer-events: none;
+  opacity: 0.66;
+  cursor: not-allowed; }
+
 .calday {
   max-height: 162px;
   min-height: 160px;
@@ -56,15 +61,6 @@
 
 .true {
   color: inherit; }
-
-#timeliner {
-  width: 4px;
-  position: relative; }
-
-#timeliner-container {
-  overflow: auto;
-  width: 98%;
-  margin: 0 1%; }
 
 #show-periods {
   cursor: pointer; }

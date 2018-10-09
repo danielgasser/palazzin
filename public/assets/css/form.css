@@ -67,7 +67,8 @@ form .double-line {
 form label {
   /*white-space: nowrap;*/
   display: block;
-  color: #333; }
+  color: #333;
+  font-size: 1.2em; }
 form input:focus {
   border-color: #b7282e !important;
   box-shadow: 0 0 5px rgba(183, 40, 46, 0.4) !important;
@@ -120,11 +121,31 @@ form .inline-input-short {
   border-right: none; }
 form input[name=example] {
   background-color: #ffffff !important; }
-form .btn.active,
-form .btn:active,
-form .btn:focus {
-  outline: none;
+form .btn:focus, form .btn:active:focus, form .btn.active:focus {
+  outline: 5px auto #b7282e !important;
+  outline-offset: -2px;
   -webkit-appearance: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
   border: 1px solid #b7282e; }
+
+.btn-primary {
+  background-color: #b7282e; }
+
+#login-btn {
+  width: 100%;
+  margin-left: 5px !important; }
+
+.login-checkbox {
+  padding-left: 20px;
+  margin-bottom: 5px; }
+
+.toggle-group .btn-primary, .toggle-group .btn-default, .toggle .btn-primary, .toggle .btn-default {
+  border: none;
+  background-color: white;
+  color: black; }
+
+.input-error {
+  border: 3px solid #b7282e !important; }
 
 /*# sourceMappingURL=form.css.map */

@@ -41,16 +41,6 @@ let V3Reservation = {
                 V3Reservation.checkExistentReservation(start, end);
             }
         }
-        /*
-        $.ajax({
-            url: url,
-            data: {
-                pID: V3Reservation.periodID
-            },
-            success: function (data) {
-            }
-        })
-        */
     },
     writeFreeBedsStorage: function (objects, prefix, start, end) {
         let len = (Object.keys(objects).length)
