@@ -1,7 +1,7 @@
 @section('footer')
 <div id="footer">
       <div class="container">
-            <div class="text-muted">RoomApp &#169; created by <a target="_blank" href="https://toesslab.ch/"><img title="toesslab - websolutions" src="{!!$toesslab!!}">&nbsp<span style="color: #b7282e">toess</span><span style="color: black">lab</span> - websolutions</a></div>
+            <div class="text-muted">RoomApp &#169; created by <a target="_blank" href="https://toesslab.ch/"><img title="tösslab - solutions" src="{!!$toesslab!!}">&nbsp<span style="color: #b7282e">töss</span><span style="color: black">lab</span> - solutions</a></div>
           @if($isAdmin == 1 || $isManager == 1)
               <div class="btn-group dropup">
                   <button type="button" class="btn btn-small dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{!!trans('navigation.admin')!!}

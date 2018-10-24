@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{!!asset('assets/css/datepicker.css')!!}" rel="stylesheet" media="screen"
           type="text/css">
 
+
 @stop
 
 @section('content')
@@ -19,7 +20,7 @@
         <h4></h4>
     </div>
     <div id="upper">
-        @foreach($userRes as $res)
+        @forelse($userRes as $res)
             <form id="all_reservations_{!! $res->id !!}" method="get" action="{!!  route('edit_reservation', [$res->id])  !!}">
             {!! csrf_field() !!}
             <div class="row show_total_res arrow" id="show_res_{!! $res->id !!}">
@@ -129,7 +130,9 @@
             </div>
             @endforeach
         </form>
-        @endforeach
+            @empty
+            <h4>{!! trans('reservation.no_bookings') !!}</h4>
+        @endforelse
     </div>
     {{--
     @include('logged.dialog.guest_nan')

@@ -28,9 +28,11 @@ class NewReservationController extends Controller
         $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
         $periods = new Period();
         $pe = $periods->getTimelinerPeriods($start->format('Y-m'));
+        $reservationsPerPeriod = $this->getReservationsPerDateV3($pe->first()->id);
         return view('v3.new_reservation')
             ->with('rolesTrans', $rolesTrans)
             ->with('roles', Role::getRolesTaxV3())
+            ->with('reservationsPerPeriod', $reservationsPerPeriod)
             ->with('periods', $pe);
     }
 
@@ -60,12 +62,15 @@ class NewReservationController extends Controller
     /**
      * Gets reservations by period date
      *
-     * @return mixed Model
+     * @param null $periodID
+     * @return mixed
      */
-    public function getReservationsPerDateV3()
+    public function getReservationsPerDateV3($periodID = null)
     {
         $reservation = new Reservation();
-        $periodID = Input::get('periodID');
+        if (is_null($periodID)) {
+            $periodID = Input::get('periodID');
+        }
         return $reservation->getReservationsPerPeriodV3($periodID);
     }
 

@@ -28,7 +28,7 @@ return array(
     'dur' => 'Dauer',
     'guests' => array(
         'title' => 'Gäste',
-        'number' => 'Anzahl',
+        'number' => 'Anz.',
         'pers' => 'Personen',
         'role' => 'Rolle',
         'tax_night' => 'Tarif',

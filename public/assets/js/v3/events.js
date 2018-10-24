@@ -35,7 +35,7 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function (e) {
         });
         return false;
     }
-    $('#reservation_guest_price_' + id).text(window.rolesTaxes[this.value].toFixed(2))
+    $('#reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2))
     $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2))
 });
 
@@ -55,7 +55,7 @@ jQuery(document).on('click', '[id^="chooseuser_"]', function () {
 /**
  * Guest number
  */
-jQuery(document).on('change', '[id^="reservation_guest_num_"]', function () {
+jQuery(document).on('keyup mouseup', '[id^="reservation_guest_num_"]', function () {
     var num = parseInt($(this).attr('max'), 10),
         val = parseInt($(this).val(), 10),
         new_res = (window.localStorage.getItem('new_res') === '1'),
@@ -80,7 +80,7 @@ jQuery(document).on('change', '[id^="reservation_guest_num_"]', function () {
         $('#clone_guest_' + id + g_id).show().attr('disabled', false);
         while (guest_start_date < guest_end_date) {
             let strNew = guest_start_date.getFullYear() + '_' + window.smallerThenTen(guest_start_date.getMonth()) + '_' + window.smallerThenTen(guest_start_date.getDate()),
-                strStorage = guest_start_date.getFullYear() + '-' + window.smallerThenTen(guest_start_date.getMonth()) + '-' + window.smallerThenTen(guest_start_date.getDate()),
+                strStorage = strNew.split('_').join('-'), //guest_start_date.getFullYear() + '-' + window.smallerThenTen(guest_start_date.getMonth()) + '-' + window.smallerThenTen(guest_start_date.getDate()),
                 counter = 0;
             if (!new_res) {
                 counter = (isNaN(window.parseInt(window.localStorage.getItem(strStorage), 10))) ? window.settings.setting_num_bed : window.parseInt(window.localStorage.getItem(strStorage), 10);

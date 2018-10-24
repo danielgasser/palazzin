@@ -33,8 +33,7 @@ let V3Reservation = {
         V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_0', '#reservation_guest_ended_at_0', '#number_nights_0'], startDate, window.endDate, V3Reservation.periodID);
     },
     getFreeBeds: function (start, end, edit, url , prefix) {
-        console.log(window.periods.find(function (obj) { return obj.id === V3Reservation.periodID; }));
-        let reservations = window.periods.find(function (obj) { return obj.id === V3Reservation.periodID; });
+        let reservations = window.reservationsPerPeriod;
         if (reservations.length > 0) {
             V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
             if (!edit) {
@@ -182,6 +181,7 @@ let V3Reservation = {
         $('#guest_title_' + id).html(window.guestTitle + dates.start + ' - ' + dates.end + numNight + num_guest + guest_kind);
     },
     setFreeBeds: function (start, end) {
+        $('[id^="free-beds_"]').html('');
         let fillNewFreeBeds = function (str) {
             let beds = window.localStorage.getItem(str),
                 bedNumberShow = (beds === null) ? window.settings.setting_num_bed : window.smallerThenTen(window.parseInt(beds, 10), true),

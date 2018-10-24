@@ -195,11 +195,13 @@
             datePickersStart = [],
             periods = JSON.parse('{!!json_encode($periods)!!}'),
             periodID = periods[0].id,
+            reservationsPerPeriod = JSON.parse('{!!$reservationsPerPeriod!!}'),
             guestTitle = '{!!trans('reservation.guest_many_no_js.one')!!}: ',
             datePickersEnd = [],
             token = '{{ csrf_token() }}',
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}'),
             afterValidation = '{!! ($errors->any()) !!}';
+            console.log(periodID)
     </script>
     <script src="{!!asset('assets/js/v3/global_functions/funcs.js')!!}"></script>
     <script>

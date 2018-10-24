@@ -68,6 +68,8 @@
 }
 label {
   white-space: normal;
+  min-height: 0;
+  vertical-align: bottom;
 }
 .show_total_res {
   border: .13333em solid #b7b7b7;
