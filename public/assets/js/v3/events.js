@@ -35,8 +35,8 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function (e) {
         });
         return false;
     }
-    $('#reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2))
-    $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2))
+    $('#reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2).replace(",", "."));
+    $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2).replace(",", "."))
 });
 
 /**

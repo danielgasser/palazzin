@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-    <title>FEHLER@Palazzin</title>
+    <title>FEHLER | Palazzin</title>
     <link rel="icon" href="{!!asset('assets/img/favicon.png')!!}" type="image/png" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="shortcut icon" href="{!!asset('assets/img/favicon.ico')!!}" />

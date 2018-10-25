@@ -361,7 +361,7 @@ let V3Reservation = {
         guestNight = parseInt($('#number_nights_' + id).text(), 10);
         guestNumVal = parseInt($('#reservation_guest_num_' + id).val(), 10);
         guestNum = (isNaN(guestNumVal)) ? 0 : guestNumVal;
-        price = (window.rolesTaxes[guestGuest] * guestNight * guestNum).toFixed(2);
+        price = (window.rolesTaxes[guestGuest] * guestNight * guestNum).toFixed(2).replace(",", ".");
         if (!isNaN(price)) {
             $('#price_' + id).text(price);
             $('#hidden_price_' + id).val(price);
@@ -376,8 +376,8 @@ let V3Reservation = {
         $.each(prices, function (i, n) {
             total += V3Reservation.calcPrice(i);
         });
-        $('#reservation_costs_total').text(total.toFixed(2));
-        $('#hidden_reservation_costs_total').val(total.toFixed(2));
+        $('#reservation_costs_total').text(total.toFixed(2).replace(",", "."));
+        $('#hidden_reservation_costs_total').val(total.toFixed(2).replace(",", "."));
     },
     checkOccupiedBeds: function (total) {
         let tooMuch = false,

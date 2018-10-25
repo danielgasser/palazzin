@@ -182,6 +182,14 @@ label {
       padding: 0px 0 0 5px;
       margin: 0 0 0 -5px;
       border-left: none; }
+    #free_beds_container #all-free-beds #all-free-beds_title {
+      position: relative;
+      left: 0;
+      width: 100%;
+      height: 1.7em;
+      background: #b7282e;
+      padding: 0.2em;
+      color: white; }
 
 #reservationInfo {
   padding: 0 0 0.25em 0; }

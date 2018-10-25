@@ -2,16 +2,16 @@
 @import "vars";
 .navbar-default {
   font-weight: bold;
-  .navbar-nav>.active>a, .navbar-nav>.active>a:hover {
-    background-color: $color-h1;
-    color: white;
+  .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus {
+    background-color: $color-h1 !important;
+    color: white !important;
   }
   .navbar-nav>li>a {
-    color: #333;
+    color: #f7f7f7;
   }
-  .navbar-nav>li>a:hover {
-    background-color: $color-h1;
-    color: white;
+  .navbar-nav>li>a:hover, .navbar-nav>li>a:focus {
+    background-color: $color-h1 !important;
+    color: white !important;
   }
 
 }
@@ -29,19 +29,24 @@
   border-color: $color-h1;
   color: #333;
 }
-.dropdown-menu>li>a {
-  color: #333;
+.dropdown-menu {
+    background-color: #333;
 }
-.dropdown-menu>li>a:hover {
-  background-color: $color-h1;
+.dropdown-menu>li>a {
+    background-color: #333;
+    color: white;
+}
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:active {
+  background-color: $color-h1 !important;
+    color: white !important;
 }
 .navbar {
   position: fixed;
   width: 100%;
   z-index: 1001;
   border-radius: 0px;
-  border-bottom: 1px solid $color-h1;
-  background-color: #ddd;
+  border-bottom: 1px solid white;
+  background-color: #333;
 }
 #main-nav-container {
   z-index: 11;

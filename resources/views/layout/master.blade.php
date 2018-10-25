@@ -7,9 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     @if (Request::has('edit_reservation*'))
-        <title>{!!Lang::get('navigation.edit_reservation')!!}@Palazzin</title>
+        <title>{!!Lang::get('navigation.edit_reservation')!!} | Palazzin</title>
     @else
-    <title>{!!Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())!!}@Palazzin</title>
+    <title>{!!Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())!!} | Palazzin</title>
     @endif
     <link rel="icon" href="{!!asset('assets/img/favicon.png')!!}" type="image/png" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -26,7 +26,8 @@
     <link href="{!!asset('assets/css/stats_print.css')!!}" rel="stylesheet" media="mpdf" type="text/css" />
     <link href="{!!asset('assets/css/print.css')!!}" rel="stylesheet" media="print" type="text/css" />
     <!--link href="{!!asset('assets/css/font-awesome/fontawesome-all.min.css')!!}" rel="stylesheet" type="text/css" /-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
 
 @if (Request::is('stats'))
         <link href="{!!asset('assets/css/stats.css')!!}" rel="stylesheet" media="screen" type="text/css" />
