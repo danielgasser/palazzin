@@ -6236,20 +6236,23 @@ a {
     background-color: #b7282e !important;
     color: white !important; }
   .navbar-default .navbar-nav > li > a {
-    color: #f7f7f7; }
+    color: #f7f7f7;
+    padding-top: 18px;
+    padding-bottom: 18px; }
   .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     background-color: #b7282e !important;
     color: white !important; }
 
 .navbar-toggle {
   background-color: #b7282e;
-  padding: 6px 10px; }
+  padding: 8px 10px;
+  margin-top: 12px; }
 
 .icon-bar {
   background-color: white !important; }
 
 .navbar-brand {
-  padding: 6px 15px !important; }
+  padding: 2px 15px !important; }
 
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
   border-color: #b7282e;
@@ -6272,7 +6275,8 @@ a {
   z-index: 1001;
   border-radius: 0px;
   border-bottom: 1px solid white;
-  background-color: #333; }
+  background-color: #333;
+  min-height: 58px !important; }
 
 #main-nav-container {
   z-index: 11; }
@@ -6588,14 +6592,19 @@ li.lang_active > a {
   width: 100%;
   height: 35px;
   font-size: 0.85em;
-  background-color: #ccc;
+  background-color: #333;
   z-index: 1001;
   position: fixed;
   bottom: 0;
-  border-top: 1px solid #b7282e; }
+  border-top: 1px solid #fff; }
   #footer .btn-small {
     background: transparent;
-    font-weight: normal; }
+    font-weight: normal;
+    color: white; }
+    #footer .btn-small:hover {
+      background-color: #b7282e; }
+    #footer .btn-small:focus {
+      background-color: #b7282e; }
   #footer .btn-group {
     float: right;
     color: #000000; }

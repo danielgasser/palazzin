@@ -427,14 +427,21 @@ li.lang_active > a {
   width: 100%;
   height: 35px;
   font-size: 0.85em;
-  background-color: #ccc;
+  background-color: #333;
   z-index: 1001;
   position: fixed;
   bottom: 0;
-  border-top: 1px solid #b7282e;
+  border-top: 1px solid #fff;
   .btn-small {
     background: transparent;
     font-weight: normal;
+      color: white;
+      &:hover {
+          background-color: $brand-danger;
+      }
+      &:focus {
+          background-color: $brand-danger;
+      }
   }
   .btn-group {
     float: right;

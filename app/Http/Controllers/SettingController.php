@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Clan;
 use Help;
+use Intervention\Image\ImageManagerStatic as Image;
 use Period;
 use Setting;
 use Illuminate\Support\Facades\Input;
@@ -179,6 +180,9 @@ class SettingController extends Controller
             $fileNameLogo = self::generateRandomString() . '.' . $logo->getClientOriginalExtension();
             $savePathLogo = str_replace(public_path(), '', $pathLogo);
             $logo->move($pathLogo, $fileNameLogo);
+            /**
+             * https://stackoverflow.com/a/50566950/1387233
+             */
             $imageLogo = Image::make($pathLogo . '/' . $fileNameLogo);
             $imageLogo->resize(182, 55, function ($constraint) {
                 $constraint->aspectRatio();
