@@ -373,12 +373,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-    public function scopeCheckUserRoles ($query, $role)
+    public function scopeCheckUserRoles (\Illuminate\Database\Eloquent\Builder $query, $role)
     {
         if ($role) {
             return $query
-                ->where('role_user.role_id', '=', $role)
-                ->with('roles');
+                ->whereHas('roles', function ($q) use ($role) {
+                    $q->where('id', $role);
+                });
         }
     }
 
@@ -395,9 +396,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $clan = $credentials['search_clan'];
         $family = explode('|', $credentials['search_family'])[0];
         $role = $credentials['search_role'];
-        if ($input == '' && $clan == '%' && $family == '%' && $role == '%') {
-            return $this->getAllUsers();
-        }
 
         $users = self::where(function ($q) use ($input, $clan) {
             foreach(self::$searchColumns as $s) {
@@ -408,9 +406,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->with('clans', 'families', 'roles')
             ->CheckClan($clan)
             ->CheckFamily($family)
-            ->CheckUserRoles($role)
             ->groupBy('users.id')
-            ->get();
+            ->whereHas('roles', function ($q) use($role) {
+                $q->where('roles.id', '=', $role);
+            })
+        ->get();
+        /*
+        if ($role !== '0') {
+            $userFilteredByRole = $users->filter(function ($value, $role) {
+                return $value == $role;
+            });
+            $userFilteredByRole->all();
+        }
+        */
         $users->each(function ($u) {
             $login = \LoginStat::where('user_id', '=', $u->getUserID())->orderBy('created_at', 'DESC')->skip(1)->first();
             if (is_object($login)) {

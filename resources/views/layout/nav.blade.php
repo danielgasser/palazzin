@@ -28,11 +28,11 @@
                             <li id="open-legend" class="dropdown-toggle">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-tags"></i>&nbsp;<span class="caret"></span></a>
                                 <ul class="dropdown-menu multi-level" role="menu">
-                                    <li>
+                                    <li style="background-color: #fff">
                                         <img style="width: 22px" src="{!!asset('assets/img/WO.png')!!}" alt="Wolf" title="Wolf" />
                                         <span class="WO-text">WO - Wolf</span>
                                     </li>
-                                    <li>
+                                    <li style="background-color: #fff">
                                         <img style="width: 22px" src="{!!asset('assets/img/GU.png')!!}" title="Guggenbühl" alt="Guggenbühl" />
                                         <span class="GU-text">GU - Guggenbühl</span>
                                     </li>
@@ -59,7 +59,25 @@
                 <li class="dropdown-toggle">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="far fa-user"></i><span class="caret"></span></a>{{--{!!User::find(Auth::id())->user_first_name!!} {!!User::find(Auth::id())->user_name!!}--}}
                     <ul class="dropdown-menu multi-level" role="menu">
-                       <li class="{!! Request::is('user/profile') ? 'active' : '' !!}"><a href="{!!URL::to('user/profile')!!}">{!!trans('address.your_m')!!} {!!trans('navigation.profile')!!}</a></li>
+                        <li><a style="font-weight: bold">{!!trans('navigation.lastlogin')!!}:</a></li>
+                        <li><a>{!!$lastLogin!!}</a></li>
+                        <li class="divider"></li>
+                        <li><a style="font-weight: bold">{!!trans('home.yourroles')!!}:</a></li>
+                        @foreach($roles as $role)
+                            <li class="{!! Request::is('user/profile') ? 'active' : '' !!}"><a>{!! trans('roles.' . $role->role_code) !!} ({!! $role->role_code !!})</a></li>
+                        @endforeach
+                        <li class="divider"></li>
+                        <li><a style="font-weight: bold">{!!trans('home.yourclan')!!}:</a></li>
+                        @foreach($clan_name as $clan)
+                            <li style="font-weight: bold">
+                                <a class="nav-clan">
+                                    <img style="width: 22px" src="{!!asset('assets/img/' . $clan->clan_code . '.png')!!}" alt="{!! $clan->clan_description !!}" title="{!! $clan->clan_description !!}" />
+                                    <span class="{!! $clan->clan_code !!}-text">{!! $clan->clan_description !!} ({!! $clan->clan_code !!})</span>
+                                </a>
+                            </li>
+                        @endforeach
+                            <li class="divider"></li>
+                            <li class="{!! Request::is('user/profile') ? 'active' : '' !!}"><a href="{!!URL::to('user/profile')!!}">{!!trans('address.your_m')!!} {!!trans('navigation.profile')!!}</a></li>
                        @if(!User::isKeeper() && !User::isClerk())
                             {{--<li class="{!! Request::is('user/reservations') ? 'active' : '' !!}"><a href="{!!URL::to('user/reservations')!!}">{!!trans('navigation.user/reservations')!!}</a></li>--}}
                            <li class="{!! Request::is('user/bills') ? 'active' : '' !!}"><a href="{!!URL::to('user/bills')!!}">{!!trans('navigation.user/bills')!!}</a></li>

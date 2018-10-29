@@ -9,6 +9,8 @@
 namespace App\Http\ViewComposers;
 
 
+use User;
+use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -24,14 +26,21 @@ class ViewDataComposer
 
     public function compose(View $view)
     {
-        $this->isOldWin = \User::checkUsersOldWinBrowser();
+        $this->isOldWin = User::checkUsersOldWinBrowser();
         shuffle($this->monthColors);
+        $user = User::find(Auth::id());
+        $login = \LoginStat::where('user_id', '=', Auth::id())->orderBy('created_at', 'DESC')->skip(1)->first();
+
+        $view->with('lastLogin', (!is_null($login)) ? $login->created_at : '');
         $view->with('monthColors', $this->monthColors);
         $view->with('yearColors', $this->yearColors);
         $view->with('isOldWin', $this->isOldWin);
         $view->with('toesslab', $this->toesslab);
         $view->with('otherClanRoleId', $this->getOtherClanRoleId());
-    }
+        $view->with('roles', $user->getRoles());
+        $view->with('clan', $user->getUserClan());
+       $view ->with('clan_name', $user->getUserClanName($user->clan_id));
+  }
 
     private function getOtherClanRoleId()
     {

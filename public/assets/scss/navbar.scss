@@ -1,5 +1,13 @@
 @import "bootstrap-variables";
 @import "vars";
+.nav-clan {
+    background-color: #fff !important;
+    &:hover {
+        background-color: #fff !important;
+        color: white;
+    }
+}
+
 .navbar-default {
   font-weight: bold;
   .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus {
@@ -10,9 +18,15 @@
     color: #f7f7f7;
       padding-top: 18px;
       padding-bottom: 18px;
+      font-weight: normal;
+      font-size: 1.1em;
   }
   .navbar-nav>li>a:hover, .navbar-nav>li>a:focus {
     background-color: $color-h1 !important;
+    color: white !important;
+  }
+  .navbar-nav>li>a:not([href]):hover, .navbar-nav>li>a:not([href]):focus {
+    background-color: #333 !important;
     color: white !important;
   }
 
@@ -43,6 +57,11 @@
   background-color: $color-h1 !important;
     color: white !important;
 }
+.dropdown-menu>li>a:not([href]):hover, .dropdown-menu>li>a:not([href]):focus, .dropdown-menu>li>a:not([href]):active {
+    background-color: #333 !important;
+    color: white !important;
+}
+
 .navbar {
   position: fixed;
   width: 100%;

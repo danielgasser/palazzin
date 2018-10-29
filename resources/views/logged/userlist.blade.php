@@ -18,7 +18,7 @@
         </div>
         {!!Form::label('role_search', trans('userdata.roles'), array('class' => 'col-sm-1 col-md-1'))!!}
         <div class="col-sm-2 col-md-2">
-            {!!Form::select('role_search', $roles, Input::old('role_search'), array('class' => 'form-control'))!!}
+            {!!Form::select('role_search', $roleList, Input::old('role_search'), array('class' => 'form-control'))!!}
         </div>
     </div>
     <div class="row">

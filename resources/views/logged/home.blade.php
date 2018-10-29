@@ -10,6 +10,12 @@
         <!--h3>Dein Browser:<br><textarea readonly style="color: #000;" cols="25" rows="5" ><?php echo $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?></textarea></h3-->
     </div>
     <div class="col-sm-4 col-md-4">
+        <h3>{!!trans('home.yourroles')!!}:</h3>
+        <ul>
+          @foreach($roles as $role)
+         <li>{!! $role->role_code !!} - {!! trans('roles.' . $role->role_code) !!}</li>
+          @endforeach
+        </ul>
     </div>
     <div class="col-sm-4 col-md-4">
         <h3>{!!trans('home.yourclan')!!}:</h3>

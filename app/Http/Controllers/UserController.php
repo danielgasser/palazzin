@@ -401,7 +401,7 @@ class UserController extends Controller
         return view('logged.userlist')
             ->with('allUsers', $users)
             ->with('clans', $clans[0])
-            ->with('roles', $roles[0])
+            ->with('roleList', $roles[0])
             ->with('families', $families[0]);
     }
 
