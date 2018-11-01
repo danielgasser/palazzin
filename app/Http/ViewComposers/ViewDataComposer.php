@@ -23,6 +23,7 @@ class ViewDataComposer
     ];
     protected $isOldWin;
     protected $toesslab = 'https://toesslab.ch/application/files/5614/5854/7379/favicon.ico';
+    protected $userData = [];
 
     public function compose(View $view)
     {
@@ -30,17 +31,32 @@ class ViewDataComposer
         shuffle($this->monthColors);
         $user = User::find(Auth::id());
         $login = \LoginStat::where('user_id', '=', Auth::id())->orderBy('created_at', 'DESC')->skip(1)->first();
-
+        $userRole = [];
+        $userClan = [];
+        $userClanName = '';
+        if (is_object($user)) {
+            $userRole = $user->getRoles();
+            $userClan = $user->getUserClan();
+            $userClanName = $user->getUserClanName($user->clan_id);
+        }
         $view->with('lastLogin', (!is_null($login)) ? $login->created_at : '');
         $view->with('monthColors', $this->monthColors);
         $view->with('yearColors', $this->yearColors);
         $view->with('isOldWin', $this->isOldWin);
         $view->with('toesslab', $this->toesslab);
         $view->with('otherClanRoleId', $this->getOtherClanRoleId());
-        $view->with('roles', $user->getRoles());
-        $view->with('clan', $user->getUserClan());
-       $view ->with('clan_name', $user->getUserClanName($user->clan_id));
-  }
+        $view->with('roles', $userRole);
+        $view->with('clan', $userClan);
+       $view ->with('clan_name', $userClanName);
+        $this->userData = [
+            'isAdmin' => User::isLoggedAdmin(),
+            'isManager' => User::isManager(),
+            'isKeeper' => User::isKeeper()
+        ];
+        $view->with('isAdmin', $this->userData['isAdmin']);
+        $view->with('isManager', $this->userData['isManager']);
+        $view->with('isKeeper', $this->userData['isKeeper']);
+    }
 
     private function getOtherClanRoleId()
     {

@@ -159,22 +159,22 @@ class AdminController extends Controller
         $user = \User::find($id);
         if ($user == null) {
             Session::put('error', trans('errors.notfound'));
-            return redirect('admin/users')->withErrors([trans('errors.notfound')]);
+            return redirect('userlist')->withErrors([trans('errors.notfound')]);
         }
         if ($user->getUsersRole('ADMIN') == 1) {
             Session::put('error', trans('errors.del-admin-user'));
-            return redirect('admin/users')->withErrors([trans('errors.del-admin-user')]);
+            return redirect('userlist')->withErrors([trans('errors.del-admin-user')]);
         }
         if (Auth::id() == $user->id) {
             Session::put('error', trans('errors.del-selfy-user'));
-            return redirect('admin/users')->withErrors([trans('errors.del-selfy-user')]);
+            return redirect('userlist')->withErrors([trans('errors.del-selfy-user')]);
         }
         if ($user->destroyUser()) {
             Session::put('error', trans('errors.data-deleted', ['d' => 'Benutzer']));
             return redirect('admin/users')->with('message', trans('errors.data-deleted', ['d' => 'Benutzer']));
         }
         Session::put('error', trans('bill.bill-user-delete'));
-        return redirect('admin/users')->withErrors([trans('bill.bill-user-delete')]);
+        return redirect('userlist')->withErrors([trans('bill.bill-user-delete')]);
     }
 
     /**

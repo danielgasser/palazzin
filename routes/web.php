@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('new_reservation/check_existent', 'NewReservationController@checkExistentReservation')->name('check_existent');
     Route::get('reservation/month/v3', ['uses' => 'NewReservationController@getReservationsPerDateV3']);
 
-    Route::post('userlist', 'UserController@searchUsers');
+    Route::post('userlist_search', 'UserController@searchUsers');
     Route::get('userlist', 'UserController@showUsers');
     // v3
 
@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('admin/settings', 'SettingController@showSettings');
         Route::get('admin/calc', 'PeriodController@calculatePeriods')->name('calc-periods');
         Route::post('admin/settings', 'SettingController@setSettings')->name('save-settings');
+        Route::get('admin/users/delete/{id}', 'AdminController@deleteUser');
     });
 
 });

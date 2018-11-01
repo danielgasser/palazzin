@@ -1,0 +1,21 @@
+#users thead tr th {
+  vertical-align: top;
+  border-bottom: 1px solid #b7282e; }
+#users tbody tr td {
+  vertical-align: top;
+  padding: 0 0.5em; }
+  #users tbody tr td:before {
+    background-color: #b7282e; }
+  #users tbody tr td ul {
+    list-style-type: none; }
+  #users tbody tr td.control {
+    padding: 0 0.75em; }
+    #users tbody tr td.control:before {
+      height: 19px;
+      width: 19px;
+      margin-top: -13px;
+      margin-left: -16px; }
+#users tbody tr.odd {
+  background-color: #cbcbcb; }
+
+/*# sourceMappingURL=datatables_roomapp.css.map */

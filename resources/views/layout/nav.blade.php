@@ -56,7 +56,24 @@
 
             </ul>
                 <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown-toggle">
+                    @if($isAdmin == 1 || $isManager == 1)
+                        <li class="dropdown-toggle">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i><span class="caret"></span></a>{{--{!!User::find(Auth::id())->user_first_name!!} {!!User::find(Auth::id())->user_name!!}--}}
+                            <ul class="dropdown-menu multi-level" role="menu">
+                                <li><a href="{!!URL::to('admin/users/add')!!}">{!!trans('navigation.admin/users/add')!!}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{!!URL::to('admin/roles')!!}">{!!trans('navigation.admin/roles')!!}</a></li>
+                                <li><a href="{!!URL::to('admin/rights')!!}">{!!trans('navigation.admin/rights')!!}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{!!URL::to('admin/reservations')!!}">{!!trans('navigation.admin/reservations')!!}</a></li>
+                                <li><a href="{!!URL::to('admin/bills')!!}">{!!trans('navigation.admin/bills')!!}</a></li>
+                                <li><a href="{!!URL::to('admin/bills/filelist')!!}">{!!trans('navigation.admin/bills/filelist')!!}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{!!URL::to('admin/settings')!!}">{!!trans('navigation.admin/settings')!!}</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                    <li class="dropdown-toggle">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="far fa-user"></i><span class="caret"></span></a>{{--{!!User::find(Auth::id())->user_first_name!!} {!!User::find(Auth::id())->user_name!!}--}}
                     <ul class="dropdown-menu multi-level" role="menu">
                         <li><a style="font-weight: bold">{!!trans('navigation.lastlogin')!!}:</a></li>
@@ -86,7 +103,8 @@
                         <li><a id="logout_user" href="{!!URL::to('logout')!!}">{!!trans('navigation.logout')!!}</a></li>
                     </ul>
                 </li>
-            @else
+
+                @else
                         <li class="{!! Request::is('navigation./') ? 'active' : '' !!}"><a href="/">{!!trans('navigation./')!!}</a></li>
                     <li class="{!! Request::is('login') ? 'active' : '' !!}"><a href="{!!URL::to('login')!!}">{!!trans('navigation.login')!!}</a></li>
             @endif

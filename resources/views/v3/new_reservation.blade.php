@@ -1,13 +1,12 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" href="{!!asset('assets/css/v3/nehhkadam')!!}-AnyPicker/anypicker-all.min.css"
-          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" href="{!!asset('assets/css/v3/nehhkadam')!!}-AnyPicker/anypicker-all.min.css" media="screen" type="text/css">
     <script type="text/javascript"
             src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker.js"></script>
     <script type="text/javascript"
             src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker-i18n.js"></script>
-    <link rel="stylesheet" href="{!!asset('assets/css/datepicker.css')!!}" rel="stylesheet" media="screen"
+    <link rel="stylesheet" href="{!!asset('assets/css/datepicker.css')!!}" media="screen"
           type="text/css">
 
 @stop

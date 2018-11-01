@@ -1,0 +1,36 @@
+#users {
+    thead {
+        tr {
+            th {
+                vertical-align: top;
+                border-bottom: 1px solid #b7282e;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                vertical-align: top;
+                padding: 0 0.5em;
+                &:before {
+                    background-color: #b7282e;
+                }
+                ul {
+                    list-style-type: none;
+                }
+                &.control {
+                    padding: 0 0.75em;
+                    &:before {
+                        height: 19px;
+                        width: 19px;
+                        margin-top: -13px;
+                        margin-left: -16px;
+                    }
+                }
+            }
+            &.odd {
+                background-color: #cbcbcb;
+            }
+        }
+    }
+}

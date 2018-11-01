@@ -13,8 +13,12 @@ return array(
 	|
 	*/
 
-	'previous' => '&laquo; Vorherige',
+	'previous' => 'Vorherige',
 
-	'next'     => 'Nächste &raquo;',
+	'next'     => 'Nächste',
+    'first' => 'Erste',
+    'last' => 'Letzte',
+    'info' => 'Zeige _START_ bis _END_ von _TOTAL_',
+    'length_menu' => '_MENU_ Einträge anzeigen'
 
 );

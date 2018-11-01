@@ -6490,18 +6490,6 @@ table.tablesorter, table.tablesorter thead tr th {
   .table-head tr th {
     background: black; }
 
-#table-body {
-  position: absolute;
-  top: 53px;
-  left: 0; }
-  #table-body tr.tr-body:nth-child(even) {
-    background-color: #f7f7f7; }
-  #table-body tr.tr-body td {
-    border-bottom: 1px solid #333; }
-    #table-body tr.tr-body td table.mailz tbody tr td, #table-body tr.tr-body td .fonz tbody tr td, #table-body tr.tr-body td .rolez tbody tr td {
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd; }
-
 #spacer {
   height: 5px;
   clear: both;
@@ -6723,12 +6711,6 @@ td[id^="user_avatar_"] {
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
 
-.table-responsive {
-  width: 100%;
-  overflow-y: hidden;
-  overflow-x: auto;
-  z-index: 1; }
-
 .header {
   display: table-cell;
   padding-left: 8px;
@@ -6743,12 +6725,14 @@ td[id^="user_avatar_"] {
   content: 'asc'; }
 
 .table > thead > tr > th {
-  padding: 8px; }
+  padding: 8px;
+  border: none; }
 
 .table > tbody > tr > td {
   padding: 8px;
   font-size: 12px;
-  font-weight: normal; }
+  font-weight: normal;
+  border: none; }
 
 table thead tr .fon-header {
   min-width: 125px; }
@@ -6759,9 +6743,6 @@ table #user td {
   cursor: pointer; }
 table [id^="deleteRole_"] span {
   cursor: pointer; }
-
-#users {
-  position: relative; }
 
 .table-myheight {
   height: 534px; }

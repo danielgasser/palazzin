@@ -24,7 +24,7 @@ return array(
         'mobile' => 'Natel',
         'home' => 'Privat',
         'business' => 'Geschäft',
-        'x' => '-'
+        'x' => ''
     ),
     'zip' => 'PLZ',
     'city' => 'Ort',

@@ -16,10 +16,6 @@
     <script src="{!!asset('assets/js/libs/jquery/jquery.2.1.1.min.js')!!}"></script>
     <!--script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script-->
     <script src="{!!asset('assets/js/libs/jquery-ui-1.12.1/jquery-ui.min.js')!!}"></script>
-    @if (!Request::is('new_reservation'))
-    <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-de.js')!!}"></script>
-    <script src="{!!asset('assets/js/libs/datepicker_i18n/datepicker-en-GB.js')!!}"></script>
-    @endif
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <link rel="shortcut icon" href="{!!asset('assets/img/favicon.ico')!!}" />
@@ -100,7 +96,6 @@
             }
         </style>
     @endif
-    <link href="{!!asset('assets/js/libs/tablesorter/themes/black/style.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/js/libs/chosen/chosen.css')!!}" rel="stylesheet" type="text/css" />
     <link href="{!!asset('assets/css/main.css')!!}" rel="stylesheet" media="screen" type="text/css" />
     <!--[if lt IE 9]>
@@ -141,7 +136,6 @@
 
 
     </style>
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
     <script src="{!!asset('assets/js/libs/tinymce/js/tinymce/tinymce.min.js')!!}"></script>
          <script src="{!!asset('assets/js/libs/tinymce/js/tinymce/langs/de.js')!!}"></script>

@@ -33,7 +33,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_avatar',
         'deleted_at',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'user_stock_address',
+        'user_stock_city',
+        'user_stock_zip',
+        'user_stock_country_code',
+        'user_generation'
     );
     /**
      * If using soft delete, buggy in L4.2
@@ -102,6 +107,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_fon1_label',
         'user_fon2_label',
         'user_fon3_label',
+        'user_new'
 
     );
     /**
@@ -354,9 +360,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return mixed
      */
     public function getAllUsers () {
-            return self::with('clans', 'families', 'roles')
-                ->orderBy('user_name', 'asc')
-            ->get();
+        return self::with('clans', 'families', 'roles')
+            ->orderBy('user_name', 'asc')
+        ->get();
     }
 
     public function scopeCheckClan ($query, $clan)
@@ -395,7 +401,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $input = ($credentials['search_user'] == null) ? $input = '' : $credentials['search_user'];
         $clan = $credentials['search_clan'];
         $family = explode('|', $credentials['search_family'])[0];
-        $role = $credentials['search_role'];
+        $role = ($credentials['search_role'] == '0') ? '' : $credentials['search_role'];
 
         $users = self::where(function ($q) use ($input, $clan) {
             foreach(self::$searchColumns as $s) {
@@ -408,17 +414,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->CheckFamily($family)
             ->groupBy('users.id')
             ->whereHas('roles', function ($q) use($role) {
-                $q->where('roles.id', '=', $role);
+                if ($role == '') {
+                    $q->where('roles.id', 'like', '%' . $role . '%');
+                } else {
+                    $q->where('roles.id', '=', $role);
+                }
             })
         ->get();
-        /*
-        if ($role !== '0') {
-            $userFilteredByRole = $users->filter(function ($value, $role) {
-                return $value == $role;
-            });
-            $userFilteredByRole->all();
-        }
-        */
+
         $users->each(function ($u) {
             $login = \LoginStat::where('user_id', '=', $u->getUserID())->orderBy('created_at', 'DESC')->skip(1)->first();
             if (is_object($login)) {

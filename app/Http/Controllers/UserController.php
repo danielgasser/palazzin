@@ -376,33 +376,23 @@ class UserController extends Controller
      */
     public function showUsers()
     {
-        $users = new User();
-        $users = $users->getAllUsers();
-        $users->each(function ($u) {
-            $u->country = DB::table('countries')
-                ->select('country_name_' . trans('formats.langjs') . ' as country')
-                ->where('country_code', '=', $u->user_country_code)
-                ->first();
-        });
+        $users = $this->searchUsers();
         $clans = [
             Clan::pluck('clan_description', 'id')->toArray()
         ];
-        array_unshift($clans[0] , trans('dialog.all'));
         $roles = [
             Role::where('role_guest', '=', '0')->pluck('role_description', 'id')->toArray()
         ];
-        array_unshift($roles[0] , trans('dialog.all'));
         $families = [
             Family::select('family_description', DB::raw('CONCAT(id, "|", clan_id) AS fam_code'))
                 ->pluck('family_description', 'fam_code')
                 ->toArray()
         ];
-        array_unshift($families[0], trans('dialog.all'));
         return view('logged.userlist')
             ->with('allUsers', $users)
-            ->with('clans', $clans[0])
-            ->with('roleList', $roles[0])
-            ->with('families', $families[0]);
+            ->with('clans', [0 => trans('dialog.all')] + $clans[0])
+            ->with('roleList', [0 => trans('dialog.all')] + $roles[0])
+            ->with('families', [0 => trans('dialog.all')] + $families[0]);
     }
 
     /**
@@ -425,7 +415,8 @@ class UserController extends Controller
             'order_by' => $orderby
         ];
         $users = $user->searchUser($credentials);
-        return $users;
+
+        return json_encode($users);
     }
 
     /**
