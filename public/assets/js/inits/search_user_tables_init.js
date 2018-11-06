@@ -36,10 +36,14 @@ var initTiny = function () {
     });
 };
 
-var searchSortPaginate = function (url, search, sortField, orderByField, callback) {
+var searchSortPaginate = function (url, search, sortField, orderByField) {
     "use strict";
-    var dummy = callback;
-        //fam = (search_new !== null) ? search_new.split('|')[0] : '';
+    search = {
+        search_user: $('#search_user').val(),
+        clan_search: $('#clan_search').val(),
+        family_search: $('#family_search').val(),
+        role_search: $('#role_search').val()
+    };
     $.ajax({
         type: 'POST',
         url: url,
@@ -53,8 +57,11 @@ var searchSortPaginate = function (url, search, sortField, orderByField, callbac
             user_id: $('#user_id').val()
         },
         success: function (d) {
-            $('#debug').html(d)
-            dummy(d);
+            var userData = $.parseJSON(d);
+            console.log(userData)
+            window.userTable.clear();
+            window.userTable.rows.add(userData)
+            window.userTable.draw();
         }
     });
 };
@@ -169,6 +176,7 @@ $(document).ready(function () {
     m.val(d.getMonth());
     //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
     $('#newsMessage').hide();
+    searchSortPaginate(urlTop, search, 'user_name', 'ASC');
 });
 
 jQuery(document).on('click', '#sendMessage', function (e) {
@@ -226,16 +234,17 @@ var chk_me = function(e) {
         searchIt(e);
     }, 500);
 };
+var search = {
+    search_user: $('#search_user').val(),
+    clan_search: $('#clan_search').val(),
+    family_search: $('#family_search').val(),
+    role_search: $('#role_search').val()
+};
+
 var searchIt = function (e) {
     var sl,
         field,
-        sortby,
-    search = {
-        search_user: $('#search_user').val(),
-        clan_search: $('#clan_search').val(),
-        family_search: $('#family_search').val(),
-        role_search: $('#role_search').val()
-    };
+        sortby;
     $.each(search, function (i, n) {
         if (n == null) {
             search[i] = '';
@@ -252,7 +261,7 @@ var searchIt = function (e) {
         field = 'user_name';
         sortby = 'ASC';
     }
-    searchSortPaginate(urlTop, search, field, sortby, fillUserTable);
+    searchSortPaginate(urlTop, search, field, sortby);
 };
 $(document).keyup('#search_user', function (e) {
     "use strict";
@@ -291,35 +300,10 @@ $(document).on('change', '#family_search', function (e) {
 });
 $(document).on('change', '#role_search', function (e) {
     "use strict";
-    //chk_me(e);
-    window.userTable.ajax.reload();
+    chk_me(e);
 });
 $(document).on('submit', 'form', function (e) {
     "use strict";
    e.preventDefault();
    return false;
-});
-$('#users').bind('sortStart', function () {
-    "use strict";
-    $('#table-body').html('');
-});
-$('#users').bind('sortEnd', function (e) {
-    "use strict";
-    var sl = e.target.config.sortList[0],
-        field = $(window.cols[sl[0]]).attr('id'),
-        sortby = (sl[1] === 1) ? 'ASC' : 'DESC',
-        searchText = ($('#search_user').val() === '') ? $('#clan_search').val() : $('#search_user').val(),
-        searchClan = ($('#clan_search').val() !== '') ? $('#clan_search').val() : null;
-    $('#table-body').html('');
-    /**
-     *
-     * @param url
-     * @param searchStr
-     * @param dateSearch
-     * @param sortField
-     * @param orderByField
-     * @param paginate
-     * @param callback
-     */
-    window.searchSortPaginate(urlTop, searchText, searchClan, field, sortby, null, window.fillUserTable);
 });

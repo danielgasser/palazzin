@@ -1,22 +1,10 @@
 #users {
-    thead {
-        tr {
-            th {
-                vertical-align: top;
-                border-bottom: 1px solid #b7282e;
-            }
-        }
-    }
     tbody {
         tr {
             td {
                 vertical-align: top;
-                padding: 0 0.5em;
                 &:before {
                     background-color: #b7282e;
-                }
-                ul {
-                    list-style-type: none;
                 }
                 &.control {
                     padding: 0 0.75em;
@@ -27,9 +15,25 @@
                         margin-left: -16px;
                     }
                 }
+                &:first-child:before {
+                    top: 3px;
+                    left: 1px;
+                }
+
             }
             &.odd {
                 background-color: #cbcbcb;
+            }
+            &.child {
+                ul.dtr-details {
+                    list-style-type: disc;
+                    width: 100%;
+                    margin: 2px;
+                    padding: 4px 22px;
+                }
+                td {
+                    border-bottom: 1px solid #b7282e;
+                }
             }
         }
     }

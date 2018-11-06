@@ -38,7 +38,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_stock_city',
         'user_stock_zip',
         'user_stock_country_code',
-        'user_generation'
+        'user_generation',
+        'clan_id',
+        'family_code',
+        'id'
     );
     /**
      * If using soft delete, buggy in L4.2
@@ -429,6 +432,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             } else {
                 $u->last_login = '-';
             }
+            $u->user_birthday = ($u->user_birthday !== '0000-00-00 00:00:00') ? date('d.m.Y', strtotime($u->user_birthday)) : '';
             $u->country = DB::table('countries')
                 ->select('country_name_' . trans('formats.langjs') . ' as country')
                 ->where('country_code', '=', $u->user_country_code)
