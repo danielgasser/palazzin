@@ -36,6 +36,14 @@ class Reservation extends Model {
         'reservation_reminder_sent_at'
     );
 
+    protected $setting;
+
+    public function __construct()
+    {
+        $setting = \Illuminate\Support\Facades\App::make(Setting::class);
+        $this->setting = $setting::getStaticSettings();
+    }
+
     /**
      *
      * @return mixed
@@ -149,7 +157,7 @@ class Reservation extends Model {
      * @param $uID
      * @return mixed
      */
-    public function checkExistentReservationV3($start, $end, $uID)
+    public function checkExistentReservationByUidV3($start, $end, $uID)
     {
         return self::where(function ($q) use ($start, $end, $uID) {
                 $q->where('reservation_started_at', '<=', $start);
@@ -173,6 +181,35 @@ class Reservation extends Model {
                 $q->where('reservation_started_at', '<=', $end);
                 $q->where('reservation_ended_at', '>=', $end);
                 $q->where('user_id', '=', $uID);
+            })
+            ->first();
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public function checkExistentReservationByDateV3($start, $end)
+    {
+        return self::where(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '>=', $end);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $start);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '<=', $end);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $end);
             })
             ->first();
     }
@@ -510,6 +547,7 @@ class Reservation extends Model {
             }))
             ->get();
     }
+
     /**
      * Get reservations by input->$opts
      *
@@ -517,14 +555,10 @@ class Reservation extends Model {
      * @return mixed Collection
      */
     public function getReservationsAjax ($opts) {
-        $set = Setting::getStaticSettings();
-
-        $orderby = (isset($opts['sort_field'])) ? $opts['order_by'] : 'ASC';
-        $sortField = (isset($opts['sort_field'])) ? $opts['sort_field'] : 'reservation_started_at';
         if (!isset($opts['start']) || strlen($opts['start'] == 0)) {
-            $d = new \DateTime($set['setting_calendar_start']);
+            $d = new \DateTime($this->setting['setting_calendar_start']);
             $startD = $d->format('Y-m-d');
-            $d->modify('+' . $set['setting_calendar_duration'] . ' year');
+            $d->modify('+' . $this->setting['setting_calendar_duration'] . ' year');
             $endD = $d->format('Y-m-d');
         } else {
             $d = new \DateTime($opts['start']);
@@ -540,7 +574,6 @@ class Reservation extends Model {
         $searchField = (isset($opts['search_field'])) ? $opts['search_field'] : '';
         $sortField = (isset($opts['sort_field'])) ? $opts['sort_field'] : 'reservation_started_at';
         $orderby = (isset($opts['sort_field'])) ? $opts['order_by'] : 'ASC';
-        $paging = (isset($opts['page'])) ? $opts['page'] : 3;
         if(empty($searchField)) {
             $reservations = $this
                 ->join('users', 'users.id', '=', 'reservations.user_id')
@@ -838,14 +871,14 @@ class Reservation extends Model {
      * @return mixed
      */
     public static function isAllowedInSecondaryPeriod ($resId, $userIdAb, $start) {
-        $set = Setting::getStaticSettings();
+        $self = new static;
 
         $startDate = new \DateTime($start);
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
         $diff = $startDate->diff($today);
         $allowedDate = new \DateTime();
-        $allowedDate->modify('+' . $set->setting_num_counter_clan_days . ' day');
+        $allowedDate->modify('+' . $self->setting->setting_num_counter_clan_days . ' day');
         $diffTwo = $allowedDate->diff($today);
 
         if (isset($resId) && $resId != 'xx') {
@@ -900,15 +933,14 @@ class Reservation extends Model {
     {
         $ar = [];
         $cu = new User();
-        $settings = Setting::getStaticSettings();
-        $reservations->each(function ($r) use ($ar, $cu, $preFix, $settings) {
+        $reservations->each(function ($r) use ($ar, $cu, $preFix) {
             if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
                 $cu = $cu->where('id', '=', $r->user_id_ab)->first();
                 $r->user_id_ab_name = $cu->user_login_name;
             } else {
                 $r->user_id_ab_name = '';
             }
-            $r->guests->each(function  ($j) use ($r, $preFix, $settings) {
+            $r->guests->each(function  ($j) use ($r, $preFix) {
                 $role_tax = Role::find($j->role_id);
                 $j->role_tax_night = $role_tax->role_tax_night;
                 $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
@@ -932,8 +964,14 @@ class Reservation extends Model {
         return $reservations;
     }
 
-    public function checkEarlyReservationOnOtherClan(Period $period, User $user)
+    public function isEarlyReservationOnOtherClan(Period $period, User $user, $dates)
     {
         $today = new DateTime();
+        $today->setTime(0, 0, 0);
+        $today->modify('- ' . $this->setting['setting_num_counter_clan_days'] . ' days');
+        $reservationStartDate = new DateTime($dates['resStart'][0]);
+        if ($reservationStartDate >= $today) {
+            $res = $this->checkExistentReservationByDateV3($dates['resStart'][0], $dates['resEnd'][0]);
+        }
     }
 }

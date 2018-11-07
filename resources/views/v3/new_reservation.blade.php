@@ -187,7 +187,7 @@
         var guestsDates = $('[id^="guests_date"]'),
             startDate,
             endDate,
-            rolesTaxes = {!!$roles!!},
+            rolesTaxes = {!!$roleTaxes!!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
             monthNames = JSON.parse('{!!json_encode(trans('calendar.month-names-short'))!!}'),

@@ -31,7 +31,7 @@ class NewReservationController extends Controller
         $reservationsPerPeriod = $this->getReservationsPerDateV3($pe->first()->id);
         return view('v3.new_reservation')
             ->with('rolesTrans', $rolesTrans)
-            ->with('roles', Role::getRolesTaxV3())
+            ->with('roleTaxes', Role::getRolesTaxV3())
             ->with('reservationsPerPeriod', $reservationsPerPeriod)
             ->with('periods', $pe);
     }
@@ -86,7 +86,9 @@ class NewReservationController extends Controller
         $dates['resEnd'] = $reservation->createDbDateFromInput($credentials['reservation_ended_at']);
         $dates['guestStart'] = $reservation->createDbDateFromInput($credentials['reservation_guest_started_at']);
         $dates['guestEnd'] = $reservation->createDbDateFromInput($credentials['reservation_guest_ended_at']);
-        $reservation->checkEarlyReservationOnOtherClan($period, $user);
+        if ($reservation->isEarlyReservationOnOtherClan($period, $user, $dates)) {
+            var_dump('ja');
+        }
         $occupiedBeds = $this->getReservationsPerDateV3();
     }
 
@@ -132,7 +134,7 @@ class NewReservationController extends Controller
         $end = $credentials['end'] . ' 00:00:00';
         $res = new Reservation();
         $user = User::find(Auth::id());
-        $existentRes = $res->checkExistentReservationV3($start, $end, $user->id);
+        $existentRes = $res->checkExistentReservationByUidV3($start, $end, $user->id);
         if (is_object($existentRes)) {
             return $existentRes->id;
         }

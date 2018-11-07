@@ -250,6 +250,7 @@ let V3Reservation = {
                 sEndD = V3Reservation.datePickerStart.formatOutputDates(maxStart, V3Reservation.globalDateFormat);
                 V3Reservation.datePickerStart.setMinimumDate(V3Reservation.datePickerStart.formatOutputDates(minStart, V3Reservation.globalDateFormat));
                 V3Reservation.datePickerStart.setMaximumDate(sEndD);
+                V3Reservation.datePickerStart.setting.maxYear = maxStart.getFullYear();
                 V3Reservation.datePickerStart.setSelectedDate(start);
                 V3Reservation.calcNights(start, end, els[2]);
             },
@@ -306,6 +307,7 @@ let V3Reservation = {
                 sEndD = V3Reservation.datePickerEnd.formatOutputDates(maxEnd, V3Reservation.globalDateFormat);
                 V3Reservation.datePickerEnd.setMinimumDate(sStartD);
                 V3Reservation.datePickerEnd.setMaximumDate(sEndD);
+                V3Reservation.datePickerEnd.setting.maxYear = maxEnd.getFullYear();
                 V3Reservation.datePickerEnd.setSelectedDate(end);
             },
             onChange: function(cIndex, rIndex, oSelectedValues)
