@@ -1,4 +1,4 @@
-.form-control, .input-group-addon, button, input[readonly] {
+.form-control, .input-group-addon, button:not(.navbar-toggle), input[readonly] {
   height: 2.0em;
   border: .13333em solid #b7b7b7;
   border-radius: .13333em; }
@@ -9,12 +9,12 @@
 .cal-unit-container {
   margin-top: 4px;
   width: 100%;
-  height: 9vh;
+  height: 6.5vh;
   font-size: 2em; }
 
 .GU-solid, .WO-solid {
   padding: 0.6vh;
-  font-size: 2.75vh; }
+  font-size: 1.75vh; }
 
 .GU-solid:hover {
   background-color: rgba(144, 50, 198, 0.5); }
@@ -107,6 +107,8 @@ label {
   font-weight: bold; }
   .hide-guest span {
     display: inline-block; }
+  .hide-guest #res_header_text {
+    display: inline-block; }
 
 [id^="hider_"] {
   cursor: pointer; }
@@ -138,96 +140,22 @@ label {
   top: -5px;
   right: -9px; }
 
-/**
-
- */
-#free_beds_container {
-  position: fixed;
-  right: 0px;
-  z-index: 10;
-  background-color: white; }
-  #free_beds_container #free_beds {
-    position: fixed;
-    top: 13.5vh;
-    right: 0;
-    z-index: 10;
-    cursor: pointer;
-    background-color: #b7282e;
-    color: white; }
-    #free_beds_container #free_beds i {
-      font-size: 1.25em;
-      color: #fff;
-      padding: 0.45em 0.45em 0.45em 0.3em; }
-    #free_beds_container #free_beds .text {
-      font-size: 1.3em;
-      writing-mode: vertical-rl;
-      -webkit-writing-mode: vertical-rl;
-      -ms-writing-mode: rl-bt;
-      display: inherit;
-      padding: 0.2em 0.05em 0.2em 0.2em; }
-  #free_beds_container #all-free-beds {
-    position: absolute;
-    right: 0;
-    width: 125px;
+#all-free-beds {
+  max-height: 350px;
+  overflow: auto; }
+  #all-free-beds .tooMuchBeds {
+    color: #b7282e;
     border: 2px solid #b7282e;
-    padding: 0.35em;
-    max-height: 300px;
-    overflow-x: auto;
-    background-color: white;
-    display: none; }
-    #free_beds_container #all-free-beds .tooMuchBeds {
-      color: #b7282e;
-      border: 2px solid #b7282e;
-      font-weight: bold;
-      padding: 0px 0 0 5px;
-      margin: 0 0 0 -5px;
-      border-left: none; }
-    #free_beds_container #all-free-beds #all-free-beds_title {
-      position: relative;
-      left: 0;
-      width: 100%;
-      height: 1.7em;
-      background: #b7282e;
-      padding: 0.2em;
-      color: white; }
+    font-weight: bold;
+    padding: 0px 0 0 5px;
+    margin: 0 0 0 -5px;
+    border-left: none; }
 
 #reservationInfo {
   padding: 0 0 0.25em 0; }
 
-#timeliner-container {
-  position: fixed;
-  left: 0;
-  z-index: 10;
-  background-color: white; }
-  #timeliner-container #timeliner-div {
-    cursor: pointer;
-    position: fixed;
-    left: 0px;
-    top: 13.5vh;
-    z-index: 10;
-    overflow: auto;
-    color: white;
-    background-color: #b7282e; }
-    #timeliner-container #timeliner-div .text {
-      font-size: 1.35em;
-      writing-mode: vertical-rl;
-      -webkit-writing-mode: vertical-rl;
-      -ms-writing-mode: rl-bt;
-      display: inherit;
-      padding: 0.1em 0.05em 0.2em 0.1em; }
-    #timeliner-container #timeliner-div i {
-      font-size: 1.25em;
-      color: #fff;
-      padding: 0.45em 0.45em 0.45em 0.3em; }
-  #timeliner-container #timeliner {
-    position: absolute;
-    left: 0;
-    border: 2px solid #b7282e;
-    padding: 0.135em;
-    max-height: 300px;
-    overflow-x: auto;
-    background-color: white;
-    display: none;
-    width: 129px; }
+#timeliner {
+  max-height: 350px;
+  overflow: auto; }
 
 /*# sourceMappingURL=new_reservation.css.map */

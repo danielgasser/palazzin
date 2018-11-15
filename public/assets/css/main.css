@@ -6230,6 +6230,28 @@ form .btn:focus, form .btn:active:focus, form .btn.active:focus {
 a {
   color: #b7282e; }
 
+#footer .container .navbar-fixed-bottom {
+  border-bottom: none; }
+#footer .container nav.navbar {
+  position: absolute;
+  top: 0;
+  height: 39px;
+  min-height: 1px !important; }
+  #footer .container nav.navbar li a {
+    color: #f7f7f7;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-weight: normal;
+    font-size: 1.2em; }
+    #footer .container nav.navbar li a:hover, #footer .container nav.navbar li a:focus {
+      background-color: #b7282e !important;
+      color: white !important; }
+  #footer .container nav.navbar li ul li a {
+    font-size: 1em; }
+
+#footerNav ul li.dropup ul.dropdown-menu {
+  position: absolute; }
+
 .nav-clan {
   background-color: #fff !important; }
   .nav-clan:hover {
@@ -6269,20 +6291,20 @@ a {
   border-color: #b7282e;
   color: #333; }
 
-.dropdown-menu {
-  background-color: #333; }
-
-.dropdown-menu > li > a {
-  background-color: #333;
-  color: white; }
-
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-menu > li > a:active {
-  background-color: #b7282e !important;
-  color: white !important; }
-
-.dropdown-menu > li > a:not([href]):hover, .dropdown-menu > li > a:not([href]):focus, .dropdown-menu > li > a:not([href]):active {
-  background-color: #333 !important;
-  color: white !important; }
+.nav .dropdown-menu {
+  background-color: #333 !important; }
+  .nav .dropdown-menu .divider {
+    margin: 0;
+    background-color: white; }
+  .nav .dropdown-menu li a {
+    background-color: #333;
+    color: white; }
+  .nav .dropdown-menu li:hover, .nav .dropdown-menu li:focus, .nav .dropdown-menu li:active {
+    background-color: #b7282e !important;
+    color: white !important; }
+  .nav .dropdown-menu li:not([href]):hover, .nav .dropdown-menu li:not([href]):focus, .nav .dropdown-menu li:not([href]):active {
+    background-color: #333 !important;
+    color: white !important; }
 
 .navbar {
   position: fixed;
@@ -6302,7 +6324,7 @@ a {
 
 #hideAll {
   display: none;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0px;
@@ -6593,12 +6615,12 @@ li.lang_active > a {
 
 #footer {
   width: 100%;
-  height: 35px;
+  height: 38px;
   font-size: 0.85em;
   background-color: #333;
   z-index: 1001;
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
   border-top: 1px solid #fff; }
   #footer .btn-small {
     background: transparent;
@@ -6611,6 +6633,16 @@ li.lang_active > a {
   #footer .btn-group {
     float: right;
     color: #000000; }
+
+#sub-footer {
+  background-color: #f7f7f7;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px; }
+  #sub-footer .container div {
+    text-align: center; }
 
 .text-muted {
   float: left;

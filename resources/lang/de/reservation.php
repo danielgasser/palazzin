@@ -54,6 +54,7 @@ return array(
     'periods' => 'Perioden',
     'choose-period' => 'Periode auswählen',
     'arrival' => 'Anreise',
+    'arrival_departure' => 'An-/Abreise',
     'free_beds_at' => 'Freie Betten am',
     'new_beds_at' => 'Neue Betten',
     'only_free_beds' => 'Es gibt nur',

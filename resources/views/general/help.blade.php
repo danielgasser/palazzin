@@ -5,8 +5,7 @@
     @if(Auth::check())
     <div id="other-help" class="col-sm-12 col-md-12">
             {!! Form::open(array('id' => 'changeTopics'), array('class' => 'form-inline')) !!}
-            {!!Form::label('help_topic', trans('help.choose'))!!}
-            {!!Form::select('help_topic', $routes, null, ['class' => 'form-control'])!!}
+            {!!Form::select('help_topic', $routes, null, ['class' => 'form-control', 'placeholder' => trans('help.choose')])!!}
             {!! Form::close() !!}
     </div>
     @endif

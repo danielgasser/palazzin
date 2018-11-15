@@ -16,6 +16,7 @@ Route::get('/', function () {
 Route::get('news', function () {
     return view('news');
 });
+Route::get('help/{topic?}', 'HelpController@showHelp');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {

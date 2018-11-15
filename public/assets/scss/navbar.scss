@@ -1,5 +1,47 @@
 @import "bootstrap-variables";
 @import "vars";
+#footer {
+    .container {
+        .navbar-fixed-bottom {
+            border-bottom: none;
+        }
+        nav.navbar {
+            position: absolute;
+            top: 0;
+            height: 39px;
+            min-height: 1px !important;
+            li {
+                a {
+                    color: #f7f7f7;
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    font-weight: normal;
+                    font-size: 1.2em;
+                    &:hover, &:focus {
+                        background-color: #b7282e !important;
+                        color: white !important;
+                    }
+                }
+                ul {
+                    li {
+                        a {
+                            font-size: 1em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+#footerNav {
+    ul {
+        li.dropup {
+            ul.dropdown-menu {
+                position: absolute;
+            }
+        }
+    }
+}
 .nav-clan {
     background-color: #fff !important;
     &:hover {
@@ -46,20 +88,28 @@
   border-color: $color-h1;
   color: #333;
 }
-.dropdown-menu {
-    background-color: #333;
-}
-.dropdown-menu>li>a {
-    background-color: #333;
-    color: white;
-}
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:active {
-  background-color: $color-h1 !important;
-    color: white !important;
-}
-.dropdown-menu>li>a:not([href]):hover, .dropdown-menu>li>a:not([href]):focus, .dropdown-menu>li>a:not([href]):active {
-    background-color: #333 !important;
-    color: white !important;
+.nav {
+    .dropdown-menu {
+        background-color: #333 !important;
+        .divider {
+            margin: 0;
+            background-color: white;
+        }
+        li {
+            a {
+                background-color: #333;
+                color: white;
+            }
+            &:hover, &:focus, &:active {
+                background-color: $color-h1 !important;
+                color: white !important;
+            }
+            &:not([href]):hover, &:not([href]):focus, &:not([href]):active {
+                background-color: #333 !important;
+                color: white !important;
+            }
+        }
+    }
 }
 
 .navbar {

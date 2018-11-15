@@ -1,6 +1,7 @@
 @extends('layout.master')
 @section('header')
     @parent
+    {{--
     <link rel="stylesheet" href="{!!asset('assets/css/v3/nehhkadam')!!}-AnyPicker/anypicker-all.min.css"
           rel="stylesheet" media="screen" type="text/css">
     <script type="text/javascript"
@@ -9,7 +10,13 @@
             src="{!!asset('assets/js/v3/libs/nehhkadam')!!}-AnyPicker/anypicker-i18n.js"></script>
     <link rel="stylesheet" href="{!!asset('assets/css/datepicker.css')!!}" rel="stylesheet" media="screen"
           type="text/css">
-
+--}}
+    <link rel="stylesheet" href="{!!asset('assets/js/v3/bootstrap-datepicker')!!}css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" media="screen" type="text/css">
+    <script type="text/javascript"
+            src="{!!asset('assets/js/v3/bootstrap-datepicker')!!}js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="{!!asset('assets/js/v3/bootstrap-datepicker')!!}locales/bootstrap-datepicker.de.min.js"></script>
 @stop
 
 @section('content')
@@ -211,8 +218,8 @@
             endDate.setHours(0, 0, 0, 0);
             V3Reservation.getFreeBeds(startDate, endDate, true, 'reservation/get-per-period', 'occupiedBeds_');
             $('#reservationInfo>h4').html(reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
-            V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], startDate, endDate, V3Reservation.periodID);
-            V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#reservation_guest_ended_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#number_nights_{!! $guest->id !!}_{!! $userRes->id !!}'], startDate, endDate, V3Reservation.periodID);
+            //V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], startDate, endDate, V3Reservation.periodID);
+            //V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#reservation_guest_ended_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#number_nights_{!! $guest->id !!}_{!! $userRes->id !!}'], startDate, endDate, V3Reservation.periodID);
         })
     </script>
     <script>

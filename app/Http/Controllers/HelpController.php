@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Help;
 use Illuminate\Support\Facades\Input;
 use Auth;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\URL;
 use Response;
 
 /**

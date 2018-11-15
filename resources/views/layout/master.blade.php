@@ -133,8 +133,6 @@
         .date_type[readonly] {
             cursor: pointer !important;
         }
-
-
     </style>
 
     <script src="{!!asset('assets/js/libs/tinymce/js/tinymce/tinymce.min.js')!!}"></script>

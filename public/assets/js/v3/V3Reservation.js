@@ -4,13 +4,14 @@ let V3Reservation = {
     globalDateFormat: 'dd.MM.yyyy',
     tmpDate: new Date(),
     freeBeds: {},
-    tmpDatePickerInstance: {},
+    datePickerSettings: {},
     disabledDates: [],
     langStrings: window.reservationStrings,
     init: function (pID, afterValidation, startDate) {
         V3Reservation.periodID = pID;
         let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
-            today = new Date();
+            today = new Date(),
+            datePicker;
         today.setHours(0, 0, 0, 0);
         if (period === null) {
             V3Reservation.writeLocalStorage(window.periods);
@@ -23,14 +24,44 @@ let V3Reservation = {
         window.endDate = new Date(period.period_end);
         startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
-        V3Reservation.getFreeBeds(startDate, window.endDate, false, 'reservation/get-per-period', 'freeBeds_');
-        $('#timeliner-div').trigger('click', true);
+        //$('#timeliner-div').trigger('click', true);
         $('#hideAll').hide();
         $(window.guestsDates).show();
         $('[id^="show_res"]').show();
         $('#reservationInfo>h4').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
-        V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], startDate, window.endDate, V3Reservation.periodID);
-        V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_0', '#reservation_guest_ended_at_0', '#number_nights_0'], startDate, window.endDate, V3Reservation.periodID);
+        V3Reservation.datePickerSettings = {
+            format: "dd.mm.yyyy",
+            weekStart: 1,
+            todayBtn: "linked",
+            clearBtn: true,
+            language: 'de',
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true,
+            startDate: V3Reservation.formatDate(today),
+            endDate: V3Reservation.formatDate(window.endDate),
+            defaultViewDate: {
+                year: today.getFullYear(),
+                month: today.getMonth(),
+                day: today.getDate()
+            },
+            immediateUpdates: true
+        };
+        $('.input-daterange').datepicker(V3Reservation.datePickerSettings);
+
+        V3Reservation.getFreeBeds(startDate, window.endDate, false, 'reservation/get-per-period', 'freeBeds_');
+    },
+    adaptChanged: function (dates, isStart) {
+        let el = (isStart) ? 'start' : 'end';
+        $('.input-daterange > input[name^="reservation_guest_' + el + '"]').each(function () {
+            //$(this).datepicker('setStartDate', dates.startDate);
+            //$(this).datepicker('setEndDate', dates.endDate);
+            //$(this).datepicker('setDate', dates.startDate);
+        })
+        V3Reservation.calcNights(dates.start, dates.end, '#reservation_nights_total');
+        V3Reservation.calcNights(dates.start, dates.end, '[id^="number_nights_"]');
+        V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
+        V3Reservation.checkExistentReservation(dates.startDate, dates.endDate);
     },
     getFreeBeds: function (start, end, edit, url , prefix) {
         let reservations = window.reservationsPerPeriod;
@@ -114,15 +145,15 @@ let V3Reservation = {
             i++;
         }
     },
-    calcNights: function (s, e, el) {
-        if (typeof s !== 'object') {
-            s = new Date(V3Reservation.deFormatDate(s, '.', true))
+    calcNights: function (startDate, endDate, el) {
+        if (typeof startDate !== 'object') {
+            startDate = new Date(V3Reservation.deFormatDate(startDate, '.', true))
         }
-        if (typeof e !== 'object') {
-            e = new Date(V3Reservation.deFormatDate(e, '.', true))
+        if (typeof endDate !== 'object') {
+            endDate = new Date(V3Reservation.deFormatDate(endDate, '.', true))
         }
-        let nights = parseInt(((e - s) / 1000 / 24 / 3600), 10),
-        showNights = (nights < 0) ? 0 : nights;
+        let nights = parseInt(((endDate - startDate) / 1000 / 24 / 3600), 10),
+        showNights = (nights < 0 || isNaN(nights)) ? 0 : nights;
         $(el).text(showNights);
         $('[id^="number_nights_"]').trigger('input');
         $('[id^="price_"]').trigger('input');
@@ -180,6 +211,10 @@ let V3Reservation = {
             numNight = (numberNight == '') ? '' : ' = ' + numberNight + ' Nächte';
         $('#guest_title_' + id).html(window.guestTitle + dates.start + ' - ' + dates.end + numNight + num_guest + guest_kind);
     },
+    setReservationHeaderText: function (id, dates, numberNight) {
+        let numNight = (numberNight == '') ? '' : ' = ' + numberNight + ' Nächte';
+        $('#res_header_text').html(': ' + dates.start + ' - ' + dates.end + numNight);
+    },
     setFreeBeds: function (start, end) {
         $('[id^="free-beds_"]').html('');
         let fillNewFreeBeds = function (str) {
@@ -190,7 +225,7 @@ let V3Reservation = {
             if ($('#free-beds_' + str).length > 0) {
                 $('#free-beds_' + str).html(showBedDateStr[2] + '.' + window.smallerThenTen((parseInt(showBedDateStr[1], 10) + 1)) + '.' + showBedDateStr[0] + ': <span style="text-align: right"><strong>' + bedNumberShow + '</strong></span>');
             } else {
-                $('#all-free-beds_text').append('<div id="free-beds_' + str + '">' + showBedDateStr[2] + '.' + window.smallerThenTen((parseInt(showBedDateStr[1], 10) + 1)) + '.' + showBedDateStr[0] + ': <span style="text-align: right"><strong>' + bedNumberShow + '</strong></span></div>');
+                $('#all-free-beds').append('<li id="free-beds_' + str + '"><a>' + showBedDateStr[2] + '.' + window.smallerThenTen((parseInt(showBedDateStr[1], 10) + 1)) + '.' + showBedDateStr[0] + ': <span style="text-align: right"><strong>' + bedNumberShow + '</strong></span></a></li>');
             }
             if (parseInt(bedNumberShow, 10) <= 0 && !V3Reservation.disabledDates.find(x => x.val === V3Reservation.formatDate(dateBed))) {
                 V3Reservation.disabledDates.push(
