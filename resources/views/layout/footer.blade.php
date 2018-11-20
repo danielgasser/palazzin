@@ -6,7 +6,7 @@
                   <div class="navbar-right" id="footerNav">
                       @if(Request::is('new_reservation'))
                           @include('logged.dialog.timeliner')
-                          @include('logged.dialog.free_beds')
+                          @include('logged.dialog.free_beds_menu')
                       @endif
                       <ul class="nav navbar-nav" style="margin: 0; float: left;">
                           @if(Auth::check())

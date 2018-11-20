@@ -6243,11 +6243,14 @@ a {
     padding-bottom: 9px;
     font-weight: normal;
     font-size: 1.2em; }
-    #footer .container nav.navbar li a:hover, #footer .container nav.navbar li a:focus {
+    #footer .container nav.navbar li a:hover, #footer .container nav.navbar li a:focus, #footer .container nav.navbar li a:active {
       background-color: #b7282e !important;
       color: white !important; }
   #footer .container nav.navbar li ul li a {
     font-size: 1em; }
+  #footer .container nav.navbar li.open a {
+    background-color: #b7282e !important;
+    color: white !important; }
 
 #footerNav ul li.dropup ul.dropdown-menu {
   position: absolute; }
@@ -6845,5 +6848,15 @@ table [id^="deleteRole_"] span {
   bottom: 0;
   width: 20px;
   height: 20px; }
+
+.tooltip .tooltip-inner {
+  border: 0.13333em solid #b7282e !important;
+  box-shadow: 0 0 5px rgba(183, 40, 46, 0.4) !important;
+  background-color: #ffffff;
+  color: #b7282e;
+  font-size: 1.25em;
+  width: 11vw; }
+.tooltip .tooltip-arrow {
+  border-top-color: #b7282e; }
 
 /*# sourceMappingURL=main.css.map */

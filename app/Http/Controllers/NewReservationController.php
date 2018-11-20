@@ -65,13 +65,13 @@ class NewReservationController extends Controller
      * @param null $periodID
      * @return mixed
      */
-    public function getReservationsPerDateV3($periodID = null)
+    public function getReservationsPerDateV3($periodID = null, $isJson = true)
     {
         $reservation = new Reservation();
         if (is_null($periodID)) {
             $periodID = Input::get('periodID');
         }
-        return $reservation->getReservationsPerPeriodV3($periodID);
+        return $reservation->getReservationsPerPeriodV3($periodID, $isJson);
     }
 
     public function saveReservation(SaveReservation $request)
@@ -89,7 +89,8 @@ class NewReservationController extends Controller
         if ($reservation->isEarlyReservationOnOtherClan($period, $user, $dates)) {
             var_dump('ja');
         }
-        $occupiedBeds = $this->getReservationsPerDateV3();
+        $occupiedBeds = $this->getReservationsPerDateV3(null, false);
+        $reservation->loopDates($dates['resStart'][0], $dates['resEnd'][0], 'checkOccupiedBeds', [$occupiedBeds]);
     }
 
     public function editReservation($id)

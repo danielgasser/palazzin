@@ -1,4 +1,11 @@
 @import "bootstrap-variables";
+.noClick {
+    pointer-events: none;
+}
+.giveFocus {
+    border-color: #b7282e !important;
+    box-shadow: 0 0 5px rgba(183, 40, 46, 0.4) !important;
+}
 .form-control, .input-group-addon, button:not(.navbar-toggle), input[readonly] {
   height: 2.0em;
   border: .13333em solid #b7b7b7;
@@ -42,7 +49,7 @@
   }
 }
 .v3-disabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   background-color: #eeeeee;
   opacity: 1;
 }
@@ -103,6 +110,9 @@ label {
   margin-top: 2vh;
   position: relative;
 }
+#guests_date_0 {
+    display: none;
+}
 .hide-guest {
   display: inline-block;
   position: absolute;
@@ -153,17 +163,40 @@ label {
   top: -5px;
   right: -9px;
 }
-
-#all-free-beds {
-    max-height: 350px;
-    overflow: auto;
-    .tooMuchBeds {
+#all-free-beds-container {
+    position: fixed;
+    bottom: 58px;
+    right: 8.7vw;
+    display: none;
+    #free-beds-title {
+        position: absolute;
+        transform: rotate(-90deg);
+        top: 15vh;
+        left: -4.3vw;
+        background-color: #b7282e !important;
+        color: white !important;
+        padding: 0.25em 0.5em;
+        font-size: 1.2em;
+    }
+    .close-icon {
         color: $brand-danger;
-        border: 2px solid $brand-danger;
-        font-weight: bold;
-        padding: 0px 0 0 5px;
-        margin: 0 0 0 -5px;
-        border-left: none;
+        padding: 0.25em 0.5em;
+        cursor: pointer;
+    }
+    #all-free-beds {
+        max-height: 350px;
+        overflow: auto;
+        display: block;
+        background-color: #333;
+        color: white;
+        [id^="free-beds_"] {
+            padding: 0.25em 0.5em;
+        }
+        .tooMuchBeds {
+            color: #b7282e;
+            font-weight: bold;
+            background-color: #f7f7f7;
+        }
     }
 }
 #reservationInfo {

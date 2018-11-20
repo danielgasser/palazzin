@@ -17,7 +17,7 @@
                     padding-bottom: 9px;
                     font-weight: normal;
                     font-size: 1.2em;
-                    &:hover, &:focus {
+                    &:hover, &:focus, &:active {
                         background-color: #b7282e !important;
                         color: white !important;
                     }
@@ -27,6 +27,12 @@
                         a {
                             font-size: 1em;
                         }
+                    }
+                }
+                &.open {
+                    a {
+                        background-color: #b7282e !important;
+                        color: white !important;
                     }
                 }
             }

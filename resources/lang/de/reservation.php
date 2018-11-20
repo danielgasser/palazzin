@@ -26,6 +26,7 @@ return array(
     'chosen_dates' => 'Ausgewählte Daten',
     'goto_chosen_dates' => 'Gehe zu den ausgewählten Daten',
     'dur' => 'Dauer',
+    'total_pers' => 'Total Personen',
     'guests' => array(
         'title' => 'Gäste',
         'number' => 'Anz.',

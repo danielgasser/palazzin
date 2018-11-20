@@ -20,7 +20,7 @@
 @stop
 
 @section('content')
-    @include('logged.dialog.free_beds')
+    @include('logged.dialog.free_beds_menu')
     <a name="top"></a>
     <div id="reservationInfo">
         <h1>{!!trans('navigation.edit_reservation')!!}</h1>

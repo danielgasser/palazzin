@@ -692,3 +692,16 @@ table {
   width:20px;
   height:20px;
 }
+.tooltip {
+    .tooltip-inner {
+        border: .13333em solid $brand-danger !important;
+        box-shadow: 0 0 5px rgba(183, 40, 46, 0.4) !important;
+        background-color: #ffffff;
+        color: $brand-danger;
+        font-size: 1.25em;
+        width: 11vw;
+    }
+    .tooltip-arrow {
+        border-top-color: $brand-danger;
+    }
+}

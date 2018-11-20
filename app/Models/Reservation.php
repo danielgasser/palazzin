@@ -129,10 +129,11 @@ class Reservation extends Model {
     /**
      * Gets reservations by period dates (start/end)
      *
-     * @param $periodID
+     * @param      $periodID
+     * @param bool $isJson
      * @return mixed
      */
-    public function getReservationsPerPeriodV3 ($periodID) {
+    public function getReservationsPerPeriodV3 ($periodID, $isJson = true) {
         $periods =[];
         for ($j = $periodID - 1; $j < $periodID + 5; $j++) {
             $periods[] = $j;
@@ -148,6 +149,9 @@ class Reservation extends Model {
             ->orderBy('reservation_started_at', 'asc')
             ->get();
         $reservations = self::setFreeBeds($reservations);
+        if (!$isJson) {
+            return $reservations->toArray();
+        }
         return $reservations->toJson();
     }
 
@@ -973,5 +977,31 @@ class Reservation extends Model {
         if ($reservationStartDate >= $today) {
             $res = $this->checkExistentReservationByDateV3($dates['resStart'][0], $dates['resEnd'][0]);
         }
+    }
+
+    /**
+     * @param string $starStr
+     * @param string $endStr
+     * @param string $call_func
+     * @param        $params
+     * @throws Exception
+     */
+    public function loopDates (string $starStr, string $endStr, string $call_func, $params)
+    {
+        $start = new DateTime($starStr);
+        $end = new DateTime($endStr);
+        $interval = new DateInterval('P1D');
+        $daterange = new DatePeriod($start, $interval ,$end);
+        foreach ($daterange as $date) {
+            call_user_func_array([$this, $call_func], ['date' => $date, 'occupiedBeds' => $params[0], 'beds' => $params[1]]);
+        }
+    }
+
+    public function checkOccupiedBeds ($params)
+    {
+        if ($params['occupiedBeds'][$params['date']->format('occupiedBed_' . 'Y_m_d')]) {
+
+        }
+
     }
 }

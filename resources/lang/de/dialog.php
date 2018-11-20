@@ -23,6 +23,7 @@ return array(
         'warning_delete_reservation' => 'Möchtest Du diese Reservierung wirklich löschen?',
         'warning_delete_reservation_guest' => 'Möchtest Du diese(n) Gast/Gäste wirklich löschen?',
         'warning_delete_right_from_role' => 'Möchtest Du der Rolle wirklich das folgende Recht entziehen?',
+        'warning_delete_guest' => 'Möchtest Du diesen Gasteintrag wirklich löschen?',
         'warning_delete_user' => 'Möchtest Du <span id="modal-username"></span> wirklich löschen?<br>Dies ist endgültig!<br>Diese Änderungen haben Auswirkungen auf<ul>
                                             <li>Getätigte Reservierungen</li>
                                             <li>Beiträge (Newsticker)</li>
