@@ -16,7 +16,7 @@ return array(
     'userlist' => 'Benutzerliste',
     'pricelist' => 'Preise',
     'checklist' => 'Benutzer-Checkliste',
-    'reservation' => 'Kalender',
+    'calendar' => 'Kalender',
     'edit_reservation' => 'Reservierung bearbeiten',
     'new_reservation' => 'Neue Reservierung',
     'all_reservations' => 'Meine Reservierungen',

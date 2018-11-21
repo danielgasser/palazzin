@@ -36,6 +36,15 @@ class Period extends Model {
      */
     private static $changingMonths;
 
+    protected $setting;
+
+    public function __construct()
+    {
+        $setting = \Illuminate\Support\Facades\App::make(Setting::class);
+        $this->setting = $setting::getStaticSettings();
+    }
+
+
     /**
      *
      * @return mixed
@@ -107,19 +116,19 @@ class Period extends Model {
      * @throws Exception
      */
     public static function calculatePeriods(){
-        $sets = Setting::getStaticSettings();
+        $self = new static;
 
         self::$changingMonths = array(1, 4, 7, 9, 10);
-        $startDate = new \DateTime($sets->setting_calendar_start);
+        $startDate = new \DateTime($self->setting->setting_calendar_start);
         $startDate->setTime(0, 0, 0);
-        $endDate = new \DateTime($sets->setting_calendar_start);
-        $endDate->add(new DateInterval('P' . $sets->setting_calendar_duration . 'Y'));
+        $endDate = new \DateTime($self->setting->setting_calendar_start);
+        $endDate->add(new DateInterval('P' . $self->setting->setting_calendar_duration . 'Y'));
         $endDate->add(new DateInterval('P1Y'));
         $endDate->modify('+1 day');
         $endDate->setTime(0, 0, 0);
         $interval = new DateInterval('P1D');
         $calendarPeriod = new DatePeriod($startDate, $interval, $endDate);
-        $lastClan = $sets->setting_starting_clan;
+        $lastClan = $self->setting->setting_starting_clan;
         DB::statement('SET foreign_key_checks = 0');
         DB::statement('TRUNCATE periods');
         DB::statement('SET foreign_key_checks = 1');
@@ -219,14 +228,14 @@ class Period extends Model {
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
         $periods = [];
-        $sets = Setting::getStaticSettings();
+        $self = new static;
 
         if (Input::has('this_date')) {
             $staDa = new \DateTime(Input::get('this_date'));
             $neDa = new \DateTime($staDa->format('Y-m-d'));
         } else {
-            $staDa = new \DateTime($sets->setting_calendar_start);
-            $neDa = new \DateTime($sets->setting_calendar_start);
+            $staDa = new \DateTime($self->setting->setting_calendar_start);
+            $neDa = new \DateTime($self->setting->setting_calendar_start);
         }
         $staDa->sub(new DateInterval('P6M'));
         $neDa->add(new DateInterval('P5M'));
@@ -273,10 +282,9 @@ class Period extends Model {
     {
         $period = new Period();
         if ($start !== null) {
-            $setting = Setting::getStaticSettings();
-            $s = new \DateTime($start . '-01');
-            $e = new \DateTime($setting->setting_calendar_start);
-            $st = $e->modify('+ ' . $setting->setting_calendar_duration . ' year')->format('Y-m-d');
+            $s = new DateTime($start . '-01');
+            $end = new DateTime($this->setting->setting_calendar_start);
+            $st = $end->modify('+ ' . $this->setting->setting_calendar_duration . ' year')->format('Y-m-d');
             $tpID = $this->getNearestPeriod($s, $period);
             $periodsTimeLine =  $period->join('clans', 'clans.id', '=', 'periods.clan_id')
                 ->select('periods.id', 'period_start', 'period_end', 'periods.clan_id', 'clans.clan_code', 'clans.clan_description')
@@ -300,6 +308,34 @@ class Period extends Model {
             $p->period_start_new = $start->format('Y-m-d H:m:s');
         });
         return $periodsTimeLine;
+
+    }
+
+    public function getTimelinerDatePickerPeriods ($start)
+    {
+        $period = new Period();
+        $datePickerDates = [];
+        $arr = [];
+        $s = new \DateTime($start . '-01');
+        $end = new \DateTime($this->setting->setting_calendar_start);
+        $st = $end->modify('+ ' . $this->setting->setting_calendar_duration . ' year')->format('Y-m-d');
+        $tpID = $this->getNearestPeriod($s, $period);
+        $periodsTimeLine =  $period->join('clans', 'clans.id', '=', 'periods.clan_id')
+            ->select('periods.id', 'period_start', 'period_end', 'periods.clan_id', 'clans.clan_code', 'clans.clan_description')
+            ->whereBetween('period_start', [$tpID->getPeriodStart(), $st])
+            ->orderBy('period_start', 'asc')
+            ->get();
+        $periodsTimeLine->each(function($p) use (&$datePickerDates) {
+            $start = new \DateTime($p->period_start);
+            $end = new \DateTime($p->period_end);
+            $interval = new DateInterval('P1D');
+            $daterange = new DatePeriod($start, $interval ,$end);
+            foreach ($daterange as $date) {
+                //$datePickerDates['week_' . $date->format('Y_m_d') . '_' . $date->format('W')] = $p->clan_code;
+                $datePickerDates[$date->format('d_m_Y')] = $p->clan_code;
+            }
+        });
+        return $datePickerDates;
 
     }
 

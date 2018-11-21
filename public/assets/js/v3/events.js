@@ -295,6 +295,9 @@ $('#reservation_started_at').on('changeDate', function (e) {
     isStart = ($(this).attr('id').indexOf('start') > -1);
     V3Reservation.adaptChanged(dates, isStart);
 });
+$('#reservation_started_at').on('show', function (e) {
+    //V3DatePicker.addClasses(window.resStartPicker);
+});
 $('#reservation_ended_at').on('changeDate', function (e) {
     let startString = $('#reservation_started_at').val().split('.'),
         dates = {

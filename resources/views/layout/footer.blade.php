@@ -63,7 +63,10 @@
                       <ul class="nav navbar-nav" style="margin: 0; float: right;">
                           <li class="clear-nav-entry{!!Request::is('/help/') ? ' active' : '' !!}" style="float: right;">
                               <?php
-                              $helper = explode('/', \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri());
+                              $current = \Illuminate\Support\Facades\Route::getFacadeRoot()->current();
+                              if (!is_null($current)) {
+                                  $helper = explode('/', \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri());
+                              }
                               ?>
                               @if(Auth::check())
                                   <a href="{!!URL::to('/help/' . $helper[0])!!}"><i class="fas fa-question"></i></a>

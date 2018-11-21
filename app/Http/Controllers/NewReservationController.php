@@ -28,12 +28,14 @@ class NewReservationController extends Controller
         $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
         $periods = new Period();
         $pe = $periods->getTimelinerPeriods($start->format('Y-m'));
+        $peDP = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
         $reservationsPerPeriod = $this->getReservationsPerDateV3($pe->first()->id);
         return view('v3.new_reservation')
             ->with('rolesTrans', $rolesTrans)
             ->with('roleTaxes', Role::getRolesTaxV3())
             ->with('reservationsPerPeriod', $reservationsPerPeriod)
-            ->with('periods', $pe);
+            ->with('periods', $pe)
+            ->with('periodsDatePicker', $peDP);
     }
 
     public function getAllReservationInPeriod()

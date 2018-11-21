@@ -7,6 +7,8 @@
             src="{!!asset('assets/js/v3/bootstrap-datepicker')!!}/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript"
             src="{!!asset('assets/js/v3/bootstrap-datepicker')!!}/locales/bootstrap-datepicker.de.min.js"></script>
+    <script type="text/javascript"
+            src="{!!asset('assets/js/v3')!!}/datepicker-init.js"></script>
     <link rel="stylesheet" href="{!!asset('assets/css')!!}/bootstrap-datepicker.css"
           rel="stylesheet" media="screen" type="text/css">
 @stop
@@ -121,6 +123,7 @@
             monthNames = JSON.parse('{!!json_encode(trans('calendar.month-names-short'))!!}'),
             datePickersStart = [],
             periods = JSON.parse('{!!json_encode($periods)!!}'),
+            datePickerPeriods = JSON.parse('{!!json_encode($periodsDatePicker)!!}'),
             periodID = periods[0].id,
             endDate,
             reservationsPerPeriod = JSON.parse('{!!$reservationsPerPeriod!!}'),
@@ -134,7 +137,7 @@
             resEndPicker,
             startGuestPicker = [],
             endGuestPicker = [];
-            console.log(periodID)
+            console.log(datePickerPeriods)
     </script>
     <script src="{!!asset('assets/js/v3/global_functions/funcs.js')!!}"></script>
     <script>
@@ -155,7 +158,7 @@
     </script>
     <script src="{!!asset('assets/js/v3/V3Reservation.js')!!}"></script>
     <script>
-        //V3Reservation.writeLocalStorage(periods);
+        V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>
     <script src="{!!asset('assets/js/v3/events.js')!!}"></script>

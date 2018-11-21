@@ -20,9 +20,10 @@ let V3Reservation = {
         if (startDate < today) {
             startDate = today;
         }
-        window.endDate = new Date(period.period_end);
+        window.endDate = new Date(window.settings.setting_calendar_start);
         startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
+        window.endDate.setFullYear(window.endDate.getFullYear() + parseInt(window.settings.setting_calendar_duration));
         //$('#timeliner-div').trigger('click', true);
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
@@ -35,13 +36,19 @@ let V3Reservation = {
             language: 'de',
             calendarWeeks: true,
             autoclose: true,
-            todayHighlight: true,
+            todayHighlight: false,
             startDate: V3Reservation.formatDate(today),
             endDate: V3Reservation.formatDate(window.endDate),
             defaultViewDate: {
                 year: today.getFullYear(),
                 month: today.getMonth(),
                 day: today.getDate()
+            },
+            beforeShowDay: function(Date) {
+                console.log(V3Reservation.formatDate(Date, false, '_'), window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')])
+                return {
+                    classes: window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')] + '-border'
+                };
             },
             immediateUpdates: true
         };
@@ -178,7 +185,10 @@ let V3Reservation = {
         $('[id^="number_nights_"]').trigger('input');
         $('[id^="price_"]').trigger('input');
     },
-    formatDate: function (d, long) {
+    formatDate: function (d, long, separator) {
+        if (separator === undefined) {
+            separator = '.';
+        }
         if (typeof d === 'string') {
             return d;
         }
@@ -186,9 +196,9 @@ let V3Reservation = {
             day = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate(),
             month = (jsMonth < 10) ? '0' + jsMonth : jsMonth;
         if (long) {
-            return d.getDate() + '. ' + window.fullMonthNames[d.getMonth()] + ' ' + d.getFullYear();
+            return d.getDate() + separator + ' ' + window.fullMonthNames[d.getMonth()] + ' ' + d.getFullYear();
         }
-        return day + '.' + month + '.' + d.getFullYear();
+        return day + separator + month + separator + d.getFullYear();
     },
     deFormatDate: function (d, sep, asString) {
         let tmp = d.split(sep),
@@ -260,7 +270,6 @@ let V3Reservation = {
                 )
             }};
         V3Reservation.loopDates(start, end, '-', fillNewFreeBeds);
-        console.log(V3Reservation.disabledDates);
         $('#free_beds')
             .show();
     },

@@ -21,7 +21,7 @@
                     <li class="{!! Request::is('admin/bills/filelist') ? 'active' : '' !!}"><a href="{!!URL::to('admin/bills/filelist')!!}">{!!trans('navigation.admin/bills/filelist')!!}</a></li>
                 @else
                     <li class="{!! Request::is('home') ? 'active' : '' !!}"><a href="{!!URL::to('home')!!}"><i class="fas fa-home"></i>&nbsp;{!!trans('navigation.home')!!}</a></li>
-                    <li class="{!! Request::is('reservation') ? 'active' : '' !!}"><a href="{!!URL::to('reservation')!!}"><i class="fas fa-calendar-alt"></i>&nbsp;{!!trans('navigation.reservation')!!}</a></li>
+                    <li class="{!! Request::is('calendar') ? 'active' : '' !!}"><a href="{!!URL::to('calendar')!!}"><i class="fas fa-calendar-alt"></i>&nbsp;{!!trans('navigation.calendar')!!}</a></li>
                     <li class="{!! Request::is('new_reservation') ? 'active' : '' !!}"><a href="{!!URL::to('new_reservation')!!}"><i class="fas fa-bed"></i>&nbsp;{!!trans('navigation.new_reservation')!!}</a></li>
                     {{-- <li class="{!! Request::is('edit_reservation*') ? 'active' : '' !!}"><a href="{!!URL::to('edit_reservation')!!}">{!!trans('navigation.edit_reservation')!!}</a></li>                        --}}
 

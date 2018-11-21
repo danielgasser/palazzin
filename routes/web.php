@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('edit_reservation/{res_id?}', 'NewReservationController@editReservation')->name('edit_reservation');
     Route::post('new_reservation/check_existent', 'NewReservationController@checkExistentReservation')->name('check_existent');
     Route::get('reservation/month/v3', ['uses' => 'NewReservationController@getReservationsPerDateV3']);
+    Route::get('calendar', 'ReservationController@getReservations');
 
     Route::post('userlist_search', 'UserController@searchUsers');
     Route::get('userlist', 'UserController@showUsers');
