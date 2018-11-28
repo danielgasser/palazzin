@@ -315,7 +315,6 @@ class Period extends Model {
     {
         $period = new Period();
         $datePickerDates = [];
-        $arr = [];
         $s = new \DateTime($start . '-01');
         $end = new \DateTime($this->setting->setting_calendar_start);
         $st = $end->modify('+ ' . $this->setting->setting_calendar_duration . ' year')->format('Y-m-d');
@@ -331,8 +330,7 @@ class Period extends Model {
             $interval = new DateInterval('P1D');
             $daterange = new DatePeriod($start, $interval ,$end);
             foreach ($daterange as $date) {
-                //$datePickerDates['week_' . $date->format('Y_m_d') . '_' . $date->format('W')] = $p->clan_code;
-                $datePickerDates[$date->format('d_m_Y')] = $p->clan_code;
+                $datePickerDates[$date->format('d_m_Y')] = $p->clan_code . '|' . $p->clan_description . '|' . $p->id;
             }
         });
         return $datePickerDates;

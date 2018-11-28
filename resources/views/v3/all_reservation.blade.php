@@ -143,8 +143,6 @@
     @include('logged.dialog.delete_reservation')
     @include('logged.dialog.not_invited')
     --}}
-    @include('logged.dialog.no_free_beds')
-    @include('logged.dialog.no_guest_only_you')
 
 @section('scripts')
     @parent

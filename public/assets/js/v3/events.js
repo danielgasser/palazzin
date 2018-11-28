@@ -112,7 +112,7 @@ jQuery(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_gu
         }
         V3Reservation.calcAllPrices();
         // ToDo when to call writeFreeBedsStorage?? on res. edit probably
-        V3Reservation.setGuestHeaderText(id, {startDate: guest_start, endDate: guest_end}, guest_guest_val, $(this).val(), $('#number_nights_' + id).text());
+        V3Reservation.setGuestHeaderText(id, {startDate: window.startGuestPicker[id].datepicker('getDate'), endDate: guest_end}, guest_guest_val, $(this).val(), $('#number_nights_' + id).text());
     } else {
         $('#clone_guest').show().attr('disabled', true);
     }
@@ -171,7 +171,6 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     $('#clone_guest')
         .attr('disabled', true)
         .removeClass('giveFocus');
-    /*
     $.each($('[id^="guests_date_"]'), function (i, n) {
         $('#guests_date_' + i).find('[class^="col-"]:not(.no-hide)').slideUp('slow');
         $('#hide_guest_' + i).addClass('fa-caret-down').removeClass('fa-caret-up');
@@ -180,7 +179,6 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     $('html, body').animate({
         scrollTop: $('#guests_date_' + counter).offset().top
     }, 2000);
-    */
     guestDateEl = $('#guestDates_' + counter);
     guestDateEl.datepicker(V3Reservation.datePickerSettings);
     window.startGuestPicker[counter] = guestDateEl.find('#reservation_guest_started_at_' + counter);
@@ -200,8 +198,12 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     $('#reservation_guest_guests_' + counter).addClass('giveFocus');
 });
 
-jQuery(document).on('input', '[id^="reservation_guest_num_"]', function (e) {
+jQuery(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e) {
     e.preventDefault();
+    let id = $(this).attr('id').split('_').pop();
+    if (parseInt(this.innerText, 10) <= parseInt(window.settings.setting_num_bed)) {
+
+    }
 });
 
 /**
@@ -222,12 +224,14 @@ jQuery(document).on('click', '[id^="remove_guest_"]', function () {
  */
 jQuery(document).on('click', '#confirm_delete_guest', function () {
     let id = $('#confirm_delete_guest').attr('data-id');
-    if (parseInt(id, 10) === 0) {
+    if (parseInt(id, 10) === 0 && $('[id^="guests_date_"]').length === 1) {
         $('#guests_date_' + id).hide();
     } else {
         $('#guests_date_' + id).remove();
     }
     $('#clone_guest').attr('disabled', false);
+    $('[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)').trigger('input');
+    $('#close-all-free-beds').trigger('click');
 });
 
 /**
@@ -238,6 +242,9 @@ jQuery(document).on('click', '[id^="hider_"]', function () {
     $('#guests_date_' + id).find('[class^="col-"]:not(.no-hide)').slideToggle('slow');
     $(this).children('#hide_guest_' + id).toggleClass('fa-caret-down');
     $(this).children('#hide_guest_' + id).toggleClass('fa-caret-up');
+    $('html, body').animate({
+        scrollTop: $('#guests_date_' + id).offset().top
+    }, 2000);
 });
 
 /**
@@ -288,24 +295,30 @@ jQuery('#ap-component-0>.ap-component-cont>.ap-component-data').data('horizontal
  * Datepicker events
  */
 $('#reservation_started_at').on('changeDate', function (e) {
+    if (e.date === undefined) {
+        return false
+    }
     let dates = {
             startDate: new Date(e.date.valueOf()),
             endDate: new Date(e.date.valueOf()),
         },
     isStart = ($(this).attr('id').indexOf('start') > -1);
-    V3Reservation.adaptChanged(dates, isStart);
+    V3Reservation.adaptChanged(dates, V3Reservation.periodEndDate, isStart);
 });
 $('#reservation_started_at').on('show', function (e) {
     //V3DatePicker.addClasses(window.resStartPicker);
 });
 $('#reservation_ended_at').on('changeDate', function (e) {
+    if (e.date === undefined) {
+        return false
+    }
     let startString = $('#reservation_started_at').val().split('.'),
         dates = {
             startDate: new Date(startString[2], (startString[1] - 1), startString[0], 0, 0, 0, 0),
             endDate: new Date(e.date.valueOf()),
         },
     isStart = ($(this).attr('id').indexOf('start') > -1);
-    V3Reservation.adaptChanged(dates, isStart);
+    V3Reservation.adaptChanged(dates, V3Reservation.periodEndDate, isStart);
 });
 
 $('[id^="reservation_guest_started_at_"], [id^="reservation_guest_ended_at_"]').on('changeDate', function (e) {

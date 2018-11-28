@@ -1,4 +1,22 @@
 @import "bootstrap-variables";
+.alert {
+    display: none;
+    position: fixed;
+    width: 100%;
+    top: 58px;
+    z-index: 10000;
+    left: 0;
+    border: navajowhite;
+    border-radius: 0;
+    font-size: 1.5em;
+    button {
+        height: inherit !important;
+        border: none !important;
+        span {
+            font-size: 1.5em;
+        }
+    }
+}
 .noClick {
     pointer-events: none;
 }
@@ -25,18 +43,25 @@
   font-size: 1.75vh;
 }
 .GU-solid:hover {
-  background-color: rgba(144, 50, 198, 0.5);
+  background-color: rgba(0, 0, 225, 0.5);
 }
 .WO-solid:hover {
-  background-color: rgba(261, 66, 0, 0.5);
+  background-color: rgba(255, 40, 0, 0.5);
 }
-.WO-border {
-    background: rgba(261, 66, 0, 0.18) !important;
+.WO-datepicker-content {
+    background: rgba(255, 40, 0, 0.18) !important;
     border-radius: 0 !important;
 }
-.GU-border {
-    background: rgba(144, 50, 198, 0.18) !important;
+.GU-datepicker-content {
+    background: rgba(0, 0, 225, 0.18) !important;
     border-radius: 0 !important;
+}
+
+.WO-datepicker-title {
+    color: rgba(255, 40, 0, 0.5) !important;
+}
+.GU-datepicker-title {
+    color: rgba(0, 0, 225, 0.5) !important;
 }
 
 .show_reservation_guest {
@@ -123,18 +148,18 @@ label {
     display: none;
 }
 .hide-guest {
-  display: inline-block;
-  position: absolute;
-  top: -15px;
-  left: 10px;
-  height: 27px;
-  padding: 0px 9px;
-  margin: 1px;
-  background-color: white;
-  font-size: 1.1em;
-  cursor: pointer;
-  font-weight: bold;
-  span {
+    display: block;
+    position: relative;
+    top: -15px;
+    left: 4px;
+    height: 39px;
+    padding: 0px 9px;
+    margin: 1px;
+    background-color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    font-weight: bold;
+    span {
     display: inline-block;
   }
     #res_header_text {
@@ -143,6 +168,7 @@ label {
 }
 [id^="hider_"] {
   cursor: pointer;
+    font-size: 1.2em;
 }
 [id^="hide_guest_"], #hide_res {
   display: inline;
@@ -177,15 +203,18 @@ label {
     bottom: 58px;
     right: 8.7vw;
     display: none;
+    z-index: 1000;
     #free-beds-title {
         position: absolute;
         transform: rotate(-90deg);
         top: 15vh;
-        left: -4.3vw;
+        left: auto;
         background-color: #b7282e !important;
         color: white !important;
         padding: 0.25em 0.5em;
         font-size: 1.2em;
+        right: 66px;
+        width: 113px;
     }
     .close-icon {
         color: $brand-danger;
@@ -215,4 +244,22 @@ label {
 #timeliner {
     max-height: 350px;
     overflow: auto;
+}
+.datepicker {
+    table {
+        tr {
+            td.disabled {
+                cursor: not-allowed !important;
+            }
+            td.today {
+                color: #000;
+                background-color: #ffdb99 !important;
+                border-color: #ffb733 !important;
+            }
+            td.active {
+                background-color: #337ab7 !important;
+                border-color: #2e6da4 !important;
+            }
+        }
+    }
 }

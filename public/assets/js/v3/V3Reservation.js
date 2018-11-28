@@ -4,13 +4,17 @@ let V3Reservation = {
     globalDateFormat: 'dd.MM.yyyy',
     tmpDate: new Date(),
     freeBeds: {},
+    periodEndDate: null,
     datePickerSettings: {},
     disabledDates: [],
     langStrings: window.reservationStrings,
     init: function (pID, afterValidation, startDate) {
         V3Reservation.periodID = pID;
         let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
-            today = new Date();
+            today = new Date(),
+        otherClanDate = new Date();
+        otherClanDate.setDate(otherClanDate.getDate() + 10);
+        otherClanDate.setHours(0, 0, 0, 0);
         today.setHours(0, 0, 0, 0);
         if (period === null) {
             V3Reservation.writeLocalStorage(window.periods);
@@ -20,6 +24,7 @@ let V3Reservation = {
         if (startDate < today) {
             startDate = today;
         }
+        V3Reservation.periodEndDate = new Date(period.period_end);
         window.endDate = new Date(window.settings.setting_calendar_start);
         startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
@@ -36,7 +41,8 @@ let V3Reservation = {
             language: 'de',
             calendarWeeks: true,
             autoclose: true,
-            todayHighlight: false,
+            title: window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1],
+            todayHighlight: true,
             startDate: V3Reservation.formatDate(today),
             endDate: V3Reservation.formatDate(window.endDate),
             defaultViewDate: {
@@ -45,9 +51,13 @@ let V3Reservation = {
                 day: today.getDate()
             },
             beforeShowDay: function(Date) {
-                console.log(V3Reservation.formatDate(Date, false, '_'), window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')])
+                let str = window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')].split('|');
+                $('.datepicker-title').html(str[1]).removeClass('WO-datepicker-title GU-datepicker-title')
+                    .addClass(str[0] + '-datepicker-title')
                 return {
-                    classes: window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')] + '-border'
+                    enabled: (window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && Date <= otherClanDate)),
+                    tooltip: str[1],
+                    classes: str[0] + '-datepicker-content ' + str[2]
                 };
             },
             immediateUpdates: true
@@ -58,14 +68,11 @@ let V3Reservation = {
         window.resEndPicker = $('.input-daterange').find('#reservation_ended_at');
         V3Reservation.getFreeBeds(startDate, window.endDate, false, 'reservation/get-per-period', 'freeBeds_');
     },
-    adaptChanged: function (dates, isStart, id) {
-        let el = (isStart) ? 'start' : 'end';
-        if (id === undefined) {
-            id = 0;
-        }
+    adaptChanged: function (dates, periodEndDate, isStart) {
         if (dates.startDate >= dates.endDate && isStart) {
             dates.endDate.setDate(dates.endDate.getDate() + 1);
             window.resEndPicker.datepicker('setStartDate', dates.endDate);
+            window.resEndPicker.datepicker('setEndDate', periodEndDate);
             window.resEndPicker.datepicker('setDate', dates.endDate);
             $('#reservation_ended_at').removeClass('noClick');
             $('#reservation_ended_at').addClass('giveFocus');
@@ -82,8 +89,10 @@ let V3Reservation = {
         for (let i = 0; i < window.startGuestPicker.length; i++) {
             window.startGuestPicker[i].datepicker('setStartDate', dates.startDate);
             window.startGuestPicker[i].datepicker('setEndDate', dates.endDate);
+            window.startGuestPicker[i].datepicker('setEndDate', periodEndDate);
             window.endGuestPicker[i].datepicker('setStartDate', dates.startDate);
             window.endGuestPicker[i].datepicker('setEndDate', dates.endDate);
+            window.endGuestPicker[i].datepicker('setEndDate', periodEndDate);
         }
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
         V3Reservation.calcNights(dates.startDate, dates.endDate, '[id^="number_nights_"]');
@@ -246,7 +255,7 @@ let V3Reservation = {
     setReservationHeaderText: function (id, dates, numberNight) {
         let nights = (parseInt(numberNight, 10) === 1) ? window.reservationStrings.night : window.reservationStrings.nights,
             numNight = (numberNight == '') ? '' : ' = ' + numberNight + ' ' + nights,
-            dateString = ': ' + V3Reservation.formatDate(dates.startDate) + ' - ' + V3Reservation.formatDate(dates.endDate) + numNight;
+            dateString = V3Reservation.formatDate(dates.startDate) + ' - ' + V3Reservation.formatDate(dates.endDate) + numNight;
         $('#res_header_text').html(dateString);
     },
     setFreeBeds: function (start, end) {
@@ -333,7 +342,6 @@ let V3Reservation = {
                     tooMuch = true;
                 }
             };
-        $('#reservation_guest_num_total').tooltip('hide');
         if (!tooMuch) {
             V3Reservation.loopDates($('#reservation_started_at').val(), $('#reservation_ended_at').val(), '-', checkAvailableBeds, tooMuch);
         }
@@ -368,12 +376,22 @@ let V3Reservation = {
             $(n).removeClass('tooMuchBeds');
         });
         idBeds.addClass('tooMuchBeds');
+        // ToDo not working on mobile, probably just forget about showing it
         $( '#all-free-beds-container').show();
         $('#all-free-beds').scrollTop($('#all-free-beds').scrollTop() + (idBeds.position().top - 141));
+        $.each($('[id^="guests_date_"]'), function (i, n) {
+            $('#guests_date_' + i).find('[class^="col-"]:not(.no-hide)').slideDown('slow');
+            $('#hide_guest_' + i).addClass('fa-caret-up').removeClass('fa-caret-down');
+        });
+        $('#hide_guest_' + id).trigger('click');
+        $('html, body').animate({
+            scrollTop: $('#guests_date_' + id).offset().top
+        }, 2000);
         $('#reservation_guest_num_' + id)
             .addClass('giveFocus');
-        $('#reservation_guest_num_total').tooltip('show')
+        $('#reservation_guest_num_total')
             .addClass('giveFocus');
+        $('#no_free_beds').show();
         $('#save_reservation').attr('disabled', true);
     },
     checkExistentReservation: function (s, e) {
@@ -388,7 +406,7 @@ let V3Reservation = {
                 "_token": window.token,
             },
             success: function (data) {
-                if (data !== "") {
+                if (!isNaN(parseInt(data, 10))) {
                     $('#reservation_exists').modal();
                     $('#edit_reservation_exists').attr('href', $('#edit_reservation_exists').attr('href') + '/' + data);
                 }

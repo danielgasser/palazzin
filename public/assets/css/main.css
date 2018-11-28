@@ -5898,13 +5898,6 @@ span[class="reservation_guest_num"]:after {
       #error-wrap #errors .error-field :after {
         content: "' "; }
 
-.close {
-  color: #fff;
-  opacity: 1;
-  text-shadow: none; }
-  .close:hover {
-    color: white; }
-
 .white-row {
   background-color: transparent !important;
   border: none !important;
@@ -6316,7 +6309,9 @@ a {
   border-radius: 0px;
   border-bottom: 1px solid white;
   background-color: #333;
-  min-height: 58px !important; }
+  min-height: 58px !important;
+  border-left: none;
+  border-right: none; }
 
 #main-nav-container {
   z-index: 11; }
@@ -6364,7 +6359,8 @@ a:focus, a:active {
       color: #b7282e; }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #333; }
+  color: #333;
+  font-size: 3vh; }
 
 body, html {
   width: 100%;

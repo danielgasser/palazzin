@@ -23,6 +23,7 @@ class NewReservationController extends Controller
     public function getCurrentPeriods()
     {
         $user = User::find(Auth::id());
+        $userClanID = $user->getUserClan();
         $start = new \DateTime();
         $checkPeriod = Period::getCurrentPeriod();
         $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
@@ -35,6 +36,7 @@ class NewReservationController extends Controller
             ->with('roleTaxes', Role::getRolesTaxV3())
             ->with('reservationsPerPeriod', $reservationsPerPeriod)
             ->with('periods', $pe)
+            ->with('userClan', $user->getUserClanName($userClanID))
             ->with('periodsDatePicker', $peDP);
     }
 
