@@ -10,6 +10,7 @@ return array(
     'role_tax_annual' => 'Jahresbeitrag (:n)',
     'role_tax_night' => 'Preis pro Nacht (:n)',
     'role_tax' => 'Preis/Nacht',
+    'tax_only' => 'Nacht',
     'role_tax_stock' => 'Preis pro Aktie (:n)',
     'role_code' => 'Rollen-Kürzel',
     'role_description' => 'Rolle :n',

@@ -24,16 +24,13 @@ $(document).on('click', '#reset_reservation', function (e) {
  * "Art des Gastes"
  */
 $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
-    var id = $(this).attr('id').split('_')[3],
+    let id = $(this).attr('id').split('_')[3],
         guest_num_val = $('#reservation_guest_num_' + id).val();
-    $(this).removeClass('giveFocus');
-    $('#reservation_guest_started_at_' + id).removeClass('giveFocus');
     if ($(this).val() !== '0' && guest_num_val !== '') {
         $('#clone_guest').show().attr('disabled', false);
         V3Reservation.calcAllPrices();
         V3Reservation.setGuestHeaderText(id, {startDate: $('#reservation_guest_started_at_' + id).val(), endDate: $('#reservation_guest_ended_at_' + id).val()}, $(this).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
     } else {
-        $('#reservation_guest_num_' + id).addClass('giveFocus');
         $('#clone_guest').show().attr('disabled', true);
     }
     if ($(this).value === '12') {
@@ -48,8 +45,8 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
         return false;
     }
     if (this.value !== '0') {
-        $('#reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2).replace(",", "."));
-        $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value].toFixed(2).replace(",", "."))
+        $('#reservation_guest_price_' + id).text(window.rolesTaxes[this.value]);
+        $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value])
     } else {
         $('#reservation_guest_price_' + id).val('');
         $('#hidden_reservation_guest_price_' + id).val('')
@@ -81,14 +78,13 @@ jQuery(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_gu
         guest_end = window.endGuestPicker[id].datepicker('getDate'),
         guest_guest_val = $('#reservation_guest_guests_' + id).val(),
         provResObject = [];
-    $('#reservation_guest_num_total').removeClass('giveFocus');
+    V3Reservation.enoughBeds(id);
     $('#save_reservation').attr('disabled', false);
     if (val > num) {
         $(this).val(num);
     }
     if ($(this).val() !== '' && guest_guest_val !== '0') {
         $('#clone_guest').show().attr('disabled', false);
-        $('#reservation_guest_num_' + id).removeClass('giveFocus');
         while (guest_start < guest_end) {
             let strNew = guest_start.getFullYear() + '_' + window.smallerThenTen(guest_start.getMonth()) + '_' + window.smallerThenTen(guest_start.getDate()),
                 //strBed = guest_start.getFullYear() + '-' + window.smallerThenTen(guest_start.getMonth()) + '-' + window.smallerThenTen(guest_start.getDate()),
@@ -126,6 +122,8 @@ jQuery(document).on('click', '#show-all-free-beds', function () {
 jQuery(document).on('click', '#close-all-free-beds', function () {
     $('#all-free-beds-container').hide();
     $('#show-all-free-beds').removeClass('open');
+    $('#free_beds>li>a').removeClass('jquery-hover-a')
+
 });
 
 jQuery(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle:not(#show-all-free-beds)', function () {
@@ -161,6 +159,8 @@ jQuery(document).on('click', '#clone_guest', function (e) {
         $(div)
             .attr('id', splitted.join('_') + '_' + counter);
     }
+    guestDateEl = $('#guestDates_' + counter);
+    guestDateEl.datepicker('destroy');
     $('#reservation_guest_num_' + counter).val('');
     $('#number_nights_' + counter).text('');
     $('#hidden_number_nights_' + counter).val('');
@@ -169,8 +169,7 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     $('#reservation_guest_price_' + counter).val('');
     $('#guest_title_' + counter).html('');
     $('#clone_guest')
-        .attr('disabled', true)
-        .removeClass('giveFocus');
+        .attr('disabled', true);
     $.each($('[id^="guests_date_"]'), function (i, n) {
         $('#guests_date_' + i).find('[class^="col-"]:not(.no-hide)').slideUp('slow');
         $('#hide_guest_' + i).addClass('fa-caret-down').removeClass('fa-caret-up');
@@ -179,7 +178,6 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     $('html, body').animate({
         scrollTop: $('#guests_date_' + counter).offset().top
     }, 2000);
-    guestDateEl = $('#guestDates_' + counter);
     guestDateEl.datepicker(V3Reservation.datePickerSettings);
     window.startGuestPicker[counter] = guestDateEl.find('#reservation_guest_started_at_' + counter);
     window.endGuestPicker[counter] = guestDateEl.find('#reservation_guest_ended_at_' + counter);
@@ -190,12 +188,6 @@ jQuery(document).on('click', '#clone_guest', function (e) {
     window.endGuestPicker[counter].datepicker('setEndDate', tomorrow);
     window.endGuestPicker[counter].datepicker('setDate', tomorrow);
     V3Reservation.calcNights(today, tomorrow, '#number_nights_' + counter);
-    $('#reservation_ended_at').removeClass('giveFocus');
-    $.each($('[id^="reservation_guest_started_at_"]'), function () {
-        $(this).removeClass
-    });
-    $('#reservation_guest_started_at_' + counter).addClass('giveFocus');
-    $('#reservation_guest_guests_' + counter).addClass('giveFocus');
 });
 
 jQuery(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e) {
@@ -223,15 +215,32 @@ jQuery(document).on('click', '[id^="remove_guest_"]', function () {
  * Remove guest entry
  */
 jQuery(document).on('click', '#confirm_delete_guest', function () {
-    let id = $('#confirm_delete_guest').attr('data-id');
+    let id = $('#confirm_delete_guest').attr('data-id'),
+    dates = {
+        start: null,
+        end: null
+    };
     if (parseInt(id, 10) === 0 && $('[id^="guests_date_"]').length === 1) {
         $('#guests_date_' + id).hide();
     } else {
         $('#guests_date_' + id).remove();
     }
-    $('#clone_guest').attr('disabled', false);
+    $("#delete_guest").modal('hide');
     $('[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)').trigger('input');
     $('#close-all-free-beds').trigger('click');
+    for (let i = 0; i < window.startGuestPicker.length; i++) {
+        dates.start = window.startGuestPicker[i].datepicker('getDate');
+        dates.end = window.endGuestPicker[i].datepicker('getDate');
+        V3Reservation.calcNights(dates.start, dates.end, '#reservation_nights_total');
+        V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
+    }
+    $('#clone_guest').attr('disabled', false);
+});
+/**
+ * Cancel Remove guest entry
+ */
+jQuery(document).on('click', '#cancel_delete_guest', function (e) {
+    $('#delete_guest').hide();
 });
 
 /**
@@ -251,9 +260,10 @@ jQuery(document).on('click', '[id^="hider_"]', function () {
  * Toggle Res entry
  */
 jQuery(document).on('click', '[id^="hide_all_res"]', function () {
-    $('[id^="show_res"]').find('[class^="col-"]').slideToggle('slow');
+    $('[id^="show_res"]').find('[class^="col-"]').not('#res_info').slideToggle('slow');
     $(this).children('span').toggleClass('fa-caret-down');
     $(this).children('span').toggleClass('fa-caret-up');
+    $('#res_info').clone();
 });
 
 /**
@@ -272,18 +282,6 @@ jQuery(document).on('input propertychange paste change', '[id^="price_"]', funct
     $('#hidden_price_' + id).val($(this).text())
 });
 
-jQuery(document).on('change', '#reservation_guest_num_total', function () {
-    $.each($('[id^="free-beds_"]'), function (i, n) {
-        $(n).removeClass('tooMuchBeds');
-    });
-});
-
-/**
- * Show occupied beds
- */
-jQuery(document).on('click', '#ap-button-cancel', function (e) {
-    console.log(this)
-});
 /**
  * Show occupied beds
  */
@@ -305,9 +303,7 @@ $('#reservation_started_at').on('changeDate', function (e) {
     isStart = ($(this).attr('id').indexOf('start') > -1);
     V3Reservation.adaptChanged(dates, V3Reservation.periodEndDate, isStart);
 });
-$('#reservation_started_at').on('show', function (e) {
-    //V3DatePicker.addClasses(window.resStartPicker);
-});
+
 $('#reservation_ended_at').on('changeDate', function (e) {
     if (e.date === undefined) {
         return false

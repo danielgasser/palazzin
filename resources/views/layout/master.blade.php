@@ -156,16 +156,7 @@
     @endif
 <div id="wrap">
     <div id="loading">
-        <div class="row">
-            <div class="col-sm-12 col-md-5">&nbsp;
-            </div>
-            <div class="col-sm-12 col-md-2 ccc">
-                {{--trans('dialog.charging') . '...&nbsp;&nbsp;&nbsp;&nbsp;'--}}
-               <img id="loadergif" alt="{!!trans('dialog.charging') . '...&nbsp;&nbsp;&nbsp;&nbsp;'!!}" title="{!!trans('dialog.charging') . '...&nbsp;&nbsp;&nbsp;&nbsp;'!!}" src="{!!asset('assets/img/loading.gif')!!}">
-            </div>
-            <div class="col-sm-12 col-md-5">&nbsp;
-            </div>
-        </div>
+       <img id="loadergif" alt="{!!trans('dialog.charging')!!}" title="{!!trans('dialog.charging')!!}" src="{!!asset('assets/img/preloader.gif')!!}">
     </div>
     @section('errors')
      @if($errors->any())

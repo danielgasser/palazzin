@@ -34,8 +34,9 @@ return array(
         'role' => 'Rolle',
         'tax_night' => 'Tarif',
         'total_nights' => 'Total Nächte',
-        'total' => 'Total Gast'
-    ),
+        'total' => 'Total Gast',
+          'pe' => 'Pers.',
+  ),
     'month' => 'Monat',
     'year' => 'Jahr',
     'date' => 'Datum',

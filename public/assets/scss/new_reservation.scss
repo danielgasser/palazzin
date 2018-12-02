@@ -25,7 +25,7 @@
     box-shadow: 0 0 5px rgba(183, 40, 46, 0.4) !important;
 }
 .form-control, .input-group-addon, button:not(.navbar-toggle), input[readonly] {
-  height: 2.0em;
+  height: 2.05em;
   border: .13333em solid #b7b7b7;
   border-radius: .13333em;
 }
@@ -63,7 +63,18 @@
 .GU-datepicker-title {
     color: rgba(0, 0, 225, 0.5) !important;
 }
-
+#total_res {
+    font-size: 1.1em;
+    margin: 5px 0;
+    padding: .1333em .43333em;
+    display: block;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: initial;
+    span {
+        padding: 0;
+    }
+}
 .show_reservation_guest {
   margin: 0;
   font-size: 1.2em;
@@ -72,6 +83,12 @@
     font-size: 1.2em;
     padding: .1333em .43333em;
   }
+}
+[id^="remove_guest_"] {
+    font-size: 1em;
+    display: inline !important;
+    border: none !important;
+    float: right;
 }
 .show_reservation {
   margin: 0;
@@ -119,6 +136,15 @@ label {
   margin-bottom: 0.5em;
   position: relative;
 }
+[id^="total_guest_"] {
+    font-size: 1.1em;
+    margin: 5px 0;
+    padding: .1333em .43333em;
+    display: block;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: initial;
+}
 .collapse-res {
   position: absolute;
   bottom: -2%;
@@ -143,6 +169,7 @@ label {
   border: 1px solid #b7b7b7;
   margin-top: 2vh;
   position: relative;
+    margin-bottom: 0.5em;
 }
 #guests_date_0 {
     display: none;
@@ -152,7 +179,7 @@ label {
     position: relative;
     top: -15px;
     left: 4px;
-    height: 39px;
+    height: 19px;
     padding: 0px 9px;
     margin: 1px;
     background-color: white;
@@ -262,4 +289,8 @@ label {
             }
         }
     }
+}
+.jquery-hover-a {
+    background-color: #b7282e !important;
+    color: white !important;
 }

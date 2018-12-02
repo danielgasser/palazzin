@@ -6543,7 +6543,9 @@ table.tablesorter, table.tablesorter thead tr th {
   border: 1px solid red; }
 
 #loadergif {
-  width: 45px; }
+  width: 50px;
+  display: block;
+  margin: 40vh auto; }
 
 #loading {
   position: fixed;

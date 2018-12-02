@@ -52,7 +52,7 @@
                     <span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{!!trans('reservation.title_short')!!}:
                     <div id="res_header_text"></div>
                 </div>
-                <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <label>{!!trans('reservation.arrival_departure')!!}</label>
                     <div class="input-daterange input-group">
                         <input type="text" id="reservation_started_at" name="reservation_started_at" class="input-sm form-control show_reservation{{ $errors->has('reservation_started_at') ? ' input-error' : ''}}"
@@ -62,23 +62,13 @@
                                placeholder="{!!trans('reservation.depart')!!}" readonly value="{!! old('reservation_ended_at') !!}"/>
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-3 col-xs-3">
+                <div class="col-md-12 col-sm-12 col-xs-12" id="res_info">
                     <div class="form-group">
-                        <label>{!!trans('reservation.guests.total_nights')!!}</label>
-                        <div class="form-control v3-disabled show_reservation" id="reservation_nights_total"></div>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-3">
-                    <div class="form-group">
-                        <label>{!!trans('bill.total_all_bill')!!}</label>
-                        <div class="form-control v3-disabled show_reservation" id="reservation_costs_total">0.00</div>
+                        <div class="alert alert-info" id="total_res">
+                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true" title="{!!trans('dialog.texts.warning_no_free_beds')!!}">1</span> {!!trans('reservation.guests.pe')!!}&nbsp;
+                            CHF <span id="reservation_costs_total">0.-</span>
+                        </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{!! old('hidden_reservation_costs_total') !!}">
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-3">
-                    <div class="form-group">
-                        <label>{!!trans('reservation.total_pers')!!}</label>
-                        <div class="form-control v3-disabled show_reservation" id="reservation_guest_num_total" data-toggle="tooltip" data-html="true" title="{!!trans('dialog.texts.warning_no_free_beds')!!}">1</div>
                         <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{!! old('hidden_reservation_guest_num_total') !!}">
                     </div>
                 </div>
