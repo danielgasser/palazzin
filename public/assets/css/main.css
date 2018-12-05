@@ -881,7 +881,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 body {
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -5876,12 +5876,14 @@ span[class="reservation_guest_num"]:after {
   #error-wrap .alert-danger {
     background-color: #b7282e; }
   #error-wrap #errors {
-    width: 50%;
-    height: 14%;
+    width: 100%;
     position: fixed;
-    top: 39vh;
-    margin: auto 25%;
-    border-radius: 10px; }
+    top: 57px;
+    border-radius: 0;
+    border: none; }
+    #error-wrap #errors button.close {
+      color: white;
+      opacity: 1; }
     #error-wrap #errors ul {
       list-style-type: none;
       padding-left: 0px; }
@@ -6242,7 +6244,6 @@ a {
   #footer .container nav.navbar li ul li a {
     font-size: 1em; }
   #footer .container nav.navbar li.open a {
-    background-color: #b7282e !important;
     color: white !important; }
 
 #footerNav ul li.dropup ul.dropdown-menu {

@@ -216,10 +216,8 @@
             endDate = new Date(dateStringEnd[2], (dateStringEnd[1] - 1), dateStringEnd[0], 0, 0, 0);
             startDate.setHours(0, 0, 0, 0);
             endDate.setHours(0, 0, 0, 0);
-            V3Reservation.getFreeBeds(startDate, endDate, true, 'reservation/get-per-period', 'occupiedBeds_');
+            V3Reservation.getFreeBeds(startDate, endDate, 'freeBeds_');
             $('#reservationInfo>h4').html(reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
-            //V3Reservation.createIOSDatePicker(['#reservation_started_at', '#reservation_ended_at', '#reservation_nights_total'], startDate, endDate, V3Reservation.periodID);
-            //V3Reservation.createIOSDatePicker(['#reservation_guest_started_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#reservation_guest_ended_at_{!! $guest->id !!}_{!! $userRes->id !!}', '#number_nights_{!! $guest->id !!}_{!! $userRes->id !!}'], startDate, endDate, V3Reservation.periodID);
         })
     </script>
     <script>

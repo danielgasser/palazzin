@@ -50,7 +50,7 @@
                 CHF <span id="price_{!! $i !!}">0.-</span>
                 <input type="hidden" name="number_nights[]" id="hidden_number_nights_{!! $i !!}" value="{!! old('number_nights.' . $i) !!}">
                 <input type="hidden" name="price[]" id="hidden_price_{!! $i !!}" value="{!! old('price.' . $i) !!}">
-                <input type="hidden" name="reservation_guest_price[]" id="reservation_guest_price_{!! $i !!}" value="{!! old('reservation_guest_price.' . $i) !!}">
+                <input type="hidden" name="hidden_reservation_guest_price[]" id="hidden_reservation_guest_price_{!! $i !!}" value="{!! old('reservation_guest_price.' . $i) !!}">
             </div>
         </div>
     </div>

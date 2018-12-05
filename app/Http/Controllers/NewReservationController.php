@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveReservation;
-use Illuminate\View\View;
 use Period;
 use Reservation;
 use Role;
@@ -31,9 +30,13 @@ class NewReservationController extends Controller
         $pe = $periods->getTimelinerPeriods($start->format('Y-m'));
         $peDP = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
         $reservationsPerPeriod = $this->getReservationsPerDateV3($pe->first()->id);
+        $guestBlade = view('logged.dialog.guest', ['rolesTrans' => $rolesTrans, 'i' => 0]);
+        $guestEntryView = $guestBlade->render();
+        $guestEntryView = strtr($guestEntryView,"\n\r","  ");
         return view('v3.new_reservation')
             ->with('rolesTrans', $rolesTrans)
             ->with('roleTaxes', Role::getRolesTaxV3())
+            ->with('guestEntryView', $guestEntryView)
             ->with('reservationsPerPeriod', $reservationsPerPeriod)
             ->with('periods', $pe)
             ->with('userClan', $user->getUserClanName($userClanID))
@@ -94,7 +97,7 @@ class NewReservationController extends Controller
             var_dump('ja');
         }
         $occupiedBeds = $this->getReservationsPerDateV3(null, false);
-        $reservation->loopDates($dates['resStart'][0], $dates['resEnd'][0], 'checkOccupiedBeds', [$occupiedBeds]);
+        $reservation->loopDates($dates['resStart'][0], $dates['resEnd'][0], 'checkOccupiedBeds', $occupiedBeds);
     }
 
     public function editReservation($id)

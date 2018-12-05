@@ -977,6 +977,7 @@ class Reservation extends Model {
         if ($reservationStartDate >= $today) {
             $res = $this->checkExistentReservationByDateV3($dates['resStart'][0], $dates['resEnd'][0]);
         }
+        return $res;
     }
 
     /**
@@ -993,14 +994,24 @@ class Reservation extends Model {
         $interval = new DateInterval('P1D');
         $daterange = new DatePeriod($start, $interval ,$end);
         foreach ($daterange as $date) {
-            call_user_func_array([$this, $call_func], ['date' => $date, 'occupiedBeds' => $params[0], 'beds' => $params[1]]);
+            $args = [
+                'compDate' => $date, 'occupiedBeds' => $params
+            ];
+            call_user_func_array([$this, $call_func], [$args]);
         }
     }
 
-    public function checkOccupiedBeds ($params)
+    /**
+     * @param array $args
+     */
+    public function checkOccupiedBeds ($args)
     {
-        if ($params['occupiedBeds'][$params['date']->format('occupiedBed_' . 'Y_m_d')]) {
+        foreach ($args['occupiedBeds'] as $key => $beds) {
+            if (preg_match('freeBeds', $key)) {
+                if ($beds[$args['compDate']->format('freeBeds_' . 'Y_m_d')]) {
 
+                }
+            }
         }
 
     }

@@ -79,7 +79,7 @@
 
             @for($i = 0; $i < $c; $i++)
             <div id="guest_entries">
-                @include('logged.dialog.guest')
+               {{-- @include('logged.dialog.guest')--}}
             </div>
                 @endfor
         </form>
@@ -99,12 +99,6 @@
     @include('logged.dialog.free_beds')
 @section('scripts')
     @parent
-    <script>
-        document.addEventListener('scroll', function (event) {
-            if (event.target.id === 'idOfUl') { // or any other filtering condition
-            }
-        }, true);
-    </script>
     <script>
         var guestsDates = $('[id^="guests_date"]'),
             startDate,
@@ -128,8 +122,9 @@
             resStartPicker,
             resEndPicker,
             startGuestPicker = [],
-            endGuestPicker = [];
-            console.log(periods)
+            endGuestPicker = [],
+            guestEntryView = '{!! $guestEntryView !!}';
+            console.log(datePickerPeriods)
     </script>
     <script>
         $(document).ready(function () {

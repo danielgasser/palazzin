@@ -324,14 +324,27 @@ class Period extends Model {
             ->whereBetween('period_start', [$tpID->getPeriodStart(), $st])
             ->orderBy('period_start', 'asc')
             ->get();
-        $periodsTimeLine->each(function($p) use (&$datePickerDates) {
+        $i = 0;
+        $periodsTimeLine->each(function($p) use (&$datePickerDates, &$i) {
             $start = new \DateTime($p->period_start);
             $end = new \DateTime($p->period_end);
+            $testEnd = new \DateTime($p->period_end);
+            // start & end date +1 day because of the last day of period still being bookable for this clan
+            if ($i > 0) {
+                $start->modify('+ 1 day');
+            }
+            $end->modify('+ 1 day');
             $interval = new DateInterval('P1D');
             $daterange = new DatePeriod($start, $interval ,$end);
             foreach ($daterange as $date) {
-                $datePickerDates[$date->format('d_m_Y')] = $p->clan_code . '|' . $p->clan_description . '|' . $p->id;
+                $date->setTime(0, 0, 0, 0);
+                if ($date == $testEnd) {
+                    $datePickerDates[$date->format('d_m_Y')] = $p->clan_code . '|' . $p->clan_description . '|' . $p->id . '|end';
+                } else {
+                    $datePickerDates[$date->format('d_m_Y')] = $p->clan_code . '|' . $p->clan_description . '|' . $p->id;
+                }
             }
+            $i++;
         });
         return $datePickerDates;
 

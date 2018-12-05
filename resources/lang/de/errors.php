@@ -9,8 +9,8 @@ return array(
     'title' => 'Upps!',
     'subtitle' => 'Da ging was gründlich schief',
     'status' => 'HTTP Status Code',
-    'title-too-much-logins' => 'Zuviele gescheiterte Loginversuche!',
-    'text-too-much-logins' => 'Bitte wende Dich sich an den <a href="mailto::master-mail?:subject">:master</a>!',
+    'title-too-much-logins' => 'Zuviele gescheiterte Loginversuche',
+    'text-too-much-logins' => 'Bitte wende Dich sich an den <a href="mailto::master-mail?:subject">:master</a>',
     'not-found' => 'Seite wurde nicht gefunden',
     'error_text' => array(
         '400' => 'Bad Request - Ungültige Anfrage',

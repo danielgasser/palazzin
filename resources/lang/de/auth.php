@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Kein Benutzer mit diesen Angaben gefunden.',
-    'throttle' => 'Zu viele Anmeldeversuche. Bitte versuche es in :seconds Sekunden wieder.',
+    'failed' => 'Kein Benutzer mit diesen Angaben gefunden',
+    'throttle' => 'Zu viele Anmeldeversuche. Bitte versuche es in :seconds Sekunden wieder',
 
 ];

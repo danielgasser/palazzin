@@ -52,6 +52,14 @@
     background: rgba(255, 40, 0, 0.18) !important;
     border-radius: 0 !important;
 }
+.WO-datepicker-end {
+    border-radius: 0 !important;
+    background: linear-gradient(to right bottom, rgba(255, 40, 0, 0.18) 50%, rgba(0, 0, 225, 0.18) 50%) !important;
+}
+.GU-datepicker-end {
+    border-radius: 0 !important;
+    background: linear-gradient(to left top, rgba(255, 40, 0, 0.18) 50%, rgba(0, 0, 225, 0.18) 50%) !important;
+}
 .GU-datepicker-content {
     background: rgba(0, 0, 225, 0.18) !important;
     border-radius: 0 !important;
@@ -171,15 +179,12 @@ label {
   position: relative;
     margin-bottom: 0.5em;
 }
-#guests_date_0 {
-    display: none;
-}
 .hide-guest {
     display: block;
     position: relative;
     top: -15px;
     left: 4px;
-    height: 19px;
+    height: 39px;
     padding: 0px 9px;
     margin: 1px;
     background-color: white;
@@ -201,7 +206,7 @@ label {
   display: inline;
   text-align: right;
   border: none;
-  padding: 0 0.5em 0 0;
+  padding: 0 0.1em 0 0;
   margin: 0;
   height: 1em;
   vertical-align: sub;
