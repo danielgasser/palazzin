@@ -222,7 +222,6 @@
     @section('footer')
         @include('layout.footer')
     @show
- @include('logged.dialog.login_again')
    @section('scripts')
     {{--<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>--}}
     <script src="{!!asset('assets/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')!!}"></script>

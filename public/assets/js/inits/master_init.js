@@ -23,18 +23,9 @@ jQuery(document).ready(function () {
         $('#loading').hide();
         $('.loading-day').hide();
     });
-    $(document).ajaxError(function (event, jqxhr, settings, exception) {
-        if (jqxhr.status === 401 && document.location !== 'https://palazzin.ch') {
-            $('#login_again').modal({backdrop: 'static', keyboard: false});
-        }
-    });
 
     jQuery(document).on('click', '#open-admin > a', function () {
         window.location.href = this.href;
-    });
-
-    jQuery(document).on('click', '#login_again_btn', function () {
-        window.location.href = '/logout';
     });
 
     jQuery(document).on('click', '#show-tests', function () {

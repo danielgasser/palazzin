@@ -81,28 +81,6 @@
 console.log(only_free_beds)
 
         </script>
-    @if (!Request::is('/'))
-        <script>
-            jQuery(document).on('click', 'a, button', function () {
-                $.ajax({
-                    type: 'GET',
-                    url: 'get-session',
-                    success: function (data) {
-                        if (data === '0') {
-                            $('#login_again').modal({backdrop: 'static', keyboard: false});
-                            setTimeout(function () {
-                                $('#login_again_btn').trigger('click');
-                            }, 1000)
-                        }
-                    }
-                });
-
-            });
-            jQuery(document).on('click', '#login_again_btn', function () {
-                window.location.href = '/logout';
-            });
-        </script>
-    @endif
 
     <script src="{!!asset('assets/js/html.js')!!}"></script>
    @stop
