@@ -102,7 +102,7 @@ class Reservation extends Model {
      * @param string $format
      * @return array|bool
      */
-    public function createDbDateFromInput ($value, $format = 'd.m.Y')
+    public static function createDbDateFromInput ($value, $format = 'd.m.Y')
     {
         $valArray = [];
         $values = [];
@@ -115,12 +115,12 @@ class Reservation extends Model {
             $dateTime = DateTime::createFromFormat($format, $v);
             $errors = DateTime::getLastErrors();
             if (!empty($errors['warning_count']) || !empty($errors['error_count'])) {
-                return false;
+                return null;
             }
             if ($dateTime !== false) {
                 $valArray[] = \Carbon\Carbon::createFromFormat($format, $v)->setTime(0,0,0)->format('Y-m-d H:i:s');
             } else {
-                return false;
+                return null;
             }
         }
         return $valArray;
@@ -978,41 +978,5 @@ class Reservation extends Model {
             $res = $this->checkExistentReservationByDateV3($dates['resStart'][0], $dates['resEnd'][0]);
         }
         return $res;
-    }
-
-    /**
-     * @param string $starStr
-     * @param string $endStr
-     * @param string $call_func
-     * @param        $params
-     * @throws Exception
-     */
-    public function loopDates (string $starStr, string $endStr, string $call_func, $params)
-    {
-        $start = new DateTime($starStr);
-        $end = new DateTime($endStr);
-        $interval = new DateInterval('P1D');
-        $daterange = new DatePeriod($start, $interval ,$end);
-        foreach ($daterange as $date) {
-            $args = [
-                'compDate' => $date, 'occupiedBeds' => $params
-            ];
-            call_user_func_array([$this, $call_func], [$args]);
-        }
-    }
-
-    /**
-     * @param array $args
-     */
-    public function checkOccupiedBeds ($args)
-    {
-        foreach ($args['occupiedBeds'] as $key => $beds) {
-            if (preg_match('freeBeds', $key)) {
-                if ($beds[$args['compDate']->format('freeBeds_' . 'Y_m_d')]) {
-
-                }
-            }
-        }
-
     }
 }

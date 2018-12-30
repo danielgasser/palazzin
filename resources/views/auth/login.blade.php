@@ -11,11 +11,6 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <h1>{{ __('login.login') }}</h1>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('userdata.user_login_name') . ' ' . __('dialog.or') . ' ' . __('userdata.email') }}</label>
 
                                 <input id="usernameOrEmail" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="usernameOrEmail" value="{{ old('email') }}" required autofocus>
@@ -45,10 +40,10 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12 login-checkbox">
-                                <label>
+                                <label for="remember">
                                     {{ __('login.stay') }}
+                                    <input type="checkbox" data-onstyle="success" data-offstyle="warning" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 </label>
-                                <input type="checkbox" data-onstyle="success" data-offstyle="warning" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                             </div>
                         </div>
 
@@ -82,18 +77,12 @@
 @section('scripts')
     @parent
     <script>
-        var oldie = '{{$isOldWin}}';
+        let oldie = '{{$isOldWin}}';
         $(document).ready(function(){
             if (oldie === '1') {
                 $('#old_ie').modal({backdrop: 'static', keyboard: false})
             }
         });
-        $(function() {
-            $("[name^='remember']").bootstrapToggle({
-                on: '<i class=\'fa fa-check\'></i> Ja',
-                off: '<i class=\'fa fa-times\'></i> Nein',
-            });
-        })
         window.localStorage.clear();
     </script>
 @stop

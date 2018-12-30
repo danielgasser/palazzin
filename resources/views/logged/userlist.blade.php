@@ -1,8 +1,8 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{!!asset('assets/js/v3')!!}/DataTables/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="{!!asset('assets/css')!!}/datatables_roomapp.css"/>
+    <link rel="stylesheet" type="text/css" href="{!!asset('assets/js/v3')!!}/DataTables/datatables.min.css"/>
 
     <script type="text/javascript" src="{!!asset('assets/js/v3')!!}/DataTables/datatables.min.js"></script>
 @stop
@@ -10,20 +10,20 @@
     <div class="row">
         {!!Form::open(array('url' => 'userlist', 'class' => 'form-inline', 'style' => 'margin-bottom: 2em', 'role'=> 'form', 'method' => 'post'))!!}
         <div class="col-sm-3 col-md-3">
-            {!!Form::label('search_user', "Volltextsuche")!!}<br>
+            {!!Form::label('search_user', "Volltextsuche")!!}
             {!!Form::text('search_user', Input::old('search_user'), array('class' => 'form-control', 'id' => 'search_user', 'placeholder' => trans('admin.user.etc')))!!}
         </div>
         {{-- clan --}}
         <div class="col-sm-3 col-md-3">
-            {!!Form::label('clan_search', trans('userdata.clan'))!!}<br>
+            {!!Form::label('clan_search', trans('userdata.clan'))!!}
             {!!Form::select('clan_search', $clans, Input::old('clan_search'), array('class' => 'form-control'))!!}
         </div>
         <div class="col-sm-3 col-md-3">
-            {!!Form::label('family_search', trans('userdata.halfclan'))!!}<br>
+            {!!Form::label('family_search', trans('userdata.halfclan'))!!}
             {!!Form::select('family_search', $families, Input::old('family_search'), array('class' => 'form-control'))!!}
         </div>
         <div class="col-sm-3 col-md-3">
-            {!!Form::label('role_search', trans('userdata.roles'))!!}<br>
+            {!!Form::label('role_search', trans('userdata.roles'))!!}
             {!!Form::select('role_search', $roleList, Input::old('role_search'), array('class' => 'form-control'))!!}
         </div>
         <div class="col-sm-12 col-md-12">
@@ -109,7 +109,16 @@
                 responsive: true,
                 autoWidth: true,
                 sScrollY: "35em",
-                sScrollX: "90%",
+                sScrollX: "100%",
+                sScrollXInner: "100%",
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                order: [
+                    1,
+                    'asc'
+                ],
                 columnDefs: [
                     {
                         targets: [0],
@@ -122,7 +131,7 @@
                     },
                     {
                         targets: [1],
-                        responsivePriority: 3,
+                        responsivePriority: 2,
                         data: 'user_first_name'
                     },
                     {
@@ -248,10 +257,6 @@
                         data: 'last_login'
                     },
                 ],
-                order: [
-                    3,
-                    'asc'
-                ],
                 searching: false,
                 language: {
                     paginate: {
@@ -262,23 +267,21 @@
                     },
                     info: '{!!trans('pagination.info')!!}',
                     sLengthMenu: '{!!trans('pagination.length_menu')!!}'
+                },
+                fnDrawCallback: function () {
                 }
             };
         </script>
     <script src="{!!asset('assets/js/inits/search_user_tables_init.js')!!}"></script>
     <script>
-/*
-        function format (d) {
-            let html = '<h4>{!!trans('roles.role_description', ['n' => '(n)'])!!}</h4><ul>';
-            $.each(d.roles, function (i, n) {
-                html += '<li>' + n.role_description + '</li>';
-            });
-            html += '</ul>';
-            return html;
-        }
-*/
         $(document).ready( function () {
             userTable = $('#users').DataTable(dataTableSettings);
+            setTimeout(function () {
+                userTable.columns.adjust();
+            }, 770)
+            $(window).resize( function () {
+                userTable.columns.adjust();
+            } );
             $('#users tbody').on('click', 'td.00', function () {
                 var tr = $(this).closest('tr');
                 var row = userTable.row(tr);

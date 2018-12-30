@@ -5848,18 +5848,6 @@ span[class="reservation_guest_num"]:after {
       margin-top: -29px;
       display: block; }
 
-.alert-success {
-  background-color: #ffffff;
-  border-color: #b7282e;
-  color: #000000;
-  position: absolute;
-  z-index: 5000;
-  width: 66%;
-  margin: 39vh;
-  -webkit-box-shadow: -6px 8px 5px 0px #4b4b4b;
-  -moz-box-shadow: -6px 8px 5px 0px #4b4b4b;
-  box-shadow: -6px 8px 5px 0px #4b4b4b; }
-
 #message h3, #message p, #message span {
   color: #000000; }
 
@@ -6314,8 +6302,17 @@ a {
   border-left: none;
   border-right: none; }
 
-#main-nav-container {
+.navbar-header {
   z-index: 11; }
+  .navbar-header ul {
+    padding-left: 8px;
+    margin-bottom: 2px; }
+    .navbar-header ul .title {
+      font-size: 1.2em;
+      font-weight: bold;
+      display: inline-block; }
+      .navbar-header ul .title a {
+        color: #f7f7f7; }
 
 /*@import "stats";*/
 #newsMessage {
@@ -6342,22 +6339,19 @@ a:focus, a:active {
   color: #b7282e;
   background-color: rgba(255, 255, 255, 0.5); }
 
-.welcome-nav {
-  margin: auto 20%; }
-  .welcome-nav a {
-    background: #b7282e;
-    border: 1px solid transparent;
-    color: white;
-    display: block;
-    padding: 0.5em;
-    margin: 0.25em;
-    font-size: 1.5em;
-    width: 60%; }
-    .welcome-nav a:hover, .welcome-nav a:active {
-      text-decoration: none;
-      border: 1px solid #b7282e;
-      background: transparent;
-      color: #b7282e; }
+.welcome-nav a {
+  background: #b7282e;
+  border: 1px solid transparent;
+  color: white;
+  display: block;
+  padding: 0.5em;
+  margin: 0.25em;
+  font-size: 1.5em; }
+  .welcome-nav a:hover, .welcome-nav a:active {
+    text-decoration: none;
+    border: 1px solid #b7282e;
+    background: transparent;
+    color: #b7282e; }
 
 h1, h2, h3, h4, h5, h6 {
   color: #333;
@@ -6567,7 +6561,7 @@ table.tablesorter, table.tablesorter thead tr th {
       padding-top: 10px; }
 
 #wrap > .container {
-  padding: 40px 1em 75px 1em; }
+  padding: 62px 1em 75px 1em; }
 
 .modal {
   z-index: 10001; }
@@ -6656,7 +6650,7 @@ li.lang_active > a {
 .navbar-brand {
   padding: 3px 15px; }
   .navbar-brand img {
-    height: 55px; }
+    height: 47px; }
 
 [data-toggle="dropdown"] {
   width: auto; }

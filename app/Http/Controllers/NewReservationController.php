@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveReservation;
+use Illuminate\Http\Request;
 use Period;
 use Reservation;
 use Role;
@@ -19,6 +20,7 @@ use Auth;
 
 class NewReservationController extends Controller
 {
+
     public function getCurrentPeriods()
     {
         $user = User::find(Auth::id());
@@ -85,19 +87,53 @@ class NewReservationController extends Controller
     {
         $credentials = request()->all();
         $validated = $request->validated();
-       // dd($validated);
-        $period = new Period(['id' => $credentials['periodID']]);
-        $user = User::find(Auth::id());
-        $reservation = new Reservation();
-        $dates['resStart'] = $reservation->createDbDateFromInput($credentials['reservation_started_at']);
-        $dates['resEnd'] = $reservation->createDbDateFromInput($credentials['reservation_ended_at']);
-        $dates['guestStart'] = $reservation->createDbDateFromInput($credentials['reservation_guest_started_at']);
-        $dates['guestEnd'] = $reservation->createDbDateFromInput($credentials['reservation_guest_ended_at']);
-        if ($reservation->isEarlyReservationOnOtherClan($period, $user, $dates)) {
-            var_dump('ja');
+       // ToDo if beds == 1 only check total beds from localStorage
+        $resStart = Reservation::createDbDateFromInput($validated['reservation_started_at']);
+        $resEnd = Reservation::createDbDateFromInput($validated['reservation_ended_at']);
+        $start = new \DateTime($resStart[0]);
+        $end = new \DateTime($resEnd[0]);
+        $args['reservation_nights'] = $start->diff($end)->format('%a');
+        $args['reservation_reminder_sent'] = 0;
+        $args['reservation_bill_sent'] = 0;
+        $args['reservation_reminder_sent_at'] = '0000-00-00 00:00:00';
+        $args['user_id'] = Auth::id();
+        $args['period_id'] = intval($credentials['periodID']);
+        $args['reservation_started_at'] = $start->format('Y-m-d H:i:s');
+        $args['reservation_ended_at'] = $end->format('Y-m-d H:i:s');
+        if (!isset($validated['user_id_ab'])) {
+            $args['user_id_ab'] = 0;
+        } else {
+            $args['user_id_ab'] = $credentials['user_id_ab'];
         }
-        $occupiedBeds = $this->getReservationsPerDateV3(null, false);
-        $reservation->loopDates($dates['resStart'][0], $dates['resEnd'][0], 'checkOccupiedBeds', $occupiedBeds);
+        $res = new Reservation();
+        $user = User::find(Auth::id());
+        $res->users()->associate($user);
+        $res->fill($args);
+        $saved = $res->save();
+        if (array_key_exists('reservation_guest_started_at', $validated)) {
+            for($i = 0; $i < sizeof($validated['reservation_guest_started_at']); $i++) {
+                $guest = new \Guest();
+                $role = Role::find($validated['reservation_guest_guests'][$i]);
+                $guest->roles()->associate($role);
+                $args = [
+                    'reservation_id' => $res->id,
+                    'guest_started_at' => $validated['reservation_guest_started_at'][$i],
+                    'guest_ended_at' => $validated['reservation_guest_ended_at'][$i],
+                    'guest_number' => $validated['reservation_guest_num'][$i],
+                    'guest_night' => $validated['number_nights'][$i],
+                    'role_id' => $validated['reservation_guest_guests'][$i],
+                    'guest_tax_role_id' => $validated['reservation_guest_guests'][$i],
+                    'guest_tax' => $credentials['price'][$i],
+                    'guest_title' => $credentials['price'][$i],
+                ];
+                $guest->fill($args);
+                $res->guests()->save($guest);
+            }
+        }
+        if ($saved) {
+            return back()
+                ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
+        }
     }
 
     public function editReservation($id)

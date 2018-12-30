@@ -16,17 +16,17 @@
     <div class="col-md-4 col-sm-12 col-xs-12">
         <label>{!!trans('reservation.arrival_departure')!!}</label>
         <div class="input-daterange input-group" id="guestDates_{!! $i !!}">
-            <input type="text" id="reservation_guest_started_at_{!! $i !!}" name="reservation_guest_started_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_started_at') ? ' input-error' : ''}}"
+            <input type="text" id="reservation_guest_started_at_{!! $i !!}" name="reservation_guest_started_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_started_at.' . $i) ? ' input-error' : ''}}"
                    placeholder="{!!trans('reservation.arrival')!!}" readonly value="{!! old('reservation_guest_started_at.' . $i) !!}"/>
             <span class="input-group-addon">bis</span>
-            <input type="text" id="reservation_guest_ended_at_{!! $i !!}" name="reservation_guest_ended_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_ended_at') ? ' input-error' : ''}}"
+            <input type="text" id="reservation_guest_ended_at_{!! $i !!}" name="reservation_guest_ended_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_ended_at.' . $i) ? ' input-error' : ''}}"
                    placeholder="{!!trans('reservation.depart')!!}" readonly value="{!! old('reservation_guest_ended_at.' . $i) !!}"/>
         </div>
     </div>
     <div class="col-md-2 col-sm-6 col-xs-6">
         <div class="form-group">
             <label>{!!trans('reservation.guest_kind')!!}</label>
-            <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests') ? ' input-error' : ''}}" id="reservation_guest_guests_{!! $i !!}"
+            <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests.' . $i) ? ' input-error' : ''}}" id="reservation_guest_guests_{!! $i !!}"
                     name="reservation_guest_guests[]">
                 @foreach($rolesTrans as $k => $r)
                     <option {!! (old('reservation_guest_guests.' . $i) == $k) ? ' selected' : '' !!} value="{!!$k!!}">{!!$r!!}</option>
@@ -37,7 +37,7 @@
     <div class="col-md-2 col-sm-6 col-xs-6">
         <div class="form-group">
             <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
-            <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num') ? ' input-error' : ''}}" id="reservation_guest_num_{!! $i !!}"
+            <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num.' . $i) ? ' input-error' : ''}}" id="reservation_guest_num_{!! $i !!}"
                    name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" title="{!!trans('dialog.texts.warning_no_free_beds')!!}" type="number" min="1"
                    max="{!!$settings['setting_num_bed'] - 1!!}" value="{!! old('reservation_guest_num.' . $i) !!}">
         </div>

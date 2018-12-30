@@ -47,7 +47,7 @@ class Role extends Model {
      * @return mixed
      */
     public function guest() {
-        return $this->hasMany('Guest');
+        return $this->hasMany('Guest', 'role_id', 'id');
     }
 
     /**

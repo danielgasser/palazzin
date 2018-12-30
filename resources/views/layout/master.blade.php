@@ -159,20 +159,17 @@
        <img id="loadergif" alt="{!!trans('dialog.charging')!!}" title="{!!trans('dialog.charging')!!}" src="{!!asset('assets/img/preloader.gif')!!}">
     </div>
     @section('errors')
-     @if($errors->any())
-        <div id="error-wrap">
-           <div id="errors" class="alert alert-danger" role="alert">
-                <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times</span>
-                <span class="sr-only">Close</span>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">
+                    <span aria-hidden="true">&times</span>
+                    <span class="sr-only">Close</span>
                 </button>
-                <ul>
-                    <li><h3><span class="glyphicon glyphicon-warning-sign"></span>&nbsp;{!!$errors->first()!!}!</h3></li>
-                </ul>
-           </div>
-        </div>
+                <span>{{$errors->first()}}
+                </span>
+            </div>
         @endif
-         @if (Session::has('info_message'))
+            @if (Session::has('info_message'))
              <div data-alert class="alert alert-success" role="alert">
                  <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">
                      <span aria-hidden="true">&times</span>

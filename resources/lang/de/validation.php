@@ -14,7 +14,7 @@ return [
 	*/
     'accepted'             => 'Das :attribute muss akkzeptiert werden',
     'active_url'           => ':attribute ist keine gültige URL',
-    'after'                => ':attribute muss nach :date sein',
+    'after'                => ':attribute kann nicht vor :date sein',
     'alpha'                => ':attribute darf nur Buchstaben enthalten',
     'alpha_dash'           => ':attribute darf nur Buchstaben, Zahlen und Gedankenstriche (-] enthalten',
     'alpha_num'            => ':attribute nur Buchstaben, Zahlen enthalten',
@@ -28,6 +28,10 @@ return [
         'string'  => ':attribute muss zwischen :min und :max Zeichen lang sein',
         'array'   => ':attribute muss zwischen :min und :max Teile enthalten',
     ],
+    'yesterday' => 'gestern',
+    'now'       => 'jetzt',
+    'today'     => 'heute',
+    'tomorrow'  => 'morgen',
     'confirmed'            => ':attribute Bestätigung stimmt nicht überein',
     'date'                 => ':attribute ist kein gültiges Datum',
     'date_format'          => ':attribute stimmt nicht mit dem Format :format überein',
@@ -55,15 +59,15 @@ return [
         'array'   => ':attribute muss mindestens :min Teile haben',
     ],
     'not_in'               => 'gewähltes :attribute ist ungültig',
-    'numeric'              => 'Das Feld <span class="error-field">:attribute</span> muss eine Zahl sein',
-    'regex'                => 'Das Format des Felds <span class="error-field">:attribute</span> ist ungültig',
-    'required'             => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich',
-    'required_if'          => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich, wenn :other :value ist',
-    'required_with'        => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich, wenn :values vorhanden ist',
-    'required_with_all'    => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich, wenn :values vorhanden ist',
-    'required_without'     => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich, wenn :values nicht vorhanden ist',
-    'required_without_all' => 'Das Feld <span class="error-field">:attribute</span> ist erforderlich, wenn keine :values vorhanden sind',
-    'same'                 => 'Das Feld <span class="error-field">:attribute</span> und das Feld :other müssen übereinstimmen',
+    'numeric'              => 'Das Feld :attribute muss eine Zahl sein',
+    'regex'                => 'Das Format des Felds :attribute ist ungültig',
+    'required'             => 'Das Feld :attribute ist erforderlich',
+    'required_if'          => 'Das Feld :attribute ist erforderlich, wenn :other :value ist',
+    'required_with'        => 'Das Feld :attribute ist erforderlich, wenn :values vorhanden ist',
+    'required_with_all'    => 'Das Feld :attribute ist erforderlich, wenn :values vorhanden ist',
+    'required_without'     => 'Das Feld :attribute ist erforderlich, wenn :values nicht vorhanden ist',
+    'required_without_all' => 'Das Feld :attribute ist erforderlich, wenn keine :values vorhanden sind',
+    'same'                 => 'Das Feld :attribute und das Feld :other müssen übereinstimmen',
     'size'                 => [
         'numeric' => ':attribute muss :size gross sein',
         'file'    => ':attribute muss :size Kilobytes gross sein',
@@ -88,7 +92,7 @@ return [
 	*/
 
 	'custom' => [
-	],
+    ],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -137,7 +141,7 @@ return [
         'sum_guests' => 'Anzahl Betten',
         'reservation_nights' => 'Anzahl Nächte',
 		'post_text' => 'Beitrag',
-		'comment_text' => 'Kommentar'
+		'comment_text' => 'Kommentar',
     ],
 
 ];

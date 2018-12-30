@@ -1,4 +1,4 @@
-<div id="delete_guest" class="alert alert-danger alert-dismissible" role="alert">
+<div id="delete_guest" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
 {!!trans('dialog.texts.warning_delete_guest')!!}
     <hr>
     <button type="button" class="btn btn-success" id="confirm_delete_guest">

@@ -22,6 +22,7 @@ return array(
     'night' => 'Nacht',
     'nights' => 'Nächte',
     'price' => 'Preis',
+    'empty_res' => 'Die Reservation ist leer',
     'no_chosen_dates' => 'Keine Daten ausgewählt',
     'chosen_dates' => 'Ausgewählte Daten',
     'goto_chosen_dates' => 'Gehe zu den ausgewählten Daten',
@@ -79,6 +80,7 @@ return array(
         'none' => 'Ohne Gäste'
     ),
     'guest' => 'Gast',
+    'guest_empty' => 'Gasteinträge nicht komplett ausgefüllt',
     'guest_kind' => 'Art des Gastes',
     'guest_other_host' => 'Anderer Gastgeber',
     'edit_res' => 'Reservierung bearbeiten',

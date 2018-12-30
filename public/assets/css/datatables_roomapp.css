@@ -1,3 +1,6 @@
+.dataTables_scrollHeadInner table thead tr th {
+  box-sizing: initial !important; }
+
 #users tbody tr td {
   vertical-align: top; }
   #users tbody tr td:before {

@@ -18,6 +18,7 @@ return array(
                                             </ul>',
         'warning_delete_role_from_user' => "Möchtest Du dem Benutzer wirklich die folgende Rolle entziehen?",
         'warning_no_free_beds' => 'Es gibt nicht mehr genügend freie Betten',
+        'warning_over_period' => 'Reservierung über mehrere Perioden ist nicht möglich.<br>Späteste Abreise am ',
         'warning_no_guests_only_you' => 'Keine Gäste einladen?',
         'warning_login_again' => 'Deine Sitzung ist abgelaufen. Bitte melde Dich neu an.',
         'warning_delete_reservation' => 'Möchtest Du diese Reservierung wirklich löschen?',

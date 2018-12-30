@@ -27,7 +27,9 @@ class Guest extends Model {
         'guest_started_at',
         'guest_ended_at',
         'guest_guests',
-        'guest_num',
+        'guest_night',
+        'guest_number',
+        'role_id',
         'guest_title',
         'guest_tax',
         'guest_tax_role_id'
@@ -38,7 +40,7 @@ class Guest extends Model {
      * @return mixed
      */
     public function roles() {
-        return $this->belongsTo('Role')->select('roles.*');
+        return $this->belongsTo('Role', 'id', 'role_id')->select('roles.*');
     }
 
     /**
