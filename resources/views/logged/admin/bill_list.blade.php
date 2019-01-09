@@ -14,7 +14,7 @@
         @foreach($allBills as $b)
         <tr>
             <!--td class="white-row" id="billpath"><button class="btn btn-default">Download</button> </td-->
-            <td class="white-row" id="bill_name">{!!link_to_asset('public/files/__clerk/' . $b->getFileName(), $b->getFileName(), array(/*'download' => $b->getFileName()*/))!!}</td>
+            <td class="white-row" id="bill_name">{{link_to_asset('public/files/__clerk/' . $b->getFileName(), $b->getFileName(), array(/*'download' => $b->getFileName()*/))}}</td>
         </tr>
             @endforeach
         </tbody>
@@ -24,9 +24,9 @@
     @section('scripts')
     @parent
     <script>
-        var autid = '{!!Auth::id()!!}';
+        var autid = '{{Auth::id()}}';
     </script>
-        <script src="{!!asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')!!}"></script>
+        <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
     @stop
 
 @stop

@@ -1,29 +1,28 @@
 @extends('layout.master')
 @section('content')
-<h1 class="h1-help">{!!trans('help.title')!!}</h1>
-<div id="help-container" class="row">
+<div id="help-container">
     @if(Auth::check())
     <div id="other-help" class="col-sm-12 col-md-12">
-            {!! Form::open(array('id' => 'changeTopics'), array('class' => 'form-inline')) !!}
-            {!!Form::select('help_topic', $routes, null, ['class' => 'form-control', 'placeholder' => trans('help.choose')])!!}
-            {!! Form::close() !!}
+            {{ Form::open(array('id' => 'changeTopics'), array('class' => 'form-inline')) }}
+            {{Form::select('help_topic', $routes, null, ['class' => 'form-control', 'placeholder' => trans('help.choose')])}}
+            {{ Form::close() }}
     </div>
     @endif
     @if(Auth::guest())
         @if(strlen($helptext) > 0)
                 <div class="topics col-sm-12 col-md-12">
                     <div id="topic_text">
-                        {!!$helptext ?? ''!!}
+                        {{$helptext ?? ''}}
                     </div>
                 </div>
         @else
                 <div class="topics col-sm-12 col-md-12">
-            <h3>{!!trans('help.login')!!}:</h3>
+            <h3>{{trans('help.login')}}:</h3>
         </div>
         <div class="topics col-sm-12 col-md-12">
             <ol>
             @foreach(trans('help.login_text') as $lt)
-                <li>{!!$lt!!}</li>
+                <li>{{$lt}}</li>
             @endforeach
             </ol>
         </div>
@@ -33,19 +32,19 @@
         {{-- Home --}}
             <div class="topics col-sm-12 col-md-12">
                 <div id="topic_text">
-                    {!!$helptext!!}
+                    {{$helptext}}
                 </div>
             </div>
     @endif
     <div>
-    <a href="{!!URL::previous()!!}">{!!trans('dialog.back', ['to' => ''])!!}</a>
+    <a href="{{URL::previous()}}">{{trans('dialog.back', ['to' => ''])}}</a>
     </div>
 </div>
     @section('scripts')
     @parent
         <script>
-        var url = '{!!$showUrl!!}';
+        var url = '{{$showUrl}}';
         </script>
-         <script src="{!!asset('assets/js/inits/help_init.js')!!}"></script>
+         <script src="{{asset('assets/js/inits/help_init.js')}}"></script>
    @stop
 @stop

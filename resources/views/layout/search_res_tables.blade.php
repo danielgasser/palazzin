@@ -17,19 +17,19 @@
                     <td>
                         @if(Request::is('admin/reservations'))
                         <select id="searchIt" data-placeholder="Benutzer wählen oder suchen" name="searchIt" class="form-control">
-                            <option selected disabled hidden value=''>{!!trans('dialog.choose_search_user')!!}</option>
+                            <option selected disabled hidden value=''>{{trans('dialog.choose_search_user')}}</option>
                             @foreach($users as $u)
-                                <option value="{!!$u->id!!}">{!!$u->user_name!!} {!!$u->user_first_name!!}</option>
+                                <option value="{{$u->id}}">{{$u->user_name}} {{$u->user_first_name}}</option>
                             @endforeach
                         </select>
                         @elseif(Request::is('bills'))
-                            <div id="searchIt" style="display: none">{!!Auth::id()!!}</div>
+                            <div id="searchIt" style="display: none">{{Auth::id()}}</div>
                         @else
-                            <input id="searchIt" name="searchIt" type="hidden" value="{!!Auth::id()!!}">
+                            <input id="searchIt" name="searchIt" type="hidden" value="{{Auth::id()}}">
                         @endif
                             @if(Request::is('admin/reservations'))
 
-                            <button class="btn btn-default" id="resetUserDropDown">{!!trans('dialog.reset')!!}</button>
+                            <button class="btn btn-default" id="resetUserDropDown">{{trans('dialog.reset')}}</button>
                                 @endif
                     </td>
                     <td>
@@ -41,12 +41,12 @@
                         </select>
                     </td>
                     <td>
-                        <button class="btn btn-default" id="resetKeeper">{!!trans('dialog.all')!!}</button>
-                        <button class="btn btn-default" id="searchKeeper">{!!trans('dialog.search')!!}</button>
+                        <button class="btn btn-default" id="resetKeeper">{{trans('dialog.all')}}</button>
+                        <button class="btn btn-default" id="searchKeeper">{{trans('dialog.search')}}</button>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6"><b>Anzahl Reservierungen: <span id="total_search">{!!sizeof($allReservations)!!}</span></b></td>
+                    <td colspan="6"><b>Anzahl Reservierungen: <span id="total_search">{{sizeof($allReservations)}}</span></b></td>
                 </tr>
 
             </tbody>

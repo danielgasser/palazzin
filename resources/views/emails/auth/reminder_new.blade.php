@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="{!!App::getLocale()!!}">
+<html lang="{{App::getLocale()}}">
 	<head>
 		<meta charset="utf-8">
 	</head>
 	<body>
 		<div>
-            <img src="{!!$settings['setting_site_url']!!}/{!!$settings['setting_app_logo']!!}" alt="{!!$settings['setting_app_owner']!!}" title="{!!$settings['setting_app_owner']!!}"><br>
-   		    <h3>{!!trans('reset.title')!!}</h3>
+            <img src="{{$settings['setting_site_url']}}/{{$settings['setting_app_logo']}}" alt="{{$settings['setting_app_owner']}}" title="{{$settings['setting_app_owner']}}"><br>
+   		    <h3>{{trans('reset.title')}}</h3>
    		    <p>
-            {!!trans('reset.texts.new_pass_user', array(
+            {{trans('reset.texts.new_pass_user', array(
 		    'email' => $user->email,
 		    'name' => $user->user_first_name,
 		    'user_name' => $user->user_login_name,
@@ -16,7 +16,7 @@
 		    'url' => URL::to('password/reset', array($token)),
 		    'exp' => Config::get('auth.reminder.expire_all') /60,
 		    'time' => 'Stunden'
-		))!!}</p>
+		))}}</p>
 
 		</div>
 	</body>

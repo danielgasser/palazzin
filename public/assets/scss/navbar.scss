@@ -1,5 +1,9 @@
 @import "bootstrap-variables";
 @import "vars";
+i {
+    min-width: 19.25px;
+}
+
 #footer {
     .container {
         .navbar-fixed-bottom {
@@ -39,6 +43,9 @@
     }
 }
 #footerNav {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
     ul {
         li.dropup {
             ul.dropdown-menu {
@@ -61,18 +68,40 @@
     background-color: $color-h1 !important;
     color: white !important;
   }
+    .navbar-nav {
+        float: none !important;
+        background: #333;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+  .navbar-nav>li {
+      float: none !important;
+  }
   .navbar-nav>li>a {
     color: #f7f7f7;
-      padding-top: 18px;
-      padding-bottom: 18px;
       font-weight: normal;
       font-size: 1.1em;
+      width: 100%;
+      height: 55px;
+      display: inline-block;
+      .hideContent {
+          position: absolute;
+          top: 18px;
+          left: -72px;
+          display: inline;
+          visibility:hidden;
+          white-space: nowrap;
+          opacity:0;
+          transition: left 0.3s linear,opacity 0.3s linear;
+      }
+    padding: 18px;
   }
-  .navbar-nav>li>a:hover, .navbar-nav>li>a:focus {
+  .navbar-nav>li>a:hover, .navbar-nav>li>a:focus, .navbar-nav>li>a:active {
     background-color: $color-h1 !important;
     color: white !important;
+      padding: 18px 18px;
   }
-  .navbar-nav>li>a:not([href]):hover, .navbar-nav>li>a:not([href]):focus {
+  .navbar-nav>li>a:not([href]):hover, .navbar-nav>li>a:not([href]):focus, .navbar-nav>li>a:not([href]):active {
     background-color: #333 !important;
     color: white !important;
   }
@@ -87,39 +116,33 @@
   background-color: white !important;
 }
 .navbar-brand {
-  padding: 2px 15px !important;
+    margin: 0.5em 0 0.5em -12px !important;
+    padding: 16px 21px !important;
+    width: 100%;
+    font-family: Palazzin, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    a {
+        color: #f7f7f7 !important;
+        font-weight: normal;
+        font-size: 3em;
+        .hideBrandContent {
+            visibility:hidden;
+            white-space: nowrap;
+            opacity:0;
+            transition: left 0.3s linear,opacity 0.3s linear;
+        }
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
 }
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
   border-color: $color-h1;
   color: #333;
 }
-.nav {
-    .dropdown-menu {
-        background-color: #333 !important;
-        .divider {
-            margin: 0;
-            background-color: white;
-        }
-        li {
-            a {
-                background-color: #333;
-                color: white;
-            }
-            &:hover, &:focus, &:active {
-                background-color: $color-h1 !important;
-                color: white !important;
-            }
-            &:not([href]):hover, &:not([href]):focus, &:not([href]):active {
-                background-color: #333 !important;
-                color: white !important;
-            }
-        }
-    }
-}
-
 .navbar {
     position: fixed;
-    width: 100%;
+    width: 55px;
+    height: 100%;
     z-index: 1001;
     border-radius: 0px;
     border-bottom: 1px solid white;
@@ -127,22 +150,69 @@
     min-height: 58px !important;
     border-left: none;
     border-right: none;
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+        .navbar-collapse {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 }
 .navbar-header {
-  z-index: 11;
-    ul {
-        padding-left: 8px;
-        margin-bottom: 2px;
-        .title {
-            font-size: 1.2em;
-            font-weight: bold;
-            display: inline-block;
+    width: 55px;
+    margin-bottom: 1em;
+    z-index: 11;
+    border-bottom: 1px solid #f7f7f7;
+}
+#bottom-nav {
+    li {
+        a {
+            padding-left: 12px;
+        }
+    }
+}
+#all-nav {
+    width: 55px;
+    opacity: 0.75;
+    transition: width 1s;
+    #main-nav, #bottom-nav, #bottom-bottom-nav {
+        .fa-thermometer-half:after, .fa-cog:after , .fa-user:after {
+            content: "\f078";
+            padding-left: 8px;
+        }
+    }
+}
+#all-nav:hover {
+    width: 222px;
+    opacity: 1;
+    transition: width 1s;
+    #main-nav, #bottom-nav, #bottom-bottom-nav {
+        li {
             a {
-                color: #f7f7f7;
+                .hideContent {
+                    top: 18px;
+                    left: 52px;
+                    visibility:visible;
+                    opacity:1;
+                }
             }
         }
     }
+    .navbar-header {
+        width: 222px;
+    }
+    .navbar-brand {
+        a {
+            .hideBrandContent {
+                visibility: visible;
+                white-space: nowrap;
+                opacity:1;
+                &:after {
+                    content: "alazzin"
+                }
+            }
+        }
+    }
+}
 
-}
-.navbar-header {
-}

@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
 <div id="menu_stats">
-    <h1>{!!trans('admin.stats_calendar.title')!!} <span id="stats_title"></span></h1>
+    <h1>{{trans('admin.stats_calendar.title')}} <span id="stats_title"></span></h1>
     {{-- @include('layout.stats_menu')--}}
     <div id="stats_select_menu">
         @include('layout.stats_select')
@@ -14,7 +14,7 @@
             <th></th>
             <?php $i = 0; ?>
             @foreach(Lang::get('calendar.month-names') as $c)
-                <th id="month_long_{!!$i!!}"><h6>{!!$c!!}</h6></th>
+                <th id="month_long_{{$i}}"><h6>{{$c}}</h6></th>
                 <?php $i++ ?>
             @endforeach
             <th><h6>Total</h6></th>

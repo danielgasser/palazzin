@@ -276,6 +276,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return Clan::where('id', '=', $id)->select('clan_code', 'clan_description')->get();
     }
 
+    public function getCompleteName()
+    {
+        return $this->user_first_name . ' ' . $this->user_name;
+    }
+
     public function getUserID()
     {
         return $this->id;

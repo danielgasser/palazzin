@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
     <div id="menu_stats">
-        <h1>{!!trans('admin.stats_chron.title')!!}</h1>
+        <h1>{{trans('admin.stats_chron.title')}}</h1>
         {{-- @include('layout.stats_menu')--}}
     </div>
 
@@ -18,7 +18,7 @@
         @foreach($allBills as $b)
         <tr>
             <!--td class="white-row" id="billpath"><button class="btn btn-default">Download</button> </td-->
-            <td class="white-row" id="bill_name"><a download="filename" target="_blank" href="{!!$b['link']!!}">{!!$b['name']!!}</a></td>
+            <td class="white-row" id="bill_name"><a download="filename" target="_blank" href="{{$b['link']}}">{{$b['name']}}</a></td>
         </tr>
             @endforeach
         </tbody>
@@ -27,9 +27,9 @@
     @section('scripts')
     @parent
     <script>
-        var autid = '{!!Auth::id()!!}';
+        var autid = '{{Auth::id()}}';
     </script>
-        <script src="{!!asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')!!}"></script>
+        <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
     @stop
 
 @stop

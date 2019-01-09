@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
     <div id="menu_stats">
-        <h1>{!!trans('admin.stats_bill.title')!!} <span id="stats_title"></span></h1>
+        <h1>{{trans('admin.stats_bill.title')}} <span id="stats_title"></span></h1>
         {{-- @include('layout.stats_menu')--}}
         <div id="stats_select_menu">
             @include('layout.stats_select')
@@ -29,8 +29,8 @@
         <link href="/assets/js/libs/bootstrap_switch/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
         <script src="/assets/js/libs/bootstrap_switch/js/bootstrap-switch.js"></script>
         <script>
-            var settings = {!!App::make('GlobalSettings')->getSettings()!!},
-                    allReservations = $.parseJSON('<?php echo json_encode($allReservations) ?>'),
+            var settings = {{App::make('GlobalSettings')->getSettings()}},
+                    allReservations = $.parseJSON('{!!  json_encode($allReservations) !!}'),
                     checkedYear = [],
                     all_charts = [],
                     showYear = [],

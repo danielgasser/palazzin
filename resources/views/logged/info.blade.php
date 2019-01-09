@@ -1,26 +1,21 @@
 @extends('layout.master')
 @section('content')
-<div id="noview">
-    <?php
-    //die('<h1>Die Seite ist in Bearbeitung. Bitte kommt später wieder...</h1>')
-    ;?>
-    <div class="row">
         <div class="col-sm-12 col-md-12">
             <h1>Browserinfos:</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-3 col-md-3">
-            <input type="text" name="locale_server" readonly disabled style="color: #000; width: 50%" cols="25" rows="5" value="{!!$locale!!}">
+            <input type="text" name="locale_server" readonly disabled style="color: #000; width: 50%" cols="25" rows="5" value="{{$locale}}">
         </div>
         <div class="col-sm-3 col-md-3">
-            <input type="text" name="locale_js" readonly disabled style="color: #000; width: 50%" cols="25" rows="5" value="{!!$locale!!}">
+            <input type="text" name="locale_js" readonly disabled style="color: #000; width: 50%" cols="25" rows="5" value="{{$locale}}">
         </div>
         <div class="col-sm-3 col-md-3">
-            <textarea readonly disabled name="user_agent" style="color: #000;" cols="25" rows="5" >{!!$user_agent!!}</textarea>
+            <textarea readonly disabled name="user_agent" style="color: #000;" cols="25" rows="5" >{{$user_agent}}</textarea>
         </div>
         <div class="col-sm-3 col-md-3">
-            <textarea readonly disabled name="get_browser" style="color: #000;" cols="25" rows="5" >{!!$get_browser!!}</textarea>
+            <textarea readonly disabled name="get_browser" style="color: #000;" cols="25" rows="5" >{{$get_browser}}</textarea>
         </div>
         <div class="col-sm-12 col-md-12">
             <button class="btn btn-primary" name="send_to_webmaster" style="width: 100%">An den Webmaster senden</button>

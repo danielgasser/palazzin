@@ -10,7 +10,6 @@ jQuery(document).ready(function () {
         testBtn,
         replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'];
     displayTexts.hide();
-    $.datepicker.setDefaults($.datepicker.regional['']);
 
     $('[data-toggle="popover"]').popover({
         html: true

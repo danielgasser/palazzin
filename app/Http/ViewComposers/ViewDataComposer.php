@@ -30,6 +30,10 @@ class ViewDataComposer
         $this->isOldWin = User::checkUsersOldWinBrowser();
         shuffle($this->monthColors);
         $user = User::find(Auth::id());
+        $userCompleteName = '';
+        if (Auth::check()) {
+            $userCompleteName = $user->getCompleteName();
+        }
         $login = \LoginStat::where('user_id', '=', Auth::id())->orderBy('created_at', 'DESC')->skip(1)->first();
         $userRole = [];
         $userClan = [];
@@ -56,6 +60,7 @@ class ViewDataComposer
         $view->with('isAdmin', $this->userData['isAdmin']);
         $view->with('isManager', $this->userData['isManager']);
         $view->with('isKeeper', $this->userData['isKeeper']);
+        $view->with('userCompleteName', $userCompleteName);
     }
 
     private function getOtherClanRoleId()

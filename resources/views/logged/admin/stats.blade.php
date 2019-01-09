@@ -1,12 +1,5 @@
 @extends('layout.master')
 @section('content')
-<div id="menu_stats">
-    <h1>{!!trans('admin.stats_chron.title')!!} <span id="stats_title"></span></h1>
-    {{-- @include('layout.stats_menu')--}}
-    <div id="stats_select_menu">
-        @include('layout.stats_select')
-    </div>
-</div>
 
 <div id="mPDF_Print">
     <div id="chart_div_four" style="min-width: 310px; height: auto; margin: 0 auto;">
@@ -22,13 +15,13 @@
 </div>    @section('scripts')
         @parent
         <script>
-            var settings = {!!App::make('GlobalSettings')->getSettings()!!},
+            var settings = {{App::make('GlobalSettings')->getSettings()}},
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                     checkedYear = [],
                     yearColorsSet = {!!json_encode($yearColors)!!},
                     showYear = [],
                     langDialog = {!!json_encode(Lang::get('dialog'))!!},
-                    route = '{!!Request::url()!!}';
+                    route = '{{Request::url()}}';
 
         </script>
         <script src="https://code.highcharts.com/highcharts.js"></script>

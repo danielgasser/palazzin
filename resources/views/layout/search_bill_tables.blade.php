@@ -19,18 +19,18 @@
                     <td>
                         @if(Request::is('admin'))
                         <select id="searchIt" data-placeholder="Benutzer wählen oder suchen" name="searchIt" class="form-control">
-                            <option selected disabled hidden value=''>{!!trans('dialog.choose_search_user')!!}</option>
+                            <option selected disabled hidden value=''>{{trans('dialog.choose_search_user')}}</option>
                             @foreach($users as $u)
-                                <option value="{!!$u->id!!}">{!!$u->user_name!!} {!!$u->user_first_name!!}</option>
+                                <option value="{{$u->id}}">{{$u->user_name}} {{$u->user_first_name}}</option>
                             @endforeach
                         </select>
                         @elseif(Request::is('bills'))
-                            <div id="searchIt" style="display: none">{!!Auth::id()!!}</div>
+                            <div id="searchIt" style="display: none">{{Auth::id()}}</div>
                         @else
-                            <input id="searchIt" name="searchIt" type="hidden" value="{!!Auth::id()!!}">
+                            <input id="searchIt" name="searchIt" type="hidden" value="{{Auth::id()}}">
                         @endif
                             @if(Request::is('admin'))
-                            <button class="btn btn-default" id="resetUserDropDown">{!!trans('dialog.reset')!!}</button>
+                            <button class="btn btn-default" id="resetUserDropDown">{{trans('dialog.reset')}}</button>
                                 @endif
                     </td>
                     <td>
@@ -39,9 +39,9 @@
                     <td>
                         @if(Request::is('bill'))
                             <select name="search_bill_paid" id="search_bill_paid" class="form-control" id="month">
-                                <option value="x">{!!trans('dialog.all')!!}</option>
-                                <option value="1">{!!trans('dialog.not')!!} {!!trans('bill.paid')!!}</option>
-                                <option value="0">{!!trans('bill.paid')!!}</option>
+                                <option value="x">{{trans('dialog.all')}}</option>
+                                <option value="1">{{trans('dialog.not')}} {{trans('bill.paid')}}</option>
+                                <option value="0">{{trans('bill.paid')}}</option>
                             </select>
                         @endif
                     </td>
@@ -54,16 +54,16 @@
                         </select>
                     </td>
                     <td>
-                        <button class="btn btn-default" id="resetKeeper">{!!trans('dialog.all')!!}</button>
+                        <button class="btn btn-default" id="resetKeeper">{{trans('dialog.all')}}</button>
                         @if(Request::is('admin'))
-                        <button class="btn btn-default" id="searchKeeper">{!!trans('dialog.search')!!}</button>
+                        <button class="btn btn-default" id="searchKeeper">{{trans('dialog.search')}}</button>
                             @else
-                            <button class="btn btn-default" id="searchUserKeeper">{!!trans('dialog.search')!!}</button>
+                            <button class="btn btn-default" id="searchUserKeeper">{{trans('dialog.search')}}</button>
                             @endif
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6"><b>Anzahl Rechnungen: <span id="total_search">{!!sizeof($allBills)!!}</span></b></td>
+                    <td colspan="6"><b>Anzahl Rechnungen: <span id="total_search">{{sizeof($allBills)}}</span></b></td>
                 </tr>
 
             </tbody>

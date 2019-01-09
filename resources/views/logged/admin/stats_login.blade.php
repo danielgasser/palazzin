@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
     <div id="menu_stats">
-        <h1>{!!trans('admin.stats_login.title')!!} <span id="stats_title"></span></h1>
+        <h1>{{trans('admin.stats_login.title')}} <span id="stats_title"></span></h1>
         {{-- @include('layout.stats_menu')--}}
         <div id="stats_select_menu">
             @include('layout.stats_select')
@@ -24,12 +24,12 @@
 @section('scripts')
         @parent
         <script>
-            var settings = {!!App::make('GlobalSettings')->getSettings()!!},
+            var settings = {{App::make('GlobalSettings')->getSettings()}},
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 checkedYear = [],
                 yearColorsSet = {!!json_encode($yearColors)!!},
                 showYear = [],
-                    route = '{!!Request::url()!!}',
+                    route = '{{Request::url()}}',
                     langDialog = {!!json_encode(Lang::get('dialog'))!!};
 
         </script>

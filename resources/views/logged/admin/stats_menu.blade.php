@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('content')
-    <h1>{!!trans('admin.stats.title')!!}</h1>
+    <h1>{{trans('admin.stats.title')}}</h1>
     <div>
     @include('layout.stats_menu')
     </div>

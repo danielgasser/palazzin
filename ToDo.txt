@@ -1,5 +1,7 @@
 ToDo:
 
+visitor blocking raus
+password komlexität raus
 -before going life with v3:
 set calendar duration = 10
 calculate periods : /admin/calc

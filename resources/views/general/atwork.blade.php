@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('content')
-<div id="help-container" class="row">
+<div id="help-container">
     <div class="col-sm-12 col-md-12">
         <h1 class="h1-help">This page is under construction</h1>
         <ul class="bxslider">

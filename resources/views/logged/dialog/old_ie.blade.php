@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content panel-warning">
       <div class="modal-header panel-heading">
-        <h4 class="modal-title">{!!trans('dialog.warning')!!}</h4>
+        <h4 class="modal-title">{{trans('dialog.warning')}}</h4>
       </div>
       <div class="modal-body">
           <div style="font-size: 140%">
@@ -20,7 +20,7 @@
               </p>
               <br>Besorg Dir einen solchen Browser, um weiter zu kommen!</p>
           </div>
-          <p style="font-size: 100%">Dein Browser: {!!$_SERVER['HTTP_USER_AGENT']!!}</p>
+          <p style="font-size: 100%">Dein Browser: {{$_SERVER['HTTP_USER_AGENT']}}</p>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
