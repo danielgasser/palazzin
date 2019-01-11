@@ -2,7 +2,6 @@
 @section('content')
         <div class="col-sm-2 col-md-2"></div>
         <div class="col-sm-8 col-md-8">
-            <h1>News</h1>
             <h3>Allgemein:</h3>
             <p>Die ganze Website wurde optimiert und die Geschwindigkeit verbessert. Auch wurde das Layout an mobile devices angepasst.</p>
             <h3>Reservation:</h3>

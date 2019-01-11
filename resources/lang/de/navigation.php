@@ -11,7 +11,7 @@ return array(
     'admin' => 'Administration',
     'news' => 'News-Ticker',
     'back' => 'Zurück',
-    'latest' => 'News',
+    'latest' => 'News-Ticker',
     'bill' => 'Rechnungen',
     'userlist' => 'Benutzerliste',
     'pricelist' => 'Preise',

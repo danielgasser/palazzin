@@ -21,7 +21,7 @@ i {
                     padding-bottom: 9px;
                     font-weight: normal;
                     font-size: 1.2em;
-                    &:hover, &:focus, &:active {
+                    &:hover, &:focus, &:active, &:focus-within {
                         background-color: #b7282e !important;
                         color: white !important;
                     }
@@ -46,12 +46,44 @@ i {
     position: absolute;
     bottom: 20px;
     width: 100%;
-    ul {
-        li.dropup {
-            ul.dropdown-menu {
-                position: absolute;
+}
+ul {
+    li.dropup, li.dropdown-toggle {
+        ul.dropdown-menu {
+            transition: width 1s linear;
+            background-color: #333;
+            position: absolute;
+            width: 55px;
+            min-width: 55px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            li {
+                a {
+                    color: white !important;
+                }
+            }
+            .divider {
+                margin: 0;
             }
         }
+    }
+}
+.open {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.dropdown-toggle-up {
+    i:after {
+        content: "\f077" !important;
+    }
+}
+.dropdown-toggle-down {
+    i:after {
+        content: "\f078" !important;
     }
 }
 .nav-clan {
@@ -135,7 +167,7 @@ i {
         }
     }
 }
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+.navbar-default, .navbar-default .navbar-form {
   border-color: $color-h1;
   color: #333;
 }
@@ -153,7 +185,7 @@ i {
     .container-fluid {
         padding-left: 0;
         padding-right: 0;
-        .navbar-collapse {
+        .navbar-default {
             padding-left: 0;
             padding-right: 0;
         }
@@ -164,30 +196,73 @@ i {
     margin-bottom: 1em;
     z-index: 11;
     border-bottom: 1px solid #f7f7f7;
+    transition: width 1.3s linear;
+
+}
+#top-nav {
+    width: 55px;
+    transition: width 1s linear;
+    background: transparent;
 }
 #bottom-nav {
+    display: none;
     li {
         a {
             padding-left: 12px;
         }
     }
 }
+#bottom-bottom-nav {
+    display: none;
+}
 #all-nav {
     width: 55px;
+    height: 100%;
     opacity: 0.75;
     transition: width 1s;
-    #main-nav, #bottom-nav, #bottom-bottom-nav {
-        .fa-thermometer-half:after, .fa-cog:after , .fa-user:after {
+    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav {
+        .fa-cog:after , .fa-user:after, .fa-wrench:after {
+            content: "\f077";
+            padding-left: 8px;
+        }
+        .fa-thermometer-half:after {
             content: "\f078";
             padding-left: 8px;
         }
     }
+    #main-nav-container {
+        position: absolute;
+        width: 100%;
+        top: 126px;
+    }
+}
+#closeNav {
+    &:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f061";
+        font-weight: 900;
+    }
+    &:active, &:focus, &:focus-within {
+        background-color: transparent !important;
+    }
+}
+#toggleFooterNav {
 }
 #all-nav:hover {
-    width: 222px;
-    opacity: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    width: 222px !important;
+    opacity: 1 !important;
     transition: width 1s;
-    #main-nav, #bottom-nav, #bottom-bottom-nav {
+    #top-nav {
+        width: 222px !important;
+    }
+    #closeNav:before {
+        content: "\f060";
+        font-weight: 900;
+    }
+    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav {
         li {
             a {
                 .hideContent {
@@ -214,5 +289,14 @@ i {
             }
         }
     }
+    .dropdown-menu {
+        width: 190px;
+    }
 }
 
+@media (max-width: 1px) {
+    .navbar-left {
+        float: left !important;
+        margin: 0;
+    }
+}

@@ -288,8 +288,48 @@
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();
         });
+        jQuery(document).on('mouseout', '#all-nav', function () {
+            if (!$(this).is(':hover')) {
+                $(this).find('li.open').removeClass('open');
+                $(this).removeClass('dropdown-toggle-down');
+                $(this).removeClass('dropdown-toggle-up');
+                $(this).find('li.dropdown-toggle').children('a').css({
+                    'background-color': 'inherit',
+                    color: '#f7f7f7'
+                })
+            }
+        });
+        jQuery(document).on('click', '.dropdown-toggle', function (e) {
+            let classes = e.target.classList;
+            if (!classes.contains('hide-footer-nav-text')) {
+                $(this).toggleClass('dropdown-toggle-down');
+            }
+        });
+        jQuery(document).on('click', '.dropdownToggleUp', function (e) {
+            let classes = e.target.classList;
+            if (classes.contains('hide-footer-nav-text')) {
+                $(this).removeClass('dropdown-toggle-up');
+                $(this).toggleClass('dropdown-toggle-down');
+            } else {
+                $(this).removeClass('dropdown-toggle-down');
+                $(this).toggleClass('dropdown-toggle-up');
+            }
+        });
+        jQuery(document).on('click', '#closeNav', function () {
+            $('#all-nav').css({
+                width: '55px',
+                opacity: '0.75'
+            });
+            $('#top-nav').css({
+                width: '55px',
+            });
+        });
+        jQuery(document).on('click', '#toggleFooterNav', function () {
+            $('#bottom-nav, #bottom-bottom-nav').slideToggle(500);
+        });
     </script>
 
    @show
+
 </body>
 </html>

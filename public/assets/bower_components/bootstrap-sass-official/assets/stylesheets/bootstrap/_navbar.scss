@@ -107,8 +107,6 @@
 .container-fluid {
   > .navbar-header,
   > .navbar-collapse {
-    margin-right: -$navbar-padding-horizontal;
-    margin-left:  -$navbar-padding-horizontal;
 
     @media (min-width: $grid-float-breakpoint) {
       margin-right: 0;
@@ -227,7 +225,6 @@
 // the nav the full height of the horizontal nav (above 768px).
 
 .navbar-nav {
-  margin: ($navbar-padding-vertical / 2) (-$navbar-padding-horizontal);
 
   > li > a {
     padding-top:    10px;
@@ -242,7 +239,6 @@
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: transparent;
       border: 0;
       box-shadow: none;
       > li > a,
@@ -250,7 +246,6 @@
         padding: 5px 15px 5px 25px;
       }
       > li > a {
-        line-height: $line-height-computed;
         &:hover,
         &:focus {
           background-image: none;
@@ -468,7 +463,6 @@
       // Dropdowns get custom display when collapsed
       .open .dropdown-menu {
         > li > a {
-          color: $navbar-default-link-color;
           &:hover,
           &:focus {
             color: $navbar-default-link-hover-color;

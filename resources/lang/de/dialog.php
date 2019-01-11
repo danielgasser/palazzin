@@ -9,6 +9,7 @@ return array(
     'warning' => 'Warnung',
     'info' => 'Hinweis',
     'follow' => 'Klicke auf folgenden Link',
+    'settings' => 'Einstellungen',
     'texts' => array(
         'warning_save_global_settings' => 'Diese Änderungen haben globale Auswirkungen auf<ul>
                                             <li>Getätigte Reservierungen</li>

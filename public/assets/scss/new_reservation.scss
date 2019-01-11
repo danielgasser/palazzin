@@ -1,4 +1,10 @@
 @import "bootstrap-variables";
+#new_reservation {
+    .row {
+        margin-left: 0;
+        margin-right: 2px;
+    }
+}
 .alert {
     position: fixed;
     width: 100%;
@@ -142,8 +148,6 @@ label {
   padding: 2vh 0.36667em 0 0;
   margin-bottom: 0.5em;
   position: relative;
-    margin-left: -10px;
-    margin-right: -8px;
 }
 [id^="total_guest_"] {
     font-size: 1.1em;
@@ -176,14 +180,13 @@ label {
 }
 [id^="guests_date_"] {
   border: 1px solid #b7b7b7;
-  margin-top: 2vh;
   position: relative;
-    margin-bottom: 0.5em;
+    margin: 2vh 2px 0.5em 0;
 }
 .hide-guest {
     display: block;
     position: relative;
-    top: -15px;
+    top: -13px;
     left: 4px;
     height: 39px;
     padding: 0px 9px;
@@ -292,6 +295,10 @@ label {
             td.active {
                 background-color: #337ab7 !important;
                 border-color: #2e6da4 !important;
+            }
+            th, td {
+                width: 40px !important;
+                height: 40px !important;
             }
         }
     }

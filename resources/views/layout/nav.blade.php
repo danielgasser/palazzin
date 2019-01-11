@@ -2,18 +2,14 @@
     <nav id="all-nav" class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#main-nav-container">
-                    <span class="sr-only">{{trans('navigation.togglenav')}}</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <ul id="top-nav" class="nav navbar-nav navbar-left multi-level">
+                    <li><a id="closeNav" href="#"><span class="hideContent">{{trans('dialog.close')}}</span></a></li>
+                </ul>
                 <div class="navbar-brand">
                     <a href="{{URL::to('/')}}">P<span class="hideBrandContent"></span></a>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="main-nav-container">
+            <div class="navbar-default" id="main-nav-container">
                 <ul id="main-nav" class="nav navbar-nav navbar-left multi-level">
                     @if(Auth::check())
                         @if(User::isClerk())
@@ -34,15 +30,13 @@
                             <li class="{{ Request::is('pricelist') ? 'active' : '' }}"><a href="{{URL::to('pricelist')}}"><i class="fas fa-dollar-sign"></i><span class="hideContent">&nbsp;{{trans('navigation.pricelist')}}</span></a>
                             </li>
                             <li class="dropdown-toggle">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fas fa-thermometer-half"></i><span class="hideContent">&nbsp;{{trans('navigation.admin/stats')}}</span></a>
+                                <a class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown" href="#"><i class="fas fa-thermometer-half"></i><span class="hideContent">&nbsp;{{trans('navigation.admin/stats')}}</span></a>
                                 <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
-                                    <li class="{{ Request::is('admin/stats_chron') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_chron')}}">Chronologische Anmeldungen
-                                            (Gästebuch)</a></li>
-                                    <li class="{{ Request::is('admin/stats_calendar') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_calendar')}}">Jahreskalender
-                                            (Logiernächte)</a></li>
+                                    <li class="{{ Request::is('admin/stats_chron') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_chron')}}">Gästebuch</a></li>
+                                    <li class="{{ Request::is('admin/stats_calendar') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_calendar')}}">Logiernächte</a></li>
                                     <li class="{{ Request::is('admin/stats_bill') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_bill')}}">Jahresabrechnung</a></li>
                                     <li class="{{ Request::is('admin/stats_login') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_login')}}">Logindaten</a></li>
-                                    <li class="{{ Request::is('admin/stats_list') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_list')}}">Alle Statistiken (PDF)</a></li>
+                                    <li class="{{ Request::is('admin/stats_list') ? 'active' : '' }}"><a href="{{URL::to('admin/stats_list')}}">Alle Statistiken als PDF</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -55,18 +49,24 @@
             </div>
 
         </div>
-        <div class="container-fluid" id="footerNav">
-            <div class="collapse navbar-collapse">
+        <div class="container-fluid">
+            <div class="navbar-default" id="footerNav">
                 @if(Request::is('new_reservation'))
                     @include('logged.dialog.timeliner')
                     @include('logged.dialog.free_beds_menu')
                 @endif
+                <ul id="hide-footer-nav" class="nav navbar-nav navbar-left multi-level">
+                    <li class="dropdown-toggle hide-footer-nav-text">
+                        <a id="toggleFooterNav" href="#" class="dropdown-toggle dropdownToggleUp hide-footer-nav-text" data-toggle="dropdown" style="padding-left: 10px;"><i class="fas fa-wrench hide-footer-nav-text"></i><span class="hideContent hide-footer-nav-text">&nbsp;{{trans('dialog.settings')}}</span></a>
+                    </li>
+                </ul>
+
                 <ul id="bottom-nav" class="nav navbar-nav navbar-left multi-level">
                     @if(Auth::check())
                         @if($isAdmin == 1 || $isManager == 1)
                             <li class="dropup" style="float: left">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i><span class="hideContent">&nbsp;{{trans('navigation.admin')}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <ul class="dropdown-menu nav navbar-nav" role="menu" aria-labelledby="dLabel">
                                     <li><a href="{{URL::to('admin/users/add')}}">{{trans('navigation.admin/users/add')}}</a></li>
                                     <li class="divider"></li>
                                     <li><a href="{{URL::to('admin/roles')}}">{{trans('navigation.admin/roles')}}</a></li>
@@ -81,7 +81,7 @@
                             </li>
                         @endif
                         <li class="dropup" style="float: left">
-                            <a href="#" class="dropup" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
                             <ul class="dropdown-menu nav navbar-nav" role="menu" style="min-height: inherit;">
                                 <li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
                                 <li><a>{{$lastLogin}}</a></li>
