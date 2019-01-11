@@ -52,14 +52,16 @@ let V3Reservation = {
             immediateUpdates: true,
             beforeShowDay: function (Date) {
                 let str = window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')].split('|'),
-                    bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ';
+                    bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
+                    returnObject = {
+                        enabled: (window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && Date <= otherClanDate) || (window.endDate === Date)),
+                        tooltip: str[1],
+                        classes: bothClasses + 'pID_' + str[2],
+                        content: 'xxx' + Date
+                    };
                 $('.datepicker-title').html(str[1]).removeClass('WO-datepicker-title GU-datepicker-title')
                     .addClass(str[0] + '-datepicker-title');
-                return {
-                    enabled: (window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && Date <= otherClanDate) || (window.endDate === Date)),
-                    tooltip: str[1],
-                    classes: bothClasses + 'pID_' + str[2],
-                };
+                return returnObject;
             }
         };
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('changeDate', function (e) {
