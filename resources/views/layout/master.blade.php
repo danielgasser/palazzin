@@ -325,7 +325,7 @@
             });
         });
         jQuery(document).on('click', '#toggleFooterNav', function () {
-            $('#bottom-nav, #bottom-bottom-nav').slideToggle(500);
+            $('#bottom-nav').slideToggle(500);
         });
     </script>
 

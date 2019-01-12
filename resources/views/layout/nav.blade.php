@@ -42,6 +42,7 @@
                         @endif
 
                     @else
+                        <li class="{{ Request::is('news') ? 'active' : '' }}"><a href="{{URL::to('news')}}"><i class="fas fa-crosshairs"></i><span class="hideContent">&nbsp;{{trans('navigation.news')}}</span></a></li>
                         <li class="{{ Request::is('navigation./') ? 'active' : '' }}"><a href="/"><i class="far fa-hand-paper"></i><span class="hideContent">&nbsp;{{trans('navigation./')}}</span></a></li>
                         <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{URL::to('login')}}"><i class="fas fa-sign-in-alt"></i><span class="hideContent">&nbsp;{{trans('navigation.login')}}</span></a></li>
                     @endif
@@ -55,12 +56,13 @@
                     @include('logged.dialog.timeliner')
                     @include('logged.dialog.free_beds_menu')
                 @endif
-                <ul id="hide-footer-nav" class="nav navbar-nav navbar-left multi-level">
-                    <li class="dropdown-toggle hide-footer-nav-text">
-                        <a id="toggleFooterNav" href="#" class="dropdown-toggle dropdownToggleUp hide-footer-nav-text" data-toggle="dropdown" style="padding-left: 10px;"><i class="fas fa-wrench hide-footer-nav-text"></i><span class="hideContent hide-footer-nav-text">&nbsp;{{trans('dialog.settings')}}</span></a>
-                    </li>
-                </ul>
-
+                @if(Auth::check())
+                    <ul id="hide-footer-nav" class="nav navbar-nav navbar-left multi-level">
+                        <li class="dropdown-toggle hide-footer-nav-text">
+                            <a id="toggleFooterNav" href="#" class="dropdown-toggle dropdownToggleUp hide-footer-nav-text" data-toggle="dropdown" style="padding-left: 10px;"><i class="fas fa-wrench hide-footer-nav-text"></i><span class="hideContent hide-footer-nav-text">&nbsp;{{trans('dialog.settings')}}</span></a>
+                        </li>
+                    </ul>
+                @endif
                 <ul id="bottom-nav" class="nav navbar-nav navbar-left multi-level">
                     @if(Auth::check())
                         @if($isAdmin == 1 || $isManager == 1)
@@ -120,11 +122,7 @@
                             $helper = explode('/', \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri());
                         }
                         ?>
-                        @if(Auth::check())
-                            <a href="{{URL::to('/help/' . $helper[0])}}"><i class="fas fa-question"></i><span class="hideContent">&nbsp;{{trans('navigation.help')}}</span></a>
-                        @else
-                                <a href="{{URL::to('/help')}}"><i class="fas fa-question"></i><span class="hideContent">&nbsp;{{trans('navigation.help')}}</span></a>
-                        @endif
+                        <a href="{{URL::to('/help/' . $helper[0])}}"><i class="fas fa-question"></i><span class="hideContent">&nbsp;{{trans('navigation.help')}}</span></a>
                     </li>
 
                 </ul>
