@@ -98,8 +98,8 @@
     --}}
     @if ($errors->any())
     @include('logged.dialog.no_free_beds')
-    @include('logged.dialog.over_period')
     @endif
+    @include('logged.dialog.over_period')
     @include('logged.dialog.delete_guest')
     @include('logged.dialog.free_beds')
 @section('scripts')

@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content panel-warning">
       <div class="modal-header panel-heading">
-        <h4 class="modal-title">{{trans('dialog.warning')}}</h4>
+        <h4 class="modal-title">{!!trans('dialog.warning')!!}</h4>
       </div>
       <div class="modal-body">
           <div style="font-size: 140%">
