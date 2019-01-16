@@ -87,7 +87,7 @@ class SaveReservation extends FormRequest
         $occupiedBeds = $reservation->getReservationsPerPeriodV3($this->all()['periodID'], false);
         $validator->after(function (Validator $validator) use ($occupiedBeds, $newBeds, $dates) {
             if ($this->loopDates($dates['resStart'][0], $dates['resEnd'][0], 'checkOccupiedBeds', [$occupiedBeds, $newBeds])) {
-                $validator->errors()->add('w', 'www');
+                $validator->errors()->add('not_enough_beds', trans('reservation.warnings.guest_too_much'));
             }
         });
     }

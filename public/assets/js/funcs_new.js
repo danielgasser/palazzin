@@ -9,6 +9,7 @@ var getData = function (url, params) {
         url: url,
         data: params,
         success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -27,6 +28,7 @@ var postErrors = function (params) {
         data: err,
         async: false,
         success: function (data) {
+            window.unAuthorized(data);
             window.console.log(data);
         }
     });

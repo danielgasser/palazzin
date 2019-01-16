@@ -1,6 +1,7 @@
 /**
  * Created by pcshooter on 05.10.14.
  */
+
 var setNavActive = function (el) {
     "use strict";
     var obj = $(el),
@@ -41,6 +42,7 @@ var searchLogins = function (v, url) {
             searchParams: v
         },
         success: function (data) {
+            window.unAuthorized(data);
             var timerEl = $('#loginDataContent'),
                 errorEl = $('#error-no-login-data'),
                 s,
@@ -119,6 +121,7 @@ var getRoles = function (url, id) {
             id: id
         },
         success: function (data) {
+            window.unAuthorized(data);
             var roleData = jQuery.parseJSON(data),
                 dataStr = '',
                 allRoles = [];
@@ -164,7 +167,8 @@ var roleFromToUser = function (url, rid, uid) {
             role_id: rid,
             id: uid
         },
-        success: function () {
+        success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -176,7 +180,8 @@ var deleteUser = function (url) {
     $.ajax({
         type: 'POST',
         url: url,
-        success: function () {
+        success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -193,6 +198,7 @@ var rightFromRole = function (url, rightid, roleid) {
             role_id: roleid
         },
         success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -207,7 +213,8 @@ var editRole = function (url, rid) {
         data: {
             role_id: rid
         },
-        success: function () {
+        success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -223,7 +230,8 @@ var activateUser = function (url, activate, uid) {
             userActive: activate,
             id: uid
         },
-        success: function () {
+        success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -239,6 +247,7 @@ var changeClan = function (url, clan_id, uid) {
             id: uid
         },
         success: function (data) {
+            window.unAuthorized(data);
             window.location.reload();
         }
     });
@@ -251,6 +260,7 @@ var getAuthUser = function () {
         url: 'reservation/getuser',
         async: false,
         success: function (data) {
+            window.unAuthorized(data);
             return data;
         }
     });
@@ -607,6 +617,7 @@ var searchSortPaginate = function (url, searchStr, dateSearch, sortField, orderB
             user_id: $('#user_id').val()
         },
         success: function (d) {
+            window.unAuthorized(d);
             //window.location.reload();
            dummy(d);
         }

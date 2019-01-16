@@ -14,6 +14,7 @@ jQuery(document).ready(function () {
                     help_topic: val
                 },
                 success: function (d) {
+                    window.unAuthorized(d);
                     if (d.hasOwnProperty('error_message')) {
                         text = d.error_message;
                     } else {

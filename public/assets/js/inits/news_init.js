@@ -12,6 +12,7 @@ var postLoadTimeOut = 10 * 60 * 1000,
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             url: 'news_reloaded',
             success: function (n) {
+                window.unAuthorized(n);
                 if (typeof n === 'string' && n.indexOf('<!DOCTYPE') > -1) {
                     return false;
                 }
@@ -185,6 +186,7 @@ jQuery(document).ready(function () {
                 id: $(this).attr('id').split('_')[1]
             },
             success: function (data) {
+                window.unAuthorized(data);
                 $('#newstickerNewPost').slideDown('slow').promise().always(function () {
                     window.tinyMCE.get('post_text').setContent(data.post_text);
                 });
@@ -215,6 +217,7 @@ jQuery(document).ready(function () {
                 id: postId
             },
             success: function (data) {
+                window.unAuthorized(data);
                 appendComment(data, postId, '#comments_');
             }
         });
@@ -230,7 +233,8 @@ jQuery(document).ready(function () {
             data: {
                 id: id
             },
-            success: function () {
+            success: function (data) {
+                window.unAuthorized(data);
                 $('#post_' + id).remove();
                 $('[id^="closeComment_"]').trigger('click');
             }
@@ -245,7 +249,8 @@ jQuery(document).ready(function () {
             data: {
                 id: id
             },
-            success: function () {
+            success: function (data) {
+                window.unAuthorized(data);
                 $('#commentId_' + id).remove();
                 $('[id^="closeComment_"]').trigger('click');
             }
@@ -278,6 +283,7 @@ jQuery(document).ready(function () {
                 comment_id: $('#comment_id_' + id).val()
             },
             success: function (n) {
+                window.unAuthorized(n);
                 if (n.hasOwnProperty('error')) {
                     $('#message').html(n.error);
                     $('#comments_too_much').modal({
@@ -303,6 +309,7 @@ jQuery(document).ready(function () {
                 id: $('#id').val()
             },
             success: function (n) {
+                window.unAuthorized(n);
                 if (n[0].indexOf('error') > -1) {
                     $('#message').html(n[1]);
                     $('#comments_too_much').modal({
@@ -352,6 +359,7 @@ jQuery(document).ready(function () {
                 id: id
             },
             success: function (n) {
+                window.unAuthorized(n);
                 $('#addComment_' + n.post_id).trigger('click');
                 $('#comment_text_' + n.post_id).val(n.comment_text);
                 $('#comment-add-area_' + n.post_id).append('<input id="comment_id_' + n.post_id + '" name="comment_id" type="hidden" value="' + n.id + '">');

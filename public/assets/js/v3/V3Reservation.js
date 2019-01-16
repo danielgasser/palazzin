@@ -13,6 +13,7 @@ let V3Reservation = {
         let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
             today = new Date(),
             guestDateEl,
+            titleString = '',
         otherClanDate = new Date();
         otherClanDate.setDate(otherClanDate.getDate() + 10);
         otherClanDate.setHours(0, 0, 0, 0);
@@ -32,7 +33,10 @@ let V3Reservation = {
         window.endDate.setFullYear(window.endDate.getFullYear() + parseInt(window.settings.setting_calendar_duration));
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
-        $('#reservationInfo>h4').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
+        $('#reservationInfo').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
+        if (window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')] !== undefined) {
+            titleString = window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1];
+        }
         V3Reservation.datePickerSettings = {
             format: "dd.mm.yyyy",
             weekStart: 1,
@@ -41,7 +45,7 @@ let V3Reservation = {
             language: 'de',
             calendarWeeks: true,
             autoclose: true,
-            title: window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1],
+            title: titleString,
             todayHighlight: true,
             startDate: V3Reservation.formatDate(today),
             endDate: V3Reservation.formatDate(window.endDate),
@@ -52,13 +56,17 @@ let V3Reservation = {
             },
             immediateUpdates: true,
             beforeShowDay: function (Date) {
-                let str = window.datePickerPeriods[V3Reservation.formatDate(Date, false, '_')].split('|'),
+                let numBeds = window.settings.setting_num_bed,
+                    dateStr = 'freeBeds_' + Date.getFullYear() + '_' + window.smallerThenTen(Date.getMonth()) + '_' + window.smallerThenTen(Date.getDate()),
+                    occupied = parseInt(window.newAllGuestBeds[dateStr], 10),
+                    occupiedBeds = (window.newAllGuestBeds[dateStr] === undefined) ? numBeds + '/' + numBeds : (numBeds - occupied) + '/' + numBeds,
+                    str = (window.datePickerPeriods[dateStr] !== undefined) ? window.datePickerPeriods[dateStr].split('|') : '',
                     bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
                     returnObject = {
                         enabled: (window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && Date <= otherClanDate) || (window.endDate === Date)),
                         tooltip: str[1],
                         classes: bothClasses + 'pID_' + str[2],
-                        content: 'xxx' + Date.getDate()
+                        content: occupiedBeds + '<hr>' + Date.getDate() + '<br>' + dateStr
                     };
                 $('.datepicker-title').html(str[1]).removeClass('WO-datepicker-title GU-datepicker-title')
                     .addClass(str[0] + '-datepicker-title');
@@ -132,16 +140,29 @@ let V3Reservation = {
             window.resEndPicker.datepicker('setDate', dates.endDate);
             $('#reservation_ended_at').removeClass('noClick');
         }
-        if (dates.startDate <= dates.endDate) {
-            $('#clone_guest').show().attr('disabled', false);
-        }
         for (let i = 0; i < window.startGuestPicker.length; i++) {
             if (dates.startDate > window.startGuestPicker[i].datepicker('getDate')) {
                 window.startGuestPicker[i].datepicker('setDate', dates.startDate);
             }
-            if (dates.endDate < window.endGuestPicker[i].datepicker('getDate')) {
+            if (dates.endDate <= window.endGuestPicker[i].datepicker('getDate')) {
                 window.endGuestPicker[i].datepicker('setDate', dates.endDate);
             }
+            if (dates.startDate >= window.endGuestPicker[i].datepicker('getDate')) {
+                let start = new Date();
+                start.setDate(dates.startDate.getDate() + 1);
+                start.setHours(0, 0, 0, 0);
+                window.endGuestPicker[i].datepicker('setDate', start);
+                window.endGuestPicker[i].datepicker('setEndDate', start);
+            } else {
+                window.endGuestPicker[i].datepicker('setEndDate', dates.endDate);
+            }
+            /*
+            let start = window.startGuestPicker[i].datepicker('getDate'),
+                end = window.endGuestPicker[i].datepicker('getDate');
+            if (start >= end) {
+                window.endGuestPicker[i].datepicker('setDate', start.setDate(start.getDate() + 1));
+            }
+            */
             console.log(window.startGuestPicker[i].datepicker('getDate'), window.endGuestPicker[i].datepicker('getDate'))
             window.startGuestPicker[i].datepicker('setStartDate', dates.startDate);
             window.startGuestPicker[i].datepicker('setEndDate', dates.endDate);
@@ -518,9 +539,36 @@ let V3Reservation = {
                 "_token": window.token,
             },
             success: function (data) {
+                window.unAuthorized(data);
                 if (!isNaN(parseInt(data, 10))) {
                     $('#reservation_exists').modal();
                     $('#edit_reservation_exists').attr('href', $('#edit_reservation_exists').attr('href') + '/' + data);
+                }
+            }
+        })
+    },
+    deleteReservation: function (id) {
+        $.ajax({
+            url: 'delete_reservation',
+            method: 'POST',
+            data: {
+                res_id: id,
+                "_token": window.token,
+            },
+            success: function (data) {
+                window.unAuthorized(data);
+                let d = $.parseJSON(data);
+                if (d.hasOwnProperty('error')) {
+                    $('#no_delete_reservation').show();
+                    return false;
+                }
+                $('#all_reservations_' + id).slideUp().remove();
+                if ($('[id^="all_reservations_"]').length === 0) {
+                    $('#noview').find('h1').html(window.reservationStrings.no_bookings);
+                }
+                if (d.hasOwnProperty('success')) {
+                    $('#deleted_reservation').show();
+                    return false;
                 }
             }
         })

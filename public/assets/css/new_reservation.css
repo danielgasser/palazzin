@@ -250,7 +250,9 @@ label {
       background-color: #f7f7f7; }
 
 #reservationInfo {
-  padding: 0 0 0.25em 0; }
+  padding: 0 0 0.25em 0;
+  font-size: 1.2em;
+  font-weight: bold; }
 
 #timeliner {
   max-height: 350px;
@@ -268,6 +270,11 @@ label {
 .datepicker table tr th, .datepicker table tr td {
   width: 40px !important;
   height: 40px !important; }
+  .datepicker table tr th hr, .datepicker table tr td hr {
+    margin-top: 0;
+    margin-bottom: 0;
+    border: 0;
+    border-top: 1px solid #33333369; }
 
 .jquery-hover-a {
   background-color: #b7282e !important;

@@ -16,7 +16,6 @@
 @section('content')
     <a name="top"></a>
     <div id="reservationInfo">
-        <h1>{{trans('navigation.all_reservations')}}</h1>
         <h4></h4>
     </div>
     <div id="upper">
@@ -65,7 +64,10 @@
                     <div class="form-group">
                         <label>&nbsp;</label>
                         <button type="submit" title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation"
-                                id="save_reservation_{{ $res->id }}"><i class="fas fa-edit"></i></button>
+                                id="edit_reservation_{{ $res->id }}"><i class="fas fa-edit"></i></button>
+                        <label>&nbsp;</label>
+                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation"
+                                id="delete_reservation_{{ $res->id }}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             </div>
@@ -131,18 +133,23 @@
             @endforeach
         </form>
             @empty
-            <h4>{{ trans('reservation.no_bookings') }}</h4>
+            <script>
+                $(document).ready(function () {
+                    $('#noview').find('h1').html('{{ trans('reservation.no_bookings') }}')
+                })
+            </script>
         @endforelse
     </div>
-    {{--
-    @include('logged.dialog.guest_nan')
-    @include('logged.dialog.night_nan')
-    @include('logged.dialog.no_delete_reservation')
-    @include('logged.dialog.cross_reserv')
-    @include('logged.dialog.cross_reserv_user_list')
     @include('logged.dialog.delete_reservation')
-    @include('logged.dialog.not_invited')
-    --}}
+    @include('logged.dialog.deleted_reservation')
+    @include('logged.dialog.no_delete_reservation')
+    {{--
+     @include('logged.dialog.guest_nan')
+     @include('logged.dialog.night_nan')
+     @include('logged.dialog.cross_reserv')
+     @include('logged.dialog.cross_reserv_user_list')
+     @include('logged.dialog.not_invited')
+     --}}
 
 @section('scripts')
     @parent
@@ -156,7 +163,7 @@
     <script>
         var startDate,
             endDate,
-            rolesTaxes = {{$roles}},
+            rolesTaxes = {!! $roles !!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
             datePickersStart = [],
@@ -166,7 +173,7 @@
             token = '{{ csrf_token() }}',
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}');
     </script>
-    <script src="{{asset('assets/js/v3/global_functions/funcs.js')}}"></script>
+    {{-- <script src="{{asset('assets/js/v3/global_functions/funcs.js')}}"></script>--}}
     <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
     <script>
        // $.holdReady(true);

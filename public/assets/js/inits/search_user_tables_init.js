@@ -57,6 +57,7 @@ var searchSortPaginate = function (url, search, sortField, orderByField) {
             user_id: $('#user_id').val()
         },
         success: function (d) {
+            window.unAuthorized(d);
             var userData = $.parseJSON(d);
             console.log(userData)
             window.userTable.clear();
@@ -217,6 +218,7 @@ jQuery(document).on('click', '#send_new_message', function (e) {
 
     },
         success: function (data) {
+            window.unAuthorized(data);
             $('#newsMessage').slideUp('slow');
             $('#msent').text(data)
             $('#message_sent').modal({

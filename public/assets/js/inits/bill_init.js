@@ -31,6 +31,7 @@ jQuery(document).ready(function () {
                 bill_paid: dbDate
             },
             success: function (data) {
+                window.unAuthorized(data);
                 $('#paid_or_not_' + idValue).html(window.pay_yesno[data.due]);
                 $('#when_paid_' + idValue).html(data.paid + '<br><button class="btn btn-default" id="undoSavePaid_' + data.billid + '_' + idValue + '">' + window.langDialog.reset + '</button>');
                 window.adaptEmptyInputs();
@@ -48,6 +49,7 @@ jQuery(document).ready(function () {
                 id: id
             },
             success: function (data) {
+                window.unAuthorized(data);
                 $('#paid_or_not_' + idValue).html(window.pay_yesno[data.due]);
                 $('#when_paid_' + idValue).html('<br><input class="form-control date_type" id="bill_paid_' + idValue + '" data_id="' + data.billid + '" name="bill_paid" type="text"><button class="btn btn-default" id="savePaid_' + data.billid + '_' + idValue + '">' + window.langDialog.save + '</button>');
                 window.adaptEmptyInputs();

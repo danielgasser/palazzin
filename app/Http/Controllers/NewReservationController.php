@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveReservation;
-use Illuminate\Http\Request;
 use Period;
 use Reservation;
 use Role;
+use Guest;
 use User;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -92,7 +92,7 @@ class NewReservationController extends Controller
         $resEnd = Reservation::createDbDateFromInput($validated['reservation_ended_at']);
         $start = new \DateTime($resStart[0]);
         $end = new \DateTime($resEnd[0]);
-        $args['reservation_nights'] = $start->diff($end)->format('%a');
+        $args['reservation_nights'] = $start->diff($end)->format('%a') - 1;
         $args['reservation_reminder_sent'] = 0;
         $args['reservation_bill_sent'] = 0;
         $args['reservation_reminder_sent_at'] = '0000-00-00 00:00:00';
@@ -117,13 +117,13 @@ class NewReservationController extends Controller
                 $guest->roles()->associate($role);
                 $args = [
                     'reservation_id' => $res->id,
-                    'guest_started_at' => $validated['reservation_guest_started_at'][$i],
-                    'guest_ended_at' => $validated['reservation_guest_ended_at'][$i],
+                    'guest_started_at' => Reservation::createDbDateFromInput($validated['reservation_guest_started_at'][$i])[0],
+                    'guest_ended_at' => Reservation::createDbDateFromInput($validated['reservation_guest_ended_at'][$i])[0],
                     'guest_number' => $validated['reservation_guest_num'][$i],
                     'guest_night' => $validated['number_nights'][$i],
                     'role_id' => $validated['reservation_guest_guests'][$i],
                     'guest_tax_role_id' => $validated['reservation_guest_guests'][$i],
-                    'guest_tax' => $credentials['price'][$i],
+                    'guest_tax' => $credentials['hidden_reservation_guest_price'][$i],
                     'guest_title' => $credentials['price'][$i],
                 ];
                 $guest->fill($args);
@@ -131,7 +131,7 @@ class NewReservationController extends Controller
             }
         }
         if ($saved) {
-            return back()
+            return redirect('all_reservations')
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
         }
     }
@@ -183,5 +183,20 @@ class NewReservationController extends Controller
             return $existentRes->id;
         }
         return null;
+    }
+
+    public function deleteReservation()
+    {
+        $resID = request()->all('res_id');
+        $res = Reservation::find($resID['res_id']);
+        $today = new \DateTime();
+        $start = new \DateTime($res->reservation_ended_at);
+        if ($today > $start) {
+            return json_encode(['error' => 'no_delete_reservation']);
+        }
+        // ToDo check if reservation is before today => don't delete but message
+        $res->guests()->delete();
+        $res->delete();
+        return json_encode(['success' => 'deleted_reservation']);
     }
 }

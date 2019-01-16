@@ -217,6 +217,7 @@ var Reservation = {
             url: 'users/simplelist',
             async: false,
             success: function (d) {
+                window.unAuthorized(d);
                 window.userlist = d;
             }
         });
@@ -231,6 +232,7 @@ var Reservation = {
                 clan_id: cid
             },
             success: function (d) {
+                window.unAuthorized(d);
                 window.userlist = d;
             }
         });
@@ -245,6 +247,7 @@ var Reservation = {
                 period_id: pid
             },
             success: function (d) {
+                window.unAuthorized(d);
                 $.each($('[id^="' + el + '"]'), function (i, n) {
                     var valSet = n.value;
                     $(n)
@@ -272,6 +275,7 @@ var Reservation = {
                 period_id: pid
             },
             success: function (d) {
+                window.unAuthorized(d);
                 window.clan_id = d.id;
                 instance.getGuestRoles(pid, 'reservation_guest_guests_');
                 instance.getUserListByClan(d.clan_id);
@@ -359,6 +363,7 @@ var Reservation = {
                 res_id: resId,
             },
             success: function (d) {
+                window.unAuthorized(d);
                 res = $.parseJSON(d)[0];
             }
         });
@@ -480,6 +485,7 @@ var Reservation = {
                 guest_id: guest_id
             },
             success: function (d) {
+                window.unAuthorized(d);
                 var sd = new Date(start),
                     ed = new Date(end),
                     beds,
@@ -693,6 +699,7 @@ var Reservation = {
                 to_delete: toDelete
             },
             success: function (d) {
+                window.unAuthorized(d);
                 var currentPeriodClan,
                     data = $.parseJSON(d),
                     dataOne = data[0];
@@ -745,6 +752,7 @@ var Reservation = {
                 document.write(xhr.responseText)
             },
             success: function (data) {
+                window.unAuthorized(data);
                 if (data.hasOwnProperty('failed')) {
                     $('#no_delete_reservation').modal({
                         backdrop: 'static',
@@ -1100,6 +1108,7 @@ var Reservation = {
                 $.event.global = false;
             },
             success: function (data) {
+                window.unAuthorized(data);
                 console.log(data);
             }
         });
@@ -1128,6 +1137,7 @@ var Reservation = {
                 next_month: data_next_month
             },
             success: function (data) {
+                window.unAuthorized(data);
                 var reservations = $.parseJSON(data);
                 if (reservations.length > 0) {
                     jQuery.each(reservations, function (i, n) {

@@ -181,6 +181,7 @@ var searchSortPaginate = function (url, searchStr, dateSearch, sortField, orderB
             monthyear: my
         },
         success: function (d) {
+            window.unAuthorized(d);
             console.log(d)
             dummy(d);
         }
@@ -196,6 +197,7 @@ var searchBillNo = function (billNo, callback) {
             bill_no: billNo
         },
         success: function (d) {
+            window.unAuthorized(d);
             dummy(d);
         }
     });

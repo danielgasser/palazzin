@@ -14,6 +14,7 @@
                         url: 'reservation/getuser',
                         async: false,
                         success: function (data) {
+                            window.unAuthorized(data);
                             return data;
                         }
                     });
@@ -55,6 +56,7 @@
                         this_date: thisdate
                     },
                     success: function (data) {
+                        window.unAuthorized(data);
                         var objs = $.parseJSON(data),
                             check,
                             ss,
@@ -362,6 +364,7 @@
                     type: 'GET',
                     url: 'periods/all',
                     success: function (data) {
+                        window.unAuthorized(data);
                         periods = data;
                         tl = $('#timeliner');
                         tl.html('');

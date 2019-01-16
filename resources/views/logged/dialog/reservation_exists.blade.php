@@ -5,7 +5,7 @@
         <h4 class="modal-title">{!!trans('dialog.warning')!!}</h4>
       </div>
       <div class="modal-body">
-        <p id="message">{{ trans('reservation.warnings.cross_reserv') }}</p>
+        <p id="message">{!! trans('reservation.warnings.cross_reserv')  !!}</p>
       </div>
       <div class="modal-footer">
       <div class="modal-footer-text">

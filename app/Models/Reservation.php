@@ -156,6 +156,7 @@ class Reservation extends Model {
     }
 
     /**
+     * by user ID
      * @param $start
      * @param $end
      * @param $uID
@@ -190,6 +191,7 @@ class Reservation extends Model {
     }
 
     /**
+     * by Day
      * @param $start
      * @param $end
      * @return mixed
@@ -933,18 +935,18 @@ class Reservation extends Model {
         return $nightCounter;
     }
 
-    public static function setFreeBeds($reservations, $preFix = 'freeBeds_')
+    public static function setFreeBeds($reservations, $preFix = 'freeBeds_', $asJSON = false, $format = 'Y_m_d')
     {
         $ar = [];
         $cu = new User();
-        $reservations->each(function ($r) use ($ar, $cu, $preFix) {
+        $reservations->each(function ($r) use ($ar, $cu, $preFix, $format) {
             if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
                 $cu = $cu->where('id', '=', $r->user_id_ab)->first();
                 $r->user_id_ab_name = $cu->user_login_name;
             } else {
                 $r->user_id_ab_name = '';
             }
-            $r->guests->each(function  ($j) use ($r, $preFix) {
+            $r->guests->each(function  ($j) use ($r, $preFix, $format) {
                 $role_tax = Role::find($j->role_id);
                 $j->role_tax_night = $role_tax->role_tax_night;
                 $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
@@ -954,7 +956,7 @@ class Reservation extends Model {
                 $interval = new DateInterval('P1D');
                 $dateRange = new DatePeriod($start, $interval ,$end);
                 foreach($dateRange as $key => $date) {
-                    $d = explode('_', $date->format('Y_m_d'));
+                    $d = explode('_', $date->format($format));
                     $dd = intval($d[1]) - 1;
                     $d[1] = ($dd < 10) ? '0' . $dd : $dd;
                     if ($date < $checkEnd) {
@@ -965,6 +967,9 @@ class Reservation extends Model {
                 }
             });
         });
+        if ($asJSON) {
+            return $reservations->toJson();
+        }
         return $reservations;
     }
 

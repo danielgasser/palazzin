@@ -247,6 +247,26 @@ jQuery(document).on('click', '#confirm_delete_guest', function () {
 });
 
 /**
+ * Delete Reservation
+ */
+jQuery(document).on('click', '[id^="delete_reservation_"]', function (e) {
+    e.preventDefault();
+    let id = $(this).attr('id').split('_')[2];
+    $('#deleteRes').attr('data-id', id);
+    $('#delete_reservation').show();
+});
+
+/**
+ * Delete Reservation
+ */
+jQuery(document).on('click', '#deleteRes', function (e) {
+    e.preventDefault();
+    let id = $(this).data('id');
+    $('#delete_reservation').hide();
+    V3Reservation.deleteReservation(id);
+});
+
+/**
  * Cancel Remove guest entry
  */
 jQuery(document).on('click', '#cancel_delete_guest', function (e) {

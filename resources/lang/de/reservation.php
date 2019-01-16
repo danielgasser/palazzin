@@ -87,6 +87,7 @@ return array(
     'begin_res' => 'Deine Reservierung beginnt bald',
     'begin_res_housekeeper' => 'Es stehen :z neue oder geänderte Reservierungen an',
     'cancel_res_housekeeper' => 'Eine Reservierungen wurde gelöscht',
+    'delete_res' => 'Die Reservierung wurde gelöscht',
     'new_res' => 'Neue Reservierung',
     'other_user_clan_guest' => 'Reservierung für:',
     'warnings' => array(

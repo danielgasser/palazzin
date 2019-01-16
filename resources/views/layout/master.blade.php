@@ -145,6 +145,7 @@
         <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
     @endif
     @if(Request::is('all_reservations'))
+        <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('assets/css/all_reservation.css')}}" rel="stylesheet" type="text/css" />
     @endif
 </head>
@@ -282,7 +283,7 @@
                 }
             });
         });
-        jQuery(document).on('click', '#errors>.close', function () {
+        jQuery(document).on('click', '#errors>.close, [aria-label="Close"]', function () {
             $('#error-wrap').hide();
         });
         jQuery(document).on('click', 'body', function () {
@@ -328,7 +329,15 @@
             $('#bottom-nav').slideToggle(500);
         });
     </script>
-
+    <script>
+        var unAuthorized = function (data) {
+            if (data.length > 0) {
+                if ($.parseJSON(data).hasOwnProperty('401_error')) {
+                    window.location.href = '/login';
+                }
+            }
+        }
+    </script>
    @show
 
 </body>

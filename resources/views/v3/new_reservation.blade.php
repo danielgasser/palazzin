@@ -27,7 +27,7 @@
                 <div class="col-md-1 col-sm-4 col-xs-4">
                     <div class="form-group">
                         <label>&nbsp;</label>
-                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" dissabled
+                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
                                 id="save_reservation"><i class="fas fa-save"></i></button>
                     </div>
                 </div>
@@ -35,14 +35,14 @@
                     <div class="form-group">
                         <label>&nbsp;</label>
                         <button title="{{trans('dialog.add_on_upper')}}"
-                                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest" dissabled><i
+                                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest" disabled><i
                                 class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-4 col-xs-4">
                     <div class="form-group">
                         <label>&nbsp;</label>
-                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" dissabled
+                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" disabled
                                 id="reset_reservation"><i class="fas fa-ban"></i></button>
                     </div>
                 </div>
@@ -76,7 +76,6 @@
             </div>
             @php
             $c = (old('reservation_guest_started_at') == null) ? 1 : count(old('reservation_guest_started_at'));
-            var_dump(old('reservation_guest_started_at')[0])
             @endphp
 
             <div id="guest_entries">
@@ -123,13 +122,21 @@
             token = '{{ csrf_token() }}',
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}'),
             afterValidation = '{{ ($errors->any()) }}',
-            uID =  JSON.parse('{!!json_encode($userClan[0]) !!}'),
+            uID = JSON.parse('{!!json_encode($userClan[0]) !!}'),
             resStartPicker,
             resEndPicker,
             startGuestPicker = [],
             endGuestPicker = [],
-            guestEntryView = '{!!  $guestEntryView !!}';
-            console.log(reservationsPerPeriod)
+            guestEntryView = '{!!  $guestEntryView !!}',
+            newAllGuestBeds = [];
+            for (let i = 0; i < reservationsPerPeriod.length; i++) {
+                Object.keys(reservationsPerPeriod[i]).filter(function(k) {
+                    if (k.indexOf('freeBeds') === 0 && reservationsPerPeriod[i][k] !== undefined) {
+                        newAllGuestBeds[k] = reservationsPerPeriod[i][k];
+                    }
+                });
+            }
+            console.log(reservationsPerPeriod, newAllGuestBeds)
     </script>
     <script>
         $(document).ready(function () {

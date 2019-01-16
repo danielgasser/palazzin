@@ -18,6 +18,7 @@ var searchSortPaginate = function (url, searchStr, dateSearch, sortField, orderB
             monthyear: my
         },
         success: function (d) {
+            window.unAuthorized(d);
             dummy(d);
         }
     });
