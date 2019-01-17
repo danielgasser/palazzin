@@ -1,4 +1,4 @@
-#new_reservation .row {
+#new_reservation .row, #edit_reservation .row {
   margin-left: 0;
   margin-right: 2px; }
 

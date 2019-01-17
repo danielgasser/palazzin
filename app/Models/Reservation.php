@@ -33,7 +33,8 @@ class Reservation extends Model {
         'reservation_bill_sent',
         'reservation_reminder_sent',
         'reservation_reminder_sent',
-        'reservation_reminder_sent_at'
+        'reservation_reminder_sent_at',
+        'reservation_title'
     );
 
     protected $setting;

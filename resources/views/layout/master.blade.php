@@ -239,7 +239,13 @@
             @break
 
                 @default
-                <h1>{{trans('navigation.' . $route)}}</h1>
+            @php(
+            $routeStr = preg_replace('/[\[{\(].*[\]}\)]/U' , '', $route)
+            )
+                @php(
+            $routeStr = rtrim($routeStr,"/")
+            )
+                <h1>{{trans('navigation.' . $routeStr)}}</h1>
             @break
         @endswitch
 

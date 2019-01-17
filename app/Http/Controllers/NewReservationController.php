@@ -21,28 +21,64 @@ use Auth;
 class NewReservationController extends Controller
 {
 
-    public function getCurrentPeriods()
+    public function newReservation()
     {
+        $args = $this->getReservationInfos();
+        return view('v3.new_reservation')
+            ->with('rolesTrans', $args['rolesTrans'])
+            ->with('roleTaxes', $args['roleTaxes'])
+            ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
+            ->with('periods', $args['periods'])
+            ->with('userClan', $args['userClan'])
+            ->with('periodsDatePicker', $args['periodsDatePicker']);
+
+    }
+
+    public function editReservation($res_id)
+    {
+        $args = $this->getReservationInfos();
+        $user = User::find(Auth::id());
+        $res = Reservation::where('id', '=', $res_id)->with('guests')->first();
+
+        if (!is_object($res)) {
+            $userRes = Reservation::where('user_id', '=', $user->id)
+                ->orderBy('reservation_started_at', 'desc')
+                ->get();
+            $reservations = Reservation::setFreeBeds($userRes, 'user_Res_occupiedBeds');
+            return redirect('all_reservations')
+                ->with('userRes', $userRes)
+                ->with('reservations', $reservations);
+        }
+        return view('v3.edit_reservation')
+            ->with('userRes', $res)
+            ->with('rolesTrans', $args['rolesTrans'])
+            ->with('roleTaxes', $args['roleTaxes'])
+            ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
+            ->with('periods', $args['periods'])
+            ->with('userClan', $args['userClan'])
+            ->with('periodsDatePicker', $args['periodsDatePicker']);
+    }
+
+    /**
+     * @return array
+     * @throws \Throwable
+     */
+    protected function getReservationInfos()
+    {
+        $args = [];
         $user = User::find(Auth::id());
         $userClanID = $user->getUserClan();
         $start = new \DateTime();
-        $checkPeriod = Period::getCurrentPeriod();
-        $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
         $periods = new Period();
-        $pe = $periods->getTimelinerPeriods($start->format('Y-m'));
-        $peDP = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
-        $reservationsPerPeriod = $this->getReservationsPerDateV3($pe->first()->id);
-        $guestBlade = view('logged.dialog.guest', ['rolesTrans' => $rolesTrans, 'i' => 0]);
-        $guestEntryView = $guestBlade->render();
-        $guestEntryView = strtr($guestEntryView,"\n\r","  ");
-        return view('v3.new_reservation')
-            ->with('rolesTrans', $rolesTrans)
-            ->with('roleTaxes', Role::getRolesTaxV3())
-            ->with('guestEntryView', $guestEntryView)
-            ->with('reservationsPerPeriod', $reservationsPerPeriod)
-            ->with('periods', $pe)
-            ->with('userClan', $user->getUserClanName($userClanID))
-            ->with('periodsDatePicker', $peDP);
+        $checkPeriod = Period::getCurrentPeriod();
+
+        $args['userClan'] = $user->getUserClanName($userClanID);
+        $args['rolesTrans'] = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $args['roleTaxes'] = Role::getRolesTaxV3();
+        $args['periods'] = $periods->getTimelinerPeriods($start->format('Y-m'));
+        $args['periodsDatePicker'] = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
+        $args['reservationsPerPeriod'] = $this->getReservationsPerDateV3($args['periods']->first()->id);
+        return $args;
     }
 
     public function getAllReservationInPeriod()
@@ -88,16 +124,19 @@ class NewReservationController extends Controller
         $credentials = request()->all();
         $validated = $request->validated();
        // ToDo if beds == 1 only check total beds from localStorage
+        $resID = request()->all('id');
         $resStart = Reservation::createDbDateFromInput($validated['reservation_started_at']);
         $resEnd = Reservation::createDbDateFromInput($validated['reservation_ended_at']);
         $start = new \DateTime($resStart[0]);
         $end = new \DateTime($resEnd[0]);
-        $args['reservation_nights'] = $start->diff($end)->format('%a') - 1;
+        $user = User::find(Auth::id());
+        $args['reservation_nights'] = ($start->diff($end)->format('%a') - 1 === 0) ? 1 : $start->diff($end)->format('%a') - 1;
         $args['reservation_reminder_sent'] = 0;
         $args['reservation_bill_sent'] = 0;
         $args['reservation_reminder_sent_at'] = '0000-00-00 00:00:00';
         $args['user_id'] = Auth::id();
         $args['period_id'] = intval($credentials['periodID']);
+        $args['reservation_title'] = $credentials['reservation_title'];
         $args['reservation_started_at'] = $start->format('Y-m-d H:i:s');
         $args['reservation_ended_at'] = $end->format('Y-m-d H:i:s');
         if (!isset($validated['user_id_ab'])) {
@@ -105,9 +144,12 @@ class NewReservationController extends Controller
         } else {
             $args['user_id_ab'] = $credentials['user_id_ab'];
         }
-        $res = new Reservation();
-        $user = User::find(Auth::id());
-        $res->users()->associate($user);
+        if (!is_null($resID['id'])) {
+            $res = Reservation::find(request()->all('id'));
+            $res->users()->associate($user);
+        } else {
+            $res = new Reservation();
+        }
         $res->fill($args);
         $saved = $res->save();
         if (array_key_exists('reservation_guest_started_at', $validated)) {
@@ -124,7 +166,7 @@ class NewReservationController extends Controller
                     'role_id' => $validated['reservation_guest_guests'][$i],
                     'guest_tax_role_id' => $validated['reservation_guest_guests'][$i],
                     'guest_tax' => $credentials['hidden_reservation_guest_price'][$i],
-                    'guest_title' => $credentials['price'][$i],
+                    'guest_title' => $credentials['hidden_guest_title'][$i],
                 ];
                 $guest->fill($args);
                 $res->guests()->save($guest);
@@ -134,32 +176,6 @@ class NewReservationController extends Controller
             return redirect('all_reservations')
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
         }
-    }
-
-    public function editReservation($id)
-    {
-        $user = User::find(Auth::id());
-        $start = new \DateTime();
-        $checkPeriod = Period::getCurrentPeriod();
-        $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
-        $periods = new Period();
-        $pe = $periods->getTimelinerPeriods($start->format('Y-m'));
-        $res = Reservation::find($id);
-
-        if (!is_object($res)) {
-            $userRes = Reservation::where('user_id', '=', $user->id)
-                ->orderBy('reservation_started_at', 'desc')
-                ->get();
-            $reservations = Reservation::setFreeBeds($userRes, 'user_Res_occupiedBeds');
-            return redirect('all_reservations')
-                ->with('userRes', $userRes)
-                ->with('reservations', $reservations);
-        }
-        return view('v3.edit_reservation')
-            ->with('userRes', $res)
-            ->with('rolesTrans', $rolesTrans)
-            ->with('roles', Role::getRolesTaxV3())
-            ->with('periods', $pe);
     }
 
     /**

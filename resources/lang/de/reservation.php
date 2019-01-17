@@ -8,7 +8,7 @@
 return array(
     'your_title' => 'Deine Reservierungen',
     'no_bookings' => 'Keine Reservierungen',
-    'title' => 'Kalender & Reservierung',
+    'title' => 'Name der Reservierung',
     'title_short' => 'Reservierung',
     'guest_title' => 'Gasteintrag N°',
     'title_singular' => 'Reservierung',

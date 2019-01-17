@@ -7,6 +7,7 @@ let V3Reservation = {
     periodEndDate: null,
     datePickerSettings: {},
     disabledDates: [],
+    firstTimeChangeEndDate: 0,
     langStrings: window.reservationStrings,
     init: function (pID, afterValidation, startDate) {
         V3Reservation.periodID = pID;
@@ -57,16 +58,17 @@ let V3Reservation = {
             immediateUpdates: true,
             beforeShowDay: function (Date) {
                 let numBeds = window.settings.setting_num_bed,
-                    dateStr = 'freeBeds_' + Date.getFullYear() + '_' + window.smallerThenTen(Date.getMonth()) + '_' + window.smallerThenTen(Date.getDate()),
-                    occupied = parseInt(window.newAllGuestBeds[dateStr], 10),
-                    occupiedBeds = (window.newAllGuestBeds[dateStr] === undefined) ? numBeds + '/' + numBeds : (numBeds - occupied) + '/' + numBeds,
-                    str = (window.datePickerPeriods[dateStr] !== undefined) ? window.datePickerPeriods[dateStr].split('|') : '',
+                    dateStr = Date.getFullYear() + '_' + window.smallerThenTen(Date.getMonth()) + '_' + window.smallerThenTen(Date.getDate()),
+                    pickerDateStr = V3Reservation.formatDate(Date, false, '_'),
+                    occupied = parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
+                    occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? numBeds + '/' + numBeds : (numBeds - occupied) + '/' + numBeds,
+                    str = (window.datePickerPeriods[pickerDateStr] !== undefined) ? window.datePickerPeriods[pickerDateStr].split('|') : '',
                     bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
                     returnObject = {
                         enabled: (window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && Date <= otherClanDate) || (window.endDate === Date)),
                         tooltip: str[1],
                         classes: bothClasses + 'pID_' + str[2],
-                        content: occupiedBeds + '<hr>' + Date.getDate() + '<br>' + dateStr
+                        content: '<span class="occupiedBeds">' + occupiedBeds + '</span><hr>' + Date.getDate()
                     };
                 $('.datepicker-title').html(str[1]).removeClass('WO-datepicker-title GU-datepicker-title')
                     .addClass(str[0] + '-datepicker-title');
@@ -129,7 +131,9 @@ let V3Reservation = {
         window.startGuestPicker[0] = guestDateEl.find('#reservation_guest_started_at_' + 0);
         window.endGuestPicker[0] = guestDateEl.find('#reservation_guest_ended_at_' + 0);
         V3Reservation.getFreeBeds(window.resStartPicker.datepicker('getStartDate'), window.resEndPicker.datepicker('getStartDate'), 'freeBeds_');
-        $('#guests_date_0').hide();
+        if (localStorage.getItem('new_res') === '1') {
+            $('#guests_date_0').hide();
+        }
     },
     adaptChanged: function (dates, periodEndDate, isStart) {
         if (dates.startDate >= dates.endDate && isStart) {
@@ -148,7 +152,7 @@ let V3Reservation = {
                 window.endGuestPicker[i].datepicker('setDate', dates.endDate);
             }
             if (dates.startDate >= window.endGuestPicker[i].datepicker('getDate')) {
-                let start = new Date();
+                let start = new Date(dates.startDate.getTime());
                 start.setDate(dates.startDate.getDate() + 1);
                 start.setHours(0, 0, 0, 0);
                 window.endGuestPicker[i].datepicker('setDate', start);
@@ -156,18 +160,13 @@ let V3Reservation = {
             } else {
                 window.endGuestPicker[i].datepicker('setEndDate', dates.endDate);
             }
-            /*
-            let start = window.startGuestPicker[i].datepicker('getDate'),
-                end = window.endGuestPicker[i].datepicker('getDate');
-            if (start >= end) {
-                window.endGuestPicker[i].datepicker('setDate', start.setDate(start.getDate() + 1));
-            }
-            */
             console.log(window.startGuestPicker[i].datepicker('getDate'), window.endGuestPicker[i].datepicker('getDate'))
             window.startGuestPicker[i].datepicker('setStartDate', dates.startDate);
             window.startGuestPicker[i].datepicker('setEndDate', dates.endDate);
-            window.endGuestPicker[i].datepicker('setStartDate', dates.startDate);
-            window.endGuestPicker[i].datepicker('setEndDate', dates.endDate);
+            if (V3Reservation.firstTimeChangeEndDate === 1) {
+                window.endGuestPicker[i].datepicker('setDate', dates.endDate);
+                window.endGuestPicker[i].datepicker('setEndDate', dates.endDate);
+            }
         }
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
         V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
@@ -369,12 +368,14 @@ let V3Reservation = {
             numNight = (numberNight == '') ? '' : ' = ' + numberNight + ' ' + nights,
             dateString = window.guestTitle + V3Reservation.formatDate(dates.startDate) + ' - ' + V3Reservation.formatDate(dates.endDate) + numNight + num_guest + guest_kind;
         $('#guest_title_' + id).html(dateString);
+        $('#hidden_guest_title_' + id).val(dateString);
     },
     setReservationHeaderText: function (id, dates, numberNight) {
         let nights = (parseInt(numberNight, 10) === 1) ? window.reservationStrings.night : window.reservationStrings.nights,
             numNight = (numberNight == '') ? '' : ' = ' + numberNight + ' ' + nights,
             dateString = V3Reservation.formatDate(dates.startDate) + ' - ' + V3Reservation.formatDate(dates.endDate) + numNight;
         $('#res_header_text').html(dateString);
+        $('#reservation_title').val(dateString);
     },
     setFreeBeds: function (start, end) {
         $('[id^="free-beds_"]').html('');
@@ -542,7 +543,7 @@ let V3Reservation = {
                 window.unAuthorized(data);
                 if (!isNaN(parseInt(data, 10))) {
                     $('#reservation_exists').modal();
-                    $('#edit_reservation_exists').attr('href', $('#edit_reservation_exists').attr('href') + '/' + data);
+                    $('#edit_reservation_exists').attr('action', window.urlTo + '/edit_reservation/' + data);
                 }
             }
         })

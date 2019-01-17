@@ -142,12 +142,15 @@ jQuery(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle
  */
 jQuery(document).on('click', '#clone_guest', function (e) {
     e.preventDefault();
-    let div = window.guestEntryView,
-        counter = $('[id^="guests_date_"]').length,
+    let counter = $('[id^="guests_date_"]').length,
+        div = $('#guests_date_0')
+            .clone()
+            .html(function (i, old) {
+                return old.replace(new RegExp('_0', 'g'), '_' + counter);
+            }).attr('id', 'guests_date_' + counter),
         today = window.resStartPicker.datepicker('getDate'),
         tomorrow = window.resEndPicker.datepicker('getDate'),
         guestDateEl;
-    div = div.replace(new RegExp('_0', 'g'), '_' + counter);
 
     $('#guest_entries').append(div);
     $('#reservation_guest_num_' + counter).val('1');
@@ -278,6 +281,12 @@ jQuery(document).on('click', '#cancel_delete_guest', function (e) {
  */
 jQuery(document).on('changeDate', '#reservation_ended_at', function (e) {
     V3Reservation.getNewResBeds();
+});
+/**
+ * Change reservations end date
+ */
+jQuery(document).on('click', '#reservation_ended_at', function (e) {
+    V3Reservation.firstTimeChangeEndDate++;
 });
 
 /**

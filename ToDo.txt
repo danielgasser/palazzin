@@ -2,6 +2,7 @@ ToDo:
 
 visitor blocking raus
 password komlexität raus
+
 -before going life with v3:
 set calendar duration = 10
 calculate periods : /admin/calc
@@ -10,7 +11,8 @@ mail settings
 port table roles
 port table settings (adapt url)
 port table password_resets
-port table guests new field guest title
+port table guests new field guest_title
+port table reservation new field reservation_title
 alle js + css lokal einbinden
 
 minify js & css
