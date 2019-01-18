@@ -29,8 +29,6 @@
 @endif
 </div>
 @include('news.post', array('posts' => $posts))
-@include('logged.dialog.comments')
-@include('logged.dialog.new_comment')
 
 @section('scripts')
     @parent
@@ -38,9 +36,6 @@
         var urlTo = '{{URL::to('/')}}',
             urlAssets = '{{asset('')}}',
             lang = $.parseJSON('{!!json_encode((trans('news')))!!}'),
-            cc = '{{Comment::all()->count() - 3}}',
-            new_comment = '{{Session::get('new_comment')}}',
-            new_comment_user_id = '{{Session::get('new_comment_user_id')}}',
             autid = '{{Auth::id()}}';
 
     </script>

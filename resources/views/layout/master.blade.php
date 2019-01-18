@@ -24,7 +24,16 @@
     <!--link href="{{asset('assets/css/font-awesome/fontawesome-all.min.css')}}" rel="stylesheet" type="text/css" /-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
+    <style>
+        .alert {
+            position: fixed;
+            width: 100%;
+            z-index: 10000;
+            top: 0;
+            border-radius: 0;
+        }
 
+    </style>
 @if (Request::is('stats'))
         <link href="{{asset('assets/css/stats.css')}}" rel="stylesheet" media="screen" type="text/css" />
         <style>

@@ -5,6 +5,21 @@ var postLoadTimeOut = 10 * 60 * 1000,
     comment_viewed = false,
     counter = 0,
     warningTimer,
+    fillPostContent =  function(d, editCheck) {
+        return '<div id="post_' + d.id + '">' +
+            '<div class="row">' +
+            '<div class="col-sm-12 col-md-12 posts">' +
+            '<h4>' + window.lang.post_from + ' <a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_login_name + '</a></h4>' +
+            '<p>' + d.created_at + ' ' + editCheck + '</p>' +
+            '</div>' +
+            '</div>' +
+            '<div class="row postrow">' +
+            '<div class="col-sm-12 col-md-12 posts">' +
+            d.post_text +
+            '</div>' +
+            '</div>' +
+            '</div>';
+    },
     loadPosts = function () {
         "use strict";
         $.ajax({
@@ -18,66 +33,15 @@ var postLoadTimeOut = 10 * 60 * 1000,
                 }
                 var editCheck,
                     str = '',
-                    dats = n[0],
-                    auth = n.auth;
+                    dats = n[0];
                 $.each(dats, function (i, data) {
-                    editCheck = ($('#editPost_' + data.id).length > 0) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deleteComment_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
-                    str += '<div class="row">' +
-                        '<div class="col-sm-12 col-md-12 posts">' +
-                        '<h4>' + window.lang.post_from + ' <a href="' + window.urlTo + 'user/profile/' + data.user_id + '">' + data.user_login_name + '</a></h4>' +
-                        '<p>' + data.created_at + ' ' + editCheck + '</p>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="row postrow">' +
-                        '<div class="col-sm-12 col-md-12 posts">' +
-                        data.post_text +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-12 comments">';
-                    if (data.comments.length > 0) {
-                        str +=  '<h4 class="comments-titles">' + window.lang.comments_title + '</h4>';
-                    }
-
-                    str +=  '<ul id="comments_' + data.id + '">';
-                    $.each(data.comments, function (j, comm) {
-                        str += '<li id="commentId_' + comm.id + '">' + window.lang.comment_from + ' <a href="' + window.urlTo + 'user/profile/' + comm.user_id + '">' + comm.user_login_name + '</a> ' + window.lang.comment_at + ' ' + comm.created_at;
-                        if (auth === comm.user_id && comm.editable === '1') {
-                            str += '<span id="editComment_' + comm.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deleteComment_' + comm.id + '" class="glyphicon glyphicon-remove edit"></span>';
-                        }
-                        str += '<br>"' + comm.comment_text + '"</li>';
-                    });
-                    str += '</ul>' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-12 comments">' +
-                        '<a href="#" id="addComment_' + data.id + '">' + window.lang.add_comment + '</a>' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-4 comments" id="comment-add-area_' + data.id + '">' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-2 comments" id="comment-add_' + data.id + '">' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-6 comments">' +
-                        '</div>' +
-                        '</div>';
+                    editCheck = ($('#editPost_' + data.id).length > 0) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span>' : '';
+                    str = fillPostContent(data, editCheck);
+                    $('#newsticker').append(str);
                 });
-                $('#newsticker').html(str);
             }
         });
         window.setTimeout(loadPosts, postLoadTimeOut);
-    },
-    appendComment = function (data, postId, el) {
-        "use strict";
-        if (data.comments.length > 1) {
-            $(el + postId).html('');
-        }
-        $.each(data.comments, function (i, n) {
-            var editCheck = (data.auth === n.user_id && n.editable) ? '<span id="editComment_' + n.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deleteComment_' + n.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
-            if ($('#commentId_' + n.id).length > 0) {
-                $('#commentId_' + n.id).remove();
-            }
-            $('#comments_' + postId).append('<li id="commentId_' + n.id + '">' + editCheck + window.lang.comment_from + ' <a href="' + window.urlTo + '/user/profile/' + n.user_id + '">' +
-                n.user_login_name + '</a> ' + window.lang.comment_at + ' ' + n.created_at +
-                '<br>"' + n.comment_text + '"</li>');
-        });
-        $('[id^="closeComment_"]').trigger('click');
     },
     initTiny = function () {
         "use strict";
@@ -109,38 +73,14 @@ var postLoadTimeOut = 10 * 60 * 1000,
             toolbar: 'insertfile undo redo | fontselect |  fontsizeselect | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l ink image | print preview media fullpage | emoticons',
             content_css: window.urlAssets + '/css/tinymce.css'
         });
-    },
-    toggleWarning = function () {
-        "use strict";
-        var input = $('#counter'),
-            cc = window.parseInt(input.val(), 10);
-        $('.ach').toggle();
-        cc += 1;
-        input.val(cc);
-        if (cc > 6) {
-            window.clearTimeout(warningTimer);
-            $('.ach').show();
-            return;
-        }
-        warningTimer = window.setTimeout(toggleWarning, 1000);
     };
 jQuery(document).ready(function () {
     "use strict";
-   // toggleWarning();
 
     window.setTimeout(loadPosts(), postLoadTimeOut);
     window.setTimeout(function () {
         $('#warnings').slideUp(1000);
     }, postLoadTimeOut / 10);
-    if (!window.localStorage.hasOwnProperty('comment_viewed')) {
-        if (window.new_comment !== '' && window.new_comment_user_id !== window.autid) {
-            $('#new_comment_available').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-            $('#commentId_' + window.new_comment).addClass('new_comment_available');
-        }
-    }
     jQuery(document).on('click', '#close_warning', function () {
         if ($(this).children('span').hasClass('glyphicon-chevron-up')) {
             $(this).children('span').removeClass('glyphicon-chevron-up');
@@ -150,13 +90,6 @@ jQuery(document).ready(function () {
             $(this).children('span').addClass('glyphicon-chevron-up');
         }
         $('#warnings').slideToggle();
-    });
-    jQuery(document).on('click', '#cancel_new_comment', function () {
-        window.localStorage.setItem('comment_viewed', 'true');
-        window.scrollIt('body, html, #newsticker', ($('#commentId_' + window.new_comment).offset().top + $('#commentId_' + window.new_comment).height()), 'slow');
-        window.setTimeout(function () {
-            $('#commentId_' + window.new_comment).removeClass('new_comment_available');
-        }, 1500);
     });
     jQuery(document).on('click', '#add_post', function (e) {
         e.preventDefault();
@@ -196,35 +129,6 @@ jQuery(document).ready(function () {
         });
 
     });
-    jQuery(document).on('click', '[id^="moreComments_"]', function () {
-        var postId = $(this).attr('id').split('_')[1],
-            data_no = $(this).attr('data_no');
-        if ($(this).attr('data_less') === 'true') {
-            $.each($('[id^="comments_"]>li'), function (i, n) {
-                if (i > 2) {
-                    $(n).remove();
-                }
-            });
-            $(this)
-                .attr('data_less', false)
-                .text(window.lang.show_ + ' ' + (data_no - 3) + ' ' + window.lang.show_more_comments);
-            return false;
-        }
-        $.ajax({
-            type: 'GET',
-            url: 'news/getcomments',
-            data: {
-                id: postId
-            },
-            success: function (data) {
-                window.unAuthorized(data);
-                appendComment(data, postId, '#comments_');
-            }
-        });
-        $(this)
-            .attr('data_less', true)
-            .text(window.lang.show_less_comments);
-    });
     jQuery(document).on('click', '[id^="deletePost_"]', function () {
         var id = $(this).attr('id').split('_')[1];
         $.ajax({
@@ -237,63 +141,6 @@ jQuery(document).ready(function () {
                 window.unAuthorized(data);
                 $('#post_' + id).remove();
                 $('[id^="closeComment_"]').trigger('click');
-            }
-        });
-    });
-
-    jQuery(document).on('click', '[id^="deleteComment_"]', function () {
-        var id = $(this).attr('id').split('_')[1];
-        $.ajax({
-            type: 'GET',
-            url: 'news/deletecomment',
-            data: {
-                id: id
-            },
-            success: function (data) {
-                window.unAuthorized(data);
-                $('#commentId_' + id).remove();
-                $('[id^="closeComment_"]').trigger('click');
-            }
-        });
-    });
-
-    jQuery(document).on('click', '[id^="closeComment_"]', function () {
-        var id = $(this).attr('id').split('_')[1];
-        $('#comment_text_' + id + ', #comment_id_' + id + ', #saveComment_' + id + ', #closeComment_' + id).remove();
-    });
-
-    jQuery(document).on('click', '[id^="addComment_"]', function () {
-        var id = $(this).attr('id').split('_')[1];
-        $('[id^="comment_text_"], [id^="comment_id_"], [id^="saveComment_"], [id^="closeComment_"]').remove();
-        $('#comment-add-area_' + id)
-            .html('<textarea class="form-control" id="comment_text_' + id + '" name="comment_text" /></textarea>');
-        $('#comment-add_' + id)
-            .html('<span id="saveComment_' + id + '" class="glyphicon glyphicon-ok edit"></span><br><span id="closeComment_' + id + '" class="glyphicon glyphicon-remove edit"></span>');
-        $('#comment_text_' + id).focus();
-        window.scrollIt('body, html', ($('#addComment_' + id).offset().top + $('#addComment_' + id).height()), 'slow');
-    });
-    jQuery(document).on('click', '[id^="saveComment_"]', function () {
-        var id = $(this).attr('id').split('_')[1];
-        $.ajax({
-            type: 'POST',
-            url: 'news/addcomment',
-            data: {
-                post_id: id,
-                comment_text: $('#comment_text_' + id).val(),
-                comment_id: $('#comment_id_' + id).val()
-            },
-            success: function (n) {
-                window.unAuthorized(n);
-                if (n.hasOwnProperty('error')) {
-                    $('#message').html(n.error);
-                    $('#comments_too_much').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                    $('[id^="closeComment_"]').trigger('click');
-                    return false;
-                }
-                appendComment(n, id, '#comments_');
             }
         });
     });
@@ -319,41 +166,19 @@ jQuery(document).ready(function () {
                     return false;
                 }
                 var editCheck,
+                    str,
                     data = n[0][0],
                     auth = n.auth;
                 editCheck = (auth === data.uid && data.editable) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deleteComment_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
-                $('#newsticker').prepend('<div id="post_' + data.id + '">' +
-                    '<div class="row">' +
-                        '<div class="col-sm-12 col-md-12 posts">' +
-                            '<h4>' + window.lang.post_from + ' <a href="' + window.urlTo + 'user/profile/' + data.user_id + '">' + data.user_login_name + '</a></h4>' +
-                            '<p>' + data.created_at + ' ' + editCheck + '</p>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="row postrow">' +
-                        '<div class="col-sm-12 col-md-12 posts">' +
-                                data.post_text +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-12 comments">' +
-                            '<ul id="comments_' + data.id + '">' +
-                            '</ul>' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-12 comments">' +
-                            '<a href="#" id="addComment_' + data.id + '">' + window.lang.add_comment + '</a>' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-4 comments" id="comment-add-area_' + data.id + '">' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-2 comments" id="comment-add_' + data.id + '">' +
-                        '</div>' +
-                        '<div class="col-sm-12 col-md-6 comments">' +
-                        '</div>' +
-                    '</div>');
+                str = fillPostContent(data, editCheck);
+                $('#newsticker').prepend(str);
             }
         });
     });
     jQuery(document).on('click', '[id^="editComment_"]', function () {
         var id = $(this).attr('id').split('_')[1];
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: 'news/getcomment',
             data: {
                 id: id

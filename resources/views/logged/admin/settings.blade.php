@@ -162,13 +162,6 @@
         {{Form::text('setting_editable_record_time', $globalSettings->setting_editable_record_time, array('class' => 'form-control'))}}
     </div>
 </div>
-<div class="row">
-    {{-- Comments --}}
-    {{Form::label('setting_num_comments', trans('settings.setting_num_comments'), array('class' => 'col-sm-6 col-md-6'))}}
-    <div class="col-sm-1 col-md-1">
-        {{Form::text('setting_num_comments', $globalSettings->setting_num_comments, array('class' => 'form-control'))}}
-    </div>
-</div>
 <hr>
 <h3>{{trans('settings.login_bg_img')}}:</h3>
 <div class="row">

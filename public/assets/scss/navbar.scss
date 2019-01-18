@@ -212,12 +212,19 @@ ul {
         }
     }
 }
+#bottom-user-nav {
+  li {
+      a {
+          padding-left: 12px;
+      }
+  }
+}
 #all-nav {
     width: 55px;
     height: 100%;
     opacity: 0.75;
     transition: width 1s;
-    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav {
+    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav, #bottom-user-nav {
         .fa-cog:after , .fa-user:after, .fa-wrench:after {
             content: "\f077";
             padding-left: 8px;
@@ -259,7 +266,7 @@ ul {
         content: "\f060";
         font-weight: 900;
     }
-    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav {
+    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav, #bottom-user-nav {
         li {
             a {
                 .hideContent {

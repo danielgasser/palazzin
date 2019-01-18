@@ -20,8 +20,6 @@
                                         <strong>{{ $errors->first('usernameOrEmail') }}</strong>
                                     </span>
                                 @endif
-                                {{ Form::hidden('new_comment', (isset($_GET['new_comment'])) ? $_GET['new_comment'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) }}
-                                {{ Form::hidden('new_comment_user_id', (isset($_GET['new_comment_user_id'])) ? $_GET['new_comment_user_id'] : null, array('class' => 'form-control', 'placeholder' => trans('userdata.user_login_name') . ' ' . trans('dialog.or') . ' ' . trans('userdata.email'))) }}
                             </div>
                         </div>
                         <div class="row">

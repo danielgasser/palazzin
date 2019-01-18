@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<div>
-            <img src="{{$settings['setting_site_url']}}/{{$settings['setting_app_logo']}}" alt="{{$settings['setting_app_owner']}}" title="{{$settings['setting_app_owner']}}"><br>
+            <img src="{{$settings['setting_site_url']}}/assets/img/palazzin_title.png" alt="{{$settings['setting_app_owner']}}" title="{{$settings['setting_app_owner']}}"><br>
    		    <h3>{{trans('reset.title')}}</h3>
    		    <p>
             {{trans('reset.texts.failed_pass', array(

@@ -82,6 +82,11 @@
                                 </ul>
                             </li>
                         @endif
+                    @endif
+                </ul>
+                @if(Auth::check())
+
+                    <ul id="bottom-user-nav" class="nav navbar-nav" style="margin: 0; float: right;">
                         <li class="dropup" style="float: left">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
                             <ul class="dropdown-menu nav navbar-nav" role="menu" style="min-height: inherit;">
@@ -112,8 +117,8 @@
                                 <li><a id="logout_user" href="{{URL::to('logout')}}">{{trans('navigation.logout')}}</a></li>
                             </ul>
                         </li>
-                    @endif
-                </ul>
+                    </ul>
+                @endif
                 <ul id="bottom-bottom-nav" class="nav navbar-nav" style="margin: 0; float: right;">
                     <li class="clear-nav-entry{{Request::is('/help/') ? ' active' : '' }}" style="float: right;">
                         <?php

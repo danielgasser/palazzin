@@ -5953,24 +5953,30 @@ table#allReservations tbody[id^="keeperData_"] tr:nth-child(even) > td {
   margin: auto; }
   #newsticker h1 {
     font-size: 15px;
-    font-weight: bold; }
+    font-weight: bold;
+    border: none; }
   #newsticker h2 {
     font-size: 14px;
-    font-weight: bold; }
+    font-weight: bold;
+    border: none; }
   #newsticker h3 {
     font-size: 13px;
-    font-weight: bold; }
+    font-weight: bold;
+    border: none; }
   #newsticker h4 {
     font-size: 12px;
-    font-weight: bold; }
+    font-weight: bold;
+    border: none; }
   #newsticker h5 {
     font-size: 11px;
     font-weight: bold;
-    text-transform: capitalize; }
+    text-transform: capitalize;
+    border: none; }
   #newsticker h6 {
     font-size: 12px;
     font-weight: normal;
-    font-style: italic; }
+    font-style: italic;
+    border: none; }
   #newsticker .glyphicon {
     color: #A8A5A5; }
   #newsticker .edit {
@@ -5982,11 +5988,9 @@ table#allReservations tbody[id^="keeperData_"] tr:nth-child(even) > td {
     #newsticker .postrow .posts {
       border-right: 1px solid #CCCCCC; }
     #newsticker .postrow .comments-titles {
-      display: block;
-      border-bottom: 1px solid #ffffff; }
+      display: block; }
     #newsticker .postrow .comments {
-      font-style: italic;
-      color: #ffffff; }
+      font-style: italic; }
       #newsticker .postrow .comments ul {
         list-style-type: none;
         margin: 0 0 1em 2.5em;
@@ -6370,15 +6374,18 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   #bottom-nav li a {
     padding-left: 12px; }
 
+#bottom-user-nav li a {
+  padding-left: 12px; }
+
 #all-nav {
   width: 55px;
   height: 100%;
   opacity: 0.75;
   transition: width 1s; }
-  #all-nav #main-nav .fa-cog:after, #all-nav #main-nav .fa-user:after, #all-nav #main-nav .fa-wrench:after, #all-nav #bottom-nav .fa-cog:after, #all-nav #bottom-nav .fa-user:after, #all-nav #bottom-nav .fa-wrench:after, #all-nav #bottom-bottom-nav .fa-cog:after, #all-nav #bottom-bottom-nav .fa-user:after, #all-nav #bottom-bottom-nav .fa-wrench:after, #all-nav #hide-footer-nav .fa-cog:after, #all-nav #hide-footer-nav .fa-user:after, #all-nav #hide-footer-nav .fa-wrench:after {
+  #all-nav #main-nav .fa-cog:after, #all-nav #main-nav .fa-user:after, #all-nav #main-nav .fa-wrench:after, #all-nav #bottom-nav .fa-cog:after, #all-nav #bottom-nav .fa-user:after, #all-nav #bottom-nav .fa-wrench:after, #all-nav #bottom-bottom-nav .fa-cog:after, #all-nav #bottom-bottom-nav .fa-user:after, #all-nav #bottom-bottom-nav .fa-wrench:after, #all-nav #hide-footer-nav .fa-cog:after, #all-nav #hide-footer-nav .fa-user:after, #all-nav #hide-footer-nav .fa-wrench:after, #all-nav #bottom-user-nav .fa-cog:after, #all-nav #bottom-user-nav .fa-user:after, #all-nav #bottom-user-nav .fa-wrench:after {
     content: "\f077";
     padding-left: 8px; }
-  #all-nav #main-nav .fa-thermometer-half:after, #all-nav #bottom-nav .fa-thermometer-half:after, #all-nav #bottom-bottom-nav .fa-thermometer-half:after, #all-nav #hide-footer-nav .fa-thermometer-half:after {
+  #all-nav #main-nav .fa-thermometer-half:after, #all-nav #bottom-nav .fa-thermometer-half:after, #all-nav #bottom-bottom-nav .fa-thermometer-half:after, #all-nav #hide-footer-nav .fa-thermometer-half:after, #all-nav #bottom-user-nav .fa-thermometer-half:after {
     content: "\f078";
     padding-left: 8px; }
   #all-nav #main-nav-container {
@@ -6405,7 +6412,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   #all-nav:hover #closeNav:before {
     content: "\f060";
     font-weight: 900; }
-  #all-nav:hover #top-nav li a .hideContent, #all-nav:hover #main-nav li a .hideContent, #all-nav:hover #bottom-nav li a .hideContent, #all-nav:hover #bottom-bottom-nav li a .hideContent, #all-nav:hover #hide-footer-nav li a .hideContent {
+  #all-nav:hover #top-nav li a .hideContent, #all-nav:hover #main-nav li a .hideContent, #all-nav:hover #bottom-nav li a .hideContent, #all-nav:hover #bottom-bottom-nav li a .hideContent, #all-nav:hover #hide-footer-nav li a .hideContent, #all-nav:hover #bottom-user-nav li a .hideContent {
     top: 18px;
     left: 52px;
     visibility: visible;

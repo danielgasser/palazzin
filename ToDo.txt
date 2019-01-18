@@ -8,11 +8,17 @@ set calendar duration = 10
 calculate periods : /admin/calc
 routes.php:129 add colors to have a total of 10
 mail settings
+
+alle js + css lokal einbinden
+
+DB:
 port table roles
 port table settings (adapt url)
 port table password_resets
 port table guests new field guest_title
 port table reservation new field reservation_title
-alle js + css lokal einbinden
+delete table comments
+delete settings setting_num_comments
+
 
 minify js & css

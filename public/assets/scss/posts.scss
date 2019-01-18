@@ -26,28 +26,34 @@
     h1 {
         font-size: 15px;
         font-weight: bold;
+        border: none;
     }
     h2 {
         font-size: 14px;
         font-weight: bold;
+        border: none;
     }
     h3 {
         font-size: 13px;
         font-weight: bold;
+        border: none;
     }
     h4 {
         font-size: 12px;
         font-weight: bold;
+        border: none;
     }
     h5 {
         font-size: 11px;
         font-weight: bold;
         text-transform: capitalize;
+        border: none;
     }
     h6 {
         font-size: 12px;
         font-weight: normal;
         font-style: italic;
+        border: none;
     }
     .glyphicon {
         color: #A8A5A5;
@@ -64,11 +70,9 @@
         }
       .comments-titles {
         display: block;
-        border-bottom: 1px solid #ffffff;
       }
         .comments {
             font-style: italic;
-            color: #ffffff;
             ul {
                 list-style-type: none;
                 margin: 0 0 1em 2.5em;

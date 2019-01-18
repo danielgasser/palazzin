@@ -21,8 +21,11 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'HomeController@getHome')->name('home');
+
+    //News
     Route::get('news_reloaded', ['uses' => 'PostController@reloadPost']);
-    // v3
+    Route::post('news', ['uses' => 'PostController@savePost']);
+    // Reservations
     Route::get('{any}reservation/get-per-period', 'NewReservationController@getAllReservationInPeriod')->where('any', '.*');
     Route::get('new_reservation', 'NewReservationController@newReservation')->name('new_reservation');
     Route::get('all_reservations', 'NewReservationController@getUserReservations')->name('all_reservations');

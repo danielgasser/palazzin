@@ -28,14 +28,6 @@ class Post extends Model {
      *
      * @return mixed
      */
-    public function comments() {
-        return $this->hasMany('Comment');
-    }
-
-    /**
-     *
-     * @return mixed
-     */
     public function users() {
         return $this->belongsTo('User');
     }
@@ -73,36 +65,17 @@ class Post extends Model {
             $posts = $posts->join('users', 'user_id', '=', 'users.id')
                 ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_login_name', 'users.email')
                 ->orderBy('posts.created_at', 'DESC')
-                ->with(array('comments'=>function($query){
-                    $query
-                        ->join('users', 'users.id', '=', 'comments.user_id')
-                        ->select('comments.*', 'users.id as user_id', 'users.user_login_name', 'users.email')
-                        ->orderBy('comments.created_at', 'DESC');
-                    // ToDo Doesn't work with skip() and get()
-                        //->skip(0)
-                        //->take(4);
-                }))
                 ->get();
         } else {
             $posts = $posts->join('users', 'user_id', '=', 'users.id')
                 ->where('posts.id', '=', $id)
                 ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_login_name', 'users.email')
                 ->orderBy('posts.created_at', 'DESC')
-                ->with(array('comments'=>function($query){
-                    $query
-                        ->join('users', 'users.id', '=', 'comments.user_id')
-                        ->select('comments.*', 'users.id as user_id', 'users.user_login_name', 'users.email')
-                        ->orderBy('comments.created_at', 'DESC');
-                }))
                 ->get();
         }
 
         $posts->each(function ($p) {
             $p->editable = self::checkEditableRecord($p->created_at);
-            $p->comments->each(function ($c) {
-                $c->editable = self::checkEditableRecord($c->created_at);
-            });
-            $p->comment_no = \Comment::where('post_id', '=', $p->id)->count();
         });
         return $posts;
     }
