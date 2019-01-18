@@ -499,15 +499,7 @@ let V3Reservation = {
         $.each($('[id^="guests_date_"]'), function (i, n) {
             $('#guests_date_' + i).find('[class^="col-"]:not(.no-hide)').slideDown('slow');
             $('#hide_guest_' + i).addClass('fa-caret-up').removeClass('fa-caret-down');
-            //$('#hide_guest_' + i).trigger('click');
         });
-        /*
-        if (id !== undefined) {
-            $('html, body').animate({
-                scrollTop: $('#guests_date_' + id).offset().top
-            }, 2000);
-        }
-        */
         $('#total_res')
             .addClass('alert-danger')
             .removeClass('alert-info');
@@ -563,7 +555,7 @@ let V3Reservation = {
                     $('#no_delete_reservation').show();
                     return false;
                 }
-                $('#all_reservations_' + id).slideUp().remove();
+                $('#delete_table_all_reservations_' + id).remove();
                 if ($('[id^="all_reservations_"]').length === 0) {
                     $('#noview').find('h1').html(window.reservationStrings.no_bookings);
                 }

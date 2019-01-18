@@ -2,7 +2,7 @@
   box-sizing: initial !important; }
 
 #users tbody tr td {
-  vertical-align: top; }
+  vertical-align: middle; }
   #users tbody tr td:before {
     background-color: #b7282e; }
   #users tbody tr td.control {

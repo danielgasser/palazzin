@@ -289,8 +289,11 @@
                 }
             });
         });
-        jQuery(document).on('click', '#errors>.close, [aria-label="Close"]', function () {
+        jQuery(document).on('click', '#errors>.close', function () {
             $('#error-wrap').hide();
+        });
+        jQuery(document).on('click', '.closeAlert', function () {
+            $('.alert').hide();
         });
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();

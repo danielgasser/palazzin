@@ -1,6 +1,9 @@
-#new_reservation .row, #edit_reservation .row {
+#new_reservation .row, #edit_reservation .row, #table_all_reservations_wrapper .row {
   margin-left: 0;
   margin-right: 2px; }
+
+[name="table_all_reservations_length"] {
+  height: 2.55em !important; }
 
 .alert {
   position: fixed;

@@ -270,13 +270,6 @@ jQuery(document).on('click', '#deleteRes', function (e) {
 });
 
 /**
- * Cancel Remove guest entry
- */
-jQuery(document).on('click', '#cancel_delete_guest', function (e) {
-    $('#delete_guest').hide();
-});
-
-/**
  * Change reservations end date
  */
 jQuery(document).on('changeDate', '#reservation_ended_at', function (e) {

@@ -1,9 +1,12 @@
 @import "bootstrap-variables";
-#new_reservation, #edit_reservation {
+#new_reservation, #edit_reservation, #table_all_reservations_wrapper {
     .row {
         margin-left: 0;
         margin-right: 2px;
     }
+}
+[name="table_all_reservations_length"] {
+    height: 2.55em !important;
 }
 .alert {
     position: fixed;

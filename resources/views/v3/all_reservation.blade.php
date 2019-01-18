@@ -9,83 +9,33 @@
             src="{{asset('assets/js/v3/libs/nehhkadam')}}-AnyPicker/anypicker-i18n.js"></script>
     <link rel="stylesheet" href="{{asset('assets/css/datepicker.css')}}" rel="stylesheet" media="screen"
           type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp_reservation.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
 
+    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
 
 @stop
-
 @section('content')
     <a name="top"></a>
     <div id="reservationInfo">
         <h4></h4>
     </div>
     <div id="upper">
-        @forelse($userRes as $res)
-            <form id="all_reservations_{{ $res->id }}" method="post" action="{{  route('edit_reservation', [$res->id])  }}">
-            {{ csrf_field() }}
-            <div class="row show_total_res arrow" id="show_res_{{ $res->id }}">
-                <div class="hide-guest" id="hide_all_res_{{ $res->id }}">{{trans('reservation.title_short')}}: {{$res->reservation_title}}</div>
-                <div class="col-md-1 col-sm-1 col-xs-12">
-                        {{trans('reservation.arrival')}}<br>{{ $res->reservation_started_at }}
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-12">
-                        {{trans('reservation.depart')}}<br>{{ $res->reservation_ended_at }}
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-12">
-                    {{trans('reservation.guests.total_nights')}}<br>{{ $res->reservation_nights }}
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-12">
-                    {{trans('bill.total_all_bill')}}<br><span id="reservation_costs_total_{{ $res->id }}">0.00</span>
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-4">
-                    {{trans('validation.attributes.reservation_guest_num')}}<br><span id="reservation_guest_num_total_{{ $res->id }}">0</span>
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-4">
-                        <button type="submit" title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation"
-                                id="edit_reservation_{{ $res->id }}"><i class="fas fa-edit"></i></button>
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-4">
-                    <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation"
-                                id="delete_reservation_{{ $res->id }}"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-            @foreach($res->guests as $guest)
-            <div id="guest_entries_{{ $guest->id }}_{{ $res->id }}">
-                <div class="row" id="guests_date_{{ $guest->id }}_{{ $res->id }}">
-                    <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $guest->id }}_{{ $res->id }}" style="cursor: initial">
-                        <span id="guest_title_{{ $guest->id }}_{{ $res->id }}" style="font-size: 0.9em">{{trans('reservation.guest_many_no_js.one')}}: {!! $guest->guest_title!!}</span>
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-6">
-                        {{trans('reservation.arrival')}}<br>{{ $guest->guest_started_at }}
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-6">
-                        {{trans('reservation.depart')}}<br>{{ $guest->guest_ended_at }}
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-6">
-                        {{trans('reservation.nights')}}<br>{{ $guest->guest_night }}
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6">
-                        {{trans('reservation.guest_kind')}}<br>{{ $rolesTrans[$guest->guest_tax_role_id] }}
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-6">
-                        {{trans('roles.role_tax')}}<br>{{ $guest->guest_tax }}
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-6">
-                        {{trans('reservation.guests.number')}} {{trans('reservation.guests.title')}}<br>{{ $guest->guest_number }}
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-12">
-                        {{trans('reservation.price')}}<br>{{ $guest->guest_tax }}
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </form>
-            @empty
-            <script>
-                $(document).ready(function () {
-                    $('#noview').find('h1').html('{{ trans('reservation.no_bookings') }}')
-                })
-            </script>
-        @endforelse
+        <table id="table_all_reservations">
+            <thead>
+            <tr>
+                <th class="0" id="edit">{{trans('dialog.edit')}}</th>
+                <th class="1" id="delete">{{trans('dialog.delete')}}</th>
+                <th class="2" id="arrival">{{trans('reservation.arrival')}}</th>
+                <th class="3" id="depart">{{trans('reservation.depart')}}</th>
+                <th class="4" id="total_nights">{{trans('reservation.guests.total_nights')}}</th>
+                <th class="5" id="total_all_bill">{{trans('bill.total_all_bill')}}</th>
+                <th class="6" id="reservation_guest_num">{{trans('validation.attributes.reservation_guest_num')}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
     @include('logged.dialog.delete_reservation')
     @include('logged.dialog.deleted_reservation')
@@ -97,7 +47,6 @@
      @include('logged.dialog.cross_reserv_user_list')
      @include('logged.dialog.not_invited')
      --}}
-
 @section('scripts')
     @parent
     <script>
@@ -111,10 +60,11 @@
         var startDate,
             endDate,
             rolesTaxes = {!! $roles !!},
+            langDialog = {!!json_encode(Lang::get('dialog'))!!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
             datePickersStart = [],
-            reservations = JSON.parse('{!!json_encode($userRes)!!}'),
+            reservations = JSON.parse('{!!$userRes!!}'),
             guestTitle = '{{trans('reservation.guest_many_no_js.one')}}: ',
             datePickersEnd = [],
             token = '{{ csrf_token() }}',
@@ -130,17 +80,88 @@
     <script src="{{asset('assets/js/v3/events.js')}}"></script>
     <script>
         $(document).ready(function () {
+            console.log(urlTo)
             let sum = 0,
-            old_id;
-            $.each($('[id^="reservation_guest_num_"]').not('[id^="reservation_guest_num_total_"]'), function (i, n) {
-                let id = $(n).attr('id').split('_')[4];
-                if (id !== old_id) {
-                    sum = 0;
-                }
-                old_id = id;
-                sum += parseInt($(n).val(), 10);
-                $('#reservation_guest_num_total_' + id).html(sum);
-            });
+                reservationTable = $('#table_all_reservations').DataTable({
+                    data: reservations,
+                    responsive: true,
+                    autoWidth: true,
+                    fixedHeader: {
+                        header: true,
+                        footer: true
+                    },
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            data: null,
+                            render: function (data) {
+                                return '<form id="edit_table_all_reservations_' + data.id + '" method="post" action="' + urlTo + '/edit_reservation/' + data.id + '">' +
+                                    '{{ csrf_field() }}' +
+                                '<button title="' + langDialog.edit + '" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_' + data.id + '"><i class="fas fa-edit"></i></button>' +
+                                    '</form>';
+                            }
+                        },
+                        {
+                            targets: [1],
+                            data: null,
+                            render: function (data) {
+                                return '<form id="delete_table_all_reservations_' + data.id + '" method="post" action="' + urlTo + '/delete_reservation/">' +
+                                    '{{ csrf_field() }}' +
+                                    '<button title="' + langDialog.delete + '" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_' + data.id + '"><i class="fas fa-trash"></i></button>' +
+                                    '</form>';
+                            }
+                        },
+                        {
+                            targets: [2],
+                            data: 'reservation_started_at',
+                        },
+                        {
+                            targets: [3],
+                            data: 'reservation_ended_at',
+                        },
+                        {
+                            targets: [4],
+                            data: 'reservation_nights',
+                        },
+                        {
+                            targets: [5],
+                            data: null,
+
+                            render: function (data, type, full, meta) {
+                                let total = 0.0;
+                                $.each(data.guests, function (i, n) {
+                                    total += n.guest_night * n.guest_number * parseFloat(n.guest_tax)
+                                });
+                                return total.toFixed(2);
+                            }
+
+                        },
+                        {
+                            targets: [6],
+                            data: null,
+                            render: function (data, type, full, meta) {
+                                let total = 0;
+                                $.each(data.guests, function (i, n) {
+                                    total += n.guest_number
+                                });
+                                return total;
+                            }
+                        },
+                    ],
+                    language: {
+                        paginate: {
+                            first: '{{trans('pagination.first')}}',
+                            previous: '{{trans('pagination.previous')}}',
+                            next: '{{trans('pagination.next')}}',
+                            last: '{{trans('pagination.last')}}',
+                        },
+                        info: '{{trans('pagination.info')}}',
+                        sLengthMenu: '{{trans('pagination.length_menu')}}',
+                        search: '{{trans('dialog.search')}}'
+                    },
+
+                }),
+                old_id;
             old_id = 0;
             $.each($('[id^="number_nights_"]'), function (i, n) {
                 let r_id = $(n).attr('id').split('_')[3],

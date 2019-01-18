@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveReservation;
+use function foo\func;
 use Period;
 use Reservation;
 use Role;
@@ -94,14 +95,17 @@ class NewReservationController extends Controller
         $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
         $userRes = Reservation::where('user_id', '=', $user->id)
             ->orderBy('reservation_started_at', 'desc')
+            ->with('guests')
             ->get();
-        $userRes->each(function ($r) {
-
+        $userRes->each(function ($ur) {
+            if ($ur->guests->isEmpty()) {
+                $ur->guests = [];
+            }
         });
         return view('v3.all_reservation')
             ->with('roles', Role::getRolesTaxV3())
             ->with('rolesTrans', $rolesTrans)
-            ->with('userRes', $userRes);
+            ->with('userRes', $userRes->toJson());
     }
 
     /**
