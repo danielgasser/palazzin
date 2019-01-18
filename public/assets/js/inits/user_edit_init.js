@@ -12,10 +12,7 @@ jQuery(document).ready(function () {
         var uid = jQuery(this).attr('id').split('_')[1];
         jQuery('#roleToDeleteText').text(jQuery(this).next('td').text());
         jQuery('#roleToDelete').text(uid);
-        jQuery('#delete_role_from_user').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        jQuery('#delete_role_from_user').show();
     });
 
     jQuery(document).on('click', '[id^="confirmDeleteRole_"]', function () {

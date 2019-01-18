@@ -26,9 +26,6 @@ jQuery(document).ready(function () {
         e.preventDefault();
         jQuery('#rightToDelete').html($(this).attr('id').split('_')[1]);
         jQuery('#rightToDeleteText').html($(this).parent().next('td').text());
-        jQuery('#delete_right_from_role').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        jQuery('#delete_right_from_role').show();
     });
 });

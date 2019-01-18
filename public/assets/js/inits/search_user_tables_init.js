@@ -203,10 +203,7 @@ jQuery(document).on('click', '#send_new_message', function (e) {
         allMails.push(n.innerText);
     });
     if (tinyMCE.activeEditor.getContent().length < 4) {
-        $('#four_char').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        $('#four_char').show();
         return false;
     }
     $.ajax({
@@ -221,10 +218,7 @@ jQuery(document).on('click', '#send_new_message', function (e) {
             window.unAuthorized(data);
             $('#newsMessage').slideUp('slow');
             $('#msent').text(data)
-            $('#message_sent').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            $('#message_sent').show();
 
         }
     });

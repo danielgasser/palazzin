@@ -134,10 +134,7 @@ jQuery(document).ready(function () {
     });
     jQuery(document).on('change mouseup', '[id^="reservation_guest_num_"]', function () {
         if (isNaN(parseInt(this.value, 10)) || this.value === '') {
-            $('#guest_nan').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            $('#guest_nan').show();
             return false;
         }
 
@@ -183,10 +180,7 @@ jQuery(document).ready(function () {
                 $('#userlist').append('<li><a id="chooseuser_' + u.id + '">' + u.user_login_name + '</a></li>');
             });
             $('#guestFormClanOtherId').text(mid);
-            $('#cross_reserv_user_list').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            $('#cross_reserv_user_list').show();
             return false;
         }
         if ($(this).val() !== '0' && $('#guestForm').length > 0) {
@@ -272,10 +266,7 @@ jQuery(document).ready(function () {
         endDate = new Date(en[2], (window.parseInt(en[1], 10) - 1), en[0], 0, 0, 0);
         $.each($('[id^="reservation_guest_guests_"]'), function (i, n) {
             if (n.value === '0') {
-                $('#guest_empty').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                $('#guest_empty').show();
                 e.preventDefault();
                 return false;
             }
@@ -304,7 +295,7 @@ jQuery(document).ready(function () {
             text = $(this).text(),
             mid = $('#guestFormClanOtherId').text();
         window.Reservation.toggleOtherHost(mid, text, false);
-        $('#cross_reserv_user_list').modal('hide');
+        $('#cross_reserv_user_list').hide();
         $('#userIdAb').val(uid[1]);
 
     });

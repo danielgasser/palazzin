@@ -52,21 +52,19 @@ jQuery(document).ready(function() {
 }), jQuery(document).ready(function() {
     "use strict";
     jQuery(document).on("click", "#saveIt", function(a) {
-        jQuery("#global_setting_save").modal({
-            backdrop: "static",
-            keyboard: !1
-        }), a.preventDefault()
+        jQuery("#global_setting_save").show();
+        a.preventDefault()
     })
 }), jQuery(document).ready(function() {
     "use strict";
     var a;
     $("#error-wrap").length > 0 && (a = $(".error-field").first().text(), $("." + a).focus()), jQuery(document).on("click", '[id^="deleteRole_"]', function() {
         var a = jQuery(this).attr("id").split("_")[1];
-        jQuery("#roleToDeleteText").text(jQuery(this).next("td").text()), jQuery("#roleToDelete").text(a), jQuery("#delete_role_from_user").modal({
-            backdrop: "static",
-            keyboard: !1
-        })
-    }), jQuery(document).on("click", '[id^="confirmDeleteRole_"]', function() {
+        jQuery("#roleToDeleteText").text(jQuery(this).next("td").text());
+        jQuery("#roleToDelete").text(a);
+        jQuery("#delete_role_from_user").show();
+    });
+    jQuery(document).on("click", '[id^="confirmDeleteRole_"]', function() {
         var a = jQuery(this).attr("id").split("_")[1],
             b = jQuery("#roleToDelete").text();
         window.getData(window.user_delete, {

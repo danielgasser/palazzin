@@ -534,7 +534,7 @@ let V3Reservation = {
             success: function (data) {
                 window.unAuthorized(data);
                 if (!isNaN(parseInt(data, 10))) {
-                    $('#reservation_exists').modal();
+                    $('#reservation_exists').show();
                     $('#edit_reservation_exists').attr('action', window.urlTo + '/edit_reservation/' + data);
                 }
             }

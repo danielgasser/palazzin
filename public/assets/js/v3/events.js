@@ -38,10 +38,7 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
             $('#userlist').append('<li><a id="chooseuser_' + u.id + '">' + u.user_login_name + '</a></li>');
         });
         $('#guestFormClanOtherId').text(mid);
-        $('#cross_reserv_user_list').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        $('#cross_reserv_user_list').show();
         return false;
     }
     if (this.value !== '0') {
@@ -62,7 +59,7 @@ jQuery(document).on('click', '[id^="chooseuser_"]', function () {
         text = $(this).text(),
         mid = $('#guestFormClanOtherId').text();
     window.V3Reservation.toggleOtherHost(mid, text, false);
-    $('#cross_reserv_user_list').modal('hide');
+    $('#cross_reserv_user_list').hide();
     $('#userIdAb').val(uid[1]);
 });
 

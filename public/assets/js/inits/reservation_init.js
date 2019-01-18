@@ -55,10 +55,7 @@ jQuery(document).ready(function () {
         otherHost = $('[class^="otherHost"]');
         if (otherHost.length === 0) {
             if ($(this).parent().parent().text().indexOf(window.langDialog.edit) > -1) {
-                $('#cross_reserv').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                $('#cross_reserv').show();
                 return false;
             }
             window.Reservation.showNewEditReservation(null);
@@ -78,10 +75,7 @@ jQuery(document).ready(function () {
             });
             $('#not_invited_text').html(modal_str);
             if ($.inArray('reserv-btn', existentResiId) > -1) {
-                $('#not_invited').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                $('#not_invited').show();
                 return false;
             }
             if (existentResiId.length > 0) {
@@ -101,10 +95,7 @@ jQuery(document).ready(function () {
         window.localStorage.removeItem('saveLocalStorage');
     });
     jQuery(document).on('click', '#deleteEditReserv', function () {
-        $('#delete_reservation').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        $('#delete_reservation').show();
     });
     jQuery(document).on('click', '#reset_storage, [href*="https://palazzin.ch/reservation"]', function (e) {
         e.preventDefault();

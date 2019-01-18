@@ -78,7 +78,7 @@
         let oldie = '{{$isOldWin}}';
         $(document).ready(function(){
             if (oldie === '1') {
-                $('#old_ie').modal({backdrop: 'static', keyboard: false})
+                $('#old_ie').show()
             }
         });
         window.localStorage.clear();

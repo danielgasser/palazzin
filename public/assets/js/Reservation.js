@@ -168,10 +168,7 @@ var Reservation = {
         var x = (end.getTime() - start.getTime()) / 1000 / 60 / 60 / 24,
         counter = Math.round(x * 10) / 10;
         if (isNaN(parseInt(counter, 10)) || parseInt(counter, 10) < 1) {
-            $('#night_nan').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            $('#night_nan').show();
             return false;
         }
 
@@ -395,10 +392,7 @@ var Reservation = {
                 $('#guest-form-id').text(sid);
 
                 this.guestCounter();
-                $('#no_free_beds').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                $('#no_free_beds').show();
                 counter -= 2;
                 $('#saveEditReserv').attr('disabled', true);
                 return false;
@@ -754,10 +748,7 @@ var Reservation = {
             success: function (data) {
                 window.unAuthorized(data);
                 if (data.hasOwnProperty('failed')) {
-                    $('#no_delete_reservation').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
+                    $('#no_delete_reservation').hide();
                     $('#reset_res').trigger('click');
                     return false;
                 }

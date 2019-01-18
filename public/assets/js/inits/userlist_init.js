@@ -7,10 +7,7 @@ $(document).on('click', '[id^="destroyUser_"]', function (e) {
     var user_name = $(this).attr('id').split('_');
     $('#modal-username').text(user_name[2] + ' ' + user_name[3]);
     $('#confirmDeleteUser').attr('href', user_name[1]);
-    $('#delete_user').modal({
-        backdrop: 'static',
-        keyboard: false
-    });
+    $('#delete_user').show();
 });
 $(document).on('click', '#confirmDeleteUser', function () {
     window.location.href = window.urlTo + '/admin/users/delete/' + $(this).attr('href');
