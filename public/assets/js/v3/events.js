@@ -25,11 +25,13 @@ $(document).on('click', '#reset_reservation', function (e) {
  */
 $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
     let id = $(this).attr('id').split('_')[3],
-        guest_num_val = $('#reservation_guest_num_' + id).val();
+        guest_num_val = $('#reservation_guest_num_' + id).val(),
+    dates = {startDate: $('#reservation_guest_started_at_' + id).val(), endDate: $('#reservation_guest_ended_at_' + id).val()};
     if ($(this).val() !== '0' && guest_num_val !== '') {
         $('#clone_guest').show().attr('disabled', false);
+        V3Reservation.calcNights(dates.startDate, dates.endDate, '#number_nights_' + id);
         V3Reservation.calcAllPrices();
-        V3Reservation.setGuestHeaderText(id, {startDate: $('#reservation_guest_started_at_' + id).val(), endDate: $('#reservation_guest_ended_at_' + id).val()}, $(this).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
+        V3Reservation.setGuestHeaderText(id, dates, $(this).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
     } else {
         $('#clone_guest').show().attr('disabled', true);
     }
@@ -110,8 +112,10 @@ jQuery(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_gu
             }
             guest_start.setDate(guest_start.getDate() + 1);
         }
+        let dates = {startDate: window.startGuestPicker[id].datepicker('getDate'), endDate: guest_end};
+        V3Reservation.calcNights(dates.startDate, dates.endDate, '#number_nights_' + id);
         V3Reservation.calcAllPrices();
-        V3Reservation.setGuestHeaderText(id, {startDate: window.startGuestPicker[id].datepicker('getDate'), endDate: guest_end}, guest_guest_val, $(this).val(), $('#number_nights_' + id).text());
+        V3Reservation.setGuestHeaderText(id, dates, guest_guest_val, $(this).val(), $('#number_nights_' + id).text());
     } else {
         $('#clone_guest').show().attr('disabled', true);
     }
@@ -140,8 +144,7 @@ jQuery(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle
 jQuery(document).on('click', '#clone_guest', function (e) {
     e.preventDefault();
     let counter = $('[id^="guests_date_"]').length,
-        div = $('#guests_date_0')
-            .clone()
+        div = $(window.guestEntryView)
             .html(function (i, old) {
                 return old.replace(new RegExp('_0', 'g'), '_' + counter);
             }).attr('id', 'guests_date_' + counter),
@@ -185,10 +188,13 @@ jQuery(document).on('click', '#clone_guest', function (e) {
         let id = e.target.id.split('_')[4];
         V3Reservation.calcNights(window.startGuestPicker[id].datepicker('getDate'), window.endGuestPicker[id].datepicker('getDate'), '#number_nights_' + id);
         V3Reservation.calcAllPrices();
-        //V3Reservation.getNewBeds();
+        V3Reservation.getNewBeds();
         V3Reservation.setGuestHeaderText(id, {startDate: window.startGuestPicker[id].datepicker('getDate'), endDate: window.endGuestPicker[id].datepicker('getDate')}, $('#reservation_guest_guests_' + id).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
     });
-    V3Reservation.calcNights(today, tomorrow, '#number_nights_' + counter);
+    if (counter > 0) {
+        V3Reservation.calcNights(today, tomorrow, '#number_nights_' + counter);
+    }
+
 });
 
 jQuery(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e) {

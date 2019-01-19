@@ -238,11 +238,7 @@ label {
   right: -9px;
 }
 #all-free-beds-container {
-    position: fixed;
-    bottom: 58px;
-    right: 8.7vw;
-    display: none;
-    z-index: 1000;
+    z-index: 10000;
     #free-beds-title {
         position: absolute;
         transform: rotate(-90deg);

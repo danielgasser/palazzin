@@ -28,6 +28,7 @@ class NewReservationController extends Controller
         return view('v3.new_reservation')
             ->with('rolesTrans', $args['rolesTrans'])
             ->with('roleTaxes', $args['roleTaxes'])
+            ->with('guestEntryView', $args['guestEntryView'])
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
             ->with('userClan', $args['userClan'])
@@ -54,6 +55,7 @@ class NewReservationController extends Controller
             ->with('userRes', $res)
             ->with('rolesTrans', $args['rolesTrans'])
             ->with('roleTaxes', $args['roleTaxes'])
+            ->with('guestEntryView', $args['guestEntryView'])
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
             ->with('userClan', $args['userClan'])
@@ -73,8 +75,13 @@ class NewReservationController extends Controller
         $periods = new Period();
         $checkPeriod = Period::getCurrentPeriod();
 
+
         $args['userClan'] = $user->getUserClanName($userClanID);
         $args['rolesTrans'] = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $guestBlade = view('logged.dialog.guest_entry', ['rolesTrans' => $args['rolesTrans'], 'i' => 0]);
+        $guestEntryView = $guestBlade->render();
+        $args['guestEntryView'] = strtr($guestEntryView,"\n\r","  ");
+
         $args['roleTaxes'] = Role::getRolesTaxV3();
         $args['periods'] = $periods->getTimelinerPeriods($start->format('Y-m'));
         $args['periodsDatePicker'] = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
