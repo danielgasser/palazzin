@@ -1,3 +1,8 @@
+.title-res {
+  padding-left: 0; }
+  .title-res h1 {
+    border: none; }
+
 #new_reservation .row, #edit_reservation .row, #table_all_reservations_wrapper .row {
   margin-left: 0;
   margin-right: 2px; }
@@ -36,7 +41,7 @@
   cursor: pointer; }
 
 .cal-unit-container {
-  margin-top: 4px;
+  margin-top: 1px;
   width: 100%;
   height: 6.5vh;
   font-size: 2em; }
@@ -218,32 +223,55 @@ label {
   top: -5px;
   right: -9px; }
 
-#all-free-beds-container {
+#show-all-free-beds {
+  padding-top: 30px;
+  padding-bottom: 12px; }
+
+#timeliner-container #timeliner-div {
+  background-color: #fff; }
+  #timeliner-container #timeliner-div #show-timeliner {
+    color: #b7282e; }
+    #timeliner-container #timeliner-div #show-timeliner:hover .hideContent, #timeliner-container #timeliner-div #show-timeliner:active .hideContent, #timeliner-container #timeliner-div #show-timeliner:focus .hideContent, #timeliner-container #timeliner-div #show-timeliner:focus-within .hideContent {
+      top: 6px;
+      left: 12px;
+      visibility: visible;
+      opacity: 1; }
+    #timeliner-container #timeliner-div #show-timeliner:focus i:after, #timeliner-container #timeliner-div #show-timeliner:focus-within i:after {
+      content: "\f077";
+      padding-left: 8px; }
+
+#free_beds {
   z-index: 10000; }
-  #all-free-beds-container #free-beds-title {
-    position: absolute;
-    transform: rotate(-90deg);
-    top: 15vh;
-    left: auto;
+  #free_beds li {
+    background-color: #fff; }
+    #free_beds li a {
+      color: #b7282e; }
+  #free_beds #show-all-free-beds:hover .hideContent, #free_beds #show-all-free-beds:active .hideContent, #free_beds #show-all-free-beds:focus .hideContent, #free_beds #show-all-free-beds:focus-within .hideContent {
+    top: 6px;
+    left: 12px;
+    visibility: visible;
+    opacity: 1; }
+  #free_beds #show-all-free-beds:focus i:after, #free_beds #show-all-free-beds:focus-within i:after {
+    content: "\f077";
+    padding-left: 8px; }
+  #free_beds #free-beds-title {
     background-color: #b7282e !important;
     color: white !important;
     padding: 0.25em 0.5em;
     font-size: 1.2em;
     right: 66px;
     width: 113px; }
-  #all-free-beds-container .close-icon {
+  #free_beds .close-icon {
     color: #b7282e;
     padding: 0.25em 0.5em;
     cursor: pointer; }
-  #all-free-beds-container #all-free-beds {
-    max-height: 350px;
-    overflow: auto;
-    display: block;
-    background-color: #333;
-    color: white; }
-    #all-free-beds-container #all-free-beds [id^="free-beds_"] {
+  #free_beds #all-free-beds {
+    color: #333;
+    background-color: white;
+    width: auto; }
+    #free_beds #all-free-beds [id^="free-beds_"] {
       padding: 0.25em 0.5em; }
-    #all-free-beds-container #all-free-beds .tooMuchBeds {
+    #free_beds #all-free-beds .tooMuchBeds {
       color: #b7282e;
       font-weight: bold;
       background-color: #f7f7f7; }
@@ -253,9 +281,20 @@ label {
   font-size: 1.2em;
   font-weight: bold; }
 
-#timeliner {
+#timeliner-container #timeliner-div a {
+  padding-top: 30px;
+  padding-bottom: 12px; }
+#timeliner-container #timeliner {
   max-height: 350px;
-  overflow: auto; }
+  overflow: auto;
+  top: 63px;
+  bottom: inherit;
+  position: absolute;
+  border-radius: 0;
+  background-color: #fff;
+  width: 142px;
+  overflow-y: scroll;
+  overflow-x: hidden; }
 
 .datepicker table tr td.disabled {
   cursor: not-allowed !important; }

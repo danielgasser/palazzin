@@ -6362,7 +6362,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   margin-bottom: 1em;
   z-index: 11;
   border-bottom: 1px solid #f7f7f7;
-  transition: width 1.3s linear; }
+  transition: width 0.5s linear; }
 
 #top-nav {
   width: 55px;
@@ -6376,6 +6376,17 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 
 #bottom-user-nav li a {
   padding-left: 12px; }
+
+#res-nav {
+  border-bottom: 1px solid #b7282e;
+  min-height: 60px;
+  float: left;
+  width: 100%; }
+  #res-nav #free_beds .fa-bed:after, #res-nav #free_beds .fa-clock:after, #res-nav #timeliner-container .fa-bed:after, #res-nav #timeliner-container .fa-clock:after {
+    content: "\f078";
+    padding-left: 8px; }
+  #res-nav #free_beds li a, #res-nav #timeliner-container li a {
+    font-size: 1.1em; }
 
 #all-nav {
   width: 55px;
@@ -6400,32 +6411,32 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 #closeNav:active, #closeNav:focus, #closeNav:focus-within {
   background-color: transparent !important; }
 
-#all-nav:hover {
+.all-nav-hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   width: 222px !important;
   opacity: 1 !important;
-  transition: width 1s; }
-  #all-nav:hover #top-nav {
-    width: 222px !important; }
-  #all-nav:hover #closeNav:before {
+  transition: width 1s !important; }
+  .all-nav-hover #top-nav {
+    width: 222px; }
+  .all-nav-hover #closeNav:before {
     content: "\f060";
     font-weight: 900; }
-  #all-nav:hover #top-nav li a .hideContent, #all-nav:hover #main-nav li a .hideContent, #all-nav:hover #bottom-nav li a .hideContent, #all-nav:hover #bottom-bottom-nav li a .hideContent, #all-nav:hover #hide-footer-nav li a .hideContent, #all-nav:hover #bottom-user-nav li a .hideContent {
+  .all-nav-hover #top-nav li a .hideContent, .all-nav-hover #main-nav li a .hideContent, .all-nav-hover #bottom-nav li a .hideContent, .all-nav-hover #bottom-bottom-nav li a .hideContent, .all-nav-hover #hide-footer-nav li a .hideContent, .all-nav-hover #bottom-user-nav li a .hideContent {
     top: 18px;
     left: 52px;
     visibility: visible;
     opacity: 1; }
-  #all-nav:hover .navbar-header {
+  .all-nav-hover .navbar-header {
     width: 222px; }
-  #all-nav:hover .navbar-brand a .hideBrandContent {
+  .all-nav-hover .navbar-brand a .hideBrandContent {
     visibility: visible;
     white-space: nowrap;
     opacity: 1; }
-    #all-nav:hover .navbar-brand a .hideBrandContent:after {
+    .all-nav-hover .navbar-brand a .hideBrandContent:after {
       content: "alazzin"; }
-  #all-nav:hover .dropdown-menu {
+  .all-nav-hover .dropdown-menu {
     width: 190px; }
 
 @media (max-width: 1px) {

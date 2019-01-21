@@ -3,7 +3,6 @@
 i {
     min-width: 19.25px;
 }
-
 #footer {
     .container {
         .navbar-fixed-bottom {
@@ -196,7 +195,7 @@ ul {
     margin-bottom: 1em;
     z-index: 11;
     border-bottom: 1px solid #f7f7f7;
-    transition: width 1.3s linear;
+    transition: width 0.5s linear;
 
 }
 #top-nav {
@@ -218,6 +217,23 @@ ul {
           padding-left: 12px;
       }
   }
+}
+#res-nav {
+    border-bottom: 1px solid $brand-danger;
+    min-height: 60px;
+    float: left;
+    width: 100%;
+    #free_beds, #timeliner-container {
+        .fa-bed:after, .fa-clock:after {
+            content: "\f078";
+            padding-left: 8px;
+        }
+        li {
+            a {
+                font-size: 1.1em;
+            }
+        }
+    }
 }
 #all-nav {
     width: 55px;
@@ -252,15 +268,15 @@ ul {
 }
 #toggleFooterNav {
 }
-#all-nav:hover {
+.all-nav-hover {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     width: 222px !important;
     opacity: 1 !important;
-    transition: width 1s;
+    transition: width 1s !important;
     #top-nav {
-        width: 222px !important;
+        width: 222px;
     }
     #closeNav:before {
         content: "\f060";

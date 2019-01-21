@@ -2,7 +2,7 @@ $(document).on('click', '#timeliner > [id^="tl-"]', function (e) {
     let id = $(this).attr('id'),
         dateString = id.split('-'),
         startDate = new Date(dateString[1], (dateString[2] - 1), 1, 0, 0, 0);
-    V3Reservation.init($(this).attr('data-period-id'), false, startDate);
+    V3Reservation.init($(this).attr('data-period-id'), false, startDate, true);
 });
 $(document).on('click', '#reset_reservation', function (e) {
     e.preventDefault();
@@ -126,13 +126,6 @@ jQuery(document).on('click', '#show-all-free-beds', function () {
     $(this).addClass('open');
 });
 
-jQuery(document).on('click', '#close-all-free-beds', function () {
-    $('#all-free-beds-container').hide();
-    $('#show-all-free-beds').removeClass('open');
-    $('#free_beds>li>a').removeClass('jquery-hover-a')
-
-});
-
 jQuery(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle:not(#show-all-free-beds)', function () {
     $('#all-free-beds-container').hide();
     $('#show-all-free-beds').removeClass('open');
@@ -242,7 +235,6 @@ jQuery(document).on('click', '#confirm_delete_guest', function () {
     window.startGuestPicker.splice(id, 1);
     window.endGuestPicker.splice(id, 1);
     $('[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)').trigger('input');
-    $('#close-all-free-beds').trigger('click');
     for (let i = 0; i < window.startGuestPicker.length; i++) {
         dates.startDate = window.startGuestPicker[i].datepicker('getDate');
         dates.endDate = window.endGuestPicker[i].datepicker('getDate');

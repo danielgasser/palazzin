@@ -52,10 +52,6 @@
         </div>
         <div class="container-fluid">
             <div class="navbar-default" id="footerNav">
-                @if(Request::is('new_reservation'))
-                    @include('logged.dialog.timeliner')
-                    @include('logged.dialog.free_beds_menu')
-                @endif
                 @if(Auth::check())
                     <ul id="hide-footer-nav" class="nav navbar-nav navbar-left multi-level">
                         <li class="dropdown-toggle hide-footer-nav-text">

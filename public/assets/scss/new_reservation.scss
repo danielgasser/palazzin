@@ -1,4 +1,10 @@
 @import "bootstrap-variables";
+.title-res {
+    padding-left: 0;
+    h1 {
+        border: none;
+    }
+}
 #new_reservation, #edit_reservation, #table_all_reservations_wrapper {
     .row {
         margin-left: 0;
@@ -41,7 +47,7 @@
   cursor: pointer;
 }
 .cal-unit-container {
-  margin-top: 4px;
+  margin-top: 1px;
   width: 100%;
   height: 6.5vh;
   font-size: 2em;
@@ -237,13 +243,59 @@ label {
   top: -5px;
   right: -9px;
 }
-#all-free-beds-container {
+#show-all-free-beds {
+    padding-top: 30px;
+    padding-bottom: 12px;
+}
+#timeliner-container {
+    #timeliner-div {
+        background-color: #fff;
+        #show-timeliner {
+            color: #b7282e;
+            &:hover, &:active, &:focus, &:focus-within {
+                .hideContent {
+                    top: 6px;
+                    left: 12px;
+                    visibility:visible;
+                    opacity:1;
+                }
+            }
+            &:focus, &:focus-within {
+                i:after {
+                    content: "\f077";
+                    padding-left: 8px;
+                }
+
+            }
+        }
+    }
+}
+#free_beds {
     z-index: 10000;
+    li {
+        background-color: #fff;
+        a {
+            color: #b7282e;
+        }
+    }
+    #show-all-free-beds {
+        &:hover, &:active, &:focus, &:focus-within {
+            .hideContent {
+                top: 6px;
+                left: 12px;
+                visibility:visible;
+                opacity:1;
+            }
+        }
+        &:focus, &:focus-within {
+            i:after {
+                content: "\f077";
+                padding-left: 8px;
+            }
+
+        }
+    }
     #free-beds-title {
-        position: absolute;
-        transform: rotate(-90deg);
-        top: 15vh;
-        left: auto;
         background-color: #b7282e !important;
         color: white !important;
         padding: 0.25em 0.5em;
@@ -257,11 +309,9 @@ label {
         cursor: pointer;
     }
     #all-free-beds {
-        max-height: 350px;
-        overflow: auto;
-        display: block;
-        background-color: #333;
-        color: white;
+        color: #333;
+        background-color: white;
+        width: auto;
         [id^="free-beds_"] {
             padding: 0.25em 0.5em;
         }
@@ -277,10 +327,25 @@ label {
     font-size: 1.2em;
     font-weight: bold;
 }
-
-#timeliner {
-    max-height: 350px;
-    overflow: auto;
+#timeliner-container {
+    #timeliner-div {
+        a {
+            padding-top: 30px;
+            padding-bottom: 12px;
+        }
+    }
+    #timeliner {
+        max-height: 350px;
+        overflow: auto;
+        top: 63px;
+        bottom: inherit;
+        position: absolute;
+        border-radius: 0;
+        background-color: #fff;
+        width: 142px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 }
 .datepicker {
     table {

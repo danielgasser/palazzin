@@ -9,7 +9,7 @@ let V3Reservation = {
     disabledDates: [],
     firstTimeChangeEndDate: 0,
     langStrings: window.reservationStrings,
-    init: function (pID, afterValidation, startDate) {
+    init: function (pID, afterValidation, startDate, fromPeriod) {
         V3Reservation.periodID = pID;
         let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
             today = new Date(),
@@ -122,10 +122,16 @@ let V3Reservation = {
                 V3Reservation.calcAllPrices();
             }
         });
-        $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('changeDate', function (e) {
-        });
         window.resStartPicker = $('.input-daterange').find('#reservation_started_at');
         window.resEndPicker = $('.input-daterange').find('#reservation_ended_at');
+        if (fromPeriod) {
+            window.resStartPicker.datepicker('setDate', startDate)
+            let dates = {
+                startDate: startDate,
+                endDate: new Date(startDate.getTime()),
+            };
+            V3Reservation.adaptChanged(dates, dates.endDate, true);
+        }
         guestDateEl = $('#guestDates_' + 0);
         guestDateEl.datepicker(V3Reservation.datePickerSettings);
         window.startGuestPicker[0] = guestDateEl.find('#reservation_guest_started_at_' + 0);
@@ -384,7 +390,7 @@ let V3Reservation = {
             if ($('#free-beds_' + str).length > 0) {
                 $('#free-beds_' + str).html(bedString);
             } else {
-                $('#all-free-beds').append('<div id="free-beds_' + str + '">' + bedString + '</div>');
+                $('#all-free-beds').append('<li id="free-beds_' + str + '">' + bedString + '</li>');
             }
             if (parseInt(bedNumberShow, 10) <= 0 && !V3Reservation.disabledDates.find(x => x.val === V3Reservation.formatDate(dateBed))) {
                 V3Reservation.disabledDates.push(

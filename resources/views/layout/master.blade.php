@@ -11,14 +11,19 @@
     @else
     <title>{{Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())}} | Palazzin</title>
     @endif
-    <link rel="icon" href="{{asset('assets/img/favicon.png')}}" type="image/png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('assets/img/favicon')}}/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('assets/img/favicon')}}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/img/favicon')}}/favicon-16x16.png">
+    <link rel="manifest" href="{{asset('assets/img/favicon')}}/site.webmanifest">
+    <link rel="mask-icon" href="{{asset('assets/img/favicon')}}/safari-pinned-tab.svg" color="#333333">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <script src="{{asset('assets/js/libs/jquery/jquery.2.1.1.min.js')}}"></script>
     <!--script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script-->
     <!--script src="{{asset('assets/js/libs/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script-->
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <link rel="shortcut icon" href="{{asset('assets/img/favicon.ico')}}" />
     <link href="{{asset('assets/css/stats_print.css')}}" rel="stylesheet" media="mpdf" type="text/css" />
     <link href="{{asset('assets/css/print.css')}}" rel="stylesheet" media="print" type="text/css" />
     <!--link href="{{asset('assets/css/font-awesome/fontawesome-all.min.css')}}" rel="stylesheet" type="text/css" /-->
@@ -228,7 +233,9 @@
         if (!is_null($router)) {
             $route = $router->uri();
         }
-        ?>
+        $routeStr = preg_replace('/[\[{\(].*[\]}\)]/U' , '', $route);
+        $routeStr = rtrim($routeStr,"/");
+            ?>
         @switch($route)
             @case ('/')
                 <h1>{{trans('home.welcome', ['back' => '', 'name' => ''])}}</h1>
@@ -246,14 +253,21 @@
                     </div>
                 </div>
             @break
+            @case(strpos('new_reservation', $route) !== false)
+            <div id="res-nav">
+                <div class="col-md-10 col-sm-8 col-xs-12 title-res">
+                    <h1>{{trans('navigation.' . $routeStr)}}</h1>
+                </div>
+                <div class="col-md-1 col-sm-2 col-xs-6 title-res navbar-default">
+                    @include('logged.dialog.timeliner')
+                </div>
+                <div class="col-md-1 col-sm-2 col-xs-6 title-res navbar-default">
+                    @include('logged.dialog.free_beds_menu')
+                </div>
+            </div>
+                @break
 
                 @default
-            @php(
-            $routeStr = preg_replace('/[\[{\(].*[\]}\)]/U' , '', $route)
-            )
-                @php(
-            $routeStr = rtrim($routeStr,"/")
-            )
                 <h1>{{trans('navigation.' . $routeStr)}}</h1>
             @break
         @endswitch
@@ -335,13 +349,21 @@
             }
         });
         jQuery(document).on('click', '#closeNav', function () {
-            $('#all-nav').css({
-                width: '55px',
-                opacity: '0.75'
-            });
-            $('#top-nav').css({
-                width: '55px',
-            });
+            let nav = $('#all-nav');
+            if (nav.hasClass('all-nav-hover')) {
+                nav.removeClass('all-nav-hover');
+            } else {
+                nav.addClass('all-nav-hover');
+            }
+        });
+        jQuery(document).on('mouseenter', '#all-nav', function () {
+            console.log(this);
+            let nav = $(this);
+            nav.addClass('all-nav-hover');
+        }).on('mouseleave', '#all-nav', function () {
+            console.log(this);
+            let nav = $(this);
+            nav.removeClass('all-nav-hover');
         });
         jQuery(document).on('click', '#toggleFooterNav', function () {
             $('#bottom-nav').slideToggle(500);

@@ -18,8 +18,7 @@
 @section('content')
 
     <a name="top"></a>
-    <div id="reservationInfo">
-    </div>
+        <div id="reservationInfo" class="col-md-6 col-sm-4 col-xs-6"></div>
         <form id="new_reservation" method="post" action="{{  route('save_reservation')  }}">
             {{ csrf_field() }}
             <input type="hidden" id="periodID" name="periodID" value="">
@@ -89,20 +88,19 @@
     </div>
     @include('logged.dialog.reservation_exists')
     {{--
-    @include('logged.dialog.guest_nan')
-    @include('logged.dialog.night_nan')
-    @include('logged.dialog.no_delete_reservation')
-    @include('logged.dialog.cross_reserv')
-    @include('logged.dialog.cross_reserv_user_list')
-    @include('logged.dialog.delete_reservation')
-    @include('logged.dialog.not_invited')
-    --}}
+       @include('logged.dialog.guest_nan')
+       @include('logged.dialog.night_nan')
+       @include('logged.dialog.no_delete_reservation')
+       @include('logged.dialog.cross_reserv')
+       @include('logged.dialog.cross_reserv_user_list')
+       @include('logged.dialog.delete_reservation')
+       @include('logged.dialog.not_invited')
+       --}}
     @if ($errors->any())
     @include('logged.dialog.no_free_beds')
     @endif
     @include('logged.dialog.over_period')
     @include('logged.dialog.delete_guest')
-    @include('logged.dialog.free_beds')
 @section('scripts')
     @parent
     <script>
