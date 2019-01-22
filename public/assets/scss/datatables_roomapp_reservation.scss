@@ -8,11 +8,19 @@
             }
         }    }
 }
-#table_all_reservations {
+.table_all_reservations {
+    thead {
+        tr {
+            th {
+                padding: 0.25em;
+            }
+        }
+    }
     tbody {
         tr {
             td {
                 vertical-align: middle;
+                padding: 0.25em;
                 &:before {
                     background-color: #b7282e;
                 }

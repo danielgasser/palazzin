@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     // ToDo change all stats route away from admin
     Route::get('admin/stats_calendar', 'StatsController@showStatsReservationsCalendar');
 
+    //ToDo keeper reservations
     // Admin
     Route::group(['middleware' => 'admin'], function () {
         Route::get('password/new/{pass}', 'RemindersController@manualPass');
@@ -51,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('admin/calc', 'PeriodController@calculatePeriods')->name('calc-periods');
         Route::post('admin/settings', 'SettingController@setSettings')->name('save-settings');
         Route::get('admin/users/delete/{id}', 'AdminController@deleteUser');
+        Route::get('admin/reservations/search', ['uses' => 'NewReservationController@AdminSearchAllReservations']);
+        Route::get('admin/reservations', ['uses' => 'NewReservationController@AdminGetAllReservations']);
     });
 
 });

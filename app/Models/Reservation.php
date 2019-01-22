@@ -227,30 +227,16 @@ class Reservation extends Model {
      * @return mixed Collection
      */
     public function getReservations () {
-        $isUserRoute = strpos(Route::getCurrentRoute()->getPath(), 'user');
-        if ($isUserRoute === false) {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->with('users')
-                ->get();
-        } else {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->where('user_id', '=', Auth::id())
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->get();
-        }
+        $reservations = $this
+            ->join('users', 'users.id', '=', 'reservations.user_id')
+            ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
+            //->where('user_id', '=', Auth::id())
+            ->with(array('guests'=>function($query){
+                $query
+                    ->join('roles', 'roles.id', '=', 'guests.role_id')
+                    ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
+            }))
+            ->get();
         $reservations->each(function ($r) {
             $s = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
             $d = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
@@ -268,30 +254,16 @@ class Reservation extends Model {
 
     public function getCountReservations ()
     {
-        $isUserRoute = strpos(Route::getCurrentRoute()->getPath(), 'user');
-        if ($isUserRoute === false) {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->with('users')
-                ->count();
-        } else {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->where('user_id', '=', Auth::id())
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->count();
-        }
+        $reservations = $this
+            ->join('users', 'users.id', '=', 'reservations.user_id')
+            ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
+            ->where('user_id', '=', Auth::id())
+            ->with(array('guests'=>function($query){
+                $query
+                    ->join('roles', 'roles.id', '=', 'guests.role_id')
+                    ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
+            }))
+            ->count();
         return $reservations;
     }
 

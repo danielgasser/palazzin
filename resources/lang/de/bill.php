@@ -7,6 +7,7 @@
  */
 return array(
     'bill' => 'Rechnung',
+    'bill_sent' => 'Rechnung verschickt',
     'currency' => 'Währung',
     'sub_total_bill' => 'Total exkl. Taxen',
     'sub_total_all_bill' => 'Gesamt-Total exkl. Taxen',

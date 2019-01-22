@@ -115,6 +115,24 @@ class NewReservationController extends Controller
             ->with('userRes', $userRes->toJson());
     }
 
+    public function AdminGetAllReservations()
+    {
+        $user = User::find(Auth::id());
+        $res = new Reservation();
+        $checkPeriod = Period::getCurrentPeriod();
+        $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $allRes = $res->getReservations();
+        $allRes->each(function ($ur) {
+            if ($ur->guests->isEmpty()) {
+                $ur->guests = [];
+            }
+        });
+        return view('logged.admin.admin_all_reservation')
+            ->with('roles', Role::getRolesTaxV3())
+            ->with('rolesTrans', $rolesTrans)
+            ->with('allRes', $allRes->toJson());
+    }
+
     /**
      * Gets reservations by period date
      *
@@ -226,4 +244,37 @@ class NewReservationController extends Controller
         $res->delete();
         return json_encode(['success' => 'deleted_reservation']);
     }
+
+    /**
+     * Searches reservations for lists
+     *
+     * @return mixed json
+     */
+    public function AdminSearchAllReservations()
+    {
+        $reservation = new Reservation();
+        if (sizeof(Input::all()) == 0) {
+            return view('logged.keeper.reservation')
+                ->with('allReservations', $reservation->getReservations());
+        }
+        return Response::json($reservation->getReservationsAjax(Input::except('resetKeeper')));
+    }
+
+    /**
+     * List reservation view
+     *
+     * @return mixed View
+     */
+    public function AdminShowAllReservations()
+    {
+        $reservation = new Reservation();
+        $users = User::select('users.id', 'user_first_name', 'user_name')
+            ->orderBy('user_name', 'asc')
+            ->get();
+        return view('logged.admin.reservation')
+            ->with('allReservations', $reservation->getReservations())
+            ->with('allBills', $reservation->getCountReservations())
+            ->with('users', $users);
+    }
+
 }

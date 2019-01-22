@@ -106,10 +106,7 @@
             dataTableSettings = {
                 dataSrc: '',
                 responsive: true,
-                autoWidth: true,
-                sScrollY: "35em",
-                sScrollX: "100%",
-                sScrollXInner: "100%",
+                autoWidth: false,
                 fixedHeader: {
                     header: true,
                     footer: true
@@ -275,22 +272,22 @@
     <script>
         $(document).ready( function () {
             userTable = $('#users').DataTable(dataTableSettings);
+            /*
             setTimeout(function () {
                 userTable.columns.adjust();
             }, 770)
             $(window).resize( function () {
                 userTable.columns.adjust();
             } );
+            */
             $('#users tbody').on('click', 'td.00', function () {
                 var tr = $(this).closest('tr');
                 var row = userTable.row(tr);
 
                 if (row.child.isShown()) {
-                    // This row is already open - close it
                     row.child.hide();
                     tr.removeClass('shown');
                 } else {
-                    // Open this row
                     var theDesc = row.data();
                     row.child(theDesc).show();
                     tr.addClass('shown');

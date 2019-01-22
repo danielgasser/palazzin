@@ -1,6 +1,9 @@
 .dataTables_scrollHeadInner table thead tr th {
   box-sizing: initial !important; }
 
+#users_wrapper {
+  width: 80% !important; }
+
 #users tbody tr td {
   vertical-align: middle; }
   #users tbody tr td:before {

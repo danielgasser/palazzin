@@ -28,79 +28,6 @@ use Response;
 class ReservationController extends Controller
 {
 
-    /**
-     * Gets all Reservations, Language strings, Roles, Periods for the calendar
-     *
-     * @return mixed View
-     */
-    public function getReservations()
-    {
-        $reservations = Reservation::getReservationsOtherClanUser();
-        $userRes = new Reservation();
-        $userReservations = $userRes->getAuthReservationsArrayJS();
-        $user = User::find(Auth::id());
-        if (is_null($user)) {
-            return redirect('/');
-        }
-        $checkPeriod = Period::getCurrentPeriod();
-        $checkRolesForGuest = (intval($user->clan_id) == intval($checkPeriod->clan_id));
-        foreach (User::find(Auth::id())->getRoles() as $u) {
-            $userRole[] = $u->role_code;
-        }
-        $userClan = $user->getUserClan();
-        $userClanName = $user->getUserClanName($user->clan_id);
-        $userList = $user->getSimpleUsersListByNotThisClan($user->clan_id);
-        $userID = $user->id;
-        $set = Setting::getStaticSettings();
-        $userPeriods = Period::getPeriods();
-        $allPeriods = Period::select('period_start', 'period_end', 'clan_id')->get();
-        $rolesTrans = Role::getRolesForGuest($checkRolesForGuest);
-        $rolesPureDropDown = Role::getRolesDropDown();
-        $langStrings = [
-            'calweek_short' => trans('calendar.calweek-short'),
-            'calweek' => trans('calendar.calweek'),
-            'gototoday' => trans('calendar.gototoday'),
-            'weekday' =>  trans('calendar.calweek'),
-            'weekdays' => trans('calendar.weekdays'),
-            'weekdays_short' => trans('calendar.weekdays-short'),
-            'reset' => trans('dialog.reset'),
-            'dialog' => trans('dialog')
-
-        ];
-        return view('logged.reservation')
-            ->with('settings', $set)
-            ->with('allClans', Clan::select('id', 'clan_description', 'clan_code')->get())
-            ->with('clan', $userClan)
-            ->with('clan_name', $userClanName)
-            ->with('allReservations', $reservations)
-            ->with('userRes', $userReservations)
-            ->with('reservation', null)
-            ->with('periods', $userPeriods)
-            ->with('periodsAll', $allPeriods)
-            ->with('roles', $rolesPureDropDown)
-            ->with('userRoles', $userRole)
-            ->with('rolesTrans', $rolesTrans)
-            ->with('userId', $userID)
-            ->with('userlist', $userList)
-            ->with('langStrings', $langStrings);
-    }
-
-    /**
-     * List reservation view
-     *
-     * @return mixed View
-     */
-    public function showAllReservations()
-    {
-        $reservation = new Reservation();
-        $users = User::select('users.id', 'user_first_name', 'user_name')
-            ->orderBy('user_name', 'asc')
-            ->get();
-        return view('logged.admin.reservation')
-            ->with('allReservations', $reservation->getReservations())
-            ->with('allBills', $reservation->getCountReservations())
-            ->with('users', $users);
-    }
 
 
     /**
@@ -283,36 +210,6 @@ class ReservationController extends Controller
         Input::flush();
 
         return Redirect::back();
-    }
-
-    public function saveLocalStorage()
-    {
-        $args = Input::all();
-        if (key_exists('key', $args)) {
-            foreach ($args['key'] as $k => $a) {
-                $localStorage = LocalStorage::firstOrNew([
-                    'local_storage_res_id' => $a['local_storage_res_id'],
-                    'local_storage_date' => $a['local_storage_date'],
-                    'local_storage_number' => $a['local_storage_number']
-                ]);
-                $localStorage->push();
-            }
-        }
-    }
-
-    /**
-     * Searches reservations for lists
-     *
-     * @return mixed json
-     */
-    public function searchAllReservations()
-    {
-        $reservation = new Reservation();
-        if (sizeof(Input::all()) == 0) {
-            return view('logged.keeper.reservation')
-                ->with('allReservations', $reservation->getReservations());
-        }
-        return Response::json($reservation->getReservationsAjax(Input::except('resetKeeper')));
     }
 
     /**
