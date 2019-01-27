@@ -35,6 +35,27 @@
 #noview {
     margin-left: 2em;
 }
+.alert {
+    form {
+        display: inline;
+    }
+    position: fixed;
+    width: 90%;
+    margin: 0 5%;
+    top: 77px;
+    z-index: 10000;
+    left: 0;
+    border: navajowhite;
+    border-radius: 0;
+    font-size: 1.5em;
+    button {
+        height: inherit !important;
+        border: none !important;
+        span {
+            font-size: 1.5em;
+        }
+    }
+}
 a {
   &:focus, &:active {
     outline: none;

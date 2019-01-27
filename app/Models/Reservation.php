@@ -934,8 +934,10 @@ class Reservation extends Model {
                     $d[1] = ($dd < 10) ? '0' . $dd : $dd;
                     if ($date < $checkEnd) {
                         $r->{$preFix . implode('_', $d)} += $j->guest_number;
+                        $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
                     } else {
                         $r->{$preFix . implode('_', $d)} += 0;
+                        $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
                     }
                 }
             });

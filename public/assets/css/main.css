@@ -6319,14 +6319,14 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   background-color: white !important; }
 
 .navbar-brand {
-  margin: 0.5em 0 0.5em -12px !important;
+  margin: 0.15em 0 0.15em -8px !important;
   padding: 16px 21px !important;
   width: 100%;
   font-family: Palazzin, "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .navbar-brand a {
     color: #f7f7f7 !important;
     font-weight: normal;
-    font-size: 3em; }
+    font-size: 2em; }
     .navbar-brand a .hideBrandContent {
       visibility: hidden;
       white-space: nowrap;
@@ -6459,6 +6459,24 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 
 #noview {
   margin-left: 2em; }
+
+.alert {
+  position: fixed;
+  width: 90%;
+  margin: 0 5%;
+  top: 77px;
+  z-index: 10000;
+  left: 0;
+  border: navajowhite;
+  border-radius: 0;
+  font-size: 1.5em; }
+  .alert form {
+    display: inline; }
+  .alert button {
+    height: inherit !important;
+    border: none !important; }
+    .alert button span {
+      font-size: 1.5em; }
 
 a:focus, a:active {
   outline: none;

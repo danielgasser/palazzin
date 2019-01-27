@@ -4,6 +4,34 @@
   padding: 23px;
     font-size: 16px;
 }
+#table_all_reservations {
+    thead, tbody {
+        tr {
+            th, td {
+                font-size: 1.2em;
+            }
+            &.odd {
+                background-color: #cbcbcb;
+            }
+            &.even {
+                border-bottom: 1px solid $brand-danger;
+                border-top: 1px solid $brand-danger;
+            }
+        }
+    }
+}
+#guestTable {
+    border-left: 1px solid $brand-danger;
+    border-top: 1px solid $brand-danger;
+    thead, tbody {
+        tr {
+            th, td {
+                font-size: 1.0em;
+                padding: 0.25em;
+            }
+        }
+    }
+}
 .show_total_res {
   border: .13333em solid #b7b7b7;
   border-radius: .13333em;

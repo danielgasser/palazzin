@@ -1,4 +1,7 @@
 .dropdown-menu {
   background-color: white; }
 
+.datepicker-occupied-beds:hover {
+  background: transparent !important; }
+
 /*# sourceMappingURL=bootstrap-datepicker.css.map */

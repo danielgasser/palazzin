@@ -1,3 +1,16 @@
+<?php
+$router = Route::getFacadeRoot()->current();
+$route = 'error';
+if (!is_null($router)) {
+    $route = $router->uri();
+}
+$routeStr = preg_replace('/[\[{\(].*[\]}\)]/U' , '', $route);
+$routeStr = rtrim($routeStr,"/");
+if (strlen($routeStr) === 0) {
+    $routeStr = ' ';
+}
+?>
+
 @section('header')
 <!DOCTYPE html>
 <html lang="{{App::getLocale()}}">
@@ -6,8 +19,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-    @if (Request::has('edit_reservation*'))
-        <title>{{Lang::get('navigation.edit_reservation')}} | Palazzin</title>
+    @if (strpos('edit_reservation', $routeStr) !== false)
+        <title>{{Lang::get('reservation.edit_res')}} | Palazzin</title>
     @else
     <title>{{Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())}} | Palazzin</title>
     @endif
@@ -18,7 +31,6 @@
     <link rel="mask-icon" href="{{asset('assets/img/favicon')}}/safari-pinned-tab.svg" color="#333333">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <script src="{{asset('assets/js/libs/jquery/jquery.2.1.1.min.js')}}"></script>
     <!--script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script-->
     <!--script src="{{asset('assets/js/libs/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script-->
@@ -227,15 +239,6 @@
 
 <div id="noview">
     <div class="row">
-        <?php
-        $router = Route::getFacadeRoot()->current();
-        $route = 'error';
-        if (!is_null($router)) {
-            $route = $router->uri();
-        }
-        $routeStr = preg_replace('/[\[{\(].*[\]}\)]/U' , '', $route);
-        $routeStr = rtrim($routeStr,"/");
-            ?>
         @switch($route)
             @case ('/')
                 <h1>{{trans('home.welcome', ['back' => '', 'name' => ''])}}</h1>
@@ -253,7 +256,7 @@
                     </div>
                 </div>
             @break
-            @case(strpos('new_reservation', $route) !== false)
+            @case(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
             <div id="res-nav">
                 <div class="col-md-10 col-sm-8 col-xs-12 title-res">
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
@@ -357,13 +360,13 @@
             }
         });
         jQuery(document).on('mouseenter', '#all-nav', function () {
-            console.log(this);
             let nav = $(this);
             nav.addClass('all-nav-hover');
+            $('.dropdown-menu').css({width: '222px'})
         }).on('mouseleave', '#all-nav', function () {
-            console.log(this);
             let nav = $(this);
             nav.removeClass('all-nav-hover');
+            $('.dropdown-menu').css({width: '55px'})
         });
         jQuery(document).on('click', '#toggleFooterNav', function () {
             $('#bottom-nav').slideToggle(500);

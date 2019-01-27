@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveReservation;
-use function foo\func;
 use Period;
 use Reservation;
 use Role;
@@ -40,7 +39,9 @@ class NewReservationController extends Controller
     {
         $args = $this->getReservationInfos();
         $user = User::find(Auth::id());
-        $res = Reservation::where('id', '=', $res_id)->with('guests')->first();
+        $res = Reservation::where('id', '=', $res_id)
+            ->with('guests')
+            ->get();
 
         if (!is_object($res)) {
             $userRes = Reservation::where('user_id', '=', $user->id)
@@ -51,6 +52,28 @@ class NewReservationController extends Controller
                 ->with('userRes', $userRes)
                 ->with('reservations', $reservations);
         }
+        $today = new \DateTime();
+        $today->setTime(23, 59, 59, 999);
+        $res->each(function ($ur) use($today) {
+            $resEnd = new \DateTime($ur->reservation_ended_at);
+            $ur->sum_total = 0.00;
+            $ur->sum_guest = 1;
+            if ($ur->guests->isEmpty()) {
+                $ur->guests = [];
+            } else {
+                $ur->guests->each(function ($g) use ($ur, $today) {
+                    $ur->sum_total += $g->guest_tax * $g->guest_number * $g->guest_night;
+                    $ur->sum_guest += $g->guest_number;
+                    $g->guest_tax = number_format($g->guest_tax, 2, '.', "'");
+                    $g->guest_total = number_format($g->guest_tax * $g->guest_number, 2, '.', "'");
+                    $g->guest_all_total = number_format($g->guest_tax * $g->guest_number * $g->guest_night, 2, '.', "'");
+                });
+            }
+            $ur->sum_total =  number_format($ur->sum_total, 2, '.', "'");
+            $ur->sum_total_hidden =  $ur->sum_total;
+            $ur->editable = ($today < $resEnd);
+        });
+
         return view('v3.edit_reservation')
             ->with('userRes', $res)
             ->with('rolesTrans', $args['rolesTrans'])
@@ -104,15 +127,30 @@ class NewReservationController extends Controller
             ->orderBy('reservation_started_at', 'desc')
             ->with('guests')
             ->get();
-        $userRes->each(function ($ur) {
+        $today = new \DateTime();
+        $today->setTime(23, 59, 59, 999);
+        $userRes->each(function ($ur) use($today) {
+            $resEnd = new \DateTime($ur->reservation_ended_at);
+            $ur->sum_total = 0.00;
+            $ur->sum_guest = 0;
             if ($ur->guests->isEmpty()) {
                 $ur->guests = [];
+            } else {
+                $ur->guests->each(function ($g) use ($ur, $today) {
+                    $ur->sum_total += $g->guest_tax * $g->guest_number * $g->guest_night;
+                    $ur->sum_guest += $g->guest_number;
+                    $g->guest_tax = number_format($g->guest_tax, 2, '.', "'");
+                    $g->guest_total = number_format($g->guest_tax * $g->guest_number, 2, '.', "'");
+                    $g->guest_all_total = number_format($g->guest_tax * $g->guest_number * $g->guest_night, 2, '.', "'");
+                });
             }
+            $ur->sum_total =  number_format($ur->sum_total, 2, '.', "'");
+            $ur->editable = ($today < $resEnd);
         });
         return view('v3.all_reservation')
             ->with('roles', Role::getRolesTaxV3())
             ->with('rolesTrans', $rolesTrans)
-            ->with('userRes', $userRes->toJson());
+            ->with('userRes', $userRes);
     }
 
     public function AdminGetAllReservations()
@@ -130,7 +168,7 @@ class NewReservationController extends Controller
         return view('logged.admin.admin_all_reservation')
             ->with('roles', Role::getRolesTaxV3())
             ->with('rolesTrans', $rolesTrans)
-            ->with('allRes', $allRes->toJson());
+            ->with('allRes', $allRes);
     }
 
     /**
@@ -174,7 +212,7 @@ class NewReservationController extends Controller
             $args['user_id_ab'] = $credentials['user_id_ab'];
         }
         if (!is_null($resID['id'])) {
-            $res = Reservation::find(request()->all('id'));
+            $res = Reservation::find($resID)->first();
             $res->users()->associate($user);
         } else {
             $res = new Reservation();
@@ -183,9 +221,6 @@ class NewReservationController extends Controller
         $saved = $res->save();
         if (array_key_exists('reservation_guest_started_at', $validated)) {
             for($i = 0; $i < sizeof($validated['reservation_guest_started_at']); $i++) {
-                $guest = new \Guest();
-                $role = Role::find($validated['reservation_guest_guests'][$i]);
-                $guest->roles()->associate($role);
                 $args = [
                     'reservation_id' => $res->id,
                     'guest_started_at' => Reservation::createDbDateFromInput($validated['reservation_guest_started_at'][$i])[0],
@@ -194,12 +229,24 @@ class NewReservationController extends Controller
                     'guest_night' => $validated['number_nights'][$i],
                     'role_id' => $validated['reservation_guest_guests'][$i],
                     'guest_tax_role_id' => $validated['reservation_guest_guests'][$i],
-                    'guest_tax' => $credentials['hidden_reservation_guest_price'][$i],
+                    'guest_tax' => $credentials['price'][$i],
                     'guest_title' => $credentials['hidden_guest_title'][$i],
                 ];
+                if (!isset($credentials['guest_id'][$i])) {
+                    $guest = new Guest();
+                } else {
+                    $guest = Guest::find($credentials['guest_id'][$i]);
+                }
+               // $guest->roles()->associate($role);
                 $guest->fill($args);
+                if (!isset($credentials['guest_id'][$i])) {
+                   // $guest->push();
+                } else {
+                }
                 $res->guests()->save($guest);
+                //
             }
+            $saved = $res->push();
         }
         if ($saved) {
             return redirect('all_reservations')

@@ -1,29 +1,39 @@
+.freeB {
+  font-size: 12px;
+  display: inline-block !important;
+  border: 1px solid green !important;
+  width: 21px !important;
+  height: 21px !important;
+  line-height: 21px !important;
+  border-radius: 50% !important;
+  color: white !important;
+  background: green !important;
+  float: none !important; }
+
+.occB {
+  font-size: 12px;
+  display: inline-block !important;
+  border: 1px solid red !important;
+  width: 21px !important;
+  height: 21px !important;
+  line-height: 21px !important;
+  border-radius: 50% !important;
+  color: white !important;
+  background: red !important;
+  float: none !important; }
+
 .title-res {
+  background-color: #fff;
   padding-left: 0; }
   .title-res h1 {
     border: none; }
 
-#new_reservation .row, #edit_reservation .row, #table_all_reservations_wrapper .row {
+#new_reservation .row, #edit_reservation .row, #table_all_reservations_wrapper .row, #table_all_reservations .row {
   margin-left: 0;
   margin-right: 2px; }
 
 [name="table_all_reservations_length"] {
   height: 2.55em !important; }
-
-.alert {
-  position: fixed;
-  width: 100%;
-  top: 77px;
-  z-index: 10000;
-  left: 0;
-  border: navajowhite;
-  border-radius: 0;
-  font-size: 1.5em; }
-  .alert button {
-    height: inherit !important;
-    border: none !important; }
-    .alert button span {
-      font-size: 1.5em; }
 
 .noClick {
   pointer-events: none; }
@@ -240,6 +250,12 @@ label {
       content: "\f077";
       padding-left: 8px; }
 
+.showContent {
+  top: 6px !important;
+  left: 12px !important;
+  visibility: visible !important;
+  opacity: 1 !important; }
+
 #free_beds {
   z-index: 10000; }
   #free_beds li {
@@ -268,7 +284,12 @@ label {
   #free_beds #all-free-beds {
     color: #333;
     background-color: white;
-    width: auto; }
+    width: 128px;
+    max-height: 350px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    border: 1px solid #b7282e; }
     #free_beds #all-free-beds [id^="free-beds_"] {
       padding: 0.25em 0.5em; }
     #free_beds #all-free-beds .tooMuchBeds {
@@ -298,6 +319,10 @@ label {
 
 .datepicker table tr td.disabled {
   cursor: not-allowed !important; }
+  .datepicker table tr td.disabled div {
+    opacity: 0.5; }
+    .datepicker table tr td.disabled div span {
+      cursor: not-allowed !important; }
 .datepicker table tr td.today {
   color: #000;
   background-color: #ffdb99 !important;
@@ -305,8 +330,19 @@ label {
 .datepicker table tr td.active {
   background-color: #337ab7 !important;
   border-color: #2e6da4 !important; }
+.datepicker table tr td.range-start {
+  border: 1px solid #b7282e !important;
+  border-right: none !important; }
+.datepicker table tr td.range-end {
+  border: 1px solid #b7282e !important;
+  border-left: none !important;
+  color: inherit !important; }
+.datepicker table tr td.range {
+  border: 1px solid #b7282e !important;
+  border-right: none !important;
+  border-left: none !important; }
 .datepicker table tr th, .datepicker table tr td {
-  width: 40px !important;
+  width: 55px !important;
   height: 40px !important; }
   .datepicker table tr th hr, .datepicker table tr td hr {
     margin-top: 0;

@@ -12,23 +12,81 @@
     <div id="reservationInfo">
         <h4></h4>
     </div>
-    <div id="upper">
-        <table id="table_all_reservations" class="table_all_reservations" width="100%">
-            <thead>
-            <tr>
-                <th class="0 child">{{trans('reservation.guests.title')}}</th>
-                <th class="1" id="arrival">{{trans('reservation.arrival')}}</th>
-                <th class="2" id="depart">{{trans('reservation.depart')}}</th>
-                <th class="3" id="total_nights">{{trans('reservation.guests.total_nights')}}</th>
-                <th class="4" id="total_all_bill">{{trans('bill.total_all_bill')}}</th>
-                <th class="5" id="reservation_guest_num">{{trans('validation.attributes.reservation_guest_num')}}</th>
-                <th class="6" id="edit">{{trans('dialog.edit')}}</th>
-                <th class="7" id="delete">{{trans('dialog.delete')}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div id="table_all_reservations" class="table-responsive">
+            <table id="table_all_reservations" class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="6" id="edit"></th>
+                    <th scope="col" class="1" id="arrival">{{trans('reservation.arrival_departure')}}</th>
+                    <th scope="col" class="3" id="total_nights">{{trans('reservation.guests.total_nights')}}</th>
+                    <th scope="col" class="4" id="total_all_bill">{{trans('bill.total_all_bill')}}</th>
+                    <th scope="col" class="5" id="reservation_guest_num">{{trans('validation.attributes.reservation_guest_num')}}</th>
+                    <th scope="col" class="6" id="guests"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($userRes as $key => $res)
+                    @php
+                    $class = ($key % 2 === 0) ? 'even' : 'odd';
+                    @endphp
+                <tr class="{{$class}}">
+                    <td>
+                        @if($res->editable)
+                        <form style="display: inline-block" id="edit_table_all_reservations_{{$res->id}}" method="post" action="{{  route('edit_reservation', ['id' => $res->id])  }}">
+                            {{ csrf_field() }}
+                            <button title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_{{$res->id}}"><i class="fas fa-edit"></i></button>
+                        </form>
+                        <form style="display: inline-block" id="delete_table_all_reservations_{{$res->id}}" method="post" action="{{  route('delete_reservation', ['id' => $res->id])  }}">
+                            {{ csrf_field() }}
+                            <button title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_{{$res->id}}"><i class="fas fa-trash"></i></button>
+                        </form>
+                            @endif
+                    </td>
+                    <td>{{$res->reservation_started_at}}-{{$res->reservation_ended_at}}</td>
+                    <td>{{$res->reservation_nights}}</td>
+                    <td>{{$res->sum_total}}</td>
+                    <td>{{$res->sum_guest}}</td>
+                    <td scope="col" class="6" id="guests">
+                        @if(sizeof($res->guests) > 0)
+                            <b>{{trans('reservation.guests.title')}}</b>
+                            <table id="guestTable">
+                            <thead>
+                                <tr>
+                                    <th>N°</th>
+                                    <th>{{trans('reservation.arrival_departure')}}</th>
+                                    <th>{{trans('reservation.nights')}}</th>
+                                    <th>{{trans('reservation.guests.number')}} {{trans('reservation.guests.title')}}</th>
+                                    <th>{{trans('reservation.guests.role')}}</th>
+                                    <th>{{trans('reservation.guests.tax_night')}}</th>
+                                    <th>{{trans('reservation.guests.total')}}</th>
+                                    <th>{{trans('reservation.guests.total_nights')}}</th>
+                                    <th>{{trans('bill.total_all_bill')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($res->guests as $k => $guest)
+                                <tr>
+                                    <td>{{$k+=1}}</td>
+                                    <td>{{$guest->guest_started_at}}-{{$guest->guest_ended_at}}</td>
+                                    <td>{{$guest->guest_night}}</td>
+                                    <td>{{$guest->guest_number}}</td>
+                                    <td>{{$rolesTrans[$guest->role_id]}}</td>
+                                    <td>{{$guest->guest_tax}}</td>
+                                    <td>{{$guest->guest_total}}</td>
+                                    <td>{{$guest->guest_night * $guest->guest_number}}</td>
+                                    <td>{{$guest->guest_all_total}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                            @else
+                            <b>Keine Gäste</b>
+                            @endif
+                    </td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
     </div>
     @include('logged.dialog.delete_reservation')
     @include('logged.dialog.deleted_reservation')
@@ -57,7 +115,7 @@
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
             datePickersStart = [],
-            reservations = JSON.parse('{!!$userRes!!}'),
+           // reservations = JSON.parse('{!!json_encode($userRes, JSON_HEX_APOS)!!}'),
             guestTitle = '{{trans('reservation.guest_many_no_js.one')}}: ',
             res_lang = JSON.parse('{!!json_encode(trans('reservation'))!!}'),
             datePickersEnd = [],
@@ -74,200 +132,8 @@
     <script src="{{asset('assets/js/v3/events.js')}}"></script>
     <script>
         var reservationTable;
-        function format ( d ) {
-            if (d.guests.length === 0) return '<table id="allGuestTable" cellpadding="6" style="padding-left:50px; width: 100%" class="table_all_reservations dataTable no-footer dtr-inline">' +
-                '<thead>' +
-                '<tr>' +
-                '<th>' + res_lang.guest_many[3] + '</th>' +
-                '</tr>' +
-                '</thead></table>';
-            let rowBack,
-                table = '<table id="allGuestTable" cellpadding="6" style="padding-left:50px; width: 100%" class="table_all_reservations dataTable no-footer dtr-inline">' +
-                    '<thead>' +
-                        '<tr>' +
-                            '<th>' + res_lang.arrival_departure + '</th>' +
-                            '<th>' + res_lang.nights + '</th>' +
-                            '<th>' + res_lang.guests.number + ' ' + res_lang.guests.title + '</th>' +
-                            '<th>' + res_lang.guests.role + '</th>' +
-                            '<th>' + res_lang.guests.tax_night + '</th>' +
-                            '<th>' + res_lang.guests.total + '</th>' +
-                '<th>' + res_lang.guests.total_nights + '</th>' +
-                        '</tr>' +
-                    '</thead>' +
-                    '<tbody>';
-                $.each(d.guests, function (i, n) {
-                    rowBack = (i % 2 === 0) ? 'even' : 'odd';
-                    table += '<tr class="' + rowBack + '">' +
-                        '<td>' + n.guest_started_at + '/' + n.guest_ended_at + '</td>' +
-                        '<td>' + n.guest_night + '</td>' +
-                        '<td>' + n.guest_number + '</td>' +
-                        '<td>' + rolesTrans[n.guest_tax_role_id] + '</td>' +
-                        '<td>' + n.guest_tax + '</td>' +
-                        '<td>' + (n.guest_tax * n.guest_night).toFixed(2) + '</td>' +
-                        '<td>' + (n.guest_night * n.guest_number) + '</td>' +
-                        '</tr>'
-                });
-                table += '</tbody></table>';
-            return table;
-        }
         $(document).ready(function () {
-            console.log(reservations)
-            let sum = 0,
-                today = new Date(),
-            old_id;
-            today.setHours(23, 59, 59, 999);
-                reservationTable = $('#table_all_reservations').DataTable({
-                    data: reservations,
-                    autoWidth: true,
-                    fixedHeader: {
-                        header: true,
-                        footer: true
-                    },
-                    responsive: true,
-                    "columns": [
-                        {
-                            "className":      'details-control',
-                            "orderable":      false,
-                            "data":           null,
-                            "defaultContent": '<i class="fa fa-chevron-down" aria-hidden="true"></i>',
-                            width: '1%'
-                        },
-                    ],
-                    columnDefs: [
-                        {
-                            targets: [1],
-                            data: 'reservation_started_at',
-                            render: function (data, type, full, meta) {
-                                if (type === 'sort') {
-                                    let d_string = data.split('.'),
-                                        d = new Date(d_string[2], (d_string[1] - 1), d_string[0], 0, 0, 0)
-                                    return d.getTime();
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            targets: [2],
-                            data: 'reservation_ended_at',
-                            render: function (data, type, full, meta) {
-                                if (type === 'sort') {
-                                    let d_string = data.split('.'),
-                                        d = new Date(d_string[2], (d_string[1] - 1), d_string[0], 0, 0, 0)
-                                    return d.getTime();
-                                }
-                                return data;
-                            }
-                        },
-                        {
-                            targets: [3],
-                            data: 'reservation_nights',
-                        },
-                        {
-                            targets: [4],
-                            data: null,
-
-                            render: function (data, type, full, meta) {
-                                let total = 0.0;
-                                $.each(data.guests, function (i, n) {
-                                    total += n.guest_night * n.guest_number * parseFloat(n.guest_tax)
-                                });
-                                return (total === 0.00) ? '-' : total.toFixed(2);
-                            }
-
-                        },
-                        {
-                            targets: [5],
-                            data: null,
-                            render: function (data, type, full, meta) {
-                                let total = 0;
-                                $.each(data.guests, function (i, n) {
-                                    total += n.guest_number
-                                });
-                                return (total === 0) ? '-' : total;
-                            }
-                        },
-                        {
-                            targets: [6],
-                            data: null,
-                            render: function (data) {
-                                let d_string = data.reservation_ended_at.split('.'),
-                                    d = new Date(d_string[2], (d_string[1] - 1), d_string[0], 0, 0, 0);
-                                if (d.getTime() < today.getTime()) {
-                                    return '';
-                                }
-                                return '<form id="edit_table_all_reservations_' + data.id + '" method="post" action="' + urlTo + '/edit_reservation/' + data.id + '">' +
-                                    '{{ csrf_field() }}' +
-                                    '<button title="' + langDialog.edit + '" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_' + data.id + '"><i class="fas fa-edit"></i></button>' +
-                                    '</form>';
-                            }
-                        },
-                        {
-                            targets: [7],
-                            data: null,
-                            render: function (data) {
-                                return '<form id="delete_table_all_reservations_' + data.id + '" method="post" action="' + urlTo + '/delete_reservation/">' +
-                                    '{{ csrf_field() }}' +
-                                    '<button title="' + langDialog.delete + '" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_' + data.id + '"><i class="fas fa-trash"></i></button>' +
-                                    '</form>';
-                            }
-                        },
-                    ],
-                    order: [ 1, 'desc' ],
-                    ordering: true,
-                    language: {
-                        paginate: {
-                            first: '{{trans('pagination.first')}}',
-                            previous: '{{trans('pagination.previous')}}',
-                            next: '{{trans('pagination.next')}}',
-                            last: '{{trans('pagination.last')}}',
-                        },
-                        info: '{{trans('pagination.info')}}',
-                        sLengthMenu: '{{trans('pagination.length_menu')}}',
-                        search: '{{trans('dialog.search')}}'
-                    },
-
-                });
-            old_id = 0;
-            $.each($('[id^="number_nights_"]'), function (i, n) {
-                let r_id = $(n).attr('id').split('_')[3],
-                    g_id = $(n).attr('id').split('_')[2];
-                if (g_id !== old_id) {
-                    sum = 0;
-                }
-                old_id = g_id;
-                if (parseFloat($('#reservation_guest_price_' + g_id + '_' + r_id).val()) > 0) {
-                    sum += (parseInt($(n).val(), 10) * parseFloat($('#reservation_guest_price_' + g_id + '_' + r_id).val()) * parseInt($('#reservation_guest_num_' + g_id + '_' + r_id).val(), 10));
-                }
-                $('#price_' + g_id + '_' + r_id).val(sum.toFixed(2));
-            });
-            old_id = 0;
-            $.each($('[id^="price_"]'), function (i, n) {
-                let id = $(n).attr('id').split('_')[2];
-                if (id !== old_id) {
-                    sum = 0;
-                }
-                old_id = id;
-                sum += parseFloat($(n).val());
-                $('#reservation_costs_total_' + id).html(sum.toFixed(2));
-            });
-        })
-        $('#table_all_reservations tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = reservationTable.row( tr );
-
-            if ( row.child.isShown() ) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-                tr.children().first().html('<i class="fa fa-chevron-down" aria-hidden="true"></i>')
-            }
-            else {
-                // Open this row
-                row.child( format(row.data()) ).show();
-                tr.addClass('shown');
-                tr.children().first().html('<i class="fa fa-chevron-up" aria-hidden="true"></i>')
-            }
-        } );
+        });
     </script>
 
 @stop

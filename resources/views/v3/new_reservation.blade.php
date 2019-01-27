@@ -143,12 +143,12 @@
             localStorage.clear();
             localStorage.setItem('new_res', '1');
             if (afterValidation ==='1') {
-                localStorage.setItem('new_res', '0');
+                //localStorage.setItem('new_res', '0');
                 let startDateString = '{{ old('reservation_started_at') }}'.split('.');
                 startDate = new Date(startDateString[2], (startDateString[1] - 1), startDateString[0], 0, 0, 0);
-                V3Reservation.init('{{ old('periodID') }}', true, startDate);
+                V3Reservation.initNew('{{ old('periodID') }}', true, startDate);
             } else {
-                V3Reservation.init(periodID, true, new Date());
+                V3Reservation.initNew(periodID, true, new Date());
             }
         })
     </script>

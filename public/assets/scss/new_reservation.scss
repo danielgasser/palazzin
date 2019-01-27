@@ -1,11 +1,36 @@
 @import "bootstrap-variables";
+.freeB {
+    font-size: 12px;
+    display: inline-block !important;
+    border: 1px solid green !important;
+    width: 21px !important;
+    height: 21px !important;
+    line-height: 21px !important;
+    border-radius: 50% !important;
+    color: white !important;
+    background: green !important;
+    float: none !important;
+}
+.occB {
+    font-size: 12px;
+    display: inline-block !important;
+    border: 1px solid red !important;
+    width: 21px !important;
+    height: 21px !important;
+    line-height: 21px !important;
+    border-radius: 50% !important;
+    color: white !important;
+    background: red !important;
+    float: none !important;
+}
 .title-res {
+    background-color: #fff;
     padding-left: 0;
     h1 {
         border: none;
     }
 }
-#new_reservation, #edit_reservation, #table_all_reservations_wrapper {
+#new_reservation, #edit_reservation, #table_all_reservations_wrapper, #table_all_reservations {
     .row {
         margin-left: 0;
         margin-right: 2px;
@@ -13,23 +38,6 @@
 }
 [name="table_all_reservations_length"] {
     height: 2.55em !important;
-}
-.alert {
-    position: fixed;
-    width: 100%;
-    top: 77px;
-    z-index: 10000;
-    left: 0;
-    border: navajowhite;
-    border-radius: 0;
-    font-size: 1.5em;
-    button {
-        height: inherit !important;
-        border: none !important;
-        span {
-            font-size: 1.5em;
-        }
-    }
 }
 .noClick {
     pointer-events: none;
@@ -270,6 +278,13 @@ label {
         }
     }
 }
+.showContent {
+    top: 6px !important;
+    left: 12px !important;
+    visibility:visible !important;
+    opacity:1 !important;
+}
+
 #free_beds {
     z-index: 10000;
     li {
@@ -311,7 +326,12 @@ label {
     #all-free-beds {
         color: #333;
         background-color: white;
-        width: auto;
+        width: 128px;
+        max-height: 350px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: absolute;
+        border: 1px solid $brand-danger;
         [id^="free-beds_"] {
             padding: 0.25em 0.5em;
         }
@@ -352,6 +372,12 @@ label {
         tr {
             td.disabled {
                 cursor: not-allowed !important;
+                div {
+                    opacity: 0.5;
+                    span {
+                        cursor: not-allowed !important;
+                    }
+                }
             }
             td.today {
                 color: #000;
@@ -362,8 +388,22 @@ label {
                 background-color: #337ab7 !important;
                 border-color: #2e6da4 !important;
             }
+            td.range-start {
+                border: 1px solid #b7282e !important;
+                border-right: none !important;
+            }
+            td.range-end {
+                border: 1px solid #b7282e !important;
+                border-left: none !important;
+                color: inherit !important;
+            }
+            td.range {
+                border: 1px solid #b7282e !important;
+                border-right: none !important;
+                border-left: none !important;
+            }
             th, td {
-                width: 40px !important;
+                width: 55px !important;
                 height: 40px !important;
                 hr {
                     margin-top: 0;

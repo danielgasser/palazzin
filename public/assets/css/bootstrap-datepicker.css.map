@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAAA,cAAe;EACX,gBAAgB,EAAE,KAAK",
+"mappings": "AAAA,cAAe;EACX,gBAAgB,EAAE,KAAK;;AAGvB,+BAAQ;EACJ,UAAU,EAAE,sBAAsB",
 "sources": ["../scss/bootstrap-datepicker.scss"],
 "names": [],
 "file": "bootstrap-datepicker.css"

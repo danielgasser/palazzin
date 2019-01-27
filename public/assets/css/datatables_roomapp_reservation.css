@@ -2,9 +2,11 @@
   box-sizing: initial !important; }
 
 .table_all_reservations thead tr th {
-  padding: 0.25em; }
+  padding: 0.25em;
+  font-size: 1.2em; }
 .table_all_reservations tbody tr td {
   vertical-align: middle;
+  font-size: 1.2em;
   padding: 0.25em; }
   .table_all_reservations tbody tr td:before {
     background-color: #b7282e; }
