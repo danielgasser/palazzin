@@ -748,7 +748,7 @@ var Reservation = {
             success: function (data) {
                 window.unAuthorized(data);
                 if (data.hasOwnProperty('failed')) {
-                    $('#no_delete_reservation').hide();
+                    $('#no_delete_reservation').modal('hide');
                     $('#reset_res').trigger('click');
                     return false;
                 }

@@ -1,7 +1,15 @@
-<div id="not_invited" class="alert alert-danger alert-dismissible" style="display: none">
-    <span id="not_invited_text"></span><hr>
-        <button id="cancel_other_host" class="btn btn-default">{!!trans('dialog.ok')!!}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<div id="not_invited" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title-warning">{!! trans('dialog.warning') !!}</h4>
+            </div>
+            <div class="modal-body">
+                <p><span id="not_invited_text"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel_other_host" class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+            </div>
+        </div>
+    </div>
+</div>

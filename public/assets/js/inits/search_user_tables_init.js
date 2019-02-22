@@ -203,7 +203,10 @@ jQuery(document).on('click', '#send_new_message', function (e) {
         allMails.push(n.innerText);
     });
     if (tinyMCE.activeEditor.getContent().length < 4) {
-        $('#four_char').show();
+        $('#four_char').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
         return false;
     }
     $.ajax({

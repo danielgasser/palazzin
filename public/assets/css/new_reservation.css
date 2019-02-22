@@ -89,7 +89,7 @@
   color: rgba(0, 0, 225, 0.5) !important; }
 
 #total_res {
-  font-size: 1.1em;
+  font-size: 1.25em;
   margin: 5px 0;
   padding: .1333em .43333em;
   display: block;
@@ -99,6 +99,16 @@
   #total_res span {
     padding: 0; }
 
+#resButtons {
+  position: fixed;
+  bottom: 12px;
+  left: 55px;
+  width: calc(100% - 55px);
+  border-top: 1px solid #b7282e;
+  padding: 0.5em 0; }
+  #resButtons button {
+    width: 100%; }
+
 .show_reservation_guest {
   margin: 0;
   font-size: 1.2em;
@@ -107,7 +117,12 @@
     font-size: 1.2em;
     padding: .1333em .43333em; }
 
-[id^="remove_guest_"] {
+#guest_entries {
+  max-height: 62vh;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+[id^="remove_guest_"], #clone_guest {
   font-size: 1em;
   display: inline !important;
   border: none !important;
@@ -157,7 +172,7 @@ label {
   position: relative; }
 
 [id^="total_guest_"] {
-  font-size: 1.1em;
+  font-size: 1.25em;
   margin: 5px 0;
   padding: .1333em .43333em;
   display: block;
@@ -267,9 +282,6 @@ label {
     left: 12px;
     visibility: visible;
     opacity: 1; }
-  #free_beds #show-all-free-beds:focus i:after, #free_beds #show-all-free-beds:focus-within i:after {
-    content: "\f077";
-    padding-left: 8px; }
   #free_beds #free-beds-title {
     background-color: #b7282e !important;
     color: white !important;
@@ -281,21 +293,22 @@ label {
     color: #b7282e;
     padding: 0.25em 0.5em;
     cursor: pointer; }
-  #free_beds #all-free-beds {
-    color: #333;
-    background-color: white;
-    width: 128px;
-    max-height: 350px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: absolute;
-    border: 1px solid #b7282e; }
-    #free_beds #all-free-beds [id^="free-beds_"] {
-      padding: 0.25em 0.5em; }
-    #free_beds #all-free-beds .tooMuchBeds {
-      color: #b7282e;
-      font-weight: bold;
-      background-color: #f7f7f7; }
+
+#all-free-beds {
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 1em;
+  font-size: 1.2em;
+  color: #333; }
+  #all-free-beds [id^="free-beds_"] {
+    padding: 0.25em 0.5em; }
+
+.tooMuchBeds {
+  color: #b7282e;
+  font-weight: bold;
+  background-color: #f7f7f7; }
 
 #reservationInfo {
   padding: 0 0 0.25em 0;
@@ -341,6 +354,9 @@ label {
   border: 1px solid #b7282e !important;
   border-right: none !important;
   border-left: none !important; }
+.datepicker table tr td.myRes {
+  background: rgba(0, 0, 0, 0.28) !important;
+  color: #000000; }
 .datepicker table tr th, .datepicker table tr td {
   width: 55px !important;
   height: 40px !important; }

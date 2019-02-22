@@ -1,4 +1,15 @@
-<div id="no_delete_reservation" class="alert alert-danger alert-dismissible" style="display: none">
-    {!!trans('reservation.warnings.yesterday')!!}<hr>
-    <button class="btn btn-default closAlert">{!!trans('dialog.ok')!!}</button>
+<div id="no_delete_reservation" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title-warning">{!! trans('dialog.warning') !!}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{!!trans('reservation.warnings.yesterday')!!}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+            </div>
+        </div>
+    </div>
 </div>

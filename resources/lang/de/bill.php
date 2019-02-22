@@ -16,6 +16,7 @@ return array(
     'paid_at' => 'Bezahlt am',
     'total_bill' => 'Rechnungs-Total',
     'total_all_bill' => 'Gesamt-Total',
+    'total_all' => 'Total',
     'total_guest' => 'Total Gast',
     'date' => 'Rechnungsdatum',
     'bill_no' => 'Rechnung für Ferien im Palazzin<br>Rechnungs-N°',

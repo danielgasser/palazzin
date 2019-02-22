@@ -24,12 +24,19 @@ class NewReservationController extends Controller
     public function newReservation()
     {
         $args = $this->getReservationInfos();
+        $user = User::find(Auth::id());
+        $userRes = Reservation::where('user_id', '=', $user->id)
+            ->orderBy('reservation_started_at', 'desc')
+            ->get();
+
+        $reservations = Reservation::setFreeBeds($userRes, 'user_Res_Dates_', true, 'Y_m_d', false);
         return view('v3.new_reservation')
             ->with('rolesTrans', $args['rolesTrans'])
             ->with('roleTaxes', $args['roleTaxes'])
             ->with('guestEntryView', $args['guestEntryView'])
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
+            ->with('userRes', $reservations)
             ->with('userClan', $args['userClan'])
             ->with('periodsDatePicker', $args['periodsDatePicker']);
 
@@ -73,6 +80,7 @@ class NewReservationController extends Controller
             $ur->sum_total_hidden =  $ur->sum_total;
             $ur->editable = ($today < $resEnd);
         });
+        $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', false);
 
         return view('v3.edit_reservation')
             ->with('userRes', $res)
@@ -82,6 +90,7 @@ class NewReservationController extends Controller
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
             ->with('userClan', $args['userClan'])
+            ->with('my_reservations', json_encode($my_reservations, JSON_HEX_APOS))
             ->with('periodsDatePicker', $args['periodsDatePicker']);
     }
 
@@ -197,7 +206,7 @@ class NewReservationController extends Controller
         $start = new \DateTime($resStart[0]);
         $end = new \DateTime($resEnd[0]);
         $user = User::find(Auth::id());
-        $args['reservation_nights'] = ($start->diff($end)->format('%a') - 1 === 0) ? 1 : $start->diff($end)->format('%a') - 1;
+        $args['reservation_nights'] = ($start->diff($end)->format('%a') - 1 === 0) ? 1 : $start->diff($end)->format('%a');
         $args['reservation_reminder_sent'] = 0;
         $args['reservation_bill_sent'] = 0;
         $args['reservation_reminder_sent_at'] = '0000-00-00 00:00:00';
@@ -249,7 +258,7 @@ class NewReservationController extends Controller
             $saved = $res->push();
         }
         if ($saved) {
-            return redirect('all_reservations')
+            return back()
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
         }
     }

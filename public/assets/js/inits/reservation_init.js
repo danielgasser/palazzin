@@ -55,7 +55,10 @@ jQuery(document).ready(function () {
         otherHost = $('[class^="otherHost"]');
         if (otherHost.length === 0) {
             if ($(this).parent().parent().text().indexOf(window.langDialog.edit) > -1) {
-                $('#cross_reserv').show();
+                $('#cross_reserv').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
                 return false;
             }
             window.Reservation.showNewEditReservation(null);
@@ -95,7 +98,10 @@ jQuery(document).ready(function () {
         window.localStorage.removeItem('saveLocalStorage');
     });
     jQuery(document).on('click', '#deleteEditReserv', function () {
-        $('#delete_reservation').show();
+        $('#delete_reservation').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
     });
     jQuery(document).on('click', '#reset_storage, [href*="https://palazzin.ch/reservation"]', function (e) {
         e.preventDefault();

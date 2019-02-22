@@ -1,9 +1,22 @@
-<div id="delete_right_from_role" class="alert alert-danger alert-dismissible" style="display: none"><span
+<div id="delete_right_from_role" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title-warning">{!! trans('dialog.warning') !!}</h4>
+            </div>
+            <div class="modal-body">
+                <p><span
         id="rightToDelete" style="display: none"></span>
     <span>{{trans('dialog.texts.warning_delete_right_from_role', array('right_name' => trans('roles.' . $role->role_code)))}}</span>
-    <ul>
+                </p>
+                <ul>
         <li id="rightToDeleteText"></li>
-    </ul>
-    <button class="btn btn-default closeAlert">{!!trans('dialog.no')!!}</button>
-    <button id="confirmDeleteRight_{{$role->id}}" class="btn btn-primary">{!!trans('dialog.yes')!!}</button>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteRight_{{$role->id}}" class="btn btn-default btn-dialog-left">{!!trans('dialog.yes')!!}</button>
+                <button class="btn btn-default btn-dialog-right">{!!trans('dialog.no')!!}</button>
+            </div>
+        </div>
+    </div>
 </div>

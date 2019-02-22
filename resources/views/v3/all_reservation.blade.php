@@ -16,11 +16,10 @@
             <table id="table_all_reservations" class="table">
                 <thead>
                 <tr>
-                    <th scope="col" class="6" id="edit"></th>
+                    <th scope="col" class="0" id="edit"></th>
                     <th scope="col" class="1" id="arrival">{{trans('reservation.arrival_departure')}}</th>
-                    <th scope="col" class="3" id="total_nights">{{trans('reservation.guests.total_nights')}}</th>
-                    <th scope="col" class="4" id="total_all_bill">{{trans('bill.total_all_bill')}}</th>
-                    <th scope="col" class="5" id="reservation_guest_num">{{trans('validation.attributes.reservation_guest_num')}}</th>
+                    <th scope="col" class="3" id="total_nights">{{trans('reservation.guests.nights')}}</th>
+                    <th scope="col" class="4" id="total_all_bill">{{trans('bill.total_all')}}</th>
                     <th scope="col" class="6" id="guests"></th>
                 </tr>
                 </thead>
@@ -29,26 +28,22 @@
                     @php
                     $class = ($key % 2 === 0) ? 'even' : 'odd';
                     @endphp
-                <tr class="{{$class}}">
+                <tr class="{{$class}}" id="delete_table_all_reservations_{{$res->id}}">
                     <td>
                         @if($res->editable)
-                        <form style="display: inline-block" id="edit_table_all_reservations_{{$res->id}}" method="post" action="{{  route('edit_reservation', ['id' => $res->id])  }}">
-                            {{ csrf_field() }}
-                            <button title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_{{$res->id}}"><i class="fas fa-edit"></i></button>
-                        </form>
+                            <a style="width: 50px" title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_{{$res->id}}" href="{{  route('edit_reservation', ['id' => $res->id])  }}"><i class="fas fa-edit"></i></a>
                         <form style="display: inline-block" id="delete_table_all_reservations_{{$res->id}}" method="post" action="{{  route('delete_reservation', ['id' => $res->id])  }}">
                             {{ csrf_field() }}
-                            <button title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_{{$res->id}}"><i class="fas fa-trash"></i></button>
+                            <button style="width: 50px" title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_{{$res->id}}"><i class="fas fa-trash"></i></button>
                         </form>
                             @endif
                     </td>
                     <td>{{$res->reservation_started_at}}-{{$res->reservation_ended_at}}</td>
                     <td>{{$res->reservation_nights}}</td>
                     <td>{{$res->sum_total}}</td>
-                    <td>{{$res->sum_guest}}</td>
                     <td scope="col" class="6" id="guests">
                         @if(sizeof($res->guests) > 0)
-                            <b>{{trans('reservation.guests.title')}}</b>
+                            <b>{{$res->sum_guest}} {{trans('reservation.guests.title')}}</b>
                             <table id="guestTable">
                             <thead>
                                 <tr>
@@ -59,8 +54,8 @@
                                     <th>{{trans('reservation.guests.role')}}</th>
                                     <th>{{trans('reservation.guests.tax_night')}}</th>
                                     <th>{{trans('reservation.guests.total')}}</th>
-                                    <th>{{trans('reservation.guests.total_nights')}}</th>
-                                    <th>{{trans('bill.total_all_bill')}}</th>
+                                    <th>{{trans('reservation.guests.nights')}}</th>
+                                    <th>{{trans('bill.total_all')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,7 +84,6 @@
             </table>
     </div>
     @include('logged.dialog.delete_reservation')
-    @include('logged.dialog.deleted_reservation')
     @include('logged.dialog.no_delete_reservation')
     {{--
      @include('logged.dialog.guest_nan')
@@ -102,7 +96,6 @@
     @parent
     <script>
         document.addEventListener('scroll', function (event) {
-            console.log('scrolling', event.target, event);
             if (event.target.id === 'idOfUl') { // or any other filtering condition
             }
         }, true);

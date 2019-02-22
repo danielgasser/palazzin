@@ -31,8 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('all_reservations', 'NewReservationController@getUserReservations')->name('all_reservations');
     Route::post('save_reservation/{res_id?}', 'NewReservationController@saveReservation')->name('save_reservation');
     Route::post('delete_reservation', 'NewReservationController@deleteReservation')->name('delete_reservation');
-    Route::post('edit_reservation/{res_id}', 'NewReservationController@editReservation')->name('edit_reservation');
-    Route::post('check_existent', 'NewReservationController@checkExistentReservation')->name('check_existent');
+    Route::any('edit_reservation/{res_id}', 'NewReservationController@editReservation')->name('edit_reservation');
+    //Route::post('check_existent', 'NewReservationController@checkExistentReservation')->name('check_existent');
     Route::get('reservation/month/v3', ['uses' => 'NewReservationController@getReservationsPerDateV3']);
     Route::get('calendar', 'ReservationController@getReservations');
 

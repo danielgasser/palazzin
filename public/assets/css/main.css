@@ -6379,10 +6379,9 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 
 #res-nav {
   border-bottom: 1px solid #b7282e;
-  min-height: 60px;
-  float: left;
+  min-height: 63px;
   width: 100%; }
-  #res-nav #free_beds .fa-bed:after, #res-nav #free_beds .fa-clock:after, #res-nav #timeliner-container .fa-bed:after, #res-nav #timeliner-container .fa-clock:after {
+  #res-nav #free_beds .fa-clock:after, #res-nav #timeliner-container .fa-clock:after {
     content: "\f078";
     padding-left: 8px; }
   #res-nav #free_beds li a, #res-nav #timeliner-container li a {
@@ -6477,6 +6476,30 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
     border: none !important; }
     .alert button span {
       font-size: 1.5em; }
+
+.modal.in {
+  display: block; }
+
+[role="dialog"] .btn-dialog-left {
+  height: inherit !important;
+  float: left; }
+[role="dialog"] .btn-dialog-right {
+  height: inherit !important;
+  float: right; }
+[role="dialog"] .modal-title {
+  font-weight: bold;
+  color: #333;
+  text-align: center; }
+[role="dialog"] .modal-title-warning {
+  font-weight: bold;
+  color: #b7282e;
+  text-align: center; }
+[role="dialog"] .modal-title-info {
+  font-weight: bold;
+  color: #333;
+  text-align: center; }
+[role="dialog"] p {
+  font-size: 1.35em; }
 
 a:focus, a:active {
   outline: none;
@@ -6721,9 +6744,6 @@ table.tablesorter, table.tablesorter thead tr th {
 .modal {
   z-index: 10001; }
 
-.modal-footer-text {
-  float: left; }
-
 li.lang_active {
   background-color: #b7282e;
   color: #f7f7f7; }
@@ -6847,16 +6867,6 @@ div:not(.main-nav-container) > li.dropdown-toggle:hover > ul.dropdown-menu {
 .panel-info > .panel-heading {
   background-color: #b7282e;
   border-color: #b5282d; }
-
-.modal-title {
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center; }
-
-.modal-title-info {
-  font-weight: bold;
-  color: #000000;
-  text-align: center; }
 
 .popover {
   width: 96%;

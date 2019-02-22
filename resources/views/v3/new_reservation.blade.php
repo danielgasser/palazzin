@@ -18,35 +18,11 @@
 @section('content')
 
     <a name="top"></a>
-        <div id="reservationInfo" class="col-md-6 col-sm-4 col-xs-6"></div>
+        <div id="reservationInfo" class="col-md-12 col-sm-12 col-xs-12"></div>
+    </div>
         <form id="new_reservation" method="post" action="{{  route('save_reservation')  }}">
             {{ csrf_field() }}
             <input type="hidden" id="periodID" name="periodID" value="">
-            <div class="row">
-                <div class="col-md-1 col-sm-4 col-xs-4">
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
-                                id="save_reservation"><i class="fas fa-save"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-1 col-sm-4 col-xs-4">
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button title="{{trans('dialog.add_on_upper')}}"
-                                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest" disabled><i
-                                class="fas fa-plus"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-1 col-sm-4 col-xs-4">
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" disabled
-                                id="reset_reservation"><i class="fas fa-ban"></i></button>
-                    </div>
-                </div>
-
-            </div>
             <div class="row show_total_res arrow" id="show_res" style="display: block">
                 <div class="hide-guest" id="hide_all_res">
                     <span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{{trans('reservation.title_short')}}:
@@ -84,6 +60,21 @@
                     @include('logged.dialog.guest_entry', ['rolesTrans' => $rolesTrans])
                 @endfor
             </div>
+            <div class="row" id="resButtons">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
+                                id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" disabled
+                                id="reset_reservation"><i class="fas fa-ban"></i>{{trans('reservation.delete')}}</button>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
     @include('logged.dialog.reservation_exists')
@@ -104,7 +95,18 @@
 @section('scripts')
     @parent
     <script>
-        var guestsDates = $('[id^="guests_date"]'),
+        var superFilter = function (data, filter) {
+                let arr = [];
+                for (let i = 0; i < data.length; i++) {
+                    Object.keys(data[i]).filter(function(k) {
+                        if (k.indexOf(filter) === 0 && data[i][k] !== undefined) {
+                            arr[k] = data[i][k];
+                        }
+                    });
+                }
+                return arr;
+            },
+            guestsDates = $('[id^="guests_date"]'),
             startDate,
             rolesTaxes = {!! $roleTaxes !!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
@@ -128,15 +130,10 @@
             resEndPicker,
             startGuestPicker = [],
             endGuestPicker = [],
-            newAllGuestBeds = [];
-            for (let i = 0; i < reservationsPerPeriod.length; i++) {
-                Object.keys(reservationsPerPeriod[i]).filter(function(k) {
-                    if (k.indexOf('freeBeds') === 0 && reservationsPerPeriod[i][k] !== undefined) {
-                        newAllGuestBeds[k] = reservationsPerPeriod[i][k];
-                    }
-                });
-            }
-            console.log(reservationsPerPeriod, newAllGuestBeds)
+            reservations = JSON.parse('{!!$userRes!!}'),
+            newAllGuestBeds = superFilter(reservationsPerPeriod),
+            newUserRes = superFilter(reservations, 'user_Res_Dates_');
+            console.log(reservations, newUserRes)
     </script>
     <script>
         $(document).ready(function () {
@@ -146,10 +143,12 @@
                 //localStorage.setItem('new_res', '0');
                 let startDateString = '{{ old('reservation_started_at') }}'.split('.');
                 startDate = new Date(startDateString[2], (startDateString[1] - 1), startDateString[0], 0, 0, 0);
-                V3Reservation.initNew('{{ old('periodID') }}', true, startDate);
+                V3Reservation.initNew('{{ old('periodID') }}', startDate);
             } else {
-                V3Reservation.initNew(periodID, true, new Date());
+                V3Reservation.initNew(periodID, new Date());
             }
+            $('#reservation_guest_guests_0').attr('disabled', true);
+            $('#reservation_guest_num_0').attr('disabled', true);
         })
     </script>
     <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>

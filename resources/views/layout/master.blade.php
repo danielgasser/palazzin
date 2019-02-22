@@ -187,24 +187,41 @@ if (strlen($routeStr) === 0) {
     </div>
     @section('errors')
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">
-                    <span aria-hidden="true">&times</span>
-                    <span class="sr-only">Close</span>
-                </button>
-                <span>{{$errors->first()}}
-                </span>
+            <div class="modal fade in" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title-warning">{!! trans('dialog.warning') !!}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{{$errors->first()}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         @endif
             @if (Session::has('info_message'))
-             <div data-alert class="alert alert-success" role="alert">
-                 <button type="button" class="close" style="color: #B7282E" data-dismiss="alert">
-                     <span aria-hidden="true">&times</span>
-                     <span class="sr-only">Close</span>
-                 </button>
-                 <h3><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;{{Session::get('info_message')}}!</h3>
+             <div class="modal fade in" tabindex="-1" role="dialog">
+                 <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                             <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
+                         </div>
+                         <div class="modal-body">
+                             <p>{{Session::get('info_message')}}</p>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
+                         </div>
+                     </div>
+                 </div>
              </div>
-         @endif
+            @endif
     @show
     @section('navigation')
         @include('layout.nav')
@@ -321,6 +338,10 @@ if (strlen($routeStr) === 0) {
         jQuery(document).on('click', '.closeAlert', function () {
             $('.alert').hide();
         });
+        jQuery(document).on('click', '[aria-label="Close"]', function () {
+            $('.modal-dialog').modal('hide');
+            $('.modal').removeClass('in');
+        });
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();
         });
@@ -351,7 +372,7 @@ if (strlen($routeStr) === 0) {
                 $(this).toggleClass('dropdown-toggle-up');
             }
         });
-        jQuery(document).on('click', '#closeNav', function () {
+        jQuery(document).on('click', '#closeNav, .dropdown-toggle', function () {
             let nav = $('#all-nav');
             if (nav.hasClass('all-nav-hover')) {
                 nav.removeClass('all-nav-hover');
@@ -359,15 +380,17 @@ if (strlen($routeStr) === 0) {
                 nav.addClass('all-nav-hover');
             }
         });
-        jQuery(document).on('mouseenter', '#all-nav', function () {
-            let nav = $(this);
+             /*
+        jQuery(document).on('click', '#closeNav', function () {
+            let nav = $('#all-nav');
             nav.addClass('all-nav-hover');
-            $('.dropdown-menu').css({width: '222px'})
-        }).on('mouseleave', '#all-nav', function () {
-            let nav = $(this);
+            $('.dropdown-menu:not(.datepicker-orient-left)').css({width: '222px'})
+        }).on('click', '#closeNav', function () {
+            let nav = $('#all-nav');
             nav.removeClass('all-nav-hover');
-            $('.dropdown-menu').css({width: '55px'})
+            $('.dropdown-menu:not(.datepicker-orient-left)').css({width: '55px'})
         });
+     */
         jQuery(document).on('click', '#toggleFooterNav', function () {
             $('#bottom-nav').slideToggle(500);
         });

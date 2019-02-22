@@ -908,18 +908,18 @@ class Reservation extends Model {
         return $nightCounter;
     }
 
-    public static function setFreeBeds($reservations, $preFix = 'freeBeds_', $asJSON = false, $format = 'Y_m_d')
+    public static function setFreeBeds($reservations, $preFix = 'freeBeds_', $asJSON = false, $format = 'Y_m_d', $withResID = true)
     {
         $ar = [];
         $cu = new User();
-        $reservations->each(function ($r) use ($ar, $cu, $preFix, $format) {
+        $reservations->each(function ($r) use ($ar, $cu, $preFix, $format, $withResID) {
             if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
                 $cu = $cu->where('id', '=', $r->user_id_ab)->first();
                 $r->user_id_ab_name = $cu->user_login_name;
             } else {
                 $r->user_id_ab_name = '';
             }
-            $r->guests->each(function  ($j) use ($r, $preFix, $format) {
+            $r->guests->each(function  ($j) use ($r, $preFix, $format, $withResID) {
                 $role_tax = Role::find($j->role_id);
                 $j->role_tax_night = $role_tax->role_tax_night;
                 $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
@@ -934,10 +934,14 @@ class Reservation extends Model {
                     $d[1] = ($dd < 10) ? '0' . $dd : $dd;
                     if ($date < $checkEnd) {
                         $r->{$preFix . implode('_', $d)} += $j->guest_number;
-                        $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
+                        if ($withResID && Auth::id() == $r->user_id) {
+                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
+                        }
                     } else {
                         $r->{$preFix . implode('_', $d)} += 0;
-                        $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
+                        if ($withResID && Auth::id() == $r->user_id) {
+                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
+                        }
                     }
                 }
             });

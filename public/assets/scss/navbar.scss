@@ -220,11 +220,10 @@ ul {
 }
 #res-nav {
     border-bottom: 1px solid $brand-danger;
-    min-height: 60px;
-    float: left;
+    min-height: 63px;
     width: 100%;
     #free_beds, #timeliner-container {
-        .fa-bed:after, .fa-clock:after {
+        .fa-clock:after {
             content: "\f078";
             padding-left: 8px;
         }

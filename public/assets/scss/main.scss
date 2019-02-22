@@ -56,6 +56,37 @@
         }
     }
 }
+.modal.in {
+    display: block;
+}
+[role="dialog"] {
+    .btn-dialog-left {
+        height: inherit !important;
+        float: left;
+    }
+    .btn-dialog-right {
+        height: inherit !important;
+        float: right;
+    }
+    .modal-title {
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+    .modal-title-warning {
+        font-weight: bold;
+        color: $brand-danger;
+        text-align: center;
+    }
+    .modal-title-info {
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+    p {
+        font-size: 1.35em;
+    }
+}
 a {
   &:focus, &:active {
     outline: none;
@@ -366,10 +397,6 @@ table.tablesorter, table.tablesorter thead tr th {
   z-index: 10001;
 }
 
-.modal-footer-text {
-  float: left;
-}
-
 li.lang_active {
   background-color: $brand-primary;
   color: #f7f7f7;
@@ -534,18 +561,6 @@ div:not(.main-nav-container) > li.dropdown-toggle:hover > ul.dropdown-menu {
 .panel-info > .panel-heading {
   background-color: $brand-info;
   border-color: darken($brand-info, 0.5);
-}
-
-.modal-title {
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-}
-
-.modal-title-info {
-  font-weight: bold;
-  color: #000000;
-  text-align: center;
 }
 
 .popover {
