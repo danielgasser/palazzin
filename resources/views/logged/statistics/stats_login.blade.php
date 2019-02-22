@@ -69,7 +69,7 @@
                 if (checkedYear.length === 0) {
                     $('[name^="year"]').trigger('change');
                 }
-                window.getStatsData('/admin/stats_login', checkedYear, window.fillTable);
+                window.getStatsData('/stats_login', checkedYear, window.fillTable);
             });
         </script>
     @stop

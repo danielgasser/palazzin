@@ -2,7 +2,6 @@
 @section('content')
         <div class="col-sm-4 col-md-4 col-xs-12"></div>
         <div class="col-sm-4 col-md-4 col-xs-12 welcome-nav">
-                <a href="{{URL::to('news')}}">{{trans('navigation.latest')}}</a>
                 @if(!Auth::check())
                 <a href="{{URL::to('login')}}">{{trans('navigation.login')}}</a>
                 @endif

@@ -255,7 +255,8 @@ if (strlen($routeStr) === 0) {
         @endif
 
 <div id="noview">
-    <div class="row">
+    <div class="row topRow">
+        <div class="col-md-6 col-sm-6 col-xs-12">
         @switch($route)
             @case ('/')
                 <h1>{{trans('home.welcome', ['back' => '', 'name' => ''])}}</h1>
@@ -264,7 +265,7 @@ if (strlen($routeStr) === 0) {
                 <h1>{{trans('home.welcome', array('back' => (User::find(Auth::id())->user_new == 0) ? 'zurück, ' : '',
 'name' => User::find(Auth::id())->user_first_name))}}</h1>
             @break
-            @case (strpos('stats', $route) !== false)
+            @case (strpos($route, 'stats') !== false)
                 <div id="menu_stats">
                     <h1>{{trans('admin.stats_chron.title')}} <span id="stats_title"></span></h1>
                     {{-- @include('layout.stats_menu')--}}
@@ -275,13 +276,13 @@ if (strlen($routeStr) === 0) {
             @break
             @case(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
             <div id="res-nav">
-                <div class="col-md-10 col-sm-8 col-xs-12 title-res">
+                <div class="col-md-6 col-sm-6 col-xs-12 title-res">
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
-                <div class="col-md-1 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.timeliner')
                 </div>
-                <div class="col-md-1 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
                 </div>
             </div>
@@ -291,7 +292,12 @@ if (strlen($routeStr) === 0) {
                 <h1>{{trans('navigation.' . $routeStr)}}</h1>
             @break
         @endswitch
-
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            @include('layout.top_nav')
+        </div>
+    </div>
+    <div class="row">
         @yield('content')
         </div>
     </div>
@@ -345,21 +351,18 @@ if (strlen($routeStr) === 0) {
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();
         });
-        jQuery(document).on('mouseout', '#all-nav', function () {
-            if (!$(this).is(':hover')) {
-                $(this).find('li.open').removeClass('open');
-                $(this).removeClass('dropdown-toggle-down');
-                $(this).removeClass('dropdown-toggle-up');
-                $(this).find('li.dropdown-toggle').children('a').css({
-                    'background-color': 'inherit',
-                    color: '#f7f7f7'
-                })
-            }
-        });
-        jQuery(document).on('click', '.dropdown-toggle', function (e) {
-            let classes = e.target.classList;
+        jQuery(document).on('click', 'a.dropdown-toggle', function (e) {
+            let classes = e.target.classList,
+                nav = $('#all-nav');
             if (!classes.contains('hide-footer-nav-text')) {
                 $(this).toggleClass('dropdown-toggle-down');
+                if (nav.hasClass('all-nav-hover') && !$(this).hasClass('topNav')) {
+                    nav.removeClass('all-nav-hover');
+                    return false;
+                }
+            }
+            if (!nav.hasClass('all-nav-hover') && !$(this).hasClass('topNav')) {
+                nav.addClass('all-nav-hover');
             }
         });
         jQuery(document).on('click', '.dropdownToggleUp', function (e) {
@@ -372,7 +375,7 @@ if (strlen($routeStr) === 0) {
                 $(this).toggleClass('dropdown-toggle-up');
             }
         });
-        jQuery(document).on('click', '#closeNav, .dropdown-toggle', function () {
+        jQuery(document).on('click', '#closeNav', function () {
             let nav = $('#all-nav');
             if (nav.hasClass('all-nav-hover')) {
                 nav.removeClass('all-nav-hover');
@@ -380,17 +383,6 @@ if (strlen($routeStr) === 0) {
                 nav.addClass('all-nav-hover');
             }
         });
-             /*
-        jQuery(document).on('click', '#closeNav', function () {
-            let nav = $('#all-nav');
-            nav.addClass('all-nav-hover');
-            $('.dropdown-menu:not(.datepicker-orient-left)').css({width: '222px'})
-        }).on('click', '#closeNav', function () {
-            let nav = $('#all-nav');
-            nav.removeClass('all-nav-hover');
-            $('.dropdown-menu:not(.datepicker-orient-left)').css({width: '55px'})
-        });
-     */
         jQuery(document).on('click', '#toggleFooterNav', function () {
             $('#bottom-nav').slideToggle(500);
         });

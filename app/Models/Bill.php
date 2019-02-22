@@ -6,7 +6,6 @@
  * Time: 14:53
  */
 use Illuminate\Database\Eloquent\Model;
-use Auth;
 use Illuminate\Support\Facades\DB;
 
 class Bill extends Model {

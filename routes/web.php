@@ -13,9 +13,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('news', function () {
-    return view('news');
-});
 Route::get('help/{topic?}', 'HelpController@showHelp');
 Auth::routes();
 
@@ -38,12 +35,21 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('userlist_search', 'UserController@searchUsers');
     Route::get('userlist', 'UserController@showUsers');
+    Route::get('pricelist', 'RoleController@getPriceList');
     // v3
 
     // stats
-    // ToDo change all stats route away from admin
-    Route::get('admin/stats_calendar', 'StatsController@showStatsReservationsCalendar');
-
+    Route::get('stats_calendar', 'StatsController@showStatsReservationsCalendar');
+    Route::get('stats', 'StatsController@showStatsMenu');
+    Route::get('stats_bill', 'StatsController@showStatsBills');
+    Route::get('stats_login', 'StatsController@showStatsLogin');
+    Route::post('stats_print', 'StatsController@printStats');
+    Route::get('stats_bill_total', 'StatsController@showStatsBillsTotal');
+    Route::get('stats_bill_total_year', 'StatsController@showStatsBillsTotalPerYear');
+    Route::get('stats_chron', 'StatsController@showStatsReservations');
+    Route::get('stats_chron_family_night_total', 'StatsController@showStatsNightsTotal');
+    Route::get('stats_calendar_month', 'StatsController@showStatsReservationsCalendarPerMonth');
+    Route::get('stats_calendar_total_day', 'StatsController@showStatsReservationsCalendarTotalPerDay');
     //ToDo keeper reservations
     // Admin
     Route::group(['middleware' => 'admin'], function () {

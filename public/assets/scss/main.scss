@@ -34,6 +34,22 @@
 }
 #noview {
     margin-left: 2em;
+    .topRow {
+        border-bottom: 1px solid #b7282e;
+        h1 {
+            border-bottom: none;
+        }
+    }
+}
+#pricelist {
+    margin-top: 22px;
+    thead, tbody {
+        tr {
+            th, td {
+                border: 1px solid $brand-danger;
+            }
+        }
+    }
 }
 .alert {
     form {

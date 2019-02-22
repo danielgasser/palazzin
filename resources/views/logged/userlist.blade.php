@@ -265,7 +265,8 @@
                     sLengthMenu: '{{trans('pagination.length_menu')}}'
                 },
                 fnDrawCallback: function () {
-                }
+                },
+                lengthChange: false
             };
         </script>
     <script src="{{asset('assets/js/inits/search_user_tables_init.js')}}"></script>

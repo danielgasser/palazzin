@@ -15,7 +15,7 @@
 </div>    @section('scripts')
         @parent
         <script>
-            var settings = {{App::make('GlobalSettings')->getSettings()}},
+            var settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                     checkedYear = [],
                     yearColorsSet = {!!json_encode($yearColors)!!},
@@ -35,11 +35,13 @@
         <script>
             $(document).ready(function(){
                 'use strict';
+                /*
                 $("[name^='year']").bootstrapToggle({
                     onColor: 'retroorange',
                     on: 'An',
                     off: 'Aus'
                 });
+                */
                 $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
@@ -56,7 +58,7 @@
                 if (checkedYear.length === 0) {
                     $('[name^="year"]').trigger('change');
                 }
-                window.getStatsData('/admin/stats_chron', checkedYear, window.fillTable);
+                window.getStatsData('/stats_chron', checkedYear, window.fillTable);
             });
         </script>
     @stop

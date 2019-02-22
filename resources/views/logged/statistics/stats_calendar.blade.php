@@ -97,10 +97,12 @@
                 for (var i = 1; i < 32; i += 1) {
                     monthDays.push(i);
                 }
+                /*
                 $("[name^='year']").bootstrapToggle({
                     on: 'An',
                     off: 'Aus'
                 });
+                */
                 $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     showYear = [];
@@ -121,7 +123,7 @@
                 if (checkedYear.length === 0) {
                     $('[name^="year"]').trigger('change');
                 }
-                window.getStatsData('/admin/stats_calendar_total_day', checkedYear, window.fillTable);
+                window.getStatsData('/stats_calendar_total_day', checkedYear, window.fillTable);
             });
             $(document).on('click', '#bla', function () {
                 window.console.log();

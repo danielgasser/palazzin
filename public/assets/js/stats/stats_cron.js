@@ -36,21 +36,13 @@ var distinctArray = function (arr) {
         success: function (d) {
             t_nights = d[1];
             nf_sum = d[0];
-            fillFamilyCakeStats(nf_sum, yy, 'chart_div_three', t_nights, 'Übernachtungen pro Halbstamm ', 'pie_nights_');
-        }
-    });
-    $.ajax({
-        type: 'GET',
-        url: further_url + 'stats_chron_guest_night_total',
-        data: {
-            year: years
-        },
-        success: function (d) {
-            $.each(years, function (i, y) {
+            $.each(the_years, function (i, y) {
                 year = window.parseInt(y, 10);
-                p = Object.getOwnPropertyNames(d[2][year])[0];
-                d[0][year][p] = d[2][year][p];
-                g_nights[year] = d[1][year] + d[2][year][p];
+                p = Object.getOwnPropertyNames(d[0][year])[0];
+                d[1][year] = {
+                    [p]: d[0][year][p]
+                };
+                g_nights[year] = d[0][year][p] + d[1][year][p];
                 props.push(Object.getOwnPropertyNames(d[0][year]));
             });
             $.each(props, function (i, p) {
@@ -63,7 +55,6 @@ var distinctArray = function (arr) {
             fillFamilyCakeStats(g_sum_nights, yy, 'chart_div_four', g_nights, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', clean_props);
         }
     });
-
         $('#datatable').html('');
     $('#datatable').append('<thead><tr><th><h6>Monat</h6></th><th><h6>Name/Vorname</h6></th><th><h6>Stamm</h6></th><th><h6>Halb-Stamm</h6></th><th><h6>Ankunft</h6></th><th><h6>Abreise</h6></th><th><h6>Nächte</h6></th><th><h6>Rechnungs<br>betrag</h6></th><th><h6>Gäste</h6></th></tr></thead>');
     for (i = 0; i < years.length; i += 1) {

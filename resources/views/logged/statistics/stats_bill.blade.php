@@ -44,10 +44,12 @@
     <script>
         $(document).ready(function () {
             'use strict';
+            /*
             $("[name^='year']").bootstrapToggle({
                 on: 'An',
                 off: 'Aus'
             });
+            */
             $('[name^="year"]').on('change', function (event, state) {
                 checkedYear = [];
                 showYear = [];
@@ -66,7 +68,7 @@
                 if (checkedYear.length === 0) {
                     $('[name^="year"]').trigger('change');
                 }
-                window.getStatsData('/admin/stats_bill_total_year', checkedYear, window.fillTable);
+                window.getStatsData('/stats_bill_total_year', checkedYear, window.fillTable);
             });
         })
     </script>

@@ -50,7 +50,7 @@ $(document).on('click', '#asPDF', function () {
     file_name = file_name.replace(/[^a-zA-Z0-9_]/gi, '');
     $.ajax({
         type: 'POST',
-        url: '/admin/stats_print',
+        url: '/stats_print',
         data: {
             html: $('#mPDF_Print').html(),
             filename: file_name,

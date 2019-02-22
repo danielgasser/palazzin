@@ -427,7 +427,9 @@ class Reservation extends Model {
         $reservation->totals = array();
         $reservation->years = array();
         $reservation->year_totals = array();
-        $reservation->each(function($r) use($reservation){
+        $reservation->year_total = array();
+        $reservation->totals_reservator = array();
+        $reservation->each(function($r) use($reservation, $year){
             $startDate = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
             $endDate = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
             $interval = DateInterval::createFromDateString('1 day');
@@ -446,24 +448,6 @@ class Reservation extends Model {
                         $reservation->year_total[$index] =  $r->guest_number_total;
                     }
                 }
-            }
-        });
-        return array($reservation->totals, $reservation->year_total);
-    }
-
-    public function getReservationsStatsPerGuestNightsTotal($year = array('2015-%'))
-    {
-        $reservation = $this->getReservationsStatsCalendar($year);
-        $reservation_totals = $this->getReservationsStatsPerFamilyNightsTotal($year);
-        $reservation->year_totals = array();
-        $reservation->totals_reservator = array();
-        $reservation->each(function($r) use($reservation, $reservation_totals){
-            $startDate = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
-            $endDate = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
-            $interval = DateInterval::createFromDateString('1 day');
-            $period = new DatePeriod($startDate, $interval, $endDate);
-            foreach($period as $p){
-                $index = $p->format('Y');
                 foreach($r->guest as $g){
                     $role = Role::where('id', $g->role_id)->select('role_description')->first();
                     if(isset($reservation->totals[$index][$role->role_description])) {
@@ -477,14 +461,15 @@ class Reservation extends Model {
                         $reservation->year_totals[$index] =  $g->guest_number;
                     }
                     if(isset($reservation->totals_reservator[$index]['Reservierender Benutzer'])){
-                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = $reservation_totals[1][$index] - $reservation->year_totals[$index];
+                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = end($reservation->totals[$index]) - $reservation->year_totals[$index];
                     }else{
-                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = $reservation_totals[1][$index] - $reservation->year_totals[$index];
+                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = end($reservation->totals[$index]) - $reservation->year_totals[$index];
                     }
                 }
+
             }
         });
-        return array($reservation->totals, $reservation->year_totals, $reservation->totals_reservator);
+        return array($reservation->totals, $reservation->year_total);
     }
 
     public function getReservationsStatsPerMonthTotal($year = array('2015-%'))

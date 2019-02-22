@@ -6244,9 +6244,8 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   transition: width 1s linear;
   background-color: #333;
   position: absolute;
-  width: 55px;
   min-width: 55px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid black;
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
@@ -6264,7 +6263,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 .dropdown-toggle-up i:after {
   content: "\f077" !important; }
 
-.dropdown-toggle-down i:after {
+.dropdown-toggle-down:not(.topNav) i:after {
   content: "\f078" !important; }
 
 .nav-clan {
@@ -6275,7 +6274,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 
 .navbar-default {
   font-weight: bold; }
-  .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
     background-color: #b7282e !important;
     color: white !important; }
   .navbar-default .navbar-nav {
@@ -6369,16 +6368,19 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   transition: width 1s linear;
   background: transparent; }
 
-#bottom-nav {
-  display: none; }
-  #bottom-nav li a {
-    padding-left: 12px; }
+#bottom-nav li a {
+  padding-left: 12px; }
+#bottom-nav li ul {
+  left: -5.1em;
+  border: 1px solid #b7282e; }
 
 #bottom-user-nav li a {
   padding-left: 12px; }
+#bottom-user-nav li ul {
+  left: -7.5em;
+  border: 1px solid #b7282e; }
 
 #res-nav {
-  border-bottom: 1px solid #b7282e;
   min-height: 63px;
   width: 100%; }
   #res-nav #free_beds .fa-clock:after, #res-nav #timeliner-container .fa-clock:after {
@@ -6392,10 +6394,10 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   height: 100%;
   opacity: 0.75;
   transition: width 1s; }
-  #all-nav #main-nav .fa-cog:after, #all-nav #main-nav .fa-user:after, #all-nav #main-nav .fa-wrench:after, #all-nav #bottom-nav .fa-cog:after, #all-nav #bottom-nav .fa-user:after, #all-nav #bottom-nav .fa-wrench:after, #all-nav #bottom-bottom-nav .fa-cog:after, #all-nav #bottom-bottom-nav .fa-user:after, #all-nav #bottom-bottom-nav .fa-wrench:after, #all-nav #hide-footer-nav .fa-cog:after, #all-nav #hide-footer-nav .fa-user:after, #all-nav #hide-footer-nav .fa-wrench:after, #all-nav #bottom-user-nav .fa-cog:after, #all-nav #bottom-user-nav .fa-user:after, #all-nav #bottom-user-nav .fa-wrench:after {
+  #all-nav #main-nav .fa-cog:after, #all-nav #main-nav .fa-user:after, #all-nav #main-nav .fa-wrench:after, #all-nav #bottom-nav .fa-cog:after, #all-nav #bottom-nav .fa-user:after, #all-nav #bottom-nav .fa-wrench:after, #all-nav #bottom-bottom-nav .fa-cog:after, #all-nav #bottom-bottom-nav .fa-user:after, #all-nav #bottom-bottom-nav .fa-wrench:after, #all-nav #hide-top-nav .fa-cog:after, #all-nav #hide-top-nav .fa-user:after, #all-nav #hide-top-nav .fa-wrench:after, #all-nav #bottom-user-nav .fa-cog:after, #all-nav #bottom-user-nav .fa-user:after, #all-nav #bottom-user-nav .fa-wrench:after {
     content: "\f077";
     padding-left: 8px; }
-  #all-nav #main-nav .fa-thermometer-half:after, #all-nav #bottom-nav .fa-thermometer-half:after, #all-nav #bottom-bottom-nav .fa-thermometer-half:after, #all-nav #hide-footer-nav .fa-thermometer-half:after, #all-nav #bottom-user-nav .fa-thermometer-half:after {
+  #all-nav #main-nav .fa-thermometer-half:after, #all-nav #bottom-nav .fa-thermometer-half:after, #all-nav #bottom-bottom-nav .fa-thermometer-half:after, #all-nav #hide-top-nav .fa-thermometer-half:after, #all-nav #bottom-user-nav .fa-thermometer-half:after {
     content: "\f078";
     padding-left: 8px; }
   #all-nav #main-nav-container {
@@ -6410,6 +6412,22 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 #closeNav:active, #closeNav:focus, #closeNav:focus-within {
   background-color: transparent !important; }
 
+#hide-top-nav {
+  background: #ffffff; }
+
+#topNav ul {
+  background: #ffffff;
+  margin-right: 0 !important; }
+  #topNav ul li a {
+    color: #333; }
+    #topNav ul li a:hover, #topNav ul li a:focus, #topNav ul li a:active {
+      background-color: #b7282e !important; }
+#topNav ul:not(.dropdown-menu) {
+  float: right !important; }
+#topNav ul.dropdown-menu {
+  position: absolute;
+  width: 174px; }
+
 .all-nav-hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-user-select: none;
@@ -6422,7 +6440,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   .all-nav-hover #closeNav:before {
     content: "\f060";
     font-weight: 900; }
-  .all-nav-hover #top-nav li a .hideContent, .all-nav-hover #main-nav li a .hideContent, .all-nav-hover #bottom-nav li a .hideContent, .all-nav-hover #bottom-bottom-nav li a .hideContent, .all-nav-hover #hide-footer-nav li a .hideContent, .all-nav-hover #bottom-user-nav li a .hideContent {
+  .all-nav-hover #top-nav li a .hideContent, .all-nav-hover #main-nav li a .hideContent, .all-nav-hover #bottom-nav li a .hideContent, .all-nav-hover #bottom-bottom-nav li a .hideContent, .all-nav-hover #hide-top-nav li a .hideContent, .all-nav-hover #bottom-user-nav li a .hideContent {
     top: 18px;
     left: 52px;
     visibility: visible;
@@ -6458,6 +6476,15 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 
 #noview {
   margin-left: 2em; }
+  #noview .topRow {
+    border-bottom: 1px solid #b7282e; }
+    #noview .topRow h1 {
+      border-bottom: none; }
+
+#pricelist {
+  margin-top: 22px; }
+  #pricelist thead tr th, #pricelist thead tr td, #pricelist tbody tr th, #pricelist tbody tr td {
+    border: 1px solid #b7282e; }
 
 .alert {
   position: fixed;
@@ -6564,7 +6591,7 @@ table.tablesorter, table.tablesorter thead tr th {
 
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #484848;
+  background-color: #aeaeae;
   color: #333; }
 
 .table-striped > tbody > tr:nth-child(even) > td,

@@ -52,9 +52,8 @@ ul {
             transition: width 1s linear;
             background-color: #333;
             position: absolute;
-            width: 55px;
             min-width: 55px;
-            border: 1px solid rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 1);
             border-radius: 4px;
             -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -80,7 +79,7 @@ ul {
         content: "\f077" !important;
     }
 }
-.dropdown-toggle-down {
+.dropdown-toggle-down:not(.topNav) {
     i:after {
         content: "\f078" !important;
     }
@@ -95,7 +94,7 @@ ul {
 
 .navbar-default {
   font-weight: bold;
-  .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus {
+  .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus, .navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
     background-color: $color-h1 !important;
     color: white !important;
   }
@@ -204,10 +203,13 @@ ul {
     background: transparent;
 }
 #bottom-nav {
-    display: none;
     li {
         a {
             padding-left: 12px;
+        }
+        ul {
+            left: -5.1em;
+            border: 1px solid $brand-danger;
         }
     }
 }
@@ -216,10 +218,13 @@ ul {
       a {
           padding-left: 12px;
       }
+      ul {
+          left: -7.5em;
+          border: 1px solid $brand-danger;
+      }
   }
 }
 #res-nav {
-    border-bottom: 1px solid $brand-danger;
     min-height: 63px;
     width: 100%;
     #free_beds, #timeliner-container {
@@ -239,7 +244,7 @@ ul {
     height: 100%;
     opacity: 0.75;
     transition: width 1s;
-    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav, #bottom-user-nav {
+    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav, #bottom-user-nav {
         .fa-cog:after , .fa-user:after, .fa-wrench:after {
             content: "\f077";
             padding-left: 8px;
@@ -265,7 +270,29 @@ ul {
         background-color: transparent !important;
     }
 }
-#toggleFooterNav {
+#hide-top-nav {
+    background: #ffffff;
+}
+#topNav {
+    ul {
+        background: #ffffff;
+        margin-right: 0 !important;
+        li {
+            a {
+                color: #333;
+                &:hover, &:focus, &:active {
+                    background-color: $brand-danger !important;
+                }
+            }
+        }
+    }
+    ul:not(.dropdown-menu) {
+        float: right !important;
+    }
+    ul.dropdown-menu {
+        position: absolute;
+        width: 174px;
+    }
 }
 .all-nav-hover {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -281,7 +308,7 @@ ul {
         content: "\f060";
         font-weight: 900;
     }
-    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-footer-nav, #bottom-user-nav {
+    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav, #bottom-user-nav {
         li {
             a {
                 .hideContent {
