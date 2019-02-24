@@ -1,12 +1,5 @@
 @extends('layout.master')
 @section('content')
-    <div id="menu_stats">
-        <h1>{{trans('admin.stats_login.title')}} <span id="stats_title"></span></h1>
-        {{-- @include('layout.stats_menu')--}}
-        <div id="stats_select_menu">
-            @include('layout.stats_select')
-        </div>
-    </div>
 <div id="chart_div" style="min-width: 310px; height: 400px; margin: 0 auto;">
 </div>
     <div id="mPDF_Print">
@@ -24,10 +17,10 @@
 @section('scripts')
         @parent
         <script>
-            var settings = {{App::make('GlobalSettings')->getSettings()}},
-                    langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
+            var langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 checkedYear = [],
                 yearColorsSet = {!!json_encode($yearColors)!!},
+                yearColors = {},
                 showYear = [],
                     route = '{{Request::url()}}',
                     langDialog = {!!json_encode(Lang::get('dialog'))!!};
@@ -48,21 +41,18 @@
         <script>
             $(document).ready(function(){
                 'use strict';
-                $("[name^='year']").bootstrapSwitch({
-                    onColor: 'retroorange',
-                    onText: 'An',
-                    offText: 'Aus'
-                });
                 $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
+                    showYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
                         if ($(n).is(':checked')) {
                             checkedYear.push(n.value + '-%');
+                            showYear.push(n.value);
                         }
+                        yearColors[n.value] = yearColorsSet[i];
                     });
                     checkedYear.sort();
                     showYear.sort();
-                    $('#asPDF').hide();
                 })
             })
             $(document).on('click', '#getYears', function () {

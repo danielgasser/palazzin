@@ -16,46 +16,42 @@ var distinctArray = function (arr) {
         yy = [],
         fam_sum = (family_sum !== undefined) ? family_sum : null,
         g_sum = (guest_sum !== undefined) ? guest_sum : null,
-        t_nights = null,
-        nf_sum = null,
-        g_nights = {},
-        g_sum_nights = null,
+        total_nights = null,
+        total_family = null,
+        family_props = null,
+        total_nights_guest = {},
+        total_guests = null,
         year,
         the_years = years,
         p,
         props = [],
-        clean_props = [],
+        guest_props = [],
         last = window.route.substr(window.route.lastIndexOf('/') + 1),
         further_url = window.route.replace(last, '');
     $.ajax({
         type: 'GET',
-        url: further_url + 'stats_chron_family_night_total',
+        url: further_url + 'stats_chron_guest_night_total',
         data: {
             year: the_years
         },
         success: function (d) {
-            t_nights = d[1];
-            nf_sum = d[0];
-            $.each(the_years, function (i, y) {
-                year = window.parseInt(y, 10);
-                p = Object.getOwnPropertyNames(d[0][year])[0];
-                d[1][year] = {
-                    [p]: d[0][year][p]
-                };
-                g_nights[year] = d[0][year][p] + d[1][year][p];
-                props.push(Object.getOwnPropertyNames(d[0][year]));
-            });
-            $.each(props, function (i, p) {
-                $.each(p, function (j, pp) {
-                    clean_props.push(pp);
-                })
-            });
-            clean_props = distinctArray(clean_props);
-            g_sum_nights = d[0];
-            fillFamilyCakeStats(g_sum_nights, yy, 'chart_div_four', g_nights, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', clean_props);
+            total_nights = d.total_family[1];
+            total_family = d.total_family[0];
+            family_props =  d.total_family[2];
+            guest_props = d.guest_props;
+            total_guests = d.total_guests;
+            total_nights_guest = d.total_year_guests;
+            fillFamilyCakeStats(total_family, yy, 'chart_div_three', total_nights, 'Übernachtungen pro Halbstamm ', 'pie_nights_', family_props);
+            if (total_family !== null) {
+                fillBarStats(fam_sum, g_sum, yy, 'chart_div');
+            }
+            if (total_guests !== null) {
+                fillBarStats(g_sum, g_sum, yy, 'chart_div_two', guest_props);
+            }
+            fillFamilyCakeStats(total_guests, yy, 'chart_div_four', total_nights_guest, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', guest_props);
         }
     });
-        $('#datatable').html('');
+    $('#datatable').html('');
     $('#datatable').append('<thead><tr><th><h6>Monat</h6></th><th><h6>Name/Vorname</h6></th><th><h6>Stamm</h6></th><th><h6>Halb-Stamm</h6></th><th><h6>Ankunft</h6></th><th><h6>Abreise</h6></th><th><h6>Nächte</h6></th><th><h6>Rechnungs<br>betrag</h6></th><th><h6>Gäste</h6></th></tr></thead>');
     for (i = 0; i < years.length; i += 1) {
         y = window.parseInt(years[i], 10);
@@ -115,22 +111,6 @@ var distinctArray = function (arr) {
         htmlString += '</tr>';
         $('#cron_year_' + n.reservation_started_at_year).append(htmlString);
     });
-    if (fam_sum !== null) {
-        fillBarStats(fam_sum, g_sum, yy, 'chart_div');
-    }
-    if (g_sum !== null) {
-        $.each(years, function (i, y) {
-            year = window.parseInt(y, 10);
-            props.push(Object.getOwnPropertyNames(g_sum[year]));
-        });
-        $.each(props, function (i, p) {
-            $.each(p, function (j, pp) {
-                clean_props.push(pp);
-            })
-        });
-        clean_props = $.unique(clean_props);
-        fillBarStats(g_sum, g_sum, yy, 'chart_div_two', clean_props);
-    }
 },
     fillFamilyCakeStats = function (nights, yearLabel, el, t_nights, title, pie, props) {
         var options;

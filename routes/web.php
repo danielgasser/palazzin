@@ -48,8 +48,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('stats_bill_total_year', 'StatsController@showStatsBillsTotalPerYear');
     Route::get('stats_chron', 'StatsController@showStatsReservations');
     Route::get('stats_chron_family_night_total', 'StatsController@showStatsNightsTotal');
+    Route::get('stats_chron_guest_night_total', 'StatsController@showStatsNightsTotalGuests');
     Route::get('stats_calendar_month', 'StatsController@showStatsReservationsCalendarPerMonth');
     Route::get('stats_calendar_total_day', 'StatsController@showStatsReservationsCalendarTotalPerDay');
+    Route::get('stats_list', 'StatsController@showStatsPrint');
     //ToDo keeper reservations
     // Admin
     Route::group(['middleware' => 'admin'], function () {
@@ -60,6 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('admin/users/delete/{id}', 'AdminController@deleteUser');
         Route::get('admin/reservations/search', ['uses' => 'NewReservationController@AdminSearchAllReservations']);
         Route::get('admin/reservations', ['uses' => 'NewReservationController@AdminGetAllReservations']);
+
+        //bills
+        Route::get('admin/bills', 'BillController@showBills');
+        Route::get('admin/bill_list_print', 'BillController@showBillsPrint');
+        Route::get('admin/bills/paid', 'BillController@payBill');
+        Route::get('admin/bills/unpaid', 'BillController@unPayBill');
+        Route::get('admin/bills/generate', 'BillController@generateBills');
     });
 
 });

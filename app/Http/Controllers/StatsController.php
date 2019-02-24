@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Bill;
 use LoginStat;
+use Mpdf\Mpdf;
 use Reservation;
 use Illuminate\Support\Facades\Input;
 use Response;
@@ -14,7 +15,7 @@ class StatsController extends Controller
 
     public function showStatsMenu()
     {
-        return view('logged.admin.stats_menu');
+        return view('logged.statistics.stats_menu');
     }
 
     public function showStatsReservationsCalendarPerMonth()
@@ -25,7 +26,7 @@ class StatsController extends Controller
             return Response::json($res);
         }
 
-        return view('logged.admin.stats_calendar')
+        return view('logged.statistics.stats_calendar')
             ->with('allReservations', $res);
     }
 
@@ -37,8 +38,21 @@ class StatsController extends Controller
             return Response::json($res);
         }
 
-        return view('logged.admin.stats_calendar')
+        return view('logged.statistics.stats_calendar')
             ->with('allReservations', $res);
+    }
+
+    public function showStatsNightsTotalGuests()
+    {
+        $reservation = new Reservation();
+        $res = $reservation->getReservationsStatsPerGuestNightsTotal(Input::get('year'));
+        if(Request::ajax()) {
+            return Response::json($res);
+        }
+
+        return View::make('logged.statistics.stats_calendar')
+            ->with('allReservations', $res);
+
     }
 
     public function showStatsReservationsCalendarTotalPerDay()
@@ -49,7 +63,7 @@ class StatsController extends Controller
             return Response::json($res);
         }
 
-        return view('logged.admin.stats_calendar')
+        return view('logged.statistics.stats_calendar')
             ->with('allReservations', $res);
     }
 
@@ -185,13 +199,14 @@ class StatsController extends Controller
         $stylesheet = file_get_contents(public_path() . '/assets/css/stats.css');
         $stylesheet .= file_get_contents(public_path() . '/assets/css/stats_print.css');
         $html .= Input::get('html');
-        $mPdf = new \mPDF('utf-8', 'A4-' . Input::get('dir'), 0, '', 12.7, 12.7, 14, 12.7, 8, 8);
+        $mPdf = new Mpdf(['utf-8'], 'A4-' . Input::get('dir'), 0, '', 12.7, 12.7, 14, 12.7, 8, 8);
         $mPdf->SetDisplayMode('fullpage');
         $mPdf->setHTMLHeader('<div style="font-size: 12pt;text-align: center; font-weight: bold; color: #000000">' . Input::get('title') . '</div>');
         $mPdf->keep_table_proportions = true;
         $mPdf->tableMinSizePriority = true;
+
         $mPdf->DefHTMLFooterByName('Footer', '<div style="width: 100%; border-top: 1px solid #333333"></div><div style="font-size: 10pt; float: left; width: 49%">
-            RoomApp © created by <a target="_blank" href="https://toesslab.ch/">toesslab - websolutions</a>
+            RoomApp © created by <a target="_blank" href="https://toesslab.ch/">toesslab - solutions</a>
             </div>
             <div style="font-size: 10pt; float: right; width: 49%; text-align: right">Charts by <a target="_blank" href="http://www.highcharts.com/">HIGHCHARTS</a></div></div>');
         $mPdf->SetHTMLFooterByName('Footer', 'O');

@@ -267,7 +267,7 @@ if (strlen($routeStr) === 0) {
             @break
             @case (strpos($route, 'stats') !== false)
                 <div id="menu_stats">
-                    <h1>{{trans('admin.stats_chron.title')}} <span id="stats_title"></span></h1>
+                    <h1>{{trans('admin.' . $route . '.title')}} <span id="stats_title"></span></h1>
                     {{-- @include('layout.stats_menu')--}}
                     <div id="stats_select_menu">
                         @include('layout.stats_select')

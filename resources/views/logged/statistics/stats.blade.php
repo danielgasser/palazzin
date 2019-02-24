@@ -35,13 +35,6 @@
         <script>
             $(document).ready(function(){
                 'use strict';
-                /*
-                $("[name^='year']").bootstrapToggle({
-                    onColor: 'retroorange',
-                    on: 'An',
-                    off: 'Aus'
-                });
-                */
                 $('[name^="year"]').on('change', function (event, state) {
                     checkedYear = [];
                     $.each($('[name^="year"]'), function (i, n) {
@@ -51,7 +44,6 @@
                     });
                     checkedYear.sort();
                     showYear.sort();
-                    $('#asPDF').hide();
                 })
             })
             $(document).on('click', '#getYears', function () {

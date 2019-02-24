@@ -1,12 +1,5 @@
 @extends('layout.master')
 @section('content')
-<div id="menu_stats">
-    <h1>{{trans('admin.stats_calendar.title')}} <span id="stats_title"></span></h1>
-    {{-- @include('layout.stats_menu')--}}
-    <div id="stats_select_menu">
-        @include('layout.stats_select')
-    </div>
-</div>
 <div id="mPDF_Print">
     <table id="datatable-short" class="table table-striped table-hover tablesorter table-stats">
         <thead style="display: none">
@@ -115,7 +108,6 @@
                     });
                     checkedYear.sort();
                     showYear.sort();
-                    $('#asPDF').hide();
                 })
 
             });

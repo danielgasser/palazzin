@@ -306,12 +306,12 @@ class Reservation extends Model {
             ->get();
 
         $res_totals = $this->getReservationsStatsPerMonthTotal($year);
-        $reservations->family_sum = array();
-        $reservations->guest_kind_sum = array();
-        $reservations->guest_total_sum = array();
-        $reservations->total_nights = array();
-        $reservations->total_nights_sum = array();
-        $reservations->total_family_nights_sum = array();
+        $reservations->family_sum = [];
+        $reservations->guest_kind_sum = [];
+        $reservations->guest_total_sum = [];
+        $reservations->total_nights = [];
+        $reservations->total_nights_sum = [];
+        $reservations->total_family_nights_sum = [];
         $reservations->each(function ($r) use($family_code, $reservations, $res_totals) {
             $s = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
             $d = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
@@ -389,9 +389,9 @@ class Reservation extends Model {
     public function getReservationsStatsPerDayTotal($year = array('2015-%'))
     {
         $reservation = $this->getReservationsStatsCalendar($year);
-        $reservation->totals = array();
-        $reservation->year_totals = array();
-        $reservation->month_totals = array();
+        $reservation->totals = [];
+        $reservation->year_totals = [];
+        $reservation->month_totals = [];
         $reservation->each(function($r) use($reservation){
             $startDate = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
             $endDate = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
@@ -424,14 +424,14 @@ class Reservation extends Model {
     public function getReservationsStatsPerFamilyNightsTotal($year = array('2015-%'))
     {
         $reservation = $this->getReservationsStatsCalendar($year);
-        $reservation->totals = array();
-        $reservation->years = array();
-        $reservation->year_totals = array();
-        $reservation->year_total = array();
-        $reservation->totals_reservator = array();
-        $reservation->each(function($r) use($reservation, $year){
-            $startDate = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
-            $endDate = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
+        $reservation->totals = [];
+        $reservation->familyProps = [];
+        $reservation->years = [];
+        $reservation->year_totals = [];
+        $reservation->year_total = [];
+        $reservation->each(function($r) use($reservation){
+            $startDate = new DateTime(str_replace('_', '-', $r->reservation_started_at));
+            $endDate = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
             $interval = DateInterval::createFromDateString('1 day');
             $period = new DatePeriod($startDate, $interval, $endDate);
             foreach($period as $p){
@@ -442,18 +442,42 @@ class Reservation extends Model {
                     } else {
                         $reservation->totals[$index][$r->user[0]->family_description] =  $r->guest_number_total;
                     }
+                    if (!in_array($r->user[0]->family_description, $reservation->familyProps)) {
+                        $reservation->familyProps[] = $r->user[0]->family_description;
+                    }
                     if(isset($reservation->year_total[$index])){
                         $reservation->year_total[$index] +=  $r->guest_number_total;
                     } else {
                         $reservation->year_total[$index] =  $r->guest_number_total;
                     }
                 }
+            }
+        });
+        return [$reservation->totals, $reservation->year_total, $reservation->familyProps];
+    }
+
+    public function getReservationsStatsPerGuestNightsTotal($year = array('2015-%'))
+    {
+        $reservation = $this->getReservationsStatsCalendar($year);
+        $reservation->family = $this->getReservationsStatsPerFamilyNightsTotal($year);
+        $reservation->year_totals = [];
+        $reservation->guestProps = [];
+        $reservation->totals_reservator = [];
+        $reservation->totals = [];
+        $reservation->totals_guest = [];
+        $reservation->each(function($r) use($reservation){
+            $startDate = new DateTime(str_replace('_', '-', $r->reservation_started_at));
+            $endDate = new DateTime(str_replace('_', '-', $r->reservation_ended_at));
+            $interval = DateInterval::createFromDateString('1 day');
+            $period = new DatePeriod($startDate, $interval, $endDate);
+            foreach($period as $p){
+                $index = $p->format('Y');
                 foreach($r->guest as $g){
                     $role = Role::where('id', $g->role_id)->select('role_description')->first();
-                    if(isset($reservation->totals[$index][$role->role_description])) {
-                        $reservation->totals[$index][$role->role_description] +=  $g->guest_number;
+                    if(isset($reservation->totals_guest[$index][$role->role_description])) {
+                        $reservation->totals_guest[$index][$role->role_description] +=  $g->guest_number;
                     } else {
-                        $reservation->totals[$index][$role->role_description] =  $g->guest_number;
+                        $reservation->totals_guest[$index][$role->role_description] =  $g->guest_number;
                     }
                     if(isset($reservation->year_totals[$index])) {
                         $reservation->year_totals[$index] +=  $g->guest_number;
@@ -461,21 +485,29 @@ class Reservation extends Model {
                         $reservation->year_totals[$index] =  $g->guest_number;
                     }
                     if(isset($reservation->totals_reservator[$index]['Reservierender Benutzer'])){
-                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = end($reservation->totals[$index]) - $reservation->year_totals[$index];
+                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = $reservation->family[1][$index] - $reservation->year_totals[$index];
                     }else{
-                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = end($reservation->totals[$index]) - $reservation->year_totals[$index];
+                        $reservation->totals_reservator[$index]['Reservierender Benutzer'] = $reservation->family[1][$index] - $reservation->year_totals[$index];
+                    }
+                    if (!in_array($role->role_description, $reservation->guestProps)) {
+                        $reservation->guestProps[] = $role->role_description;
                     }
                 }
-
             }
         });
-        return array($reservation->totals, $reservation->year_total);
+        return [
+            'total_guests' => $reservation->totals_guest,
+            'total_family' => $reservation->family,
+            'total_year_guests' => $reservation->year_totals,
+            'total_user' => $reservation->totals_reservator,
+            'guest_props' => $reservation->guestProps
+        ];
     }
 
     public function getReservationsStatsPerMonthTotal($year = array('2015-%'))
     {
         $res = $this->getReservationsStatsCalendar($year);
-        $totals = array();
+        $totals = [];
         $startDate = new \DateTime(str_replace('_', '-', $res[0]->reservation_started_at));
         $endDate = new \DateTime(str_replace('_', '-', $res[sizeof($res) - 1]->reservation_started_at));
         $interval = DateInterval::createFromDateString('1 day');
@@ -731,7 +763,7 @@ class Reservation extends Model {
             $r->reservation_reminder_sent_at = $today->format('Y-m-d') . ' 00:00:00';
             $r->push();
         });
-        $errors = array();
+        $errors = [];
         if ($sendToHousekeeper && $res->count() > 0) {
             $houseKeeper = \User::whereHas('roles', function ($q) {
                 $q->where('role_code', '=', 'KP');

@@ -124,13 +124,13 @@ var graphSeries = [],
                             {
                                 name: 'Bezahlt ' + yearLabel.join(', '),
                                 y: graphPaidSeries,
-                                color: $('.total').css('color'),
+                                color: '#333',
                                 fontSize: '18px'
                             },
                             {
                                 name: 'Unbezahlt ' + yearLabel.join(', '),
                                 y: graphUnpaidSeries,
-                                color: $('.unpaid').css('color'),
+                                color: '#ff9900',
                                 fontSize: '18px'
                             }]
                     }]
@@ -238,12 +238,12 @@ var graphSeries = [],
                                 {
                                     name: 'Bezahlt ' + year,
                                     y: graphPaidSeries,
-                                    color: $('.total').css('color')
+                                    color: '#333'
                                 },
                                 {
                                     name: 'Unbezahlt ' + year,
                                     y: graphUnpaidSeries,
-                                    color: $('.unpaid').css('color')
+                                    color: '#ff9900'
                                 }]
                         }]
                     });
@@ -349,14 +349,14 @@ var graphSeries = [],
                 {
                     name: 'Bezahlt',
                     data: paidData,
-                    color: $('.paid').css('color')
+                    color: '#333'
                 }
             );
             graphSeries.push(
                 {
                     name: 'Unbezahlt',
                     data: unpaidData,
-                    color: $('.unpaid').css('color')
+                    color: '#ff9900'
                 }
             );
             $('#charts_' + year).append('<div style="width:98%;margin: 0 1%;" id="chart_div_' + year + '" style="min-width: 600px; margin: 14px auto;"></div>')
@@ -466,8 +466,8 @@ var graphSeries = [],
             paidData = [];
             unpaidData = [];
         });
-        window.getStatsData('/admin/stats_bill_total', years, fillYearTotalTable);
-        window.getStatsData('/admin/stats_bill', years, fillMonthTable);
+        window.getStatsData('/stats_bill_total', years, fillYearTotalTable);
+        window.getStatsData('/stats_bill', years, fillMonthTable);
         window.checkedYear = [];
     };
 
