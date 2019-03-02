@@ -164,7 +164,7 @@ if (strlen($routeStr) === 0) {
     <script src="{{asset('assets/js/libs/tinymce/js/tinymce/tinymce.min.js')}}"></script>
          <script src="{{asset('assets/js/libs/tinymce/js/tinymce/langs/de.js')}}"></script>
    <script src="{{asset('assets/js/libs/modernizr/modernizr.custom.42303.js')}}"></script>
-    @if(Request::is('new_reservation'))
+    @if(Request::is('new_reservation') || Request::is('admin/bills'))
         <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
     @endif
     @if(Request::is('edit_reservation*'))
@@ -195,7 +195,7 @@ if (strlen($routeStr) === 0) {
                             <h4 class="modal-title-warning">{!! trans('dialog.warning') !!}</h4>
                         </div>
                         <div class="modal-body">
-                            <p>{{$errors->first()}}</p>
+                            <p>{!! $errors->first() !!}</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
@@ -204,7 +204,7 @@ if (strlen($routeStr) === 0) {
                 </div>
             </div>
         @endif
-            @if (Session::has('info_message'))
+            @if (Session::has('info_message') || Session::has('message'))
              <div class="modal fade in" tabindex="-1" role="dialog">
                  <div class="modal-dialog" role="document">
                      <div class="modal-content">
@@ -213,7 +213,7 @@ if (strlen($routeStr) === 0) {
                              <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
                          </div>
                          <div class="modal-body">
-                             <p>{{Session::get('info_message')}}</p>
+                             <p>{{Session::get('info_message') or Session::get('message')}}</p>
                          </div>
                          <div class="modal-footer">
                              <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
@@ -226,19 +226,6 @@ if (strlen($routeStr) === 0) {
     @section('navigation')
         @include('layout.nav')
     @show
-    @if(strlen(Session::get('message')) > 0)
-        <div id="message-wrap">
-            <div id="message" class="alert alert-success" role="alert">
-                 <button type="button" class="close" data-dismiss="alert">
-                 <span aria-hidden="true">&times;</span>
-                 <span class="sr-only">Close</span>
-                 </button>
-                 <ul>
-                     <li><h3><span class="glyphicon glyphicon-ok"></span>&nbsp;{{Session::get('message')}}!</h3></li>
-                 </ul>
-            </div>
-        </div>
-    @endif
     @section('tests')
       {{--   @include('layout.tests') --}}
     @show
@@ -287,6 +274,43 @@ if (strlen($routeStr) === 0) {
                 </div>
             </div>
                 @break
+                @case (strpos($route, 'bills') !== false)
+                    <h1>{{trans('navigation.admin/bills')}}</h1>
+                @break
+                @case (strpos($route, 'admin/roles/edit') !== false)
+                <h1>Rolle bearbeiten: {{$role->role_code}} - {{trans('roles.' . $role->role_code)}}</h1>
+                @break
+                @case (strpos($route, 'admin/rights/edit') !== false)
+                <h1>Rechte bearbeiten: {{$right->right_code}} - {{trans('rights.' . $right->right_code)}}</h1>
+                @break
+                @case (strpos($route, 'user/profile') !== false)
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        @if($disabledForm == '')
+                    <h1>{{trans('profile.title', array(
+            'first_name' => User::find(Auth::id())->user_first_name,
+            'name' => User::find(Auth::id())->user_name,
+            'login_name' => User::find(Auth::id())->user_login_name,
+            'id' => User::find(Auth::id())->id,
+            'files'=>true))}}
+                    </h1>
+                @else
+                    <h1>{{trans('profile.title', array(
+             'first_name' => $user->user_first_name,
+             'name' => $user->user_name,
+             'login_name' => $user->user_login_name,
+             'id' => $user->id,
+             'files'=>true))}}
+                    </h1>
+                @endif   </div>
+                @break
+                @case (strpos($route, 'users/edit') !== false)
+                    <h1>{{trans('profile.title', array(
+            'first_name' => $user->user_first_name,
+            'name' => $user->user_name,
+            'login_name' => $user->user_login_name,
+            'id' => $user->id,
+            'files'=>true))}}</h1>
+                @break
 
                 @default
                 <h1>{{trans('navigation.' . $routeStr)}}</h1>
@@ -317,7 +341,7 @@ if (strlen($routeStr) === 0) {
      <script>
      var errors_modernizr = '{{trans('errors.modernizr')}}',
             urlTo = '{{URL::to('/')}}',
-            otherClanRoleId = $.parseJSON('{!! $otherClanRoleId!!}'),
+            otherClanRoleId = JSON.parse('{!! $otherClanRoleId!!}'),
             urlAssets = '{{asset('')}}',
             settings = JSON.parse({!!json_encode($settingsJSON)!!}),
             bgImg = '{{ asset('assets/') }}' + settings.setting_login_bg_image,

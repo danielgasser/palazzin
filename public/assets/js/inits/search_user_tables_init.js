@@ -11,7 +11,7 @@ var initTiny = function () {
         fontsize_formats: "10px 11px 12px 13px 14px 16px 18px 20px",
         selector: 'textarea.editit',
         language: 'de',
-        auto_focus: 'post_text',
+        auto_focus: 'message_text',
         menu : {
             edit   : {
                 title : 'Edit',
@@ -32,7 +32,7 @@ var initTiny = function () {
         },
         plugins: 'autoresize emoticons lists table textcolor',
         toolbar: 'insertfile undo redo | fontselect |  fontsizeselect | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l ink image | print preview media fullpage | emoticons',
-        content_css: window.urlAssets + '/css/tinymce.css'
+        content_css: window.assetCssUrl + '/tinymce.css'
     });
 };
 
@@ -60,9 +60,17 @@ var searchSortPaginate = function (url, search, sortField, orderByField) {
             window.unAuthorized(d);
             var userData = $.parseJSON(d);
             console.log(userData)
+
             window.userTable.clear();
             window.userTable.rows.add(userData)
             window.userTable.draw();
+            let uIds = [];
+            $.each(userData, function (i, n) {
+                if (n.user_id !== '') {
+                    uIds.push(n.user_id);
+                }
+            })
+            $('#uIDs').val(uIds.join(','))
         }
     });
 };
@@ -180,52 +188,6 @@ $(document).ready(function () {
     searchSortPaginate(urlTop, search, 'user_name', 'ASC');
 });
 
-jQuery(document).on('click', '#sendMessage', function (e) {
-    e.preventDefault();
-    $('#newsMessage').slideToggle('slow');
-    $('#message_text').val('');
-    initTiny();
-    if (window.tinyMCE.activeEditor !== null) {
-        window.tinyMCE.activeEditor.setContent('');
-    }
-});
-jQuery(document).on('click', '#cancel_new_message', function (e) {
-    e.preventDefault();
-    $('#newsMessage').slideUp('slow');
-});
-
-jQuery(document).on('click', '#send_new_message', function (e) {
-    e.preventDefault();
-    var mails = $('.mail_one'),
-        allMails = [];
-    $.each(mails, function (i, n) {
-        if ($('.sendPrint'))
-        allMails.push(n.innerText);
-    });
-    if (tinyMCE.activeEditor.getContent().length < 4) {
-        $('#four_char').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
-        return false;
-    }
-    $.ajax({
-        type: 'GET',
-        url: 'userlist/sendmail',
-        data: {
-            message_text: tinyMCE.activeEditor.getContent(),
-            mails: allMails
-
-    },
-        success: function (data) {
-            window.unAuthorized(data);
-            $('#newsMessage').slideUp('slow');
-            $('#msent').text(data)
-            $('#message_sent').show();
-
-        }
-    });
-});
 var timer;
 var chk_me = function(e) {
     clearTimeout(timer);
@@ -249,7 +211,7 @@ var searchIt = function (e) {
             search[i] = '';
         }
     });
-    if (search.search_user.length < 3 && search.clan_search.length === 0 && search.family_search.length === 0 && search.role_search.length === 0 || this.id ==='sendMessage') {
+    if (search.search_user.length < 3 && search.clan_search.length === 0 && search.family_search.length === 0 && search.role_search.length === 0) {
         return false;
     }
     if ((e.target.hasOwnProperty('config'))) {
@@ -262,10 +224,6 @@ var searchIt = function (e) {
     }
     searchSortPaginate(urlTop, search, field, sortby);
 };
-$(document).keyup('#search_user', function (e) {
-    "use strict";
-    chk_me(e);
-});
 $(document).on('change', '#clan_search', function (e) {
     "use strict";
     var famOpts = window.families,
@@ -291,18 +249,17 @@ $(document).on('change', '#clan_search', function (e) {
             ;
         }
     });
-    chk_me(e);
+  //  chk_me(e);
 });
-$(document).on('change', '#family_search', function (e) {
+$(document).on('submit', 'form:not(#sendToPrint)', function (e) {
     "use strict";
-    chk_me(e);
-});
-$(document).on('change', '#role_search', function (e) {
-    "use strict";
-    chk_me(e);
-});
-$(document).on('submit', 'form', function (e) {
-    "use strict";
-   e.preventDefault();
+    e.preventDefault();
    return false;
+});
+$(document).on('click', '#goSearch', function (e) {
+    e.preventDefault();
+    chk_me(e);
+});
+$(document).on('click', '#printChoice', function (e) {
+    $('#sendToPrint').submit();
 });

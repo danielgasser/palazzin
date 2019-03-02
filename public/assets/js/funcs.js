@@ -112,7 +112,41 @@ var getAppSettings = function (settingsUrl) {
 
 };
 
-var getRoles = function (url, id) {
+var fillUserRoles = function (data, isJson) {
+        var roleData = (isJson) ? data : jQuery.parseJSON(data),
+            dataStr = '',
+            allRoles = [];
+        if (jQuery('#no_role').length > 0) {
+            jQuery('#no_role').hide();
+        }
+        dataStr += '<tr id="role_' + roleData.id + '">' +
+            '<td id="deleteRole_' + roleData.id + '_' + roleData.role_c + '">' +
+            '<input type="hidden" name="role_id[]" id="role_id_' + roleData.id + '" value="' + roleData.id + '">' +
+            '<span class="btn btn-sm glyphicon glyphicon-remove" aria-hidden="true"></span></td>' +
+            '<td>' +
+            roleData.role_code +
+            '<td>' + roleData.role_tax_annual + '</td>' +
+            '<td>' + roleData.role_tax_night + '</td>' +
+            '<td>' + roleData.role_tax_stock + '</td>' +
+            '<td>' +
+            '<ul>';
+        jQuery.each(roleData.role_rights, function (i, n) {
+            dataStr += '<li>' + n + '</li>';
+        });
+        dataStr += '</ul>' +
+            '</td></tr>';
+        jQuery('#role_id option[value="' + roleData.id + '"]').remove();
+        if ($('#deleteRole_' + roleData.id + '_' + roleData.role_c).length > 0) {
+            jQuery('#roles').html(dataStr);
+        } else {
+            jQuery('#roles').append(dataStr);
+        }
+        jQuery.each(jQuery('[id^="deleteRole_"]'), function (i, n) {
+            allRoles.push(n.id.split('_')[1]);
+        });
+        jQuery('#role_id_add').val(allRoles.join(','));
+    },
+    getRoles = function (url, id) {
     "use strict";
     $.ajax({
         type: 'POST',
@@ -122,37 +156,7 @@ var getRoles = function (url, id) {
         },
         success: function (data) {
             window.unAuthorized(data);
-            var roleData = jQuery.parseJSON(data),
-                dataStr = '',
-                allRoles = [];
-            if (jQuery('#no_role').length > 0) {
-                jQuery('#no_role').hide();
-            }
-            dataStr += '<tr id="role_' + roleData.id + '">' +
-                '<td id="deleteRole_' + roleData.id + '_' + roleData.role_c + '">' +
-                '<span class="btn btn-sm glyphicon glyphicon-remove" aria-hidden="true"></span></td>' +
-                '<td>' +
-                roleData.role_code +
-                '<td>' + roleData.role_tax_annual + '</td>' +
-                '<td>' + roleData.role_tax_night + '</td>' +
-                '<td>' + roleData.role_tax_stock + '</td>' +
-                '<td>' +
-                '<ul>';
-            jQuery.each(roleData.role_rights, function (i, n) {
-                dataStr += '<li>' + n + '</li>';
-            });
-            dataStr += '</ul>' +
-                '</td></tr>';
-            jQuery('#role_id option[value="' + roleData.id + '"]').remove();
-            if ($('#deleteRole_' + roleData.id + '_' + roleData.role_c).length > 0) {
-                jQuery('#roles').html(dataStr);
-            } else {
-                jQuery('#roles').append(dataStr);
-            }
-            jQuery.each(jQuery('[id^="deleteRole_"]'), function (i, n) {
-                allRoles.push(n.id.split('_')[1]);
-            });
-            jQuery('#role_id_add').val(allRoles.join(','));
+            fillUserRoles(data);
         }
     });
 
@@ -188,14 +192,19 @@ var deleteUser = function (url) {
 
 };
 
-var rightFromRole = function (url, rightid, roleid) {
+var rightFromRole = function (url, rightid, roleid, u_id) {
     "use strict";
+    if (u_id === undefined) {
+        $('#role_' + roleid).remove();
+        return false;
+    }
     $.ajax({
         type: 'POST',
         url: url,
         data: {
             right_id: rightid,
-            role_id: roleid
+            role_id: roleid,
+            user_id: u_id
         },
         success: function (data) {
             window.unAuthorized(data);

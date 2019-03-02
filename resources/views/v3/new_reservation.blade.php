@@ -5,11 +5,9 @@
     <link rel="stylesheet" href="{{asset('assets/js/v3/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
           rel="stylesheet" media="screen" type="text/css">
     <script type="text/javascript"
-            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/js/bootstrap-datepicker.js"></script>
+            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript"
             src="{{asset('assets/js/v3/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3')}}/datepicker-init.js"></script>
     <link rel="stylesheet" href="{{asset('assets/css')}}/bootstrap-datepicker.css"
           rel="stylesheet" media="screen" type="text/css">
 

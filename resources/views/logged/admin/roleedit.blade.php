@@ -1,10 +1,6 @@
 @extends('layout.master')
 @section('content')
 
-    <div class="col-sm-12 col-md-6">
-        <h1>{{$role->role_code}} - {{trans('roles.' . $role->role_code)}}</h1>
-            <h3><a href="{{URL::to('admin/roles')}}">{{trans('dialog.back', ['to' => 'zu ' . trans('navigation.admin') . ' > ' . trans('navigation.admin/roles')])}}</a></h3>
-    </div>
 </div>
     {{Form::model($role, array('url' => array('admin/roles/edit', $role->id)))}}
         {{Form::hidden('id', $role->id)}}

@@ -37,11 +37,19 @@ class RoleController extends Controller
     /**
      * Gets all roles AJAX
      *
+     * @param $id
+     * @param $json
      * @return string json
      */
-    public function getRolesAjax()
+    public static function getRolesAjax($id = null, $json = true)
     {
-        $role = Role::find(Input::get('id'));
+        if (is_null($id)) {
+            $id = Input::get('id');
+        }
+        if (is_null($id)) {
+            return json_encode([]);
+        }
+        $role = Role::find($id);
         $defRoles = [];
         $defRoles['id'] = $role->id;
         $defRoles['role_c'] = $role->role_code;
@@ -52,6 +60,9 @@ class RoleController extends Controller
         $defRoles['role_guest'] = $role->role_guest;
         foreach ($role->rights as $r) {
             $defRoles['role_rights'][] = trans('rights.' . $r->right_code);
+        }
+        if (!$json) {
+            return $defRoles;
         }
         return json_encode($defRoles);
     }
@@ -117,7 +128,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->update($i);
         return redirect('admin/roles')
-            ->with('message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Rolle']));
+            ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Rolle']));
     }
 
     /**

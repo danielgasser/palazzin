@@ -1,7 +1,6 @@
 ToDo:
 
 visitor blocking raus
-password komlexität raus
 
 -before going life with v3:
 set calendar duration = 10
@@ -19,6 +18,6 @@ port table guests new field guest_title
 port table reservation new field reservation_title
 delete table comments
 delete settings setting_num_comments
-
+users secure question raus!
 
 minify js & css

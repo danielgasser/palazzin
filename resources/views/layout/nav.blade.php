@@ -67,13 +67,4 @@
         </div>
     </nav>
 
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        {{ csrf_field() }}
-    </form>
-    <script>
-        $(document).on('click', '#logout_user', function (e) {
-            e.preventDefault();
-            $('#logout-form').submit();
-        });
-    </script>
 @show

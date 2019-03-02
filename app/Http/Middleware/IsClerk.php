@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class beforeIsAdmin
+class IsClerk
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class beforeIsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isLoggedAdmin() || \User::isManager()) {
+        if (\User::isClerk() || \User::isLoggedAdmin()) {
             return $next($request);
         }
         return redirect()->back()->withErrors(['error' => 'Nur für Administratoren']);

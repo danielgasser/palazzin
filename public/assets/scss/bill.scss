@@ -10,17 +10,27 @@
 }
 
 #totals {
-  position: fixed;
-  top: 44px;
   width: 100%;
   margin: 0 auto;
   background-color: $body-bg;
   border-bottom: 1px solid #333;
 
 }
-
+#bills_wrapper {
+    #bills {
+        td {
+            padding: 3px;
+        }
+    }
+    .row {
+        width: 99%;
+    }
+}
+[name="bills_length"] {
+    padding: 0;
+}
 #after-totals {
-  margin-top: 220px;
+  margin-top: 156px;
 }
 
 table.tablesorter thead tr th.address {
@@ -31,8 +41,6 @@ table.tablesorter thead tr th.address {
 }
 
 #bill_searcher {
-  position: fixed;
-  top: 182px;
   background-color: $body-bg;
   width: 100%;
   border-bottom: 1px solid #333;

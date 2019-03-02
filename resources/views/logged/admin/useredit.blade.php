@@ -1,16 +1,7 @@
 @extends('layout.master')
 @section('content')
 
-<div class="row">
-    <div class="col-sm-12 col-md-6">
-        <h1>{{trans('profile.title', array(
-            'first_name' => $user->user_first_name,
-            'name' => $user->user_name,
-            'login_name' => $user->user_login_name,
-            'id' => $user->id,
-            'files'=>true))}}</h1>
-            <h3><a href="{{URL::to('admin/users')}}">{{trans('dialog.back', ['to' => 'zu ' . trans('navigation.admin') . ' > ' . trans('navigation.admin/users')])}}</a></h3>
-    </div>
+
 </div>
     {{Form::model($user, array('url' => array('admin/users/edit', $user->id), 'class' => '', 'files' => true))}}
         {{Form::hidden('id', $user->id)}}
@@ -44,7 +35,7 @@
                 </div>
                  {{Form::label('user_family', trans('userdata.halfclan'), array('class' => 'col-sm-2 col-md-1'))}}
                  <div class="col-sm-4 col-md-5">
-                     {{Form::select('user_family', [trans('dialog.select')] + $families, $user->family_code, array('class' => 'form-control required' . ' ' . trans('userdata.halfclan')))}}
+                     {{Form::select('user_family', [trans('dialog.select')] + $families, $user->family_code, array('class' => 'form-control required' . ' ' . trans('userdata.halfclan'), 'disabled' => 'disabled'))}}
                      <div class="col-sm-6 col-md-6">
                     <button class="btn btn-default" id="changeClan">{{trans('dialog.change')}}</button>
                  </div>
@@ -128,9 +119,6 @@
                  </div>
               </div>
          </fieldset>
-    {{Form::close()}}
-
-    <form>
          <fieldset>
              <legend>{{trans('userdata.email')}} {{trans('remind.user_send_man')}}</legend>
              <div class="row">
@@ -144,20 +132,67 @@
                   </div>
             </div>
          </fieldset>
+<fieldset>
+    <legend>{{trans('profile.actions')}}</legend>
+    <div class="row">
+        <div class="col-sm-6 col-md-2">
+            {{Form::submit(trans('dialog.save'), array('class' => 'btn btn-default'))}}
+        </div>
+        <div class="col-sm-6 col-md-2">
+        <!-- button type="button" id="profilePrint" class="btn btn-default">{{trans('dialog.print')}}</button -->
+        </div>
+        <div class="col-sm-6 col-md-2">
+
+        </div>
+    </div>
+</fieldset>
 </form>
     @include('logged.dialog.role_delete')
     @section('scripts')
     @parent
-        <script>
-            var user_delete = '{{URL::to('admin/users/edit/delete')}}',
-                    route = '{{Route::getFacadeRoot()->current()->uri()}}',
-                change_clan = '{{URL::to('admin/users/changeclan')}}',
-                user_activate = '{{URL::to('admin/users/activate')}}',
-                user_id = '{{$user->id}}',
-                    families = {!!json_encode($families)!!},
-                    add_role = '{{URL::to('admin/users/addrole')}}';
-        </script>
-        <script src="{{asset('assets/min/js/admin.min.js')}}"></script>
+    <script>
+        var user_delete = '{{URL::to('admin/users/edit/delete')}}',
+            change_clan = '{{URL::to('admin/users/changeclan')}}',
+            user_activate = '{{URL::to('admin/users/activate')}}',
+            user_id = '{{$user->id}}',
+            add_role = '{{URL::to('admin/users/addrole')}}',
+            role_delete = '{{URL::to('admin/users/edit/delete')}}',
+            families = {!!json_encode($families)!!},
+            route = '{{Route::getFacadeRoot()->current()->uri()}}',
+            addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            var clan_id = jQuery("#clan_id").val(),
+                fam = (typeof clan_id == 'string' && clan_id === '0') ? families : families[clan_id],
+                is_none = (typeof clan_id == 'string' && clan_id === '0');
+            jQuery("#user_family").find("option").remove();
+            jQuery("#user_family").find("optgroup").remove();
+            jQuery("#user_family").append(new window.Option('Bitte Halbstamm wählen', '0'));
+            if (!is_none) {
+                jQuery.each(fam, function(a, b) {
+                    jQuery("#user_family").append(new window.Option(b, a))
+                })
+            } else {
+                jQuery.each(families, function(i, n) {
+                    jQuery.each(n, function(a, b) {
+                        jQuery("#user_family").append(new window.Option(b, a))
+                    })
+                })
+            }
+            jQuery("#user_family").val('{{$user->family_code}}');
+            if (addedRoles !== null) {
+                $.each(addedRoles, function () {
+                    fillUserRoles(this, true);
+                })
+            }
+        });
+        $(document).on('change', '#clan_id', function () {
+            $('#user_family').attr('disabled', false)
+        })
+    </script>
+    <script src="{{asset('assets/js/admin.js')}}"></script>
     @stop
     @section('scripts-end')
     @parent

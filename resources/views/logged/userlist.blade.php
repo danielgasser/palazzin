@@ -8,41 +8,41 @@
 @stop
 @section('content')
         {{Form::open(array('url' => 'userlist', 'class' => 'form-inline', 'style' => 'margin-bottom: 2em', 'role'=> 'form', 'method' => 'post'))}}
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3 col-md-4">
             {{Form::label('search_user', "Volltextsuche")}}
             {{Form::text('search_user', Input::old('search_user'), array('class' => 'form-control', 'id' => 'search_user', 'placeholder' => trans('admin.user.etc')))}}
         </div>
         {{-- clan --}}
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3 col-md-2">
             {{Form::label('clan_search', trans('userdata.clan'))}}
             {{Form::select('clan_search', $clans, Input::old('clan_search'), array('class' => 'form-control'))}}
         </div>
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3 col-md-2">
             {{Form::label('family_search', trans('userdata.halfclan'))}}
             {{Form::select('family_search', $families, Input::old('family_search'), array('class' => 'form-control'))}}
         </div>
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3 col-md-2">
             {{Form::label('role_search', trans('userdata.roles'))}}
             {{Form::select('role_search', $roleList, Input::old('role_search'), array('class' => 'form-control'))}}
         </div>
-        <div class="col-sm-12 col-md-12">
-            <a href="{{URL::to(Request::url())}}" class="btn btn-default">{{trans('dialog.all')}}</a>
-            <a href="{{URL::to('userlist/print')}}" class="btn btn-default">{{trans('dialog.choice')}} {{trans('dialog.print')}}</a>
-
-            <div id="sendMessage" class="btn btn-default">{{trans('message.send_message')}}</div>
+        <div class="col-sm-3 col-md-2">
+            <label>&nbsp</label>
+            <button id="goSearch" class="btn btn-default">{{trans('dialog.search')}}</button>
         </div>
         {{Form::close()}}
-    </div>
-    <div class="row">
         <div class="col-sm-12 col-md-12">
-            @include('message.new_message')
+            <a href="{{URL::to(Request::url())}}" class="btn btn-default">{{trans('dialog.all')}}</a>
+            <button id="printChoice" class="btn btn-default">{{trans('dialog.choice')}} {{trans('dialog.print')}}</button>
         </div>
-    </div>
+
+        </div>
+
     <div id="printer">
         <table id="users">
             <thead>
                 <tr>
                     <th class="00" id="more"></th>
+                    <th class="000" id="more"></th>
                     <th class="2" id="user_first_name">{{trans('userdata.user_first_name')}}</th>
                     <th class="3" id="user_name">{{trans('userdata.user_name')}}</th>
                     <th class="4" id="user_login_name">{{trans('userdata.user_login_name')}}</th>
@@ -63,6 +63,7 @@
             <tbody id="table-body">
                     <tr>
                         <td class="00"></td>
+                        <td class="000"></td>
                         <td class="0"></td>
                         <td class="1"></td>
                         <td class="2"></td>
@@ -83,6 +84,12 @@
         </table>
     </div>
 <div id="debug"></div>
+        <form id="sendToPrint" action="{{route('userlist_print')}}" method="post" style="display: inline-block">
+            {{csrf_field()}}
+            <input type="hidden" name="uIDs" id="uIDs">
+            <input type="hidden" name="sort_field" id="sort_field">
+            <input type="hidden" name="order_by" id="order_by">
+        </form>
     @include('logged.dialog.user_delete')
     @include('logged.dialog.messagesent')
     @include('logged.dialog.fourchar')
@@ -101,8 +108,10 @@
                     families = JSON.parse('{!!json_encode($families)!!}'),
                     ml = [],
                     baseUrl = '{{ URL::to('/') }}',
+                assetCssUrl = '{{asset('assets/css')}}',
             isManager = ('{{ User::isManager() || User::isLoggedAdmin() }}' === '1'),
             userTable,
+                userTableSelectedData,
             dataTableSettings = {
                 dataSrc: '',
                 responsive: true,
@@ -121,32 +130,45 @@
                         responsivePriority: 1,
                         class: 'details',
                         visible: true,
-                        "orderable":      false,
-                        "data":           null,
-                        "defaultContent": ''
+                        orderable:      false,
+                        data:           null,
+                        defaultContent: ''
                     },
                     {
                         targets: [1],
+                        orderable:      false,
+                        sortable: false,
+                        className: 'user_id',
+                        data: 'user_id'
+                    },
+                    {
+                        targets: [2],
                         responsivePriority: 2,
                         data: 'user_first_name'
                     },
                     {
-                        targets: [2],
+                        targets: [3],
                         responsivePriority: 4,
                         data: 'user_name'
                     },
                     {
-                        targets: [3],
+                        targets: [4],
                         responsivePriority: 5,
-                        data: 'user_login_name'
+                        data: 'user_login_name',
+                        render: function (data, type, row, meta) {
+                            if (isManager) {
+                                return '<a href="' + baseUrl + '/admin/users/edit/' + row.user_id + '">' + data + '</a>';
+                            }
+                            return '<a href="' + baseUrl + '/user/profile/' + row.user_id + '">' + data + '</a>';
+                        }
                     },
                     {
-                        targets: [4],
+                        targets: [5],
                         responsivePriority: 6,
                         data: 'email',
                         render: function (data, type, row, meta) {
-                            let html = '<ul>';
-                            html += '<li><a href="mailto:' + data + '">' + data + '</a></li>';
+                            let html = '<ul style="list-style-type: none; margin: 0; padding: 0;">';
+                            html += '<li class="mail_one"><a href="mailto:' + data + '">' + data + '</a></li>';
                             if (row.user_email2 === undefined || row.user_email2 === null) {
                                 html += '</ul>';
                             } else if (row.user_email2.length > 0) {
@@ -156,7 +178,7 @@
                         }
                     },
                     {
-                        targets: [5],
+                        targets: [6],
                         responsivePriority: 3,
                         data: 'user_fon1',
                         render: function (data, type, row, meta) {
@@ -167,7 +189,7 @@
                         }
                     },
                     {
-                        targets: [6],
+                        targets: [7],
                         responsivePriority: 24,
                         data: 'user_www_label',
                         render: function (data, type, row, meta) {
@@ -181,22 +203,22 @@
                         }
                     },
                     {
-                        targets: [7],
+                        targets: [8],
                         responsivePriority: 8,
                         data: 'user_address'
                     },
                     {
-                        targets: [8],
+                        targets: [9],
                         responsivePriority: 8,
                         data: 'user_zip'
                     },
                     {
-                        targets: [9],
+                        targets: [10],
                         responsivePriority: 8,
                         data: 'user_city'
                     },
                     {
-                        targets: [10],
+                        targets: [11],
                         responsivePriority: 8,
                         data: 'user_country_code',
                         render: function (data, type, row, meta) {
@@ -207,12 +229,12 @@
                         }
                     },
                     {
-                        targets: [11],
+                        targets: [12],
                         responsivePriority: 24,
                         data: 'user_birthday'
                     },
                     {
-                        targets: [12],
+                        targets: [13],
                         responsivePriority: 24,
                         data: 'clans',
                         render: function (data, type, row, meta) {
@@ -223,7 +245,7 @@
                         }
                     },
                     {
-                        targets: [13],
+                        targets: [14],
                         responsivePriority: 24,
                         data: 'families',
                         render: function (data, type, row, meta) {
@@ -235,7 +257,7 @@
                         }
                     },
                     {
-                        targets: [14],
+                        targets: [15],
                         responsivePriority: 24,
                         data: 'roles',
                         render: function (data) {
@@ -248,7 +270,7 @@
                         }
                     },
                     {
-                        targets: [15],
+                        targets: [16],
                         responsivePriority: 24,
                         data: 'last_login'
                     },

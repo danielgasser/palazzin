@@ -1,10 +1,6 @@
 @extends('layout.master')
 @section('content')
 
-    <div class="col-sm-12 col-md-6">
-        <h1>{{$right->right_code}} - {{trans('rights.' . $right->right_code)}}</h1>
-            <h3><a href="{{URL::to('admin/rights')}}">{{trans('dialog.back', ['to' => 'zu ' . trans('navigation.admin') . ' > ' . trans('navigation.admin/rights')])}}</a></h3>
-    </div>
 </div>
     {{Form::model($right, array('url' => array('admin/rights/edit', $right->id)))}}
         {{Form::hidden('id', $right->id)}}

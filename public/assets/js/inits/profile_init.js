@@ -24,12 +24,14 @@ jQuery(document).ready(function () {
         $('input[name="user_fon' + rid + '_label"]').val($(this).children('a').attr('href'));
         $('input[name="user_fon' + rid + '_label_show"]').val($(this).text());
     });
-    $('.date_type_birthday').datepicker({
-        dateFormat: 'dd.mm.yy',
-        changeYear: true,
-        yearRange: '1900:2029',
-        altFormat: 'yy-mm-dd'
-    }, $.datepicker.regional['de']);
+    $('#user_birthday').datepicker({
+        format: "dd.mm.yyyy",
+        weekStart: 1,
+        todayBtn: "linked",
+        clearBtn: true,
+        language: 'de',
+        calendarWeeks: true,
+        autoclose: true,
+    });
 
-    $('.date_type_birthday').datepicker('refresh');
 });

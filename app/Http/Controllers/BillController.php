@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Bill;
+use Illuminate\Filesystem\Filesystem;
 use User;
 use Illuminate\Support\Facades\Input;
 use Response;
@@ -106,8 +107,8 @@ class BillController extends Controller
      */
     public function payBill()
     {
-        $bill = Bill::find(Input::get('id'));
-        $bill->bill_paid = Input::get('bill_paid') . ' 00:00:00';
+        $bill = Bill::find(request()->input('id'));
+        $bill->bill_paid = request()->input('bill_paid') . ' 00:00:00';
         $bill->bill_due = 0;
         $bill->push();
         $bill_paid_at = new \DateTime($bill->bill_paid);
@@ -128,7 +129,8 @@ class BillController extends Controller
 
     public function getBillFilesList()
     {
-        $files = File::allFiles(public_path() . '/files/__clerk/');
+        $fs = new Filesystem();
+        $files = $fs->allFiles(public_path('/files/__clerk/'));
         //dd($files);
         return view('logged.admin.bill_list')
             ->with('allBills', $files);
@@ -141,7 +143,7 @@ class BillController extends Controller
         $headers = [
             'Content-Type' => 'application/pdf'
         ];
-        return Response::download($filename, 200, $headers);
+        return \Response::download($filename, 200, $headers);
     }
 
     public function cronBills()

@@ -1,4 +1,12 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp_reservation.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+
+    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
+
+@stop
 @section('content')
 {{--Tools::dd($allBills)--}}
 <div id="listBills" class="table-responsive">
@@ -6,15 +14,14 @@
     <table id="bill_all_totals">
         <thead>
             <tr>
-                <!--th class="white-row">Download</th>
-                <th class="white-row">Anzeigen</th-->
+                <th>Rechnung</th>
             </tr>
         </thead>
         <tbody>
         @foreach($allBills as $b)
         <tr>
-            <!--td class="white-row" id="billpath"><button class="btn btn-default">Download</button> </td-->
-            <td class="white-row" id="bill_name">{{link_to_asset('public/files/__clerk/' . $b->getFileName(), $b->getFileName(), array(/*'download' => $b->getFileName()*/))}}</td>
+            <td>
+                <a href="{{asset('/files/__clerk/' . $b->getFileName())}}">{{$b->getFileName()}}</a>
         </tr>
             @endforeach
         </tbody>
@@ -25,6 +32,22 @@
     @parent
     <script>
         var autid = '{{Auth::id()}}';
+        $(function () {
+            $('#bill_all_totals').dataTable({
+                language: {
+                    paginate: {
+                        first: '{{trans('pagination.first')}}',
+                        previous: '{{trans('pagination.previous')}}',
+                        next: '{{trans('pagination.next')}}',
+                        last: '{{trans('pagination.last')}}',
+                    },
+                    info: '{{trans('pagination.info')}}',
+                    sLengthMenu: '{{trans('pagination.length_menu')}}',
+                    search: '{{trans('dialog.search')}}'
+                },
+
+            })
+        })
     </script>
         <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
     @stop

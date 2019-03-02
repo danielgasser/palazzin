@@ -7,12 +7,14 @@
  */
 return array(
     'bill' => 'Rechnung',
+    'billno' => 'Rechnung N°',
     'bill_sent' => 'Rechnung verschickt',
     'currency' => 'Währung',
     'sub_total_bill' => 'Total exkl. Taxen',
     'sub_total_all_bill' => 'Gesamt-Total exkl. Taxen',
     'taxes' => 'Taxen',
     'paid' => 'Bezahlt',
+    'un_paid' => 'Unbezahlt',
     'paid_at' => 'Bezahlt am',
     'total_bill' => 'Rechnungs-Total',
     'total_all_bill' => 'Gesamt-Total',

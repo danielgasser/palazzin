@@ -38,7 +38,7 @@ class RemindersController extends Controller
                 return Redirect::back()->with('error', Lang::get($response));
 
             case Password::REMINDER_SENT:
-                return redirect('/')->with('message', Lang::get($response));
+                return redirect('/')->with('info_message', Lang::get($response));
         }
     }
 
@@ -96,7 +96,7 @@ class RemindersController extends Controller
                 return Redirect::back()->with('error', Lang::get($response));
 
             case Password::REMINDER_SENT:
-                return redirect('/')->with('message', Lang::get($response));
+                return redirect('/')->with('info_message', Lang::get($response));
         }
     }
 
@@ -117,7 +117,7 @@ class RemindersController extends Controller
 
 
             case Password::REMINDER_SENT:
-                return Redirect::back()->with('message', Lang::get($response));
+                return Redirect::back()->with('info_message', Lang::get($response));
         }
     }
 

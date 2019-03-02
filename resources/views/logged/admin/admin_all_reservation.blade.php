@@ -30,7 +30,6 @@
         </table>
     </div>
     @include('logged.dialog.delete_reservation')
-    @include('logged.dialog.deleted_reservation')
     @include('logged.dialog.no_delete_reservation')
     {{--
      @include('logged.dialog.guest_nan')
@@ -43,7 +42,6 @@
     @parent
     <script>
         document.addEventListener('scroll', function (event) {
-            console.log('scrolling', event.target, event);
             if (event.target.id === 'idOfUl') { // or any other filtering condition
             }
         }, true);

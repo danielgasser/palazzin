@@ -30,7 +30,11 @@
                             <li class="{{ Request::is('user/bills') ? 'active' : '' }}"><a href="{{URL::to('user/bills')}}">{{trans('navigation.user/bills')}}</a></li>
                         @endif
                         <li class="divider"></li>
-                        <li><a id="logout_user" href="{{URL::to('logout')}}">{{trans('navigation.logout')}}</a></li>
+                        <li>
+                            {{ Form::open(array('url' => '/logout')) }}
+                            {{ Form::submit(trans('navigation.logout'), ['class' => 'btn-link-style']) }}
+                            {{ Form::close() }}
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -58,4 +62,6 @@
             </ul>
 
     </div>
+
+
 @show

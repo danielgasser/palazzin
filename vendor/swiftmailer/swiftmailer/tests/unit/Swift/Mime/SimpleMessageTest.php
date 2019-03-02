@@ -116,7 +116,7 @@ class Swift_Mime_SimpleMessageTest extends Swift_Mime_MimePartTest
         $headers = $this->createHeaderSet([], false);
         $headers->shouldReceive('addIdHeader')
                 ->once()
-                ->with('Message-ID', '/^.*?@.*?$/D');
+                ->with('info_message-ID', '/^.*?@.*?$/D');
 
         $message = $this->createMessage($headers, $this->createEncoder(),
             $this->createCache()

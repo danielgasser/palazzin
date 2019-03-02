@@ -209,7 +209,7 @@ class Bill extends Model {
      */
     public function getBillsWithUserReservation () {
         setlocale(LC_ALL, Lang::get('formats.langlang'));
-        if (strpos(Route::getCurrentRoute()->getPath(), 'admin') !== false) {
+        if (strpos(Route::getFacadeRoot()->current()->uri(), 'admin') !== false) {
             $bills = self::select('*')->orderBy('bill_bill_date', 'DESC')->get();
         } else {
 
@@ -230,13 +230,17 @@ class Bill extends Model {
             $b->user = \User::find($b->reservation->user_id);
             $b->reservation->guests->each(function ($g) use($b) {
                 $g->calcGuestSumTotals();
-                $g->guest_started_at_show = \Carbon\Carbon::createFromFormat('Y_m_d', $g->guest_started_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
-                $g->guest_ended_at_show = \Carbon\Carbon::createFromFormat('Y_m_d', $g->guest_ended_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
+                $s = new DateTime($g->guest_started_at);
+                $g->guest_started_at_show = $s->format('d. m Y');
+                $e = new DateTime($g->guest_ended_at);
+                $g->guest_ended_at_show = $e->format('d. m Y');
                 $b->reservation->reservation_sum += $g->guestSum;
             });
             $bds = new \DateTime($b->bill_bill_date);
-            $b->reservation->reservation_started_at_show = \Carbon\Carbon::createFromFormat('Y_m_d', $b->reservation->reservation_started_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
-            $b->reservation->reservation_ended_at_show = \Carbon\Carbon::createFromFormat('Y_m_d', $b->reservation->reservation_ended_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
+            $s = new DateTime($b->reservation->reservation_started_at);
+            $b->reservation->reservation_started_at_show = $s->format('d. m Y');
+            $e = new DateTime($b->reservation->reservation_ended_at);
+            $b->reservation->reservation_ended_at_show = $e->format('d. m Y');
             $b->bill_bill_date_show = $bds->format(trans('formats.short-date-ts'));
             if (isset($b->bill_paid)) {
                 $bds = new \DateTime($b->bill_paid);

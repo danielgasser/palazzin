@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Clan;
 use Family;
-use App\Http\Requests\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use LoginStat;
 use Role;
 use Setting;
@@ -94,7 +95,7 @@ class AdminController extends Controller
             $allFams[$f->clan_id][$f->id] = $f->family_description;
         }
         return view('logged.admin.useradd')
-            ->with('clans', [trans('dialog.select')] + Clan::pluck('clan_description', 'id'))
+            ->with('clans', [trans('dialog.select')] + Clan::pluck('clan_description', 'id')->toArray())
             ->with('allRoles', [trans('dialog.select')] + Role::getRoles())
             ->with('families', $allFams)
             ->with('user', new User());
@@ -103,13 +104,15 @@ class AdminController extends Controller
     /**
      * Adds a new user
      *
-     * @return mixed Redirect
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function addUser()
+    public function addUser(Request $request)
     {
-        Input::flash();
+        $input = $request->all();
+        $addedRoles = [];
         $validator = Validator::make(
-            Input::all(),
+            $input,
             [
                 'user_name' => 'required|min:3|alpha_dash',
                 'user_first_name' => 'required|min:3|alpha_dash',
@@ -130,22 +133,26 @@ class AdminController extends Controller
             ]
         );
         if ($validator->fails()) {
-            Session::put('error', $validator);
-            return Redirect::back()->withErrors($validator);
+            foreach (explode(',', $request->input('role_id_add')) as $key => $r) {
+                $addedRoles[] = RoleController::getRolesAjax($r, false);
+            }
+            $request->flash();
+            Session::put('addedRoles', $addedRoles);
+            return back()->withErrors($validator->messages());
         }
 
-        $user = \User::create(Input::except('_token'));
-        foreach (explode(',', Input::get('role_id_add')) as $r) {
+        $user = \User::create($input);
+        foreach (explode(',', $request->input('role_id_add')) as $r) {
             $user->roles()->attach($r);
         }
         $user->user_country_code = 41;
         $user->user_fon1_label = 'x';
-        $user->user_active = Input::get('user_active');
+        $user->user_active = $request->input('user_active');
         $user->save();
         $request = Request::create('admin/users/add/sendnew', 'POST');
-        Route::dispatch($request);
-        return redirect('admin/users')
-            ->with('message', trans('errors.data-saved', ['a' => 'Neuer', 'data' => 'Benutzer']) . '.<br>' . trans('reminders.sent'));
+        \Route::dispatch($request);
+        return back()
+            ->with('info_message', trans('errors.data-saved', ['a' => 'Neuer', 'data' => 'Benutzer']) . '.<br>' . trans('reminders.sent'));
     }
 
     /**
@@ -171,7 +178,7 @@ class AdminController extends Controller
         }
         if ($user->destroyUser()) {
             Session::put('error', trans('errors.data-deleted', ['d' => 'Benutzer']));
-            return redirect('admin/users')->with('message', trans('errors.data-deleted', ['d' => 'Benutzer']));
+            return redirect('admin/users')->with('info_message', trans('errors.data-deleted', ['d' => 'Benutzer']));
         }
         Session::put('error', trans('bill.bill-user-delete'));
         return redirect('userlist')->withErrors([trans('bill.bill-user-delete')]);

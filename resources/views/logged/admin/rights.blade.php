@@ -1,6 +1,5 @@
 @extends('layout.master')
 @section('content')
-    <h3>{{trans('admin.rights.etc')}}:</h3>
     <div>
     {{Form::model(null, array('action' => 'RightController@searchRights'))}}
     {{Form::text('searchAllRights')}}

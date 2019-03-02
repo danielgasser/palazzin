@@ -3,6 +3,9 @@
 namespace App\Http;
 
 use App\Http\Middleware\beforeIsAdmin;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\isClerk;
+use App\Http\Middleware\isKeeper;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -60,6 +63,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'admin' => beforeIsAdmin::class,
+        'admin' => IsAdmin::class,
+        'clerk' => IsClerk::class,
+        'keeper' => IsKeeper::class,
     ];
 }

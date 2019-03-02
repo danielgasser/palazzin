@@ -84,15 +84,15 @@
                 }
             }
         }
-        .error-field {
-            :before {
-
-                content: " '";
-            }
-            :after {
-                content: "' ";
-            }
-            font-style: italic;
-        }
     }
+}
+.error-field {
+    :before {
+
+        content: " '";
+    }
+    :after {
+        content: "' ";
+    }
+    font-style: italic;
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 
+
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
     use Authenticatable, CanResetPassword, Notifiable;
@@ -28,8 +29,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = array(
         'password',
         'remember_token',
-        'user_question',
-        'user_answer',
         'user_avatar',
         'deleted_at',
         'created_at',
@@ -81,8 +80,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_fon3_label',
         'user_birthday',
         'user_avatar',
-        'user_answer',
-        'user_question',
         'user_payment_method',
         'new_pass',
         'new_pass_confirmation',
@@ -438,6 +435,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $u->last_login = '-';
             }
             $u->user_birthday = ($u->user_birthday !== '0000-00-00 00:00:00') ? date('d.m.Y', strtotime($u->user_birthday)) : '';
+            $u->user_id = $u->getUserID();
             $u->country = DB::table('countries')
                 ->select('country_name_' . trans('formats.langjs') . ' as country')
                 ->where('country_code', '=', $u->user_country_code)
@@ -553,6 +551,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $this->login_stats()->delete();
             $this->destroy($this->id);
             return true;
+        }
+    }
+
+
+    public function sendBirthdayMail()
+    {
+        $set = Setting::getStaticSettings();
+        $today = new \DateTime();
+        $user = User::where('user_birthday', '=', $today->format('Y-m-d') . ' 00:00:00')->get();
+        if (is_object($user)) {
+            foreach ($user as $u) {
+                $mail = [
+                    'user_first_name' => $u->user_first_name,
+                ];
+                Mail::send('emails.birthday', $mail, function ($message) use ($set, $u) {
+                    $message->to($u->email, $u->user_first_name . ' ' . $u->user_name)
+                        ->from($set->setting_app_owner_email, $set->setting_app_owner)
+                        ->sender($set->setting_app_owner_email, $set->setting_app_owner)
+                        ->subject('Palazzin.ch: Happy Birthday ' . $u->user_first_name . '!');
+                });
+            }
         }
     }
 

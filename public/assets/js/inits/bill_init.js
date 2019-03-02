@@ -3,40 +3,7 @@
  */
 jQuery(document).ready(function () {
     "use strict";
-    $.each(jQuery('input'), function (i, n) {
-        n.value = '';
-    });
-    $.datepicker.setDefaults({
-        showOn: 'focus',
-        buttonImageOnly: false,
-        buttonText: '',
-        showButtonPanel: false
-    });
-    // datepicker overall
-    $.datepicker.setDefaults($.datepicker.regional[window.locale.split('-')[0]]);
-    window.adaptEmptyInputs();
     jQuery(document).on('click', '[id^="savePaid_"]', function (e) {
-        var idValue = $(this).attr('id').split('_')[2],
-            id = $(this).attr('id').split('_')[1],
-            dateVal = $('#bill_paid_' + idValue).val().split('.'),
-            dbDate;
-        // datepicker overall
-        dbDate = dateVal[2] + '-' + dateVal[1] + '-' + dateVal[0];
-        e.preventDefault();
-        $.ajax({
-            type: 'GET',
-            url: '/admin/bills/paid',
-            data: {
-                id: id,
-                bill_paid: dbDate
-            },
-            success: function (data) {
-                window.unAuthorized(data);
-                $('#paid_or_not_' + idValue).html(window.pay_yesno[data.due]);
-                $('#when_paid_' + idValue).html(data.paid + '<br><button class="btn btn-default" id="undoSavePaid_' + data.billid + '_' + idValue + '">' + window.langDialog.reset + '</button>');
-                window.adaptEmptyInputs();
-            }
-        });
     });
     jQuery(document).on('click', '[id^="undoSavePaid_"]', function (e) {
         var id = $(this).attr('id').split('_')[1],

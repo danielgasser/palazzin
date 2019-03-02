@@ -1,25 +1,19 @@
 @extends('layout.master')
+@section('header')
+    @parent
+
+    <link rel="stylesheet" href="{{asset('assets/js/v3/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" media="screen" type="text/css">
+    <script type="text/javascript"
+            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
+    <link rel="stylesheet" href="{{asset('assets/css')}}/bootstrap-datepicker.css"
+          rel="stylesheet" media="screen" type="text/css">
+
+@stop
 @section('content')
 
-<div class="row">
-    <div class="col-sm-12 col-md-6">
- @if($disabledForm == '')
-       <h1>{{trans('profile.title', array(
-            'first_name' => User::find(Auth::id())->user_first_name,
-            'name' => User::find(Auth::id())->user_name,
-            'login_name' => User::find(Auth::id())->user_login_name,
-            'id' => User::find(Auth::id())->id,
-            'files'=>true))}}
-            </h1>
-@else
-        <h1>{{trans('profile.title', array(
-             'first_name' => $user->user_first_name,
-             'name' => $user->user_name,
-             'login_name' => $user->user_login_name,
-             'id' => $user->id,
-             'files'=>true))}}
-             </h1>
-@endif   </div>
 </div>
     {{Form::model($user, array('url' => 'user/profile', 'class' => '', 'id' => 'userProfile', 'files' => true))}}
         {{Form::hidden('id', $user->id)}}
@@ -59,7 +53,7 @@
                 {{-- clan --}}
                 {{Form::label('clan_id', trans('userdata.clan'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::text('clan_id', $clan, array('class' => 'form-control', 'disabled'))}}
+                {{Form::text('clan_id', $clan_desc, array('class' => 'form-control', 'disabled'))}}
                 </div>
             </div>
                 <div class="row">
@@ -234,23 +228,6 @@
                 </div>
             </div>
         </fieldset>
-        @if($disabledForm == '')
-        <fieldset>
-        <legend>{{trans('profile.secure')}}</legend>
-            <div class="row">
-                {{-- question --}}
-                {{Form::label('user_question', trans('profile.user_question'), array('class' => 'col-sm-2 col-md-1 ' . $requIred[0]))}}
-                <div class="col-sm-4 col-md-5">
-                    {{Form::text('user_question', (isset($user->user_question)) ? $user->user_question : Input::old('user_question'), array('class' => 'form-control ' . $requIred[1] . ' ' . trans('userdata.user_question')))}}
-                </div>
-                {{-- answer --}}
-                {{Form::label('user_answer', trans('profile.user_answer'), array('class' => 'col-sm-2 col-md-1 ' . $requIred[0]))}}
-                <div class="col-sm-4 col-md-5">
-                    {{Form::text('user_answer', (isset($user->user_answer)) ? $user->user_answer : Input::old('user_answer'), array('class' => 'form-control ' . $requIred[1] . ' ' . trans('userdata.user_answer')))}}
-                </div>
-            </div>
-        </fieldset>
-       @endif
         <fieldset>
              <legend>{{trans('profile.roles')}}</legend>
              <div class="table-responsive">
@@ -321,48 +298,9 @@
         </fieldset>
             @endif
     {{Form::close()}}
-         @if($disabledForm == '')
-       {{Form::open(array('url' => 'user/profile/changepass'))}}
-                <fieldset>
-                <legend>{{trans('userdata.new_pass')}}</legend>
-                     <div class="row">
-                          <div class="col-sm-1 col-md-1"></div>
-                          <div class="col-sm-10 col-md-10 required required-help-text">
-                              {{trans('userdata.new_pass_text')}}
-                          </div>
-                          <div class="col-sm-1 col-md-1"></div>
-                     </div>
-                     <div class="row">
-                        {{-- old password --}}
-                        {{Form::label('old_pass', trans('userdata.old_pass'), array('class' => 'col-sm-2 col-md-1'))}}
-                        <div class="col-sm-2 col-md-3">
-                            {{Form::password('old_pass', array('class' => 'form-control' . ' ' . trans('userdata.pass')))}}
-                        </div>
-                        {{-- new pass --}}
-                        {{Form::label('new_pass', trans('userdata.new_pass'), array('class' => 'col-sm-2 col-md-1'))}}
-                        <div class="col-sm-2 col-md-3">
-                            {{Form::password('new_pass', array('class' => 'form-control' . ' ' . trans('userdata.new_pass')))}}
-                        </div>
-                        {{-- new pass confirm --}}
-                        {{Form::label('new_pass_confirmation', trans('userdata.new_pass_confirm'), array('class' => 'col-sm-2 col-md-1'))}}
-                        <div class="col-sm-2 col-md-3">
-                            {{Form::password('new_pass_confirmation', array('class' => 'form-control' . ' ' . trans('userdata.new_pass_confirm')))}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        {{-- confirm --}}
-                        <div class="col-sm-2 col-md-3">
-                            {{Form::submit(trans('userdata.confirm_new_pass_go'), array('class' => 'btn btn-default','id' => 'saveNewPass'))}}
-                        </div>
-                    </div>
-                </fieldset>
-        {{Form::close()}}
-@endif
     @section('scripts')
     @parent
 
         <script src="{{asset('assets/js/inits/profile_init.js')}}"></script>
-        <script>            window.adaptInputs(false);
-        </script>
     @stop
 @stop

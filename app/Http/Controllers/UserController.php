@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\Session;
@@ -13,6 +14,7 @@ use User;
 use Clan;
 use Role;
 use Family;
+
 
 /**
  * Created by PhpStorm.
@@ -41,7 +43,6 @@ class UserController extends Controller
      */
     public function postLogin()
     {
-        $visitor = new \Visitor();
         $stay = Input::get('stay_tuned');
         $fieldToTake = filter_var(Input::get('user_login_name'), FILTER_VALIDATE_EMAIL) ? 'email' : 'user_login_name';
         $credentials = [
@@ -79,7 +80,6 @@ class UserController extends Controller
             $loginStat = new \LoginStat();
             $loginStat->user_id = $user->id;
             $loginStat->save();
-            $visitor->deleteOnSuccess();
             if (User::isKeeper()) {
                 return redirect('keeper/reservations');
             }
@@ -106,11 +106,6 @@ class UserController extends Controller
             return Redirect::intended('home');
         }
 
-        if ($visitor->setMaxFalseLogins()) {
-            return view('errors.error')
-                ->with('error_title', trans('errors.title-too-much-logins'))
-                ->with('error_text', trans('errors.text-too-much-logins', ['master' => \Constants::webMaster, 'master-mail' => \Constants::webMasterMail, 'subject' => trans('errors.title-too-much-logins')]));
-        }
         if ($validator->fails()) {
             Session::put('error', $validator);
             return Redirect::back()->withErrors($validator);
@@ -165,13 +160,13 @@ class UserController extends Controller
         }
         return view('user.profile')
             ->with('payment_method', $payMethods)
-            ->with('message', 'blah_')
+            ->with('info_message', 'blah_')
             ->with('user', $user)
             //->with('birthday', $birthday->format('d.m.Y'))
             ->with('countries', $countries)
             ->with('disabledForm', $disabledForm)
             ->with('requIred', $requIred)
-            ->with('clan', $clan->clan_description);
+            ->with('clan_desc', $clan->clan_description);
             //->with('families', $chooseFam);
     }
 
@@ -263,7 +258,7 @@ class UserController extends Controller
         }
         return Redirect::back()
             ->with('user', $user)
-            ->with('message', trans('errors.data-saved', ['a' => 'Dein', 'data' => 'Profil']) . $new_mail_message);
+            ->with('info_message', trans('errors.data-saved', ['a' => 'Dein', 'data' => 'Profil']) . $new_mail_message);
     }
 
     /**
@@ -280,10 +275,10 @@ class UserController extends Controller
         $u = User::find($id);
         $clan = $u->getUserClanName($u->clan_id);
         $u->clan = $clan[0]->clan_description;
-        //$families = DB::table('families')->where('clan_id', '=', $u->clan_id)->select('id', 'family_description')->get();
-        $families =Family::all();
-        foreach ($families as $f) {
-            $chooseFam[$f->id] = $f->family_description;
+        $families = Family::select('id', 'clan_id', 'family_description')->get();
+        $allFams = [];
+        foreach ($families as $key => $f) {
+            $allFams[$f->clan_id][$f->id] = $f->family_description;
         }
        // $countries = DB::table('countries')->lists('country_name_' . trans('formats.langjs'), 'id');
         $cs = DB::select(DB::raw("select country_name_" . trans('formats.langjs') . " as country_name, id, country_code from countries order by country_name_" . trans('formats.langjs') . " asc"));
@@ -317,7 +312,7 @@ class UserController extends Controller
         return view('logged.admin.useredit')
             ->with('clans', $clans[0])
             ->with('user', $u)
-            ->with('families', $chooseFam)
+            ->with('families', $allFams)
             ->with('countries', $countries)
             ->with('allRoles', $transRoles);
     }
@@ -337,10 +332,10 @@ class UserController extends Controller
             ->where('role_id', '=', $i['role_id'])
             ->count();
         if ($r > 0) {
-            return Redirect::back();
+            return back();
         }
         $user->roles()->attach($i['role_id']);
-        return Redirect::back();
+        return back();
     }
 
     /**
@@ -350,9 +345,12 @@ class UserController extends Controller
      */
     public function deleteRoleUser()
     {
-        $i = Input::except('_token');
-        $user = User::find($i['id']);
-        $role = Role::find($i['role_id']);
+        $roleId = request()->input('role_id');
+        $user = User::find(request()->input('user_id'));
+        $role = Role::find(request()->input('role_id'));
+        if (!is_object($user) || !is_object($role)) {
+            return json_encode([]);
+        }
         $validator = Validator::make(
             ['role_id' => $role->role_code . '|size:2'],
             ['size' => 'trans(\'errors.del-admin\')']
@@ -362,11 +360,11 @@ class UserController extends Controller
             return Redirect::intended()->withErrors($validator);
         }
         if (is_object($user->roles())) {
-            $user->roles()->detach($i['role_id']);
+            $user->roles()->detach($roleId);
         } elseif (is_object($role)) {
             $role->destroy();
         }
-        return Redirect::back();
+        return json_encode([]);
     }
 
     /**
@@ -395,6 +393,40 @@ class UserController extends Controller
             ->with('families', [0 => trans('dialog.all')] + $families[0]);
     }
 
+    public function userListPrint ()
+    {
+        $credentials = [
+            'user_ids' => Input::get('uIDs'),
+        ];
+        $user = new User();
+        $users = $user->whereIn('id', explode(',', $credentials['user_ids']))
+            ->with('clans', 'families', 'roles')
+            ->groupBy('users.id')
+            ->get();
+        $clans = [
+            Clan::pluck('clan_description', 'id')->toArray()
+        ];
+        $roles = [
+            Role::where('role_guest', '=', '0')->pluck('role_description', 'id')->toArray()
+        ];
+        $families = [
+            Family::pluck('family_description', 'id')
+                ->toArray()
+        ];
+        $cs = DB::select(DB::raw("select country_name_" . trans('formats.langjs') . " as country_name, country_code from countries order by country_name_" . trans('formats.langjs') . " asc"));
+        $countries = [];
+        foreach ($cs as $c) {
+            $countries[$c->country_code] = $c->country_name;
+        }
+        asort($countries);
+        return view('logged.userlist-print')
+            ->with('allUsers', $users)
+            ->with('clans', $clans[0])
+            ->with('countries', $countries)
+            ->with('roleList', $roles[0])
+            ->with('families', $families[0]);
+    }
+
     /**
      * Searches a user by input
      *
@@ -419,42 +451,6 @@ class UserController extends Controller
         return json_encode($users);
     }
 
-    /**
-     *
-     */
-    public function sendMailToUsers()
-    {
-        $user = new User();
-        Input::flash();
-        $credentials = Input::get('mails');
-        $sendingUser = User::find(Auth::id());
-        $counter = 0;
-        $totalMessages = sizeof($credentials);
-        $text = Input::get('message_text');
-        foreach ($credentials as $c) {
-            $counter += Mail::send('emails.userlist_message', ['message_text' => $text, 'from' => $sendingUser->user_first_name . ' ' . $sendingUser->user_name], function ($message) use ($c, $sendingUser) {
-                $message->from($sendingUser->email, $sendingUser->user_first_name . ' ' . $sendingUser->user_name);
-                $message->to($c, 'Daniel Gasser')->subject('Palazzin: ' . trans('message.title') . ' ' . $sendingUser->user_first_name . ' ' . $sendingUser->user_name);
-            });
-            $counter++;
-        }
-        //$uz->each(function ($u) use($sendingUser, $text, &$counter) {
-            //Tools::dd(Mail::failures(), false);
-            //Tools::dd(($counter - sizeof(Mail::failures())), false);
-        //});
-        if ($totalMessages - $counter == 1) {
-            return trans('message.m_notsent_s', ['n' => $totalMessages - $counter]);
-        }
-        if ($totalMessages - $counter > 1) {
-            return trans('message.m_notsent_p', ['n' => $totalMessages - $counter]);
-        }
-        if ($totalMessages == $counter) {
-            return trans('message.m_sent_p', ['n' => $counter]);
-        }
-        if ($totalMessages == 1 && $counter == 1) {
-            return trans('message.m_sent_s', ['n' => $counter]);
-        }
-    }
     /**
      *
      * @return mixed Redirect
@@ -488,7 +484,7 @@ class UserController extends Controller
         $user->password = Hash::make(Input::get('new_pass'));
         $user->save();
         Auth::logout();
-        return redirect('/')->with('message', trans('errors.data-saved', ['a' => 'Dein', 'data' => ' neues Passwort']));
+        return redirect('/')->with('info_message', trans('errors.data-saved', ['a' => 'Dein', 'data' => ' neues Passwort']));
     }
 
     /**
@@ -501,26 +497,5 @@ class UserController extends Controller
         $user = new User();
         $user = $user->getSimpleUsersListByNotThisClan(Input::get('clan_id'));
         return $user;
-    }
-
-
-    public function sendBirthdayMail()
-    {
-        $set = Setting::getStaticSettings();
-        $today = new \DateTime();
-        $user = User::where('user_birthday', '=', $today->format('Y-m-d') . ' 00:00:00')->get();
-        if (is_object($user)) {
-            foreach ($user as $u) {
-                $mail = [
-                    'user_first_name' => $u->user_first_name,
-                ];
-                Mail::send('emails.birthday', $mail, function ($message) use ($set, $u) {
-                    $message->to($u->email, $u->user_first_name . ' ' . $u->user_name)
-                        ->from($set->setting_app_owner_email, $set->setting_app_owner)
-                        ->sender($set->setting_app_owner_email, $set->setting_app_owner)
-                        ->subject('Palazzin.ch: Happy Birthday ' . $u->user_first_name . '!');
-                });
-            }
-        }
     }
 }

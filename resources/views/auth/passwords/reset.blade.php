@@ -4,8 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="card">
-                <h1>{{ __('remind.title') }}</h1>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.request') }}" aria-label="{{ __('remind.title') }}">
@@ -17,7 +15,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('userdata.email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" readonly type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{Request::input('email')}}" required autofocus>
+                                <input id="email" readonly type="email" placeholder="{{ __('userdata.email') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{Request::input('email')}}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">

@@ -1,10 +1,6 @@
 @extends('layout.master')
 @section('content')
-<div class="row">
-    <div class="col-sm-12 col-md-6">
-        <h1>{{trans('navigation.admin/users/add')}}</h1>
-            <h3><a href="{{URL::to('admin/users')}}">{{trans('dialog.back', ['to' => 'zu ' . trans('navigation.admin') . ' > ' . trans('navigation.admin/users')])}}</a></h3>
-    </div>
+
 </div>
     {{Form::model($user, array('url' => 'admin/users/add', 'class' => '', 'files' => true, 'id' => 'UserAdd'))}}
         <fieldset>
@@ -13,25 +9,25 @@
                 {{-- name --}}
                 {{Form::label('user_name', trans('userdata.user_name'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                 <div class="col-sm-4 col-md-5">
-                    {{Form::text('user_name', Input::old('user_name'), array('class' => 'form-control required' . ' ' . trans('userdata.user_name')))}}
+                    {{Form::text('user_name', old('user_name'), array('class' => 'form-control required' . ' ' . trans('userdata.user_name')))}}
                 </div>
                 {{-- first name --}}
                 {{Form::label('user_first_name', trans('userdata.user_first_name'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                     <div class="col-sm-4 col-md-5">
-                {{Form::text('user_first_name', Input::old('user_login_name'), array('class' => 'form-control required' . ' ' . trans('userdata.user_first_name')))}}
+                {{Form::text('user_first_name', old('user_first_name'), array('class' => 'form-control required' . ' ' . trans('userdata.user_first_name')))}}
                 </div>
             </div>
             <div class="row">
                 {{-- login name --}}
                 {{Form::label('user_login_name', trans('userdata.user_login_name'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
-                    {{Form::text('user_login_name_show', Input::old('user_login_name'), array('class' => 'form-control', 'disabled', 'id' => 'user_login_name_show'))}}
-                    {{Form::hidden('user_login_name', Input::old('user_login_name'), array('class' => 'form-control'))}}
+                    {{Form::text('user_login_name_show', old('user_login_name'), array('class' => 'form-control', 'disabled', 'id' => 'user_login_name_show'))}}
+                    {{Form::hidden('user_login_name', old('user_login_name'), array('class' => 'form-control'))}}
                 </div>
                 {{-- clan --}}
                 {{Form::label('clan_id', trans('userdata.clan'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::select('clan_id', [trans('dialog.select')] + $clans, Input::old('clan_id'), array('class' => 'form-control required' . ' ' . trans('userdata.clan')))}}
+                {{Form::select('clan_id', [trans('dialog.select')] + $clans, old('clan_id'), array('class' => 'form-control required' . ' ' . trans('userdata.clan')))}}
                 </div>
             </div>
             <div class="row">
@@ -40,7 +36,7 @@
                 {{-- family --}}
                 {{Form::label('user_family', trans('userdata.halfclan'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::select('user_family', [trans('dialog.select_what', ['n' => 'Stamm'])], Input::old('user_family'), array('class' => 'form-control required' . ' ' . trans('userdata.halfclan')))}}
+                {{Form::select('user_family', [trans('dialog.select_what', ['n' => 'Stamm'])], old('user_family'), array('class' => 'form-control required' . ' ' . trans('userdata.halfclan'), 'disabled' => 'disabled'))}}
                 </div>
             </div>
         </fieldset>
@@ -50,7 +46,7 @@
                  {{-- family --}}
                  {{Form::label('email', trans('userdata.email'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                  <div class="col-sm-4 col-md-5">
-                 {{Form::text('email', Input::old('email'), array('class' => 'form-control required' . ' ' . trans('userdata.email')))}}
+                 {{Form::text('email', old('email'), array('class' => 'form-control required' . ' ' . trans('userdata.email')))}}
                  </div>
                    <div class="col-sm-6 col-md-6">
                    </div>
@@ -62,7 +58,7 @@
                 {{-- active --}}
                 {{Form::label('user_active', trans('userdata.user_active'), array('class' => 'col-sm-2 col-md-1 requ'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::select('user_active', ['x' => trans('dialog.select'), '0' => trans('dialog.passive'), '1' => trans('dialog.active')], Input::old('user_active'), array('class' => 'form-control required'))}}
+                {{Form::select('user_active', ['x' => trans('dialog.select'), '0' => trans('dialog.passive'), '1' => trans('dialog.active')], old('user_active'), array('class' => 'form-control required'))}}
                 </div>
                  <div class="col-sm-6 col-md-6">
                  </div>
@@ -83,7 +79,7 @@
                         </tr>
                     </thead>
                     <tbody id="roles">
-                    {{Form::hidden('role_id_add', Input::old('role_id_add'), ['id' => 'role_id_add'])}}
+                    {{Form::hidden('role_id_add', old('role_id_add'), ['id' => 'role_id_add'])}}
                        <tr id="no_role">
                             <td>
                                 {{trans('errors.no-data', ['n' => 'e', 'd' => 'Rollen'])}}
@@ -125,10 +121,12 @@
                change_clan = '{{URL::to('admin/users/changeclan')}}',
                user_activate = '{{URL::to('admin/users/activate')}}',
                user_id = '{{$user->id}}',
+               old_input = JSON.parse('{!!json_encode(Session::getOldInput()) !!}'),
                add_role = '{{URL::to('admin/users/addrole')}}',
+               role_delete = '{{URL::to('admin/users/edit/delete')}}',
                families = {!!json_encode($families)!!},
-               route = '{{Route::getFacadeRoot()->current()->uri()}}';
-
+               route = '{{Route::getFacadeRoot()->current()->uri()}}',
+           addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
         </script>
         <script src="{{asset('assets/js/admin.js')}}"></script>
         <script>
@@ -149,8 +147,17 @@
                         })
                     })
                 }
+                if (addedRoles !== null) {
+                    $.each(addedRoles, function () {
+                        fillUserRoles(this, true);
+                    })
+                }
             });
+            $(document).on('change', '#clan_id', function () {
+                $('#user_family').attr('disabled', false)
+            })
 
         </script>
+    {{Session::forget('addedRoles')}}
     @stop
 @stop
