@@ -161,8 +161,6 @@ if (strlen($routeStr) === 0) {
         }
     </style>
 
-    <script src="{{asset('assets/js/libs/tinymce/js/tinymce/tinymce.min.js')}}"></script>
-         <script src="{{asset('assets/js/libs/tinymce/js/tinymce/langs/de.js')}}"></script>
    <script src="{{asset('assets/js/libs/modernizr/modernizr.custom.42303.js')}}"></script>
     @if(Request::is('new_reservation') || Request::is('admin/bills'))
         <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />

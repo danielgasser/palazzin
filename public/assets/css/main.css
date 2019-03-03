@@ -6370,7 +6370,7 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 #bottom-nav li a {
   padding-left: 12px; }
 #bottom-nav li ul {
-  left: -5.1em;
+  left: -8.1em;
   border: 1px solid #b7282e; }
 
 #res-nav {
@@ -6557,6 +6557,9 @@ h1 {
 h1, h2, h3, h4, h5, h6 {
   color: #333;
   font-size: 3vh; }
+
+h5, h6 {
+  font-size: 2vh; }
 
 body, html {
   width: 100%;
@@ -6851,7 +6854,7 @@ li.lang_active > a {
     color: #000000; }
 
 #sub-footer {
-  background-color: #f7f7f7;
+  background-color: transparent;
   position: fixed;
   bottom: 0;
   left: 0;

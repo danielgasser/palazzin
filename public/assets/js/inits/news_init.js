@@ -42,37 +42,6 @@ var postLoadTimeOut = 10 * 60 * 1000,
             }
         });
         window.setTimeout(loadPosts, postLoadTimeOut);
-    },
-    initTiny = function () {
-        "use strict";
-        window.tinymce.init({
-            theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
-            fontsize_formats: "10px 11px 12px 13px 14px 16px 18px 20px",
-            selector: 'textarea.editit',
-            language: 'de',
-            auto_focus: 'post_text',
-            menu : {
-                edit   : {
-                    title : 'Edit',
-                    items : 'undo redo | cut copy paste pastetext | selectall'
-                },
-                insert : {
-                    title : 'Insert',
-                    items : 'link media | template hr'
-                },
-                table  : {
-                    title : 'Table',
-                    items : 'inserttable tableprops deletetable | cell row column'
-                },
-                tools  : {
-                    title : 'Tools',
-                    items : 'spellchecker code'
-                }
-            },
-            plugins: 'autoresize emoticons lists table textcolor',
-            toolbar: 'insertfile undo redo | fontselect |  fontsizeselect | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l ink image | print preview media fullpage | emoticons',
-            content_css: window.urlAssets + '/css/tinymce.css'
-        });
     };
 jQuery(document).ready(function () {
     "use strict";
@@ -96,7 +65,6 @@ jQuery(document).ready(function () {
         $('#newstickerNewPost').slideToggle('slow');
         window.scrollIt('#newsticker', 0, 'slow');
         $('#post_text').val('');
-        initTiny();
         if (window.tinyMCE.activeEditor !== null) {
             window.tinyMCE.activeEditor.setContent('');
         }
@@ -111,7 +79,6 @@ jQuery(document).ready(function () {
 
     jQuery(document).on('click', '[id^="editPost_"]', function (e) {
         e.preventDefault();
-        initTiny();
         $.ajax({
             type: 'GET',
             url: 'news/getone',

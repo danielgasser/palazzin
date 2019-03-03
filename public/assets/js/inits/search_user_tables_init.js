@@ -2,39 +2,6 @@
  * Created by pc-shooter on 17.12.14.
  */
 var urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/userlist_search';
-var urlSaveData = (window.route.indexOf('admin') > -1) ? '/admin/userlist/savedata' : '/userlist/savedata';
-
-var initTiny = function () {
-    "use strict";
-    window.tinymce.init({
-        theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
-        fontsize_formats: "10px 11px 12px 13px 14px 16px 18px 20px",
-        selector: 'textarea.editit',
-        language: 'de',
-        auto_focus: 'message_text',
-        menu : {
-            edit   : {
-                title : 'Edit',
-                items : 'undo redo | cut copy paste pastetext | selectall'
-            },
-            insert : {
-                title : 'Insert',
-                items : 'link media | template hr'
-            },
-            table  : {
-                title : 'Table',
-                items : 'inserttable tableprops deletetable | cell row column'
-            },
-            tools  : {
-                title : 'Tools',
-                items : 'spellchecker code'
-            }
-        },
-        plugins: 'autoresize emoticons lists table textcolor',
-        toolbar: 'insertfile undo redo | fontselect |  fontsizeselect | styleselect | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l ink image | print preview media fullpage | emoticons',
-        content_css: window.assetCssUrl + '/tinymce.css'
-    });
-};
 
 var searchSortPaginate = function (url, search, sortField, orderByField) {
     "use strict";

@@ -3,11 +3,10 @@
 
     <h3 style="color: #dfb20d">WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="{{asset('/public/files/___checklist/Checkliste_Benutzer_Palazzin.pdf')}}">Benutzer-Checkliste</a></h3>
     <div class="col-sm-4 col-md-4">
-        <h3>{{trans('navigation.lastlogin')}}: {{$lastLogin}}</h3>
-        <!--h3>Dein Browser:<br><textarea readonly style="color: #000;" cols="25" rows="5" ><?php echo $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?></textarea></h3-->
+        <h5>{{trans('navigation.lastlogin')}}: {{$lastLogin}}</h5>
     </div>
     <div class="col-sm-4 col-md-4">
-        <h3>{{trans('home.yourroles')}}:</h3>
+        <h5>{{trans('home.yourroles')}}:</h5>
         <ul>
           @foreach($roles as $role)
          <li>{{ $role->role_code }} - {{ trans('roles.' . $role->role_code) }}</li>
@@ -15,7 +14,7 @@
         </ul>
     </div>
     <div class="col-sm-4 col-md-4">
-        <h3>{{trans('home.yourclan')}}:</h3>
+        <h5>{{trans('home.yourclan')}}:</h5>
         <ul>
           @foreach($clan_name as $clan)
          <li><span class="{{ $clan->clan_code }}-text">{{ $clan->clan_description }}</span></li>

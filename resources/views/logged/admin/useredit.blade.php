@@ -192,7 +192,6 @@
             $('#user_family').attr('disabled', false)
         })
     </script>
-    <script src="{{asset('assets/js/admin.js')}}"></script>
     @stop
     @section('scripts-end')
     @parent

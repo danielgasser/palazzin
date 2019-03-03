@@ -128,7 +128,6 @@
                route = '{{Route::getFacadeRoot()->current()->uri()}}',
            addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
         </script>
-        <script src="{{asset('assets/js/admin.js')}}"></script>
         <script>
             $(document).ready(function () {
                 var clan_id = jQuery("#clan_id").val(),
