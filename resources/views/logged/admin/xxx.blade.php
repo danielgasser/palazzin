@@ -74,7 +74,7 @@
             $('#loginDataContent').timeLiner();
         });
     </script>
-        <script src="/assets/min/js/admin.min.js"></script>
+        <script src="/assets/js/admin.js"></script>
     @stop
 
 @stop

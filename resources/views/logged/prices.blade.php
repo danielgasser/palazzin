@@ -38,8 +38,6 @@
 </div>
     @section('scripts')
     @parent
-        <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
-        <script src="{{asset('assets/min/js/admin.min.js')}}"></script>
     @stop
 
 @stop

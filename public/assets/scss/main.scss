@@ -397,7 +397,7 @@ table.tablesorter, table.tablesorter thead tr th {
     margin: 40vh auto;
 }
 .btn-link-style {
-    color: #333;
+    color: #fff;
     font-weight: normal;
     font-size: 1.1em;
     width: 100%;
@@ -409,7 +409,6 @@ table.tablesorter, table.tablesorter thead tr th {
     background: transparent;
     &:hover, &:active, &:focus {
         background-color: #b7282e !important;
-        color: white !important;
         padding: 18px 18px;
     }
 }

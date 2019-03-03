@@ -28,25 +28,6 @@ class RightController extends Controller
     }
 
     /**
-     * Searches rights by input
-     *
-     * @return mixed View
-     */
-    public function searchRights()
-    {
-        $input = Input::get('searchAllRights');
-        $rights = Right::where('right_code', 'LIKE', '%' . $input . '%')
-            ->orWhere('right_description', 'LIKE', '%' . $input . '%')
-            ->get();
-        if ($rights->isEmpty()) {
-            return view('logged.admin.roles')
-                ->with('allRights', Right::all());
-        }
-        return view('logged.admin.rights')
-            ->with('allRights', $rights);
-    }
-
-    /**
      * Finds a right by it's id
      *
      * @param $id input->id Right

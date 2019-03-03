@@ -84,14 +84,6 @@ ul {
         content: "\f078" !important;
     }
 }
-.nav-clan {
-    background-color: #fff !important;
-    &:hover {
-        background-color: #fff !important;
-        color: white;
-    }
-}
-
 .navbar-default {
   font-weight: bold;
   .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus, .navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
@@ -131,7 +123,7 @@ ul {
     color: white !important;
       padding: 18px 18px;
   }
-  .navbar-nav>li>a:not([href]):hover, .navbar-nav>li>a:not([href]):focus, .navbar-nav>li>a:not([href]):active {
+  .navbar-nav>li:not(.nav-clan)>a:not([href]):hover, .navbar-nav>li:not(.nav-clan)>a:not([href]):focus, .navbar-nav>li:not(.nav-clan)>a:not([href]):active {
     background-color: #333 !important;
     color: white !important;
   }
@@ -191,7 +183,7 @@ ul {
 }
 .navbar-header {
     width: 55px;
-    margin-bottom: 1em;
+    margin-bottom: 0;
     z-index: 11;
     border-bottom: 1px solid #f7f7f7;
     transition: width 0.5s linear;
@@ -213,17 +205,6 @@ ul {
         }
     }
 }
-#bottom-user-nav {
-  li {
-      a {
-          padding-left: 12px;
-      }
-      ul {
-          left: -7.5em;
-          border: 1px solid $brand-danger;
-      }
-  }
-}
 #res-nav {
     min-height: 63px;
     width: 100%;
@@ -244,8 +225,8 @@ ul {
     height: 100%;
     opacity: 0.75;
     transition: width 1s;
-    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav, #bottom-user-nav {
-        .fa-cog:after , .fa-user:after, .fa-wrench:after {
+    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
+        .fa-cog:after, .fa-wrench:after {
             content: "\f077";
             padding-left: 8px;
         }
@@ -253,11 +234,15 @@ ul {
             content: "\f078";
             padding-left: 8px;
         }
+        .fa-user:after {
+            content: "\f078";
+            padding-left: 4px;
+        }
     }
     #main-nav-container {
         position: absolute;
         width: 100%;
-        top: 126px;
+        top: 112px;
     }
 }
 #closeNav {
@@ -308,7 +293,7 @@ ul {
         content: "\f060";
         font-weight: 900;
     }
-    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav, #bottom-user-nav {
+    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
         li {
             a {
                 .hideContent {

@@ -1,0 +1,31 @@
+.dataTables_scrollHeadInner table thead tr th {
+  box-sizing: initial !important; }
+
+#roles_wrapper {
+  width: 80% !important; }
+
+#roles tbody tr td {
+  vertical-align: middle; }
+  #roles tbody tr td:before {
+    background-color: #b7282e; }
+  #roles tbody tr td.control {
+    padding: 0 0.75em; }
+    #roles tbody tr td.control:before {
+      height: 19px;
+      width: 19px;
+      margin-top: -13px;
+      margin-left: -16px; }
+  #roles tbody tr td:first-child:before {
+    top: 3px;
+    left: 1px; }
+#roles tbody tr.odd {
+  background-color: #cbcbcb; }
+#roles tbody tr.child ul.dtr-details {
+  list-style-type: disc;
+  width: 100%;
+  margin: 2px;
+  padding: 4px 22px; }
+#roles tbody tr.child td {
+  border-bottom: 1px solid #b7282e; }
+
+/*# sourceMappingURL=datatables_roomapp-roles.css.map */

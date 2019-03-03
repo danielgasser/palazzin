@@ -98,8 +98,7 @@
     @parent
         <script>
             var role_rights = '{{URL::to('admin/roles/rights')}}',
-                role_right_delete = '{{URL::to('admin/roles/rights/delete')}}',
+                role_right_delete = '{{URL::to('admin/roles/rights/delete')}}';
         </script>
-        <script src="{{asset('assets/min/js/admin.min.js')}}"></script>
     @stop
 @stop

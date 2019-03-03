@@ -213,7 +213,7 @@ if (strlen($routeStr) === 0) {
                              <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
                          </div>
                          <div class="modal-body">
-                             <p>{{Session::get('info_message') or Session::get('message')}}</p>
+                             <p>{{Session::get('info_message')}} {{Session::get('message')}}</p>
                          </div>
                          <div class="modal-footer">
                              <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
@@ -375,34 +375,45 @@ if (strlen($routeStr) === 0) {
         jQuery(document).on('click', 'body', function () {
             $('.alert-success').hide();
         });
-        jQuery(document).on('click', 'a.dropdown-toggle', function (e) {
-            let classes = e.target.classList,
-                nav = $('#all-nav');
-            if (!classes.contains('hide-footer-nav-text')) {
-                $(this).toggleClass('dropdown-toggle-down');
-                if (nav.hasClass('all-nav-hover') && !$(this).hasClass('topNav')) {
-                    nav.removeClass('all-nav-hover');
-                    return false;
-                }
-            }
-            if (!nav.hasClass('all-nav-hover') && !$(this).hasClass('topNav')) {
-                nav.addClass('all-nav-hover');
-            }
-        });
         jQuery(document).on('click', '.dropdownToggleUp', function (e) {
             let classes = e.target.classList;
             if (classes.contains('hide-footer-nav-text')) {
-                $(this).removeClass('dropdown-toggle-up');
-                $(this).toggleClass('dropdown-toggle-down');
+                $(this)
+                    .removeClass('dropdown-toggle-up')
+                    .toggleClass('dropdown-toggle-down');
             } else {
-                $(this).removeClass('dropdown-toggle-down');
-                $(this).toggleClass('dropdown-toggle-up');
+                $(this)
+                    .removeClass('dropdown-toggle-down')
+                    .toggleClass('dropdown-toggle-up');
             }
+        });
+        jQuery(document).on('click', '#all-nav', function (e) {
+            if (e.target !== this) {
+                if ($(e.target).parent().parent('ul') !== undefined) {
+                    $('.dropdownToggleUp')
+                        .removeClass('dropdown-toggle-up')
+                        .toggleClass('dropdown-toggle-down');
+                }
+                return;
+            }
+            $('#closeNav').trigger('click');
+        });
+        jQuery(document).on('click', '#wrap', function (e) {
+            if (e.target !== this) {
+                return;
+            }
+            $('.dropdownToggleUp')
+                .removeClass('dropdown-toggle-up')
+                .toggleClass('dropdown-toggle-down');
+            $('#all-nav').removeClass('all-nav-hover');
         });
         jQuery(document).on('click', '#closeNav', function () {
             let nav = $('#all-nav');
             if (nav.hasClass('all-nav-hover')) {
                 nav.removeClass('all-nav-hover');
+                $('.dropdownToggleUp')
+                    .removeClass('dropdown-toggle-up')
+                    .toggleClass('dropdown-toggle-down');
             } else {
                 nav.addClass('all-nav-hover');
             }

@@ -1,14 +1,13 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp-rights.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+
+    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
+@stop
 @section('content')
-    <div>
-    {{Form::model(null, array('action' => 'RightController@searchRights'))}}
-    {{Form::text('searchAllRights')}}
-    {{Form::submit(trans('dialog.search'), array('class' => 'btn btn-default','id' => 'searchIt'))}}
-    <button class="btn btn-default">{{trans('dialog.all')}}</button>
-    {{Form::close()}}
-    </div>
-    <div class="table-responsive">
-        <table id="users" class="table tablesorter">
+        <table id="rights" class="table">
             <thead>
                 <tr>
                     <th></th>
@@ -38,12 +37,40 @@
             @endif
             </tbody>
         </table>
-    </div>
-</div>
+
     @section('scripts')
     @parent
-        <script src="/assets/js/tablesorter/jquery.tablesorter.min.js"></script>
-        <script src="{{asset('assets/min/js/admin.min.js')}}"></script>
+        <script>
+            let options = {
+                responsive: true,
+                autoWidth: false,
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                order: [
+                    1,
+                    'asc'
+                ],
+                language: {
+                    paginate: {
+                        first: '{{trans('pagination.first')}}',
+                        previous: '{{trans('pagination.previous')}}',
+                        next: '{{trans('pagination.next')}}',
+                        last: '{{trans('pagination.last')}}'
+                    },
+                    search: '{{trans('dialog.search')}}',
+                    info: '{{trans('pagination.info')}}',
+                    sLengthMenu: '{{trans('pagination.length_menu')}}'
+                },
+                fnDrawCallback: function () {
+                },
+                lengthChange: false
+            };
+            $(function () {
+                $('#rights').dataTable(options)
+            });
+        </script>
     @stop
 
 @stop

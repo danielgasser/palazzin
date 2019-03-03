@@ -1,6 +1,7 @@
 ToDo:
 
 visitor blocking raus
+JS von footer in separate JS-files
 
 -before going life with v3:
 set calendar duration = 10

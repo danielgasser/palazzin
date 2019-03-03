@@ -35,7 +35,6 @@
         <script>
     </script>
 
-        <script src="/assets/min/js/admin.min.js"></script>
         <script src="/assets/js/stats/stats.js"></script>
         <script src="/assets/js/stats/stats_login.js"></script>
         <script>
