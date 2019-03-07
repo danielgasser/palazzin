@@ -72,15 +72,3 @@
     </div>
 </div>
 @endsection
-@section('scripts')
-    @parent
-    <script>
-        let oldie = '{{$isOldWin}}';
-        $(document).ready(function(){
-            if (oldie === '1') {
-                $('#old_ie').show()
-            }
-        });
-        window.localStorage.clear();
-    </script>
-@stop

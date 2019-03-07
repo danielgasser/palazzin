@@ -66,7 +66,7 @@ let V3Reservation = {
     },
     addBeforeShowDay: function (d, otherClanDate, isEdit, selectedDate) {
         let numBeds = window.settings.setting_num_bed,
-            dateStr = d.getFullYear() + '_' + window.smallerThenTen(d.getMonth()) + '_' + window.smallerThenTen(d.getDate()),
+            dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
             host = (occupied > 0) ? 1 : 0,
@@ -383,7 +383,7 @@ let V3Reservation = {
         let start = window.resStartPicker.datepicker('getDate'),
             end =  window.resEndPicker.datepicker('getDate');
         while (start < end) {
-            let checkDateStr = start.getFullYear() + '-' + window.smallerThenTen(start.getMonth()) + '-' + window.smallerThenTen(start.getDate());
+            let checkDateStr = start.getFullYear() + '-' + GlobalFunctions.smallerThenTen(start.getMonth()) + '-' + GlobalFunctions.smallerThenTen(start.getDate());
             if (V3Reservation.checkResBed(checkDateStr)) {
                 V3Reservation.tooMuchBeds(checkDateStr);
                 return false;
@@ -417,7 +417,7 @@ let V3Reservation = {
                 let st = new Date(start);
                 if (tt.length === 0) {
                     st.setMonth(st.getMonth() - 1)
-                    monthStr = st.getFullYear() + '-' + window.smallerThenTen(st.getMonth() + 1);
+                    monthStr = st.getFullYear() + '-' + GlobalFunctions.smallerThenTen(st.getMonth() + 1);
                     tt = recursePeriodFinder(periods, 'period_start_new', monthStr, st);
                 }
                 return tt;
@@ -429,9 +429,9 @@ let V3Reservation = {
         tl = $('#timeliner');
         tl.html('');
         while (start <= end) {
-            monthStr = start.getFullYear() + '-' + window.smallerThenTen(start.getMonth() + 1);
+            monthStr = start.getFullYear() + '-' + GlobalFunctions.smallerThenTen(start.getMonth() + 1);
             tl.append('<li id="tl-' + monthStr + '" class="graph-unit-container cal-unit-container">' +
-                '<div class="graph-unit-day cal-unit-day">' + window.showDate(start, 'short') + '</div></li>');
+                '<div class="graph-unit-day cal-unit-day">' + GlobalFunctions.showDate(start, 'short') + '</div></li>');
             tt = recursePeriodFinder(periods, 'period_start_new', monthStr, start);
             $('#tl-' + monthStr)
                 .addClass(tt[0].clan_code + '-solid')
@@ -525,10 +525,10 @@ let V3Reservation = {
         $('[id^="free-beds_"]').html('');
         let fillNewFreeBeds = function (str) {
             let beds = window.localStorage.getItem(str),
-                bedNumberShow = (beds === null) ? window.settings.setting_num_bed : window.smallerThenTen(window.parseInt(beds, 10), true),
+                bedNumberShow = (beds === null) ? window.settings.setting_num_bed : GlobalFunctions.smallerThenTen(window.parseInt(beds, 10), true),
                 showBedDateStr = str.split('-'),
                 dateBed = new Date(showBedDateStr[0], showBedDateStr[1], showBedDateStr[2], 0, 0, 0, 0),
-                bedString = showBedDateStr[2] + '.' + window.smallerThenTen((parseInt(showBedDateStr[1], 10) + 1)) + '.' + showBedDateStr[0] + ': <span style="text-align: right"><strong>' + bedNumberShow + '</strong></span>';
+                bedString = showBedDateStr[2] + '.' + GlobalFunctions.smallerThenTen((parseInt(showBedDateStr[1], 10) + 1)) + '.' + showBedDateStr[0] + ': <span style="text-align: right"><strong>' + bedNumberShow + '</strong></span>';
 
             $('#all-free-beds-standard').html('');
             if ($('#free-beds_' + str).length > 0) {
@@ -630,7 +630,7 @@ let V3Reservation = {
             end = new Date(endStr);
         }
         while (start < end) {
-            checkDateStr = start.getFullYear() + separator + window.smallerThenTen(start.getMonth()) + separator + window.smallerThenTen(start.getDate());
+            checkDateStr = start.getFullYear() + separator + GlobalFunctions.smallerThenTen(start.getMonth()) + separator + GlobalFunctions.smallerThenTen(start.getDate());
             func(checkDateStr, args);
             start.setDate(start.getDate() + 1);
         }
@@ -674,8 +674,8 @@ let V3Reservation = {
         $('#clone_guest').attr('disabled', false);
     },
     checkExistentReservation: function (s, e) {
-        let start = s.getFullYear() + '-' + window.smallerThenTen((s.getMonth() + 1)) + '-' + window.smallerThenTen(s.getDate()),
-            end = e.getFullYear() + '-' + window.smallerThenTen((e.getMonth() + 1)) + '-' + window.smallerThenTen(e.getDate());
+        let start = s.getFullYear() + '-' + GlobalFunctions.smallerThenTen((s.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(s.getDate()),
+            end = e.getFullYear() + '-' + GlobalFunctions.smallerThenTen((e.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(e.getDate());
         $.ajax({
             url: 'check_existent',
             method: 'POST',
@@ -685,7 +685,7 @@ let V3Reservation = {
                 "_token": window.token,
             },
             success: function (data) {
-                window.unAuthorized(data);
+                GlobalFunctions.unAuthorized(data);
                 if (!isNaN(parseInt(data, 10))) {
                     $('#edit_reservation_exists').attr('action', window.urlTo + '/edit_reservation/' + data);
                     $('#reservation_exists').modal({
@@ -705,7 +705,7 @@ let V3Reservation = {
                 "_token": window.token,
             },
             success: function (data) {
-                window.unAuthorized(data);
+                GlobalFunctions.unAuthorized(data);
                 let d = $.parseJSON(data);
                 if (d.hasOwnProperty('error')) {
                     $('#no_delete_reservation').modal({

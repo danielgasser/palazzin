@@ -330,13 +330,6 @@ table.tablesorter, table.tablesorter thead tr th {
   height: 450px !important; //provide height of slider
 }
 
-.bxslider {
-  img {
-    margin: auto auto;
-    height: 450px;
-  }
-}
-
 .stay_tuned {
   text-align: center;
 }
@@ -416,24 +409,17 @@ table.tablesorter, table.tablesorter thead tr th {
     }
 }
 #loading {
-  position: fixed;
-  top: 62px;
-  left: 55px;
-  z-index: 100000;
-  display: none;
-  font-weight: bold;
-  text-align: center;
-  width: 96%;
-  height: 100%;
-  background-color: transparent;
-  color: $color-h1;
-  .row {
-    padding-top: 33%;
-    .ccc {
-      height: 60px;
-      padding-top: 10px;
-    }
-  }
+    position: fixed;
+    top: 42%;
+    left: 45%;
+    z-index: 100000;
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    color: #b7282e;
 }
 
 #wrap > .container {

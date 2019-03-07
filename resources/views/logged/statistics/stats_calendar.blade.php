@@ -38,88 +38,11 @@
                     monthColors = {!!json_encode($monthColors)!!},
                     yearColorsSet = {!!json_encode($yearColors)!!},
                     yearColors = {},
-                    langDialog = {!!json_encode(Lang::get('dialog'))!!},
                     monthDays = [];
-            Highcharts.exportCharts = function (charts, options) {
-                'use strict';
-                // Merge the options
-                options = Highcharts.merge(Highcharts.getOptions().exporting, options);
-
-                // Post to export server
-                window. Highcharts.post(options.url, {
-                    filename: options.filename || 'chart',
-                    type: options.type,
-                   // width: options.width,
-                    svg: Highcharts.getSVG(charts)
-                });
-            };
-            Highcharts.getSVG = function (charts, options) {
-                'use strict';
-                var svgArr = [],
-                        top = 0,
-                        width = 0,
-                        svgString = '';
-
-                $.each(charts, function (i, chart) {
-                    if (!$.isEmptyObject(chart)) {
-                        var svg = chart.getSVG();
-                        svg = svg.replace('<svg', '<g transform="translate(0,' + top + ')" ');
-                        svg = svg.replace('</svg>', '</g>');
-
-                        top = chart.chartHeight;
-                        width = Math.max(width, chart.chartWidth);
-                        svgString += '<svg height="' + top + '" width="' + width + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + svg + '</svg>'
-
-                        console.log(top, width)
-                    }
-                    //svgArr.push(svg);
-                });
-                //$.each(svgArr, function (i, n) {
-                //    //svgString += '<svg height="' + top + '" width="' + width + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + n + '</svg>'
-                //});
-                return svgString;//'<svg height="' + top + '" width="' + width + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + svgArr.join('') + '</svg>';
-            };
-
         </script>
 
-        <script src="/assets/min/js/admin.min.js"></script>
         <script src="/assets/js/stats/stats.js"></script>
         <script>
-            $(document).ready(function(){
-                'use strict';
-                for (var i = 1; i < 32; i += 1) {
-                    monthDays.push(i);
-                }
-                /*
-                $("[name^='year']").bootstrapToggle({
-                    on: 'An',
-                    off: 'Aus'
-                });
-                */
-                $('[name^="year"]').on('change', function (event, state) {
-                    checkedYear = [];
-                    showYear = [];
-                    $.each($('[name^="year"]'), function (i, n) {
-                        if ($(n).is(':checked')) {
-                            checkedYear.push(n.value + '-%');
-                            showYear.push(n.value);
-                        }
-                        yearColors[n.value] = yearColorsSet[i];
-                    });
-                    checkedYear.sort();
-                    showYear.sort();
-                })
-
-            });
-            $(document).on('click', '#getYears', function () {
-                if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('change');
-                }
-                window.getStatsData('/stats_calendar_total_day', checkedYear, window.fillTable);
-            });
-            $(document).on('click', '#bla', function () {
-                window.console.log();
-            });
 
         </script>
         <script src="/assets/js/stats/stats_calendar.js"></script>

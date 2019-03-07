@@ -11,12 +11,7 @@ return array(
     'follow' => 'Klicke auf folgenden Link',
     'settings' => 'Einstellungen',
     'texts' => array(
-        'warning_save_global_settings' => 'Diese Änderungen haben globale Auswirkungen auf<ul>
-                                            <li>Getätigte Reservierungen</li>
-                                            <li>Rechnungen</li>
-                                            <li>Berechtigungen</li>
-                                            <li>Erreichbarkeit von < :site ></li>
-                                            </ul>',
+        'warning_save_global_settings' => 'Diese Änderungen haben globale Auswirkungen auf<ul><li>Getätigte Reservierungen</li><li>Rechnungen</li><li>Berechtigungen</li><li>Erreichbarkeit von < :site ></li></ul>',
         'warning_delete_role_from_user' => "Möchtest Du dem Benutzer wirklich die folgende Rolle entziehen?",
         'warning_no_free_beds' => 'Es gibt nicht mehr genügend freie Betten',
         'warning_over_period' => 'Reservierung über mehrere Perioden ist nicht möglich.<br>Späteste Abreise am ',
@@ -26,12 +21,7 @@ return array(
         'warning_delete_reservation_guest' => 'Möchtest Du diese(n) Gast/Gäste wirklich löschen?',
         'warning_delete_right_from_role' => 'Möchtest Du der Rolle wirklich das folgende Recht entziehen?',
         'warning_delete_guest' => 'Möchtest Du diesen Gasteintrag wirklich löschen?',
-        'warning_delete_user' => 'Möchtest Du <span id="modal-username"></span> wirklich löschen?<br>Dies ist endgültig!<br>Diese Änderungen haben Auswirkungen auf<ul>
-                                            <li>Getätigte Reservierungen</li>
-                                            <li>Beiträge (Newsticker)</li>
-                                            <li>Benachrichtigungen</li>
-                                            <li>Statistiken</li>
-                                            </ul>',
+        'warning_delete_user' => 'Möchtest Du <span id="modal-username"></span> wirklich löschen?<br>Dies ist endgültig!<br>Diese Änderungen haben Auswirkungen auf<ul><li>Getätigte Reservierungen</li><li>Beiträge (Newsticker)</li><li>Benachrichtigungen</li><li>Statistiken</li></ul>',
         'warning_four_chars' => 'Mindestens 4 Zeichen'
     ),
     'footer_texts' => array(

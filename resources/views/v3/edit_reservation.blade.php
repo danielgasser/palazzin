@@ -154,26 +154,7 @@
 @section('scripts')
     @parent
     <script>
-        var getUSerPeriod = function (p) {
-                for (let i = 0; i < p.length; i++) {
-                    if (p[i].id === parseInt(periodID, 10)) {
-                        return p[i];
-                    }
-                }
-                return null;
-            },
-            superFilter = function (data, filter) {
-                let arr = [];
-                for (let i = 0; i < data.length; i++) {
-                    Object.keys(data[i]).filter(function(k) {
-                        if (k.indexOf(filter) === 0 && data[i][k] !== undefined) {
-                            arr[k] = data[i][k];
-                        }
-                    });
-                }
-                return arr;
-            },
-            guestsDates = $('[id^="guests_date"]'),
+        var guestsDates = $('[id^="guests_date"]'),
             startDate,
             rolesTaxes = {!! $roleTaxes !!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
@@ -197,27 +178,13 @@
             startGuestPicker = [],
             endGuestPicker = [],
             endDateString,
-            userPeriod = getUSerPeriod(periods, 'freeBeds'),
+            userPeriod = GlobalFunctions.getUSerPeriod(periods, 'freeBeds'),
             reservations = JSON.parse('{!!$my_reservations!!}'),
             guestEntryView = '{!!  $guestEntryView !!}',
-            newAllGuestBeds = superFilter(reservationsPerPeriod),
-            newUserRes = superFilter(reservations, 'user_Res_Dates_');
-        console.log(reservations, newUserRes)
+            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod),
+            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_');
     </script>
-    <script>
-        $(document).ready(function () {
-            localStorage.clear();
-            $('#clone_guest').attr('disabled', false);
-            $('#reset_reservation').attr('disabled', false);
-            localStorage.setItem('new_res', '0');
-            let startDateStr = userPeriod.period_start.split(' '),
-                startDateString = startDateStr[0].split('-'),
-                endDateStr = userPeriod.period_end.split(' ');
-            endDateString = endDateStr[0].split('-');
-            startDate = new Date(startDateString[0], (startDateString[1] - 1), startDateString[2], 0, 0, 0);
-            V3Reservation.initEdit(periodID, startDate);
-        })
-    </script>
+    <script src="{{asset('assets/js/inits/edit_reservation_init.js')}}"></script>
     <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);

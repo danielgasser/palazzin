@@ -30,13 +30,4 @@ class Generation extends Model {
     public function users() {
         return $this->hasMany('User', 'clan_id');
     }
-    
-    /**
-     * Get all clans
-     *
-     * @return mixed Collection
-     */
-    public function getAllGenerations(){
-        return $this->all();
-    }
 }

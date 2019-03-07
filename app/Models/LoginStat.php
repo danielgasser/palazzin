@@ -33,17 +33,6 @@ class LoginStat extends Model {
     }
 
     /**
-     * Checks the max. attempt of failed logins
-     *
-     * @param $value
-     * @return bool
-     */
-    public function setFalseLogin($value) {
-        if ($this->login_stat_false_login >= 2) return true;
-        return $this->login_stat_false_login++;
-    }
-
-    /**
      *
      * @param $value
      * @return string
@@ -64,10 +53,9 @@ class LoginStat extends Model {
     }
 
     /**
-     * Get logins by date or all if inputs are empty
-     *
      * @param null $inputs
      * @return stdClass
+     * @throws Exception
      */
     public function getLoginsByDate($inputs = null){
         if ($inputs == null) {
@@ -86,8 +74,8 @@ class LoginStat extends Model {
             $endYear = intval($inputs['searchParams'][3]);
         }
 
-        $start = $startYear . '-' . self::smallerThenTen($startMonth) . '-01';
-        $end = $endYear . '-' . self::smallerThenTen($endMonth) . '-' . self::getLastDayInMonth($endMonth, $endYear);
+        $start = $startYear . '-' . $this->smallerThenTen($startMonth) . '-01';
+        $end = $endYear . '-' . $this->smallerThenTen($endMonth) . '-' . $this->getLastDayInMonth($endMonth, $endYear);
 
         $coll = self::whereBetween('login_stats.created_at', [$start, $end])
             ->join('users', 'users.id', '=', 'login_stats.user_id')
@@ -171,15 +159,6 @@ class LoginStat extends Model {
     }
 
     /**
-     * Gets all logins by user
-     *
-     * @return mixed Model
-     */
-    public static function getLastLoginByUser () {
-        return self::select('created_at')->orderBy('created_at', 'desc')->first();
-    }
-
-    /**
      * Gets all logins
      *
      * @return mixed Collection
@@ -198,26 +177,12 @@ class LoginStat extends Model {
     }
 
     /**
-     * Gets all logins by AJAX
-     *
-     * @return mixed json
-     */
-    public static function getLoginsAjax(){
-        $coll = self::getLogins();
-        $coll->each(function($c){
-            $c->userCount = $c->where('login_stats.user_id', '=', $c->user_id)->count('user_id');
-            $c->userDates = $c->where('login_stats.user_id', '=', $c->user_id)->get();
-        });
-        return $coll->toJson();
-    }
-
-    /**
      * Returns a string with preceding '0' from $i < 10
      *
      * @param $i
      * @return string
      */
-    public static function smallerThenTen($i){
+    protected function smallerThenTen($i){
         return (intval($i) < 10) ? '0' . $i : $i;
     }
     /**
@@ -225,7 +190,7 @@ class LoginStat extends Model {
      * @param $y
      * @return int
      */
-    public static function getLastDayInMonth($m, $y){
+    protected function getLastDayInMonth($m, $y){
         return cal_days_in_month(CAL_GREGORIAN, intval($m), intval($y));
     }
 

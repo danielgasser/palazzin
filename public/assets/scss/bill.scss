@@ -18,8 +18,18 @@
 }
 #bills_wrapper {
     #bills {
+        tbody {
+            tr {
+                td:before {
+                    background-color: #b7282e;
+                }
+            }
+        }
         td {
             padding: 3px;
+        }
+        .details {
+            padding-left: 22px;
         }
     }
     .row {

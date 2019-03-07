@@ -50,14 +50,10 @@ class Bill extends Model {
     }
 
     /**
-     * Generates bills from a cron job
-     *
      * @return mixed
+     * @throws Exception
      */
     public function generateBills() {
-        //if (strpos(Request::server('SERVER_ADDR'), Request::getClientIp()) === false) {
-        //    return false;
-        //}
         $set = Setting::getStaticSettings();
         $today = new \DateTime();
         $reservations = new Reservation();
@@ -71,16 +67,6 @@ class Bill extends Model {
                 },
             ))
             ->get();
-
-/* TEST
-        $reservations = $reservations->where('id', '=', '261')
-            ->with(array(
-                'guests' => function ($q) {
-                    $q->select('guests.id', 'reservation_id', 'guest_number', 'guest_night', 'guest_ended_at', 'guest_started_at', 'role_id');
-                },
-            ))
-            ->get();
-        */
         $arr = array();
         $overSeaUser = false;
         $reservations->each(function ($r) use ($arr, $set, $overSeaUser) {
@@ -258,10 +244,9 @@ class Bill extends Model {
     }
 
     /**
-     * Search bills by input->$opts
-     *
      * @param $opts
-     * @return mixed Collection
+     * @return mixed
+     * @throws Exception
      */
     public function getBillsAjax ($opts) {
         $set = Setting::getStaticSettings();
@@ -352,6 +337,7 @@ class Bill extends Model {
         });
         return $bills;
     }
+
     /**
      * Search bills by input->bill number
      *
@@ -481,6 +467,10 @@ class Bill extends Model {
         return $bills;
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getBillsStatsCalendar($year = array('2015-%'))
     {
         if($year == NULL) {
@@ -521,6 +511,10 @@ class Bill extends Model {
         return $bills;
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getBillsTotalStats($year = array('2015-%'))
     {
         $totals = array();
@@ -584,9 +578,6 @@ class Bill extends Model {
             $totals[$key]['total_show'] = number_format($total, 2, '.', '\'');
             $totals['totals']['total'] += $total;
         }
-        //$totals['totals']['paid'] = number_format($totals['totals']['paid'], 2, '.', '\'');
-        //$totals['totals']['unpaid'] = number_format($totals['totals']['unpaid'], 2, '.', '\'');
-        //$totals['totals']['total'] = number_format($totals['totals']['total'], 2, '.', '\'');
         $totals['totals']['paid_show'] = number_format($totals['totals']['paid'], 2, '.', '\'');
         $totals['totals']['unpaid_show'] = number_format($totals['totals']['unpaid'], 2, '.', '\'');
         $totals['totals']['total_show'] = number_format($totals['totals']['total'], 2, '.', '\'');
@@ -595,6 +586,10 @@ class Bill extends Model {
 
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getBillsTotalStatsPerYear($year = array('2015-%'))
     {
         $bills = $this->selectRaw("bill_bill_date, bill_due, bill_total, bill_bill_date")

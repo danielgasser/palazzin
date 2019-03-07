@@ -72,11 +72,10 @@ class Guest extends Model {
     }
 
     /**
-     * Validates new Guest
-     *
      * @param $inputs
-     * @param $cp Period
-     * @return array errors
+     * @param $cp
+     * @return array
+     * @throws Exception
      */
     public function validateFromReservation ($inputs, $cp) {
         $periodStartDate = new \DateTime($cp->period_start);
@@ -191,6 +190,7 @@ class Guest extends Model {
      * @throws Exception
      */
     public static function createValidateGuestEntries ($credentials, $currentPeriod, $reservation, $existentRes) {
+        // ToDo used?
         $sumGuests = 0;
         $first = \Carbon\Carbon::createFromFormat('d.m.Y', $credentials['reservation_guest_started_at'][0])->formatLocalized('%Y-%m-%d');
         $last = \Carbon\Carbon::createFromFormat('d.m.Y', $credentials['reservation_guest_ended_at'][0])->formatLocalized('%Y-%m-%d');

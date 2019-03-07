@@ -1,153 +1,246 @@
 /**
  * Created by pc-shooter on 17.12.14.
  */
-var urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/userlist_search';
-
-var searchSortPaginate = function (url, search, sortField, orderByField) {
-    "use strict";
-    search = {
-        search_user: $('#search_user').val(),
-        clan_search: $('#clan_search').val(),
-        family_search: $('#family_search').val(),
-        role_search: $('#role_search').val()
-    };
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: {
-            search_field: search.search_user,
-            sort_field: sortField,
-            order_by: orderByField,
-            family: search.family_search,
-            clan: search.clan_search,
-            role: search.role_search,
-            user_id: $('#user_id').val()
+var urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/userlist_search',
+    dataTableSettings = {
+        dataSrc: '',
+        responsive: true,
+        autoWidth: false,
+        fixedHeader: {
+            header: true,
+            footer: true
         },
-        success: function (d) {
-            window.unAuthorized(d);
-            var userData = $.parseJSON(d);
-            console.log(userData)
-
-            window.userTable.clear();
-            window.userTable.rows.add(userData)
-            window.userTable.draw();
-            let uIds = [];
-            $.each(userData, function (i, n) {
-                if (n.user_id !== '') {
-                    uIds.push(n.user_id);
+        order: [
+            1,
+            'asc'
+        ],
+        columnDefs: [
+            {
+                targets: [0],
+                responsivePriority: 1,
+                class: 'details',
+                visible: true,
+                orderable:      false,
+                data:           null,
+                defaultContent: ''
+            },
+            {
+                targets: [1],
+                orderable:      false,
+                sortable: false,
+                className: 'user_id',
+                data: 'user_id'
+            },
+            {
+                targets: [2],
+                responsivePriority: 2,
+                data: 'user_first_name'
+            },
+            {
+                targets: [3],
+                responsivePriority: 4,
+                data: 'user_name'
+            },
+            {
+                targets: [4],
+                responsivePriority: 5,
+                data: 'user_login_name',
+                render: function (data, type, row, meta) {
+                    if (window.isManager) {
+                        return '<a href="' + urlTo + '/admin/users/edit/' + row.user_id + '">' + data + '</a>';
+                    }
+                    return '<a href="' + urlTo + '/user/profile/' + row.user_id + '">' + data + '</a>';
                 }
-            })
-            $('#uIDs').val(uIds.join(','))
-        }
-    });
-};
-var fillUserTable = function (obj) {
-    "use strict";
-    var hrStr = '',
-        trStr = '',
-        db,
-        showdb = '',
-        tbodyel = '#table-body',
-        opts = {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric'
-        },
-        tb =  $('#users').outerWidth();
-    $(tbodyel).html('');
-    if (obj === undefined || obj.length === 0) {
-        $(tbodyel).html('Keine Daten');
-        $('#records_no').html(obj.length);
-        return false;
-    }
-    $('#records_no').html(obj.length);
-    $.each(obj, function (i, n) {
-        var address = (n.user_address === undefined || n.user_address === '') ? ' - ' :  n.user_address,
-            zip = (n.user_zip === undefined || n.user_zip === '') ? ' - ' :  n.user_zip,
-            city = (n.user_city === undefined || n.user_city === '') ? ' - ' :  n.user_city,
-            country = (n.country.country === undefined || n.country.country === '') ? ' - ' :  n.country.country,
-            userNew = (n.user_new === '0') ? '<i class="far fa-registered"></i>' : 'neu',
-            fonlabelOne = (window.langUser.fonlabel[n.user_fon1_label] === undefined || window.langUser.fonlabel[n.user_fon1_label] === '') ? ' - ' : window.langUser.fonlabel[n.user_fon1_label];
-        trStr += '<tr>' +
-            '<th><a href="' + window.baseUrl + '/user/profile/' + n.id + '">' +
-            '<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a></th>';
-        if (window.isManager) {
-            trStr += '<th><a href="' + window.urlTo + '/admin/users/edit/' + n.id + '">' +
-                '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></th>';
-            trStr += '<th>' +
-                '<a id="destroyUser_' + n.id + '_' + n.user_first_name + '_' + n.user_name + '" href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>' +
-                '</th>' +
-                '<th>' + userNew + '</th>';
-        }
-        trStr += '<td>' + n.clans.clan_description + '/<br> ';
-        if (n.families !== null) {
-            trStr += n.families.family_description;
-        }
-        trStr += ' </td>' +
-            '<td class="firstname_1">' + n.user_first_name + '</td>' +
-            '<td class="name_1">' + n.user_name + '</td>' +
-            '<td>' + n.user_login_name + '</td>' +
-            '<td>' +
-            '<ul class="mailz">' +
-            '<li>' +
-            '<a class="mail_one" href="mailto:' + n.email + '">' + n.email + '</a>' +
-            '</li>';
-        if (n.user_email2 !== '' && n.user_email2 !== null) {
-            trStr += '<li>' +
-                '<a href="mailto:' + n.user_email2 + '">' + n.user_email2 + '</a>' +
-                '</li>';
-        }
-        trStr += '</ul>';
-        if ((n.user_www !== '' && n.user_www !== null) && (n.user_www_label !== '' && n.user_www_label !== null)) {
-            trStr += '<td><a href="https://' + n.user_www + '" target="_blank">' + n.user_www_label + '</a></td>';
-        } else {
-            trStr += '<td><a href="#"></a></td>';
-        }
-        trStr += '<td>' + address + '</td>' +
-            '<td>' + zip + '</td>' +
-            '<td>' + city + '</td>' +
-            '<td>' + country + '</td>' +
-            '<td>' +
-            '<ul class="fonz">' +
-            '<li>' + fonlabelOne + '<br>' + n.user_fon1 + '</li>';
-        if (n.user_fon2 !== '' && n.user_fon2 !== null) {
-            trStr += '<li>' + window.langUser.fonlabel[n.user_fon2_label] + '<br>' + n.user_fon2 + '</li>';
-        }
-        if (n.user_fon3 !== '' && n.user_fon3 !== null) {
-            trStr += '<li>' + window.langUser.fonlabel[n.user_fon3_label] + '<br>' + n.user_fon3 + '</li>';
-        }
-        trStr += '</ul>';
-        db = new Date(n.user_birthday);
-        if (!isNaN(db.getTime())) {
-            showdb = window.showDate(db, '');
-        } else {
-            showdb = '-';
-        }
-        trStr += '<td class="date-header">' + showdb + '</td>' +
-            '<td class="date-header">' + n.user_last_login + '</td>' +
-            '<td>' +
-            '<ul class="rolez">';
-        if (n.roles !== undefined) {
-            $.each(n.roles, function (i, m) {
-                trStr += '<li>' +
-                    window.langRole[m.role_code] +
-                    '</li>';
-            });
-        }
-    });
-    $(tbodyel).html(trStr);
-    //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
-};
+            },
+            {
+                targets: [5],
+                responsivePriority: 6,
+                data: 'email',
+                render: function (data, type, row, meta) {
+                    let html = '<ul style="list-style-type: none; margin: 0; padding: 0;">';
+                    html += '<li class="mail_one"><a href="mailto:' + data + '">' + data + '</a></li>';
+                    if (row.user_email2 === undefined || row.user_email2 === null) {
+                        html += '</ul>';
+                    } else if (row.user_email2.length > 0) {
+                        html += '<li><a href="mailto:' + row.user_email2 + '">' + row.user_email2 + '</a></li>';
+                    }
+                    return html;
+                }
+            },
+            {
+                targets: [6],
+                responsivePriority: 3,
+                data: 'user_fon1',
+                render: function (data, type, row, meta) {
+                    let tel = data.replace(/^0+/, '');
+                    tel = tel.replace(/ /g,'');
+                    tel = tel.replace('+41', '');
+                    return '<a href="tel:+' + row.user_country_code + tel + '">' + data + '</a>'
+                }
+            },
+            {
+                targets: [7],
+                responsivePriority: 24,
+                data: 'user_www_label',
+                render: function (data, type, row, meta) {
+                    if (row.user_www === undefined || row.user_www === null) {
+                        return '';
+                    }
+                    if (row.user_www.length > 0) {
+                        return '<a href="https://' + row.user_www + '">' + data + '</a>';
+                    }
+                    return '';
+                }
+            },
+            {
+                targets: [8],
+                responsivePriority: 8,
+                data: 'user_address'
+            },
+            {
+                targets: [9],
+                responsivePriority: 8,
+                data: 'user_zip'
+            },
+            {
+                targets: [10],
+                responsivePriority: 8,
+                data: 'user_city'
+            },
+            {
+                targets: [11],
+                responsivePriority: 8,
+                data: 'user_country_code',
+                render: function (data, type, row, meta) {
+                    if (row.country !== undefined) {
+                        return row.country.country
+                    }
+                    return '-';
+                }
+            },
+            {
+                targets: [12],
+                responsivePriority: 24,
+                data: 'user_birthday'
+            },
+            {
+                targets: [13],
+                responsivePriority: 24,
+                data: 'clans',
+                render: function (data, type, row, meta) {
+                    if (data === '' || data == null) {
+                        return '';
+                    }
+                    return data.clan_description;
+                }
+            },
+            {
+                targets: [14],
+                responsivePriority: 24,
+                data: 'families',
+                render: function (data, type, row, meta) {
+                    if (data === '' || data == null) {
+                        return '';
+                    }
+                    return data.family_description;
 
+                }
+            },
+            {
+                targets: [15],
+                responsivePriority: 24,
+                data: 'roles',
+                render: function (data) {
+                    let html = '<ul>';
+                    $.each(data, function (i, n) {
+                        html += '<li>' + n.role_description + '</li>';
+                    });
+                    html += '</ul>';
+                    return html;
+                }
+            },
+            {
+                targets: [16],
+                responsivePriority: 24,
+                data: 'last_login'
+            },
+        ],
+        searching: false,
+        language: {
+            paginate: {
+                first: window.paginationLang.first,
+                previous: window.paginationLang.previous,
+                next: window.paginationLang.next,
+                last: window.paginationLang.last
+            },
+            info: window.paginationLang.info,
+            sLengthMenu: window.paginationLang.length_menu
+        },
+        fnDrawCallback: function () {
+        },
+        lengthChange: false
+    },
+    searchSortPaginate = function (url, search, sortField, orderByField) {
+        "use strict";
+        search = {
+            search_user: $('#search_user').val(),
+            clan_search: $('#clan_search').val(),
+            family_search: $('#family_search').val(),
+            role_search: $('#role_search').val()
+        };
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                search_field: search.search_user,
+                sort_field: sortField,
+                order_by: orderByField,
+                family: search.family_search,
+                clan: search.clan_search,
+                role: search.role_search,
+                user_id: $('#user_id').val()
+            },
+            success: function (d) {
+                GlobalFunctions.unAuthorized(d);
+                var userData = $.parseJSON(d);
+
+                window.userTable.clear();
+                window.userTable.rows.add(userData)
+                window.userTable.draw();
+                let uIds = [];
+                $.each(userData, function (i, n) {
+                    if (n.user_id !== '') {
+                        uIds.push(n.user_id);
+                    }
+                })
+                $('#uIDs').val(uIds.join(','))
+            }
+        });
+    },
+    userTable;
 $(document).ready(function () {
     "use strict";
+    userTable = $('#users').DataTable(dataTableSettings);
+    $('#users tbody').on('click', 'td.00', function () {
+        var tr = $(this).closest('tr');
+        var row = userTable.row(tr);
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            var theDesc = row.data();
+            row.child(theDesc).show();
+            tr.addClass('shown');
+        }
+    } );
     var d = new Date(),
         y = $('#year'),
         m = $('#month');
-    window.yl = window.createYearList();
-    window.ml = window.createMonthList();
-    window.fillSelect(m, window.ml, false);
-    window.fillSelect(y, window.yl, true);
+    window.yl = GlobalFunctions.createYearList();
+    window.ml = GlobalFunctions.createMonthList();
+    GlobalFunctions.fillSelect(m, window.ml, false);
+    GlobalFunctions.fillSelect(y, window.yl, true);
     y.val(d.getFullYear());
     m.val(d.getMonth());
     //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
@@ -216,7 +309,6 @@ $(document).on('change', '#clan_search', function (e) {
             ;
         }
     });
-  //  chk_me(e);
 });
 $(document).on('submit', 'form:not(#sendToPrint)', function (e) {
     "use strict";

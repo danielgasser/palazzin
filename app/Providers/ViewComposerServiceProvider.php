@@ -31,6 +31,6 @@ class ViewComposerServiceProvider extends ServiceProvider
         view()->composer('*', 'App\Http\ViewComposers\ViewSessionComposer');
         view()->composer('*', 'App\Http\ViewComposers\ViewDataComposer');
         view()->composer('*', 'App\Http\ViewComposers\ViewSettingsComposer');
-        view()->composer(['user.login', 'layout.footer'], 'App\Http\ViewComposers\ViewLoginComposer');
+        view()->composer(['auth.login', 'layout.footer'], 'App\Http\ViewComposers\ViewLoginComposer');
     }
 }

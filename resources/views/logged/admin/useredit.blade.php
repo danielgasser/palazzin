@@ -31,14 +31,12 @@
                {{-- clan --}}
                 {{Form::label('clan_id', trans('userdata.clan'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::select('clan_id', [trans('dialog.select')] + $clans, $user->clan_id, array('class' => 'form-control' . ' ' . trans('userdata.clan')))}}
+                {{Form::select('clan_id', [trans('dialog.select')] + $clans, $user->clan_id, array('class' => 'form-control' . ' ' . trans('userdata.clan'), 'disabled' => 'disabled'))}}
                 </div>
                  {{Form::label('user_family', trans('userdata.halfclan'), array('class' => 'col-sm-2 col-md-1'))}}
                  <div class="col-sm-4 col-md-5">
-                     {{Form::select('user_family', [trans('dialog.select')] + $families, $user->family_code, array('class' => 'form-control required' . ' ' . trans('userdata.halfclan'), 'disabled' => 'disabled'))}}
-                     <div class="col-sm-6 col-md-6">
-                    <button class="btn btn-default" id="changeClan">{{trans('dialog.change')}}</button>
-                 </div>
+                     {{Form::text('user_family', $families[$user->clan_id][$user->family_code], array('class' => 'form-control required' . ' ' . trans('userdata.halfclan'), 'disabled' => 'disabled'))}}
+                        </div>
 
             </div>
         </fieldset>
@@ -50,9 +48,6 @@
                 <div class="col-sm-4 col-md-5">
                 {{Form::select('user_active', [trans('dialog.passive'), trans('dialog.active')], $user->active, array('class' => 'form-control'))}}
                 </div>
-                 <div class="col-sm-6 col-md-6">
-                    <button class="btn btn-default" id="activate">{{trans('dialog.add')}}</button>
-                 </div>
            </div>
         </fieldset>
          <fieldset>
@@ -162,36 +157,7 @@
             addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
 
     </script>
-    <script>
-        $(document).ready(function () {
-            var clan_id = jQuery("#clan_id").val(),
-                fam = (typeof clan_id == 'string' && clan_id === '0') ? families : families[clan_id],
-                is_none = (typeof clan_id == 'string' && clan_id === '0');
-            jQuery("#user_family").find("option").remove();
-            jQuery("#user_family").find("optgroup").remove();
-            jQuery("#user_family").append(new window.Option('Bitte Halbstamm wählen', '0'));
-            if (!is_none) {
-                jQuery.each(fam, function(a, b) {
-                    jQuery("#user_family").append(new window.Option(b, a))
-                })
-            } else {
-                jQuery.each(families, function(i, n) {
-                    jQuery.each(n, function(a, b) {
-                        jQuery("#user_family").append(new window.Option(b, a))
-                    })
-                })
-            }
-            jQuery("#user_family").val('{{$user->family_code}}');
-            if (addedRoles !== null) {
-                $.each(addedRoles, function () {
-                    fillUserRoles(this, true);
-                })
-            }
-        });
-        $(document).on('change', '#clan_id', function () {
-            $('#user_family').attr('disabled', false)
-        })
-    </script>
+    <script src="{{asset('assets/js/inits/useredit_init.js')}}"></script>
     @stop
     @section('scripts-end')
     @parent

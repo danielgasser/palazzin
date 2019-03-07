@@ -60,8 +60,6 @@
     @section('scripts')
     @parent
     <script src="{{asset('assets/js/funcs.js')}}"></script>
-    <script src="{{asset('assets/js/funcs_new.js')}}"></script>
-    <script src="{{asset('assets/js/browser_check.js')}}"></script>
         <script src="{{asset('assets/min/js/settings_help_init.min.js')}}"></script>
     @stop
 @stop

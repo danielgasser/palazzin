@@ -9,6 +9,13 @@ abstract class Controller extends BaseController
 
     use DispatchesJobs, ValidatesRequests;
 
+    public function __construct()
+    {
+        $this->middleware('ajax-session-expired');
+
+        $this->middleware('auth');
+    }
+
     /**
      * Setup the layout used by the controller.
      *
@@ -19,5 +26,12 @@ abstract class Controller extends BaseController
         if (! is_null($this->layout)) {
             $this->layout = view($this->layout);
         }
+    }
+
+    public function checkSession()
+    {
+        $this->middleware('ajax-session-expired');
+
+        $this->middleware('auth');
     }
 }

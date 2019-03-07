@@ -303,7 +303,7 @@ var graphSeries = [],
             htmlStringPaid += '<tr id="paid_' + year + '"><td class="paid">Bezahlt</td>';
             htmlStringUnpaid += '<tr id="unpaid_' + year + '"><td class="unpaid">Unbezahlt</td>';
             for (month = 1; month < 13; month += 1) {
-                ele_month = year + '_' + window.smallerThenTen(month);
+                ele_month = year + '_' + GlobalFunctions.smallerThenTen(month);
                 amountTotalValue = (data_total[ele_month] === undefined) ? '0.00' : data_total[ele_month];
                 amountPaidValue = (data_paid[ele_month] === undefined) ? '0.00' : data_paid[ele_month];
                 amountTUnpaidValue = (data_unpaid[ele_month] === undefined) ? '0.00' : data_unpaid[ele_month];
@@ -471,3 +471,25 @@ var graphSeries = [],
         window.checkedYear = [];
     };
 
+$(document).ready(function () {
+    'use strict';
+    $('[name^="year"]').on('change', function (event, state) {
+        window.checkedYear = [];
+        window.showYear = [];
+        $.each($('[name^="year"]'), function (i, n) {
+            if ($(n).is(':checked')) {
+                window.checkedYear.push(n.value + '-%');
+                window.showYear.push(n.value);
+            }
+            window.yearColors[n.value] = window.yearColorsSet[i];
+        });
+        window.checkedYear.sort();
+        window.showYear.sort();
+    });
+    $(document).on('click', '#getYears', function () {
+        if (window.checkedYear.length === 0) {
+            $('[name^="year"]').trigger('change');
+        }
+        window.getStatsData('/stats_bill_total_year', window.checkedYear, window.fillTable);
+    });
+})

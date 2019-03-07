@@ -267,12 +267,29 @@ var distinctArray = function (arr) {
             );
             options.title.text = title + yl.join(', ');
         });
-        console.log(options.series);
         $(function () {
             var chart = new window.Highcharts.Chart(options)
-            //$('#' + el).highcharts(options);
             options = {};
         });
 
     },
     y = $('#year');
+$(document).ready(function(){
+    'use strict';
+    $('[name^="year"]').on('change', function (event, state) {
+        window.checkedYear = [];
+        $.each($('[name^="year"]'), function (i, n) {
+            if ($(n).is(':checked')) {
+                window.checkedYear.push(n.value + '-%');
+            }
+        });
+        window.checkedYear.sort();
+        window.showYear.sort();
+    })
+})
+$(document).on('click', '#getYears', function () {
+    if (window.checkedYear.length === 0) {
+        $('[name^="year"]').trigger('change');
+    }
+    window.getStatsData('/stats_chron', window.checkedYear, window.fillTable);
+});

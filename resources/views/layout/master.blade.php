@@ -122,13 +122,11 @@ if (strlen($routeStr) === 0) {
             }
         </style>
     @endif
-    <link href="{{asset('assets/js/libs/chosen/chosen.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/main.css')}}" rel="stylesheet" media="screen" type="text/css" />
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="{{asset('assets/js/libs/chosen/chosen.jquery.min.js')}}"></script>
     @if (Request::is('/') || Request::is('login'))
         <style>
             body {
@@ -153,9 +151,6 @@ if (strlen($routeStr) === 0) {
         </style>
     @endif
     <style>
-        .chosen-search>input {
-            color: #000000 !important;
-        }
         .date_type[readonly] {
             cursor: pointer !important;
         }
@@ -180,9 +175,7 @@ if (strlen($routeStr) === 0) {
  @include('logged.reservation_edit')
     @endif
 <div id="wrap">
-    <div id="loading">
-       <img id="loadergif" alt="{{trans('dialog.charging')}}" title="{{trans('dialog.charging')}}" src="{{asset('assets/img/preloader.gif')}}">
-    </div>
+    <img id="loading" alt="{{trans('dialog.charging')}}" title="{{trans('dialog.charging')}}" src="{{asset('assets/img/preloader.gif')}}">
     @section('errors')
         @if ($errors->any())
             <div class="modal fade in" tabindex="-1" role="dialog">
@@ -325,112 +318,25 @@ if (strlen($routeStr) === 0) {
     </div>
     @show
 </div>
+        @include('logged.dialog.session')
     @section('footer')
         @include('layout.footer')
     @show
    @section('scripts')
     {{--<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>--}}
     <script src="{{asset('assets/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')}}"></script>
-    <script src="{{asset('assets/js/nav.js')}}"></script>
     <script src="{{asset('assets/js/funcs.js')}}"></script>
-    <script src="{{asset('assets/js/funcs_new.js')}}"></script>
-    <script src="{{asset('assets/js/browser_check.js')}}"></script>
     <script src="{{asset('assets/js/inits/master_init.js')}}"></script>
         <script src="{{asset('assets/js/libs/ckeditor/ckeditor.js')}}"></script>
         <script>
-     var errors_modernizr = '{{trans('errors.modernizr')}}',
-            urlTo = '{{URL::to('/')}}',
-            otherClanRoleId = JSON.parse('{!! $otherClanRoleId!!}'),
-            urlAssets = '{{asset('')}}',
-            settings = JSON.parse({!!json_encode($settingsJSON)!!}),
-            bgImg = '{{ asset('assets/') }}' + settings.setting_login_bg_image,
-            monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
-            errors_cookies = '{{trans('errors.cookies')}}',
-         route = '{{Route::getFacadeRoot()->current()->uri()}}';
+            var urlTo = '{{URL::to('/')}}',
+                langDialog = {!!json_encode(Lang::get('dialog'))!!},
+                settings = JSON.parse({!!json_encode($settingsJSON)!!}),
+                token = '{{ csrf_token() }}',
+                monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
+                oldie = '{{$isOldWin}}',
+                route = '{{Route::getFacadeRoot()->current()->uri()}}';
      </script>
-    <script>
-        window.onerror = function (msg, url, ln) {
-            //postErrors([msg, url, ln, location.href]);
-            return false;
-        };
-        jQuery(document).ready(function () {
-            "use strict";
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-        });
-        jQuery(document).on('click', '#errors>.close', function () {
-            $('#error-wrap').hide();
-        });
-        jQuery(document).on('click', '.closeAlert', function () {
-            $('.alert').hide();
-        });
-        jQuery(document).on('click', '[aria-label="Close"]', function () {
-            $('.modal-dialog').modal('hide');
-            $('.modal').removeClass('in');
-        });
-        jQuery(document).on('click', 'body', function () {
-            $('.alert-success').hide();
-        });
-        jQuery(document).on('click', '.dropdownToggleUp', function (e) {
-            let classes = e.target.classList;
-            if (classes.contains('hide-footer-nav-text')) {
-                $(this)
-                    .removeClass('dropdown-toggle-up')
-                    .toggleClass('dropdown-toggle-down');
-            } else {
-                $(this)
-                    .removeClass('dropdown-toggle-down')
-                    .toggleClass('dropdown-toggle-up');
-            }
-        });
-        jQuery(document).on('click', '#all-nav', function (e) {
-            if (e.target !== this) {
-                if ($(e.target).parent().parent('ul') !== undefined) {
-                    $('.dropdownToggleUp')
-                        .removeClass('dropdown-toggle-up')
-                        .toggleClass('dropdown-toggle-down');
-                }
-                return;
-            }
-            $('#closeNav').trigger('click');
-        });
-        jQuery(document).on('click', '#wrap', function (e) {
-            if (e.target !== this) {
-                return;
-            }
-            $('.dropdownToggleUp')
-                .removeClass('dropdown-toggle-up')
-                .toggleClass('dropdown-toggle-down');
-            $('#all-nav').removeClass('all-nav-hover');
-        });
-        jQuery(document).on('click', '#closeNav', function () {
-            let nav = $('#all-nav');
-            if (nav.hasClass('all-nav-hover')) {
-                nav.removeClass('all-nav-hover');
-                $('.dropdownToggleUp')
-                    .removeClass('dropdown-toggle-up')
-                    .toggleClass('dropdown-toggle-down');
-            } else {
-                nav.addClass('all-nav-hover');
-            }
-        });
-        jQuery(document).on('click', '#toggleFooterNav', function () {
-            $('#bottom-nav').slideToggle(500);
-        });
-    </script>
-    <script>
-        var unAuthorized = function (data) {
-            if (data.length > 0) {
-                if ($.parseJSON(data).hasOwnProperty('401_error')) {
-                    window.location.href = '/login';
-                }
-            }
-        }
-    </script>
-   @show
-
+    @show
 </body>
 </html>

@@ -316,21 +316,4 @@ class NewReservationController extends Controller
         return Response::json($reservation->getReservationsAjax(Input::except('resetKeeper')));
     }
 
-    /**
-     * List reservation view
-     *
-     * @return mixed View
-     */
-    public function AdminShowAllReservations()
-    {
-        $reservation = new Reservation();
-        $users = User::select('users.id', 'user_first_name', 'user_name')
-            ->orderBy('user_name', 'asc')
-            ->get();
-        return view('logged.admin.reservation')
-            ->with('allReservations', $reservation->getReservations())
-            ->with('allBills', $reservation->getCountReservations())
-            ->with('users', $users);
-    }
-
 }

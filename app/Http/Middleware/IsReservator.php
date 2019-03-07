@@ -15,7 +15,7 @@ class IsReservator
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isReservator()) {
+        if (\User::isReservator() || \User::isLoggedAdmin() || \User::isManager()) {
             return $next($request);
         }
         return redirect()->intended('/');

@@ -15,7 +15,7 @@ class IsClerk
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isClerk()) {
+        if (\User::isClerk() || \User::isLoggedAdmin() || \User::isManager()) {
             return $next($request);
         }
         return redirect()->intended('/');

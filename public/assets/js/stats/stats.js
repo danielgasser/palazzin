@@ -17,7 +17,6 @@ var getStatsData = function (url, year, callback) {
             year: year
         },
         success: function (d) {
-            console.log(d)
             if (url.indexOf('stats_chron') > -1) {
                 callback(d[0], year, d[1], d[2], d[3]);
             } else {

@@ -195,6 +195,7 @@ ul {
     background: transparent;
 }
 #bottom-nav {
+    background: white;
     li {
         a {
             padding-left: 12px;
@@ -309,6 +310,9 @@ ul {
         position: absolute;
         width: 174px;
     }
+}
+#adminNav {
+    background: white !important;
 }
 .all-nav-hover {
     -webkit-tap-highlight-color: rgba(0,0,0,0);

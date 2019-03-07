@@ -69,20 +69,6 @@ class Role extends Model {
     }
 
     /**
-     * Gets roles for dorpdown
-     *
-     * @return mixed
-     */
-    public static function getRolesDropDown () {
-        return self::select('id', 'role_code', 'role_tax_night')
-            ->orWhere('role_guest', '=', 1)
-            ->orWhere('role_code', '=', 'BB')
-            ->orWhere('role_code', '=', 'GU')
-            ->orderBy('role_tax_night', 'desc')
-            ->get();
-    }
-
-    /**
      * Gets roles corresponding to clan
      *
      * @param $pid clan_id == user_id
@@ -112,6 +98,9 @@ class Role extends Model {
         return $rolesTrans;
     }
 
+    /**
+     * @return false|string
+     */
     public static function getRolesTaxV3 ()
     {
         $arr = [];
@@ -157,24 +146,10 @@ class Role extends Model {
         return $rolesTrans;
     }
 
-
     /**
-     * Get guest roles exclusively
-     *
+     * @param $roleCode
      * @return mixed
      */
-    public static function getRolesForGuestOnly () {
-        return Role::select('id', 'role_code', 'role_tax_night')
-            ->orWhere('role_guest', '=', 1)
-            ->orWhere('role_code', '=', 'BB')
-            ->orWhere('role_code', '=', 'AB')
-            ->orWhere('role_code', '=', 'GU')
-            ->orderBy('role_tax_night', 'desc')
-            ->get();
-    }
-
-
-
     public static function getRoleByRoleCode($roleCode)
     {
         return Role::where('role_code', '=', $roleCode)->first()->toArray();

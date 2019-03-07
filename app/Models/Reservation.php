@@ -252,21 +252,11 @@ class Reservation extends Model {
         return $reservations;
     }
 
-    public function getCountReservations ()
-    {
-        $reservations = $this
-            ->join('users', 'users.id', '=', 'reservations.user_id')
-            ->select('users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-            ->where('user_id', '=', Auth::id())
-            ->with(array('guests'=>function($query){
-                $query
-                    ->join('roles', 'roles.id', '=', 'guests.role_id')
-                    ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-            }))
-            ->count();
-        return $reservations;
-    }
-
+    /**
+     * @param       $year
+     * @param array $family_code
+     * @return array
+     */
     public function getReservationsStats ($year, $family_code = array('5', '7', '8', '9'))
     {
         if($year == NULL) {
@@ -348,6 +338,10 @@ class Reservation extends Model {
         return array($filtered_reservations->toArray(), $reservations->family_sum, $reservations->guest_kind_sum, $reservations->guest_total_sum);
     }
 
+    /**
+     * @param $year
+     * @return mixed
+     */
     public function getReservationsStatsCalendar ($year)
     {
         if($year == NULL) {
@@ -386,6 +380,10 @@ class Reservation extends Model {
         return $reservations;
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getReservationsStatsPerDayTotal($year = array('2015-%'))
     {
         $reservation = $this->getReservationsStatsCalendar($year);
@@ -421,6 +419,10 @@ class Reservation extends Model {
         return array($reservation->totals, $reservation->month_totals, $reservation->year_totals);
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getReservationsStatsPerFamilyNightsTotal($year = array('2015-%'))
     {
         $reservation = $this->getReservationsStatsCalendar($year);
@@ -456,6 +458,10 @@ class Reservation extends Model {
         return [$reservation->totals, $reservation->year_total, $reservation->familyProps];
     }
 
+    /**
+     * @param array $year
+     * @return array
+     */
     public function getReservationsStatsPerGuestNightsTotal($year = array('2015-%'))
     {
         $reservation = $this->getReservationsStatsCalendar($year);
@@ -504,6 +510,11 @@ class Reservation extends Model {
         ];
     }
 
+    /**
+     * @param array $year
+     * @return array
+     * @throws Exception
+     */
     public function getReservationsStatsPerMonthTotal($year = array('2015-%'))
     {
         $res = $this->getReservationsStatsCalendar($year);
@@ -532,23 +543,10 @@ class Reservation extends Model {
         return $totals;
     }
 
-    public function getReservationsByUser($id)
-    {
-        return $this->select('reservations.*')->with('guests')
-            ->where('user_id', '=', $id)
-            ->with(array('guests'=>function($query){
-                $query
-                    ->join('roles', 'roles.id', '=', 'guests.role_id')
-                    ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-            }))
-            ->get();
-    }
-
     /**
-     * Get reservations by input->$opts
-     *
      * @param $opts
-     * @return mixed Collection
+     * @return mixed
+     * @throws Exception
      */
     public function getReservationsAjax ($opts) {
         if (!isset($opts['start']) || strlen($opts['start'] == 0)) {
@@ -615,125 +613,10 @@ class Reservation extends Model {
     }
 
     /**
-     * Gets auth. users reservations
-     *
-     * @return array
-     */
-    public function getAuthReservationsArrayJS () {
-        $userReservations = [];
-        $userRes = $this->where('user_id', '=', Auth::id())
-            ->select('id', 'reservation_started_at', 'reservation_ended_at')
-            ->orderBy('reservation_started_at', 'asc')
-            ->with('guests')
-            ->get()
-            ->toArray();
-        foreach($userRes as $key => $val) {
-            $sf = \Carbon\Carbon::createFromFormat('Y_m_d', $val['reservation_started_at'])->formatLocalized(trans('formats.long-date-user-res-js'));
-            $ef = \Carbon\Carbon::createFromFormat('Y_m_d', $val['reservation_ended_at'])->formatLocalized(trans('formats.long-date-user-res-js'));
-            $sm = \Carbon\Carbon::createFromFormat('Y_m_d', $val['reservation_started_at'])->formatLocalized('%m');
-            $sy = \Carbon\Carbon::createFromFormat('Y_m_d', $val['reservation_started_at'])->formatLocalized('%Y');
-            $sm = intval($sm) - 1;
-            $m = $sm . '_' . $sy;
-            $guestStr = [];
-            foreach($val['guests'] as $ky => $v) {
-                if ($v['guest_number'] == '0') {
-                    $guestNum = trans('reservation.guest_many_no_js.none');
-                } elseif($v['guest_number'] == '1') {
-                    $guestNum = trans('reservation.guest_many_no_js.one');
-                } else {
-                    $guestNum = trans('reservation.guest_many_no_js.mores');
-                }
-                $guestStr[] = $v['guest_number'] . ' ' . $guestNum;
-            }
-            $userReservations['xxx'] = trans('reservation.your_title');
-            $with = (sizeof($guestStr) > 0) ? trans('dialog.with', ['m' => 'm']) : '';
-            $userReservations[$val['id'] . '|' . $m] = $sf . ' - ' . $ef . ' ' . $with . ' ' . implode('/ ', $guestStr);
-        }
-        if (sizeof($userRes) == 0) {
-            $userReservations[0] = trans('reservation.no_bookings');
-        }
-        return $userReservations;
-    }
-
-    /**
-     * Gets reservations by id with guests/roles
-     *
-     * @param $id
-     * @return mixed Collection
-     */
-    public function getReservationByIdWithGuestAndRole ($id) {
-       $r = self::find($id)
-           ->with(array(
-               'guests' => function ($q) {
-                   $q->select('guests.id', 'reservation_id', 'guest_number', 'guest_night', 'guest_ended_at', 'guest_started_at', 'role_id');
-               },
-           ))->first();
-        $r->guests->each(function ($g) use($r) {
-            $g->role_code = Role::where('id', '=', $g->role_id)->select('role_code', 'role_tax_night')->first()->toArray();
-            $g->guestSum += $g['role_code']['role_tax_night'] * $g->guest_night * $g->guest_number;
-            $r->reservationSum += $g->guestSum;
-        });
-        return $r;
-    }
-
-    /**
-     * Gets reservations by id & date with guests/roles
-     *
-     * @param null $id
-     * @param bool $isJson
-     * @return mixed Collection|json
-     */
-    public function getReservationsPerDateById ($id = null, $isJson = false) {
-        if ($id != null) {
-            $reservations = Reservation::where('id', '=', $id)->get();
-        } else {
-            $reservations = Reservation::whereBetween('reservation_started_at', [Input::get('this_month'), Input::get('next_month')])
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('reservations.id', 'user_id', 'user_id_ab', 'period_id', 'reservation_nights', 'reservation_started_at', 'reservation_ended_at', 'users.email', 'users.user_login_name')
-                ->with(array(
-                    'guests' => function ($q) {
-                        $q->select('id', 'reservation_id', 'guest_number', 'guest_night', 'guest_ended_at', 'guest_started_at', 'role_id');
-                    },
-                ))
-                ->get();
-        }
-        $ar = [];
-        $cu = new User();
-        $reservations->each(function ($i) use ($ar, $cu) {
-            if (isset($i->user_id_ab) && !empty($i->user_id_ab)) {
-                $cu = $cu->where('id', '=', $i->user_id_ab)->first();
-                $i->user_id_ab_name = $cu->user_login_name;
-            } else {
-                $i->user_id_ab_name = '';
-            }
-            $i->guests->each(function  ($j) use ($i, $ar) {
-                $role_tax = Role::find($j->role_id);
-                $j->role_tax_night = $role_tax->role_tax_night;
-                $start = new \DateTime(str_replace('_', '-', $j->guest_started_at));
-                $end = new \DateTime(str_replace('_', '-', $j->guest_ended_at));
-                $end->add(new DateInterval('P1D'));
-                $interval = new DateInterval('P1D');
-                $dateRange = new DatePeriod($start, $interval ,$end);
-                foreach($dateRange as $key => $date) {
-                    $d = explode('_', $date->format('Y_m_d'));
-                    $dd = intval($d[1]) - 1;
-                    $d[1] = ($dd < 10) ? '0' . $dd : $dd;
-                    $i->{implode('_', $d)} += $j->guest_number;
-                    $ar[$date->format('Y_m_d')] = $i->{$date->format('Y_m_d')};
-                }
-            });
-        });
-        if (!$isJson) {
-            return $reservations->toJson();
-        }
-        return $reservations;
-    }
-
-    /**
-     * Gets future reservations and sends mail to user and/or housekeeper
      * @param $sendToHousekeeper
      * @param $set
      * @return array
+     * @throws Exception
      */
     public function getFutureReservations ($sendToHousekeeper, $set) {
         $today = new \DateTime();
@@ -790,11 +673,10 @@ class Reservation extends Model {
     }
 
     /**
-     * Checks if a reservation has started/ended before today
-     *
      * @param $start
      * @param $end
      * @return bool
+     * @throws Exception
      */
     public static function isReservationBeforeToday ($start, $end) {
         $today = new \DateTime();
@@ -813,118 +695,13 @@ class Reservation extends Model {
     }
 
     /**
-     * Checks if a reservation crosses another by clan conflict
-     *
-     * @param $uid
-     * @param $start
-     * @param $end
-     * @return bool
-     */
-    public static function isReservationCrossed ($uid, $start, $end) {
-        $c = array(
-            'user_id' => $uid,
-            'start_date' => $start,
-            'end_date' => $end,
-            'start_date2' => $start,
-            'end_date2' => $end,
-            'start_date3' => $start,
-            'end_date3' => $end
-        );
-        $res = DB::select(DB::raw("select count(id) as count_id from reservations where  user_id = :user_id and" .
-            " (reservation_started_at between :start_date and :end_date or" .
-            " reservation_ended_at between :start_date2 and :end_date2 or" .
-            " reservation_started_at <= :start_date3 and reservation_ended_at >= :end_date3)"), $c);
-        return ($res[0]->count_id > 0);
-    }
-
-    /**
-     * Gets other clan users reservation by User->user_id_ab
-     *
-     * @return Reservation
-     */
-    public static function getReservationsOtherClanUser () {
-        $cu = new User();
-        $reservation = new Reservation();
-        $reservation = $reservation->with('guests')->get();
-        $reservation->each(function($r) use ($cu) {
-            if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
-                $cu = $cu->where('id', '=', $r->user_id_ab)->first();
-                $r->user_id_ab_name = $cu->user_login_name;
-            } else {
-                $r->user_id_ab_name = '';
-            }
-        });
-        return $reservation;
-    }
-
-    /**
-     * Checks if reservation-request is in its primary period
-     * and if auth. user is allowed by primary users reservation
-     *
-     * @param $resId
-     * @param $userIdAb
-     * @param $start
+     * @param        $reservations
+     * @param string $preFix
+     * @param bool   $asJSON
+     * @param string $format
+     * @param bool   $withResID
      * @return mixed
      */
-    public static function isAllowedInSecondaryPeriod ($resId, $userIdAb, $start) {
-        $self = new static;
-
-        $startDate = new \DateTime($start);
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-        $diff = $startDate->diff($today);
-        $allowedDate = new \DateTime();
-        $allowedDate->modify('+' . $self->setting->setting_num_counter_clan_days . ' day');
-        $diffTwo = $allowedDate->diff($today);
-
-        if (isset($resId) && $resId != 'xx') {
-                $counterRes = self::where('id', '=', $resId)
-                    ->first();
-            if(is_object($counterRes)) {
-                if($counterRes->user_id_ab != $userIdAb) {
-                    return 'not_permitted';
-                }
-            }
-            if(sizeof($counterRes) > 0 && $counterRes->user_id_ab != $userIdAb) {
-                return 'not_primary';
-            }
-        }
-        if (intval($diff->days) > intval($diffTwo->days)) {
-            return '10';
-        }
-        return '';
-    }
-
-    /**
-     * Gets start/end-date of the reservation allowed by primary user
-     * @param $userId
-     */
-    public static function getDataForSecondaryReservationRequest ($userId) {
-        $counterResDates = self::where('user_id_ab', '=', $userId)
-            ->get();
-        Tools::dd($counterResDates);
-    }
-
-    /**
-     * @param $start
-     * @param $end
-     * @return int
-     * @throws Exception
-     */
-    public static function nightCounter ($start, $end) {
-        $nightCounter = -1;
-        $st = new \DateTime(str_replace('_', '-', $start));
-        $ed = new \DateTime(str_replace('_', '-', $end));
-        $ed->add(new DateInterval('P1D'));
-        $intervalOne = new DateInterval('P1D');
-        $dateRange = new DatePeriod($st, $intervalOne ,$ed);
-        foreach($dateRange as $date) {
-            if ($date == null) continue;
-            $nightCounter++;
-        }
-        return $nightCounter;
-    }
-
     public static function setFreeBeds($reservations, $preFix = 'freeBeds_', $asJSON = false, $format = 'Y_m_d', $withResID = true)
     {
         $ar = [];
@@ -967,17 +744,5 @@ class Reservation extends Model {
             return $reservations->toJson();
         }
         return $reservations;
-    }
-
-    public function isEarlyReservationOnOtherClan(Period $period, User $user, $dates)
-    {
-        $today = new DateTime();
-        $today->setTime(0, 0, 0);
-        $today->modify('- ' . $this->setting['setting_num_counter_clan_days'] . ' days');
-        $reservationStartDate = new DateTime($dates['resStart'][0]);
-        if ($reservationStartDate >= $today) {
-            $res = $this->checkExistentReservationByDateV3($dates['resStart'][0], $dates['resEnd'][0]);
-        }
-        return $res;
     }
 }

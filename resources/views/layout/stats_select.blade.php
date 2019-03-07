@@ -22,11 +22,11 @@ $j = 0;
             $disabled = 'disabled'
             @endphp
         @endif
-        <div class="col-sm-1"><label style="color: {{$yearColors[$j]}}">{{$i}}</label><input {{$disabled}} name="year[]" data-toggle="toggle" data-on="<b>{{$i}}</b>" data-off="Aus" type="checkbox" value="{{$i}}" /></div>
+        <div class="col-sm-3"><label style="color: {{$yearColors[$j]}}">{{$i}}</label><input {{$disabled}} name="year[]" data-toggle="toggle" data-on="<b>{{$i}}</b>" data-off="Aus" type="checkbox" value="{{$i}}" /></div>
         <?php $j++;
         ?>
     @endfor
-        <div class="col-sm-1">
+        <div class="col-sm-3">
             <label>&nbsp;</label><button id="getYears" class="btn btn-default">Statistiken laden</button>
         </div>
 </div>

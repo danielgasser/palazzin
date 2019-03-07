@@ -20,7 +20,6 @@
                     checkedYear = [],
                     yearColorsSet = {!!json_encode($yearColors)!!},
                     showYear = [],
-                    langDialog = {!!json_encode(Lang::get('dialog'))!!},
                     route = '{{Request::url()}}';
 
         </script>
@@ -29,30 +28,8 @@
         <script src="https://code.highcharts.com/highcharts-3d.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="/assets/js/libs/tableToExcel/tableToExcel.js"></script>
-        <script src="/assets/min/js/admin.min.js"></script>
         <script src="/assets/js/stats/stats.js"></script>
         <script src="/assets/js/stats/stats_cron.js"></script>
-        <script>
-            $(document).ready(function(){
-                'use strict';
-                $('[name^="year"]').on('change', function (event, state) {
-                    checkedYear = [];
-                    $.each($('[name^="year"]'), function (i, n) {
-                        if ($(n).is(':checked')) {
-                            checkedYear.push(n.value + '-%');
-                        }
-                    });
-                    checkedYear.sort();
-                    showYear.sort();
-                })
-            })
-            $(document).on('click', '#getYears', function () {
-                if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('change');
-                }
-                window.getStatsData('/stats_chron', checkedYear, window.fillTable);
-            });
-        </script>
     @stop
 
 @stop

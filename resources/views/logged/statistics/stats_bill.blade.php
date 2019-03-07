@@ -30,41 +30,8 @@
                     yearColorsSet = {!!json_encode($yearColors)!!},
                     yearColors = {},
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
-                    langDialog = {!!json_encode(Lang::get('dialog'))!!},
                 chart;
         </script>
-    <script>
-        $(document).ready(function () {
-            'use strict';
-            /*
-            $("[name^='year']").bootstrapToggle({
-                on: 'An',
-                off: 'Aus'
-            });
-            */
-            $('[name^="year"]').on('change', function (event, state) {
-                checkedYear = [];
-                showYear = [];
-                $.each($('[name^="year"]'), function (i, n) {
-                    if ($(n).is(':checked')) {
-                        checkedYear.push(n.value + '-%');
-                        showYear.push(n.value);
-                    }
-                    yearColors[n.value] = yearColorsSet[i];
-                });
-                checkedYear.sort();
-                showYear.sort();
-            });
-            $(document).on('click', '#getYears', function () {
-                if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('change');
-                }
-                window.getStatsData('/stats_bill_total_year', checkedYear, window.fillTable);
-            });
-        })
-    </script>
-
-        <script src="/assets/min/js/admin.min.js"></script>
         <script src="/assets/js/stats/stats.js"></script>
         <script src="/assets/js/stats/stats_bill.js"></script>
 @stop

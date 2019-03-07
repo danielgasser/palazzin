@@ -83,11 +83,11 @@ class Post extends Model {
         }
         return $posts;
     }
+
     /**
-     * Checks if a record is editable
-     *
-     * @param $createdAt date string
-     * @return bool
+     * @param $createdAt
+     * @return int
+     * @throws Exception
      */
     public static function checkEditableRecord ($createdAt) {
         $set = Setting::getStaticSettings();

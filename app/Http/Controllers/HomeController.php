@@ -36,43 +36,6 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showInfos()
-    {
-        return view('logged.info')
-            ->with('locale', $_SERVER['HTTP_ACCEPT_LANGUAGE'])
-            ->with('user_agent', $_SERVER['HTTP_USER_AGENT'])
-            ->with('get_browser', implode('<br>', get_object_vars(get_browser())));
-    }
-
-    public function sendInfos()
-    {
-        $user = User::find(Auth::id());
-        $output = implode('', array_map(
-            function ($v, $k) {
-                return sprintf("<b>%s</b>: '%s'<br>", $k, $v);
-            },
-            Input::get(),
-            array_keys(Input::get())
-        ));
-        $data['input'] = $output;
-        $data['email'] = $user->email;
-        Mail::send('emails.browser_info', $data, function ($message) use ($user) {
-            $message->to('software@toesslab.ch')
-                ->from($user->email)
-                ->subject('palazzin.ch: Browserinfos');
-        });
-
-        if (sizeof(Mail::failures()) == 0) {
-            return Response::json(['success' => 'Vielen Dank für Deine Hilfe!']);
-        }
-        return Response::json(['error' => 'E-Mail konnte nicht gesendet werden. Bitte versuche es später noch einmal']);
-    }
-
-    /**
      * @return mixed
      * @throws \Exception
      */

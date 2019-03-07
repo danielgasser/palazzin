@@ -26,17 +26,4 @@
         <div class="col-sm-4 col-md-4 col-xs-12"></div>
 
         </div>
-@section('scripts')
-    @parent
-    <script>
-        var oldie = '{{$isOldWin}}';
-        $(document).ready(function(){
-            if (oldie === '1') {
-                $('#old_ie').show();
-            }
-        })
-        window.localStorage.clear();
-    </script>
-@stop
-@stop
-
+@endsection

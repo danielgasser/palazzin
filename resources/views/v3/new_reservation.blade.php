@@ -93,18 +93,7 @@
 @section('scripts')
     @parent
     <script>
-        var superFilter = function (data, filter) {
-                let arr = [];
-                for (let i = 0; i < data.length; i++) {
-                    Object.keys(data[i]).filter(function(k) {
-                        if (k.indexOf(filter) === 0 && data[i][k] !== undefined) {
-                            arr[k] = data[i][k];
-                        }
-                    });
-                }
-                return arr;
-            },
-            guestsDates = $('[id^="guests_date"]'),
+        var guestsDates = $('[id^="guests_date"]'),
             startDate,
             rolesTaxes = {!! $roleTaxes !!},
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
@@ -128,27 +117,13 @@
             resEndPicker,
             startGuestPicker = [],
             endGuestPicker = [],
+            oldReservationStarted = '{{ old('reservation_started_at') }}',
+            oldPeriodID = '{{ old('periodID') }}',
             reservations = JSON.parse('{!!$userRes!!}'),
-            newAllGuestBeds = superFilter(reservationsPerPeriod),
-            newUserRes = superFilter(reservations, 'user_Res_Dates_');
-            console.log(reservations, newUserRes)
+            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod),
+            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_');
     </script>
-    <script>
-        $(document).ready(function () {
-            localStorage.clear();
-            localStorage.setItem('new_res', '1');
-            if (afterValidation ==='1') {
-                //localStorage.setItem('new_res', '0');
-                let startDateString = '{{ old('reservation_started_at') }}'.split('.');
-                startDate = new Date(startDateString[2], (startDateString[1] - 1), startDateString[0], 0, 0, 0);
-                V3Reservation.initNew('{{ old('periodID') }}', startDate);
-            } else {
-                V3Reservation.initNew(periodID, new Date());
-            }
-            $('#reservation_guest_guests_0').attr('disabled', true);
-            $('#reservation_guest_num_0').attr('disabled', true);
-        })
-    </script>
+    <script src="{{asset('assets/js/inits/new_reservation_init.js')}}"></script>
     <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);

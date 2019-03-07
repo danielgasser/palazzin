@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class IsClerkOrReservator
+class AjaxSessionExpiredMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,10 @@ class IsClerkOrReservator
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isReservator() || \User::isClerk() || \User::isLoggedAdmin() || \User::isManager()) {
-            return $next($request);
+        if ($request->ajax() && \Auth::guest()) {
+            return response()->json(['message' => trans('dialog.texts.warning_login_again')], 403);
         }
-        return redirect()->intended('/');
+
+        return $next($request);
     }
 }

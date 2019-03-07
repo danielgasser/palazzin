@@ -59,7 +59,6 @@ fillTable = function (data, years) {
         },
         series: []
     };
-    console.log(data, clean_props);
     $.each(data, function (i, n) {
         options.series.push({
             name: n.user_first_name + ' ' + n.user_name,
@@ -75,3 +74,25 @@ fillTable = function (data, years) {
         //$('#' + el).highcharts(options);
         options = {};
     });};
+$(document).ready(function(){
+    'use strict';
+    $('[name^="year"]').on('change', function (event, state) {
+        window.checkedYear = [];
+        window.showYear = [];
+        $.each($('[name^="year"]'), function (i, n) {
+            if ($(n).is(':checked')) {
+                window.checkedYear.push(n.value + '-%');
+                window.showYear.push(n.value);
+            }
+            window.yearColors[n.value] = window.yearColorsSet[i];
+        });
+        window.checkedYear.sort();
+        window.showYear.sort();
+    })
+})
+$(document).on('click', '#getYears', function () {
+    if (window.checkedYear.length === 0) {
+        $('[name^="year"]').trigger('change');
+    }
+    window.getStatsData('/stats_login', window.checkedYear, window.fillTable);
+});

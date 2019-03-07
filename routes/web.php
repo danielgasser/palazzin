@@ -14,6 +14,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('help/{topic?}', 'HelpController@showHelp');
+Route::get('check-session', 'HomeController@getHome');
+
 Auth::routes();
 //Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
@@ -54,8 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('delete_reservation', 'NewReservationController@deleteReservation')->name('delete_reservation');
         Route::any('edit_reservation/{res_id}', 'NewReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'NewReservationController@getReservationsPerDateV3');
-        Route::get('calendar', 'ReservationController@getReservations');
 
+        Route::get('user/profile/{id?}', 'UserController@showProfile');
         Route::post('user/profile', 'UserController@saveProfile');
         Route::post('user/profile/changepass', 'UserController@changePassword');
         Route::get('user/bills', 'BillController@showBills');
@@ -76,11 +78,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('stats_list', 'StatsController@showStatsPrint');
     });
 
-    // Keeper
-    Route::group(['middleware' => 'keeper'], function () {
-        Route::get('keeper/reservations', ['uses' => 'NewReservationController@AdminSearchAllReservations']);
-    });
-
     // Admin
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('settings', 'SettingController@showSettings');
@@ -94,10 +91,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users', 'UserController@showUsers');
         Route::get('users/add', 'AdminController@showAddUser');
         Route::post('users/add', 'AdminController@addUser');
+        Route::post('users/activate', 'UserController@activateUser');
         Route::post('users/addrole', 'RoleController@getRolesAjax');
         Route::post('users/edit/delete', 'UserController@deleteRoleUser');
         Route::post('users/add/sendnew', 'AdminController@postRemindNewUser');
         Route::get('users/edit/{id}', 'UserController@showEditUser');
+        Route::post('users/edit/{id}', 'UserController@addRoleUser');
 
         // Roles
         Route::get('roles', 'RoleController@showRoles');

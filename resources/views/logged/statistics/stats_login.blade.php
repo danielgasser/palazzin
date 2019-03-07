@@ -22,8 +22,7 @@
                 yearColorsSet = {!!json_encode($yearColors)!!},
                 yearColors = {},
                 showYear = [],
-                    route = '{{Request::url()}}',
-                    langDialog = {!!json_encode(Lang::get('dialog'))!!};
+                    route = '{{Request::url()}}';
 
         </script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -37,30 +36,6 @@
 
         <script src="/assets/js/stats/stats.js"></script>
         <script src="/assets/js/stats/stats_login.js"></script>
-        <script>
-            $(document).ready(function(){
-                'use strict';
-                $('[name^="year"]').on('change', function (event, state) {
-                    checkedYear = [];
-                    showYear = [];
-                    $.each($('[name^="year"]'), function (i, n) {
-                        if ($(n).is(':checked')) {
-                            checkedYear.push(n.value + '-%');
-                            showYear.push(n.value);
-                        }
-                        yearColors[n.value] = yearColorsSet[i];
-                    });
-                    checkedYear.sort();
-                    showYear.sort();
-                })
-            })
-            $(document).on('click', '#getYears', function () {
-                if (checkedYear.length === 0) {
-                    $('[name^="year"]').trigger('change');
-                }
-                window.getStatsData('/stats_login', checkedYear, window.fillTable);
-            });
-        </script>
     @stop
 
 @stop

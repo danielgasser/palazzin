@@ -5,7 +5,7 @@
                 @if($isAdmin == 1 || $isManager == 1)
                     <li class="dropdown" style="float: right">
                         <a href="#" class="dropdown-toggle topNav" data-toggle="dropdown"><i class="fas fa-cog"></i><span class="hideContent">&nbsp;{{trans('navigation.admin')}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
-                        <ul class="dropdown-menu nav navbar-nav" role="menu" aria-labelledby="dLabel">
+                        <ul class="dropdown-menu nav navbar-nav" role="menu" aria-labelledby="dLabel" id="adminNav">
                             <li><a href="{{URL::to('admin/users/add')}}">{{trans('navigation.admin/users/add')}}</a></li>
                             <li class="divider"></li>
                             <li><a href="{{URL::to('admin/roles')}}">{{trans('navigation.admin/roles')}}</a></li>

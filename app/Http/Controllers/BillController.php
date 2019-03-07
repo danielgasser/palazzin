@@ -35,22 +35,6 @@ class BillController extends Controller
     }
 
     /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function showBillsPrint()
-    {
-        $bill = new Bill();
-        $today = new \DateTime();
-        $users = User::select('id', 'user_first_name', 'user_name')
-        ->orderBy('user_name', 'asc')->get();
-        return view('logged.admin.bill_list_print')
-            ->with('allBills', $bill->getBillsWithUserReservation())
-            ->with('users', $users)
-            ->with('today', $today->format('Y-m-d'));
-    }
-
-    /**
      * Search bills
      *
      * @return mixed json

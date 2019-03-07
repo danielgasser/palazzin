@@ -203,9 +203,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized(trans('formats.short-date-time'));
     }
 
-   // public function getUserNamesAttribute() {
-   //     return $this->attributes['user_first_name'] . ' ' . $this->attributes['user_name'];
-   // }
     public function getFillable() {
         return $this->fillable;
     }
@@ -273,11 +270,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return Clan::where('id', '=', $id)->select('clan_code', 'clan_description')->get();
     }
 
+    /**
+     * @return string
+     */
     public function getCompleteName()
     {
         return $this->user_first_name . ' ' . $this->user_name;
     }
 
+    /**
+     * @return mixed
+     */
     public function getUserID()
     {
         return $this->id;
@@ -372,16 +375,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return false;
     }
 
-    /**
-     *
-     * @return mixed
-     */
-    public function getAllUsers () {
-        return self::with('clans', 'families', 'roles')
-            ->orderBy('user_name', 'asc')
-        ->get();
-    }
-
     public function scopeCheckClan ($query, $clan)
     {
         if ($clan) {
@@ -456,80 +449,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $users;
     }
 
-    public function searchUserWithRole($input)
-    {
-        return DB::table('role_user')
-            ->select('user_id', 'role_id')
-        ->where('role_id', '=', $input)->get();
-    }
-
-    /**
-     * Gets a user by its id
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function getOneUser ($id) {
-        $user = $this->find($id);
-        self::prepareUserData($user);
-        return $user;
-    }
-
-    /**
-     * Sets clan, country localized
-     *
-     * @param $users
-     * @return mixed
-     */
-    public static function prepareUserData ($users) {
-        if(sizeof($users) == 1) {
-            $country = DB::table('countries')->where('country_code', '=', $users[0]->user_country_code)->select('country_name_' . App::getLocale() . ' as cc')->first();
-            $users[0]->user_country_name = $country->cc;
-            $users[0]->clan = Clan::where('id', '=', $users[0]->clan_id)->first();
-            if (isset($users[0]->clan->clan_family))
-                $users[0]->familyArr = unserialize($users[0]->clan->clan_family);
-            $users[0]->family = (isset($users[0]->user_family)) ? $users[0]->familyArr[$users[0]->user_family] : '';
-            $users[0]->user_new = ($users[0]->user_new == 0) ? 'registriert' : 'neu';
-        } else {
-            $users->each(function($user){
-                $country = DB::table('countries')->where('country_code', '=', $user->user_country_code)->select('country_name_' . App::getLocale() . ' as cc')->first();
-                $user->user_country_name = $country->cc;
-                $user->clan = Clan::where('id', '=', $user->clan_id)->first();
-                if (isset($user->clan->clan_family))
-                    $user->familyArr = unserialize($user->clan->clan_family);
-                if(isset($user->user_family)) {
-                    $user->family =  $user->familyArr[$user->user_family];
-                }
-                $user->user_new = ($user->user_new == 0) ? 'registriert' : 'neu';
-            });
-        }
-        return $users;
-    }
-
-    /**
-     * Dropdown userlist
-     *
-     * @return mixed
-     */
-    public function getSimpleUsersList () {
-        return User::select('user_login_name', 'email')
-            ->orderBy('user_login_name', 'asc')
-            ->get();
-    }
-
-    /**
-     * Dropdown userlist by clan
-     *
-     * @param $clan_id
-     * @return mixed
-     */
-    public function getSimpleUsersListByClan ($clan_id) {
-        return User::select('user_login_name', 'email')
-            ->where('clan_id', '=', $clan_id)
-            ->orderBy('user_login_name', 'asc')
-            ->get();
-    }
-
     /**
      * Dropdown userlist by opposite clan
      *
@@ -566,7 +485,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-
+    /**
+     * @throws Exception
+     */
     public function sendBirthdayMail()
     {
         $set = Setting::getStaticSettings();
@@ -587,6 +508,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
+    /**
+     * @return int
+     */
     public static function checkUsersOldWinBrowser()
     {
         $user_agent = $_SERVER['HTTP_USER_AGENT'];

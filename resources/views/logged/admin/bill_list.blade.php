@@ -31,25 +31,10 @@
     @section('scripts')
     @parent
     <script>
-        var autid = '{{Auth::id()}}';
-        $(function () {
-            $('#bill_all_totals').dataTable({
-                language: {
-                    paginate: {
-                        first: '{{trans('pagination.first')}}',
-                        previous: '{{trans('pagination.previous')}}',
-                        next: '{{trans('pagination.next')}}',
-                        last: '{{trans('pagination.last')}}',
-                    },
-                    info: '{{trans('pagination.info')}}',
-                    sLengthMenu: '{{trans('pagination.length_menu')}}',
-                    search: '{{trans('dialog.search')}}'
-                },
-
-            })
-        })
+        var paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
+            autid = '{{Auth::id()}}';
     </script>
-        <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
+        <script src="{{asset('assets/js/inits/bill_list_init.js')}}"></script>
     @stop
 
 @stop

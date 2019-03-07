@@ -2,10 +2,7 @@
 @section('content')
 
     <h3 style="color: #dfb20d">WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="{{asset('/public/files/___checklist/Checkliste_Benutzer_Palazzin.pdf')}}">Benutzer-Checkliste</a></h3>
-    <div class="col-sm-4 col-md-4">
-        <h5>{{trans('navigation.lastlogin')}}: {{$lastLogin}}</h5>
-    </div>
-    <div class="col-sm-4 col-md-4">
+    <div class="col-sm-6 col-md-6">
         <h5>{{trans('home.yourroles')}}:</h5>
         <ul>
           @foreach($roles as $role)
@@ -13,7 +10,7 @@
           @endforeach
         </ul>
     </div>
-    <div class="col-sm-4 col-md-4">
+    <div class="col-sm-6 col-md-6">
         <h5>{{trans('home.yourclan')}}:</h5>
         <ul>
           @foreach($clan_name as $clan)
@@ -32,15 +29,8 @@
 @section('scripts')
     @parent
     <script>
-        var urlTo = '{{URL::to('/')}}',
-            urlAssets = '{{asset('')}}',
-            lang = $.parseJSON('{!!json_encode((trans('news')))!!}'),
+        var lang = $.parseJSON('{!!json_encode((trans('news')))!!}'),
             autid = '{{Auth::id()}}';
-        CKEDITOR.replace( 'post_text', {
-            config: {
-                extraPlugins: 'uploadimage',
-            }
-        } );
     </script>
     <script src="{{asset('assets/js/inits/news_init.js')}}"></script>
 

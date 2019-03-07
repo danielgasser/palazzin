@@ -68,7 +68,7 @@ class UserController extends Controller
             if ($user->user_active == 0) {
                 Auth::logout();
                 Session::put('error', trans('errors.passive'));
-                return view('user.login')
+                return view('auth.login')
                     ->withErrors(trans('errors.passive'));
             }
 
@@ -352,6 +352,17 @@ class UserController extends Controller
         return json_encode([]);
     }
 
+    public function activateUser ()
+    {
+        $uID = request()->input('user_id');
+        $active = request()->input('user_active');
+        $user = User::find($uID);
+        if (is_object($user)) {
+            $user->user_active = $active;
+            $user->push();
+        }
+        return json_encode([]);
+    }
     /**
      * Shows all users
      *

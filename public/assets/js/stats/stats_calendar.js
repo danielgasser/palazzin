@@ -42,9 +42,9 @@ var graphDaySeries = [],
                     if (k > 31) {
                         k = 1;
                     }
-                    daysString += '<td style="width: 12px; text-align: center;" id="' + theYear + '_' + window.smallerThenTen(month) + '_' + window.smallerThenTen(j) + '"></td>';
+                    daysString += '<td style="width: 12px; text-align: center;" id="' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '_' + GlobalFunctions.smallerThenTen(j) + '"></td>';
                 }
-                $('#year_' + theYear).append('<tr id="theMonth_' + theYear + '_' + window.smallerThenTen(month) + '"><td>' + window.langCalendar[month - 1] + '</td>' + daysString + '</tr>');
+                $('#year_' + theYear).append('<tr id="theMonth_' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '"><td>' + window.langCalendar[month - 1] + '</td>' + daysString + '</tr>');
             }
         }
     },
@@ -100,7 +100,7 @@ var graphDaySeries = [],
                 ele.append('<tr id="short_year_' + theYear + '"></tr>');
                 $('#short_year_' + theYear).append('<td style="color: ' + window.yearColors[theYear] + ' !important">' + theYear + '</td>');
                 for (monthcounter = 1; monthcounter < 13; monthcounter += 1) {
-                    $('#short_year_' + theYear).append('<td style="color: ' + window.yearColors[theYear] + ' !important" id="' + theYear + '_' + window.smallerThenTen(monthcounter) + '"></td>');
+                    $('#short_year_' + theYear).append('<td style="color: ' + window.yearColors[theYear] + ' !important" id="' + theYear + '_' + GlobalFunctions.smallerThenTen(monthcounter) + '"></td>');
                 }
                 $('#short_year_' + theYear).append('<td style="color: ' + window.yearColors[theYear] + ' !important" id="totals_year_' + theYear + '"></td>');
             }
@@ -232,7 +232,7 @@ var graphDaySeries = [],
                     });
                     graphDaySeries = [];
                     for (day = 0; day < 32; day += 1) {
-                        ele = y + '_' + window.smallerThenTen(month) + '_' + window.smallerThenTen(day);
+                        ele = y + '_' + GlobalFunctions.smallerThenTen(month) + '_' + GlobalFunctions.smallerThenTen(day);
                         $('#' + ele).html(data[0][ele]);
                         if (data[0][ele] === undefined) {
                             graphDaySeries.push(0);
@@ -253,3 +253,69 @@ var graphDaySeries = [],
         }
         fillTableShort(data[1], data[2], years);
     };
+window.Highcharts.exportCharts = function (charts, options) {
+    'use strict';
+    // Merge the options
+    options = Highcharts.merge(Highcharts.getOptions().exporting, options);
+
+    // Post to export server
+    window.Highcharts.post(options.url, {
+        filename: options.filename || 'chart',
+        type: options.type,
+        // width: options.width,
+        svg: window.Highcharts.getSVG(charts)
+    });
+};
+window.Highcharts.getSVG = function (charts, options) {
+    'use strict';
+    var svgArr = [],
+        top = 0,
+        width = 0,
+        svgString = '';
+
+    $.each(charts, function (i, chart) {
+        if (!$.isEmptyObject(chart)) {
+            var svg = chart.getSVG();
+            svg = svg.replace('<svg', '<g transform="translate(0,' + top + ')" ');
+            svg = svg.replace('</svg>', '</g>');
+
+            top = chart.chartHeight;
+            width = Math.max(width, chart.chartWidth);
+            svgString += '<svg height="' + top + '" width="' + width + '" version="1.1" xmlns="http://www.w3.org/2000/svg">' + svg + '</svg>'
+        }
+    });
+    return svgString;
+};
+
+$(document).ready(function(){
+    'use strict';
+    for (var i = 1; i < 32; i += 1) {
+        monthDays.push(i);
+    }
+    /*
+    $("[name^='year']").bootstrapToggle({
+        on: 'An',
+        off: 'Aus'
+    });
+    */
+    $('[name^="year"]').on('change', function (event, state) {
+        checkedYear = [];
+        showYear = [];
+        $.each($('[name^="year"]'), function (i, n) {
+            if ($(n).is(':checked')) {
+                checkedYear.push(n.value + '-%');
+                showYear.push(n.value);
+            }
+            yearColors[n.value] = yearColorsSet[i];
+        });
+        checkedYear.sort();
+        showYear.sort();
+    })
+
+});
+$(document).on('click', '#getYears', function () {
+    if (checkedYear.length === 0) {
+        $('[name^="year"]').trigger('change');
+    }
+    window.getStatsData('/stats_calendar_total_day', checkedYear, window.fillTable);
+});

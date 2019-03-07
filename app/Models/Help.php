@@ -27,9 +27,8 @@ class Help extends Model {
     );
 
     /**
-     * Get help by topic
-     *
      * @param $h
+     * @return mixed
      */
     public function getHelp ($h) {
         $help = $this->where('help_topic', '=', $h)->select('help_topic', 'help_text as help')->first();

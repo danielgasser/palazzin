@@ -5896,8 +5896,12 @@ span[class="reservation_guest_num"]:after {
   background-color: #fff;
   border-bottom: 1px solid #333; }
 
+#bills_wrapper #bills tbody tr td:before {
+  background-color: #b7282e; }
 #bills_wrapper #bills td {
   padding: 3px; }
+#bills_wrapper #bills .details {
+  padding-left: 22px; }
 #bills_wrapper .row {
   width: 99%; }
 
@@ -6367,11 +6371,13 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
   transition: width 1s linear;
   background: transparent; }
 
-#bottom-nav li a {
-  padding-left: 12px; }
-#bottom-nav li ul {
-  left: -8.1em;
-  border: 1px solid #b7282e; }
+#bottom-nav {
+  background: white; }
+  #bottom-nav li a {
+    padding-left: 12px; }
+  #bottom-nav li ul {
+    left: -8.1em;
+    border: 1px solid #b7282e; }
 
 #res-nav {
   min-height: 63px;
@@ -6449,6 +6455,9 @@ ul li.dropup ul.dropdown-menu, ul li.dropdown-toggle ul.dropdown-menu {
 #topNav ul.dropdown-menu {
   position: absolute;
   width: 174px; }
+
+#adminNav {
+  background: white !important; }
 
 .all-nav-hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -6730,10 +6739,6 @@ table.tablesorter, table.tablesorter thead tr th {
 .bx-wrapper, .bx-viewport {
   height: 450px !important; }
 
-.bxslider img {
-  margin: auto auto;
-  height: 450px; }
-
 .stay_tuned {
   text-align: center; }
 
@@ -6801,21 +6806,16 @@ table.tablesorter, table.tablesorter thead tr th {
 
 #loading {
   position: fixed;
-  top: 62px;
-  left: 55px;
+  top: 42%;
+  left: 45%;
   z-index: 100000;
   display: none;
   font-weight: bold;
   text-align: center;
-  width: 96%;
-  height: 100%;
+  width: 50px;
+  height: 50px;
   background-color: transparent;
   color: #b7282e; }
-  #loading .row {
-    padding-top: 33%; }
-    #loading .row .ccc {
-      height: 60px;
-      padding-top: 10px; }
 
 #wrap > .container {
   padding-left: 50px;

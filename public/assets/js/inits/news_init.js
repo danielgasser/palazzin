@@ -27,7 +27,7 @@ var postLoadTimeOut = 10 * 60 * 1000,
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             url: 'news_reloaded',
             success: function (n) {
-                window.unAuthorized(n);
+                GlobalFunctions.unAuthorized(n);
                 if (typeof n === 'string' && n.indexOf('<!DOCTYPE') > -1) {
                     return false;
                 }
@@ -45,6 +45,11 @@ var postLoadTimeOut = 10 * 60 * 1000,
     };
 jQuery(document).ready(function () {
     "use strict";
+    CKEDITOR.replace( 'post_text', {
+        config: {
+            extraPlugins: 'uploadimage',
+        }
+    } );
 
     jQuery(document).on('click', '#close_warning', function () {
         if ($(this).children('span').hasClass('glyphicon-chevron-up')) {
@@ -59,7 +64,7 @@ jQuery(document).ready(function () {
     jQuery(document).on('click', '#add_post', function (e) {
         e.preventDefault();
         $('#newstickerNewPost').slideToggle('slow');
-        window.scrollIt('#newsticker', 0, 'slow');
+        GlobalFunctions.scrollIt('#newsticker', 0, 'slow');
         $('#post_text').val('');
     });
 
@@ -79,7 +84,7 @@ jQuery(document).ready(function () {
                 id: $(this).attr('id').split('_')[1]
             },
             success: function (data) {
-                window.unAuthorized(data);
+                GlobalFunctions.unAuthorized(data);
                 $('#newstickerNewPost').slideDown('slow').promise().always(function () {
                     window.CKEDITOR.instances.post_text.setData(data.post_text);
                 });
@@ -98,7 +103,7 @@ jQuery(document).ready(function () {
                 id: id
             },
             success: function (data) {
-                window.unAuthorized(data);
+                GlobalFunctions.unAuthorized(data);
                 $('#post_' + id).remove();
             }
         });
@@ -115,7 +120,7 @@ jQuery(document).ready(function () {
                 id: $('#id').val()
             },
             success: function (n) {
-                window.unAuthorized(n);
+                GlobalFunctions.unAuthorized(n);
                 var editCheck,
                     str,
                     data = n[0][0],

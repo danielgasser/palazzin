@@ -151,25 +151,8 @@ class Period extends Model {
     }
 
     /**
-     * Get auth. users periods
-     *
-     * @param User $user
-     * @return mixed json
-     */
-    public function getAuthPeriods(User $user){
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-        return $periods = self::select('period_start', 'period_end', 'clan_id')
-            ->where('clan_id', '=', $user->getUserClan())
-            ->where('period_start', '>', $today->format('Y-m-d H:i:s'))
-            ->get()
-            ->toJSON();
-    }
-
-    /**
-     * Get all periods from today on
-     *
-     * @return mixed json
+     * @return false|string
+     * @throws Exception
      */
     public static function getJSONPeriods(){
         $today = new \DateTime();
@@ -192,9 +175,8 @@ class Period extends Model {
     }
 
     /**
-     * Get period by date or current
-     *
-     * @return mixed Model
+     * @return mixed
+     * @throws Exception
      */
     public static function getCurrentPeriod () {
         $nowts = intval(Session::get('currentCalendarDate'));
@@ -219,10 +201,10 @@ class Period extends Model {
         return Period::whereBetween('period_start', [$n, $e])
             ->select('clan_id', 'period_start', 'period_end')->first();
     }
+
     /**
-     * Get all periods
-     *
-     * @return mixed json
+     * @return mixed
+     * @throws Exception
      */
     public static function getPeriods(){
         $today = new \DateTime();
@@ -260,24 +242,10 @@ class Period extends Model {
     }
 
     /**
-     *
-     * @param $date
-     * @return int
+     * @param $start
+     * @return mixed
+     * @throws Exception
      */
-    private function getWeekOfYear($date){
-        $y = intval($date->format('Y-m-d H:m:s'));
-        $start = new \DateTime($y . '-01-01 00:00:00');
-        $startZero = self::setWeekday($start->setDate(intval($start->format('Y')),1, 1), 'Monday', '-1 day');
-        $week = intval($startZero->format('%a') + 1);
-        while($startZero < $date){
-            if(strpos($startZero->format('l'), 'Sunday') !== false){
-                $week++;
-            }
-            $startZero->modify('+1 day');
-        }
-        return $week;
-    }
-
     public function getTimelinerPeriods ($start)
     {
         $period = new Period();
@@ -311,6 +279,11 @@ class Period extends Model {
 
     }
 
+    /**
+     * @param $start
+     * @return array
+     * @throws Exception
+     */
     public function getTimelinerDatePickerPeriods ($start)
     {
         $period = new Period();
@@ -350,24 +323,11 @@ class Period extends Model {
 
     }
 
-
     /**
-     * Sets the day of the week from a given $date
-     * $weekday the desired weekday to start with
-     *
-     * @param $date
-     * @param $weekday
-     * @param $step
-     * @return mixed date
+     * @param $s
+     * @param $p
+     * @return mixed
      */
-    private function setWeekday($date, $weekday, $step){
-        $d = $date;
-        while(strpos($d->format('l'), $weekday) === false){
-            $d->modify($step);
-        }
-        return $d;
-    }
-
     private function getNearestPeriod($s, $p)
     {
         $tl = $p->select('periods.id', 'periods.period_start')
@@ -379,23 +339,6 @@ class Period extends Model {
             $tl = $this->getNearestPeriod($s, $p);
         }
         return $tl;
-    }
-
-    /**
-     *
-     * @param $date
-     * @param $weekday
-     * @return int
-     */
-    private function setStartingDay($date, $weekday){
-        $days = 0;
-        for($i = intval($date->format('d')); $i > 0; $i--){
-            $date->setDate(intval($date->format('Y')), intval($date->format('n')), $i);
-            if ($date->format('l') == $weekday){
-               $days++;
-            }
-        }
-        return $days;
     }
 
     /**

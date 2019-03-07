@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AjaxSessionExpiredMiddleware;
 use App\Http\Middleware\beforeIsAdmin;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\isClerk;
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'keeper' => IsKeeper::class,
         'reservator' => IsReservator::class,
         'clerk' => IsClerk::class,
-        'clerk-reservator' => IsClerkOrReservator::class
+        'clerk-reservator' => IsClerkOrReservator::class,
+        'ajax-session-expired' => AjaxSessionExpiredMiddleware::class,
     ];
 }

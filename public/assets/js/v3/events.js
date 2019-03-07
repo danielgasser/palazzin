@@ -95,8 +95,7 @@ jQuery(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_gu
     if ($(this).val() !== '' && guest_guest_val !== '0') {
         $('#clone_guest').show().attr('disabled', false);
         while (guest_start < guest_end) {
-            let strNew = guest_start.getFullYear() + '_' + window.smallerThenTen(guest_start.getMonth()) + '_' + window.smallerThenTen(guest_start.getDate()),
-                //strBed = guest_start.getFullYear() + '-' + window.smallerThenTen(guest_start.getMonth()) + '-' + window.smallerThenTen(guest_start.getDate()),
+            let strNew = guest_start.getFullYear() + '_' + GlobalFunctions.smallerThenTen(guest_start.getMonth()) + '_' + GlobalFunctions.smallerThenTen(guest_start.getDate()),
                 strStorage = strNew.split('_').join('-'),
                 counter = 0;
             if (!new_res) {

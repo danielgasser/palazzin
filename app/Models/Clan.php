@@ -46,13 +46,4 @@ class Clan extends Model {
     public function periods() {
         return $this->hasMany('Period', 'periods');
     }
-
-    /**
-     * Get all clans
-     *
-     * @return mixed Collection
-     */
-    public function getAllClans(){
-        return $this->all();
-    }
 }
