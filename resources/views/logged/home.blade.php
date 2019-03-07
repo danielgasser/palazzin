@@ -36,7 +36,11 @@
             urlAssets = '{{asset('')}}',
             lang = $.parseJSON('{!!json_encode((trans('news')))!!}'),
             autid = '{{Auth::id()}}';
-
+        CKEDITOR.replace( 'post_text', {
+            config: {
+                extraPlugins: 'uploadimage',
+            }
+        } );
     </script>
     <script src="{{asset('assets/js/inits/news_init.js')}}"></script>
 

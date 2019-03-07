@@ -5,7 +5,10 @@ namespace App\Http;
 use App\Http\Middleware\beforeIsAdmin;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\isClerk;
+use App\Http\Middleware\IsClerkOrReservator;
 use App\Http\Middleware\isKeeper;
+use App\Http\Middleware\isLegitimeUser;
+use App\Http\Middleware\IsReservator;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,7 +67,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => IsAdmin::class,
-        'clerk' => IsClerk::class,
         'keeper' => IsKeeper::class,
+        'reservator' => IsReservator::class,
+        'clerk' => IsClerk::class,
+        'clerk-reservator' => IsClerkOrReservator::class
     ];
 }

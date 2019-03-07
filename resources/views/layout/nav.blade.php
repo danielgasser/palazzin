@@ -16,9 +16,22 @@
                 <ul id="main-nav" class="nav navbar-nav navbar-left multi-level">
                     @if(Auth::check())
                         @if(User::isClerk())
-                            <li class="{{ Request::is('userlist') ? 'active' : '' }}"><a href="{{URL::to('userlist')}}"><span class="hideContent">{{trans('navigation.userlist')}}</span></a></li>
-                            <li class="{{ Request::is('admin/bills') ? 'active' : '' }}"><a href="{{URL::to('admin/bills')}}"><span class="hideContent">{{trans('navigation.admin/bills')}}</span></a></li>
-                            <li class="{{ Request::is('admin/bills/filelist') ? 'active' : '' }}"><a href="{{URL::to('admin/bills/filelist')}}"><span class="hideContent">{{trans('navigation.admin/bills/filelist')}}</span></a>
+                            <li class="dropdown-toggle" style="border-bottom: 1px solid white;">
+                                <a href="#" class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
+                                <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
+                                    <li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
+                                    <li><a>{{$lastLogin}}</a></li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        {{ Form::open(array('url' => '/logout')) }}
+                                        {{ Form::submit(trans('navigation.logout'), ['class' => 'btn-link-style']) }}
+                                        {{ Form::close() }}
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="{{ Request::is('userlist') ? 'active' : '' }}"><a href="{{URL::to('userlist')}}"><i class="fas fa-users"></i><span class="hideContent">{{trans('navigation.userlist')}}</span></a></li>
+                            <li class="{{ Request::is('admin/bills') ? 'active' : '' }}"><a href="{{URL::to('admin/bills')}}"><i class="fas fa-file-invoice-dollar"></i><span class="hideContent">{{trans('navigation.admin/bills')}}</span></a></li>
+                            <li class="{{ Request::is('admin/bills/filelist') ? 'active' : '' }}"><a href="{{URL::to('admin/bills/filelist')}}"><i class="far fa-list-alt"></i><span class="hideContent">{{trans('navigation.admin/bills/filelist')}}</span></a>
                             </li>
                         @else
                             <li class="dropdown-toggle" style="border-bottom: 1px solid white;">

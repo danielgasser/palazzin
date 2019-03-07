@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Password;
 
-class RemindersController extends Controller
+class xxxRemindersController extends Controller
 {
 
     /**
@@ -75,12 +75,6 @@ class RemindersController extends Controller
         }
     }
 
-    public function manualPass($pass)
-    {
-        $password = Hash::make($pass);
-        Tools::dd('neues pass: ' . $pass, false);
-        Tools::dd('neues pass: ' . $password, true);
-    }
     public function postRemindNewUser()
     {
         $set = Setting::getStaticSettings();

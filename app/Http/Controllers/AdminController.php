@@ -208,4 +208,32 @@ class AdminController extends Controller
         $user->clan_id = $i['clan_id'];
         $user->save();
     }
+
+    public function manualPass($pass)
+    {
+        $password = \Hash::make($pass);
+        \Tools::dd('neues pass: ' . $pass, false);
+        \Tools::dd('neues pass: ' . $password, true);
+    }
+
+    public function postRemindNewUser()
+    {
+        $set = Setting::getStaticSettings();
+        $credentials = ['email' => Input::get('email')];
+        Config::set('auth.reminder.email', 'emails.auth.reminder_new');
+        $response = Password::remind($credentials, function ($message, $c) use ($set) {
+            $message->subject($set->setting_app_owner . ': ' . trans('reset.title'));
+            $message->user = $c;
+            $message->all = true;
+        });
+        switch ($response) {
+            case Password::INVALID_USER:
+                return Redirect::back()->with('error', Lang::get($response));
+
+            case Password::REMINDER_SENT:
+                return redirect('/')->with('info_message', Lang::get($response));
+        }
+    }
+
+
 }

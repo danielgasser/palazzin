@@ -56,7 +56,6 @@ class PostController extends Controller
             'user_id' => Auth::id(),
             'post_text' => Input::get('post_text')
         ];
-        // ToDo First or create
         $post = Post::firstOrCreate(['id' => intval(Input::get('id'))]);
         $rules = [
             'post_text' => 'required'
@@ -107,9 +106,7 @@ class PostController extends Controller
      */
     public function deletePost()
     {
-        $post = Post::destroy(Input::get('id'));
-        $posts = new Post();
-        return Redirect::back()
-            ->with('posts', $posts->getNewsTicker());
+        Post::destroy(Input::get('id'));
+        return [];
     }
 }

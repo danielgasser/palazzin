@@ -45,4 +45,5 @@ class LoginController extends Controller
         request()->merge([$field => $login]);
         return $field;
     }
+
 }

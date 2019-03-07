@@ -336,7 +336,8 @@ if (strlen($routeStr) === 0) {
     <script src="{{asset('assets/js/funcs_new.js')}}"></script>
     <script src="{{asset('assets/js/browser_check.js')}}"></script>
     <script src="{{asset('assets/js/inits/master_init.js')}}"></script>
-     <script>
+        <script src="{{asset('assets/js/libs/ckeditor/ckeditor.js')}}"></script>
+        <script>
      var errors_modernizr = '{{trans('errors.modernizr')}}',
             urlTo = '{{URL::to('/')}}',
             otherClanRoleId = JSON.parse('{!! $otherClanRoleId!!}'),

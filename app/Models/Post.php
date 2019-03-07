@@ -56,9 +56,10 @@ class Post extends Model {
      * Get all posts or by id
      *
      * @param null $id
+     * @param false $isJson
      * @return Post
      */
-    public function getNewsTicker ($id = null) {
+    public function getNewsTicker ($id = null, $isJson = false) {
 
         $posts = new Post();
         if ($id == null) {
@@ -77,6 +78,9 @@ class Post extends Model {
         $posts->each(function ($p) {
             $p->editable = self::checkEditableRecord($p->created_at);
         });
+        if ($isJson) {
+            return json_encode($posts);
+        }
         return $posts;
     }
     /**

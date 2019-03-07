@@ -33,23 +33,19 @@ var postLoadTimeOut = 10 * 60 * 1000,
                 }
                 var editCheck,
                     str = '',
-                    dats = n[0];
+                    dats = n[0],
+                    auth = n.auth;
                 $.each(dats, function (i, data) {
-                    editCheck = ($('#editPost_' + data.id).length > 0) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span>' : '';
+                    editCheck = (auth === data.uid) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
                     str = fillPostContent(data, editCheck);
                     $('#newsticker').append(str);
                 });
             }
         });
-        window.setTimeout(loadPosts, postLoadTimeOut);
     };
 jQuery(document).ready(function () {
     "use strict";
 
-    window.setTimeout(loadPosts(), postLoadTimeOut);
-    window.setTimeout(function () {
-        $('#warnings').slideUp(1000);
-    }, postLoadTimeOut / 10);
     jQuery(document).on('click', '#close_warning', function () {
         if ($(this).children('span').hasClass('glyphicon-chevron-up')) {
             $(this).children('span').removeClass('glyphicon-chevron-up');
@@ -65,9 +61,6 @@ jQuery(document).ready(function () {
         $('#newstickerNewPost').slideToggle('slow');
         window.scrollIt('#newsticker', 0, 'slow');
         $('#post_text').val('');
-        if (window.tinyMCE.activeEditor !== null) {
-            window.tinyMCE.activeEditor.setContent('');
-        }
     });
 
     jQuery(document).on('click', '#cancel_new_post', function (e) {
@@ -88,7 +81,7 @@ jQuery(document).ready(function () {
             success: function (data) {
                 window.unAuthorized(data);
                 $('#newstickerNewPost').slideDown('slow').promise().always(function () {
-                    window.tinyMCE.get('post_text').setContent(data.post_text);
+                    window.CKEDITOR.instances.post_text.setData(data.post_text);
                 });
                 $('#post_text').val(data.post_text);
                 $('#id').val(data.id);
@@ -107,7 +100,6 @@ jQuery(document).ready(function () {
             success: function (data) {
                 window.unAuthorized(data);
                 $('#post_' + id).remove();
-                $('[id^="closeComment_"]').trigger('click');
             }
         });
     });
@@ -119,42 +111,18 @@ jQuery(document).ready(function () {
             type: 'POST',
             url: 'news',
             data: {
-                post_text: window.tinyMCE.activeEditor.getContent(),
+                post_text: window.CKEDITOR.instances.post_text.getData(),
                 id: $('#id').val()
             },
             success: function (n) {
                 window.unAuthorized(n);
-                if (n[0].indexOf('error') > -1) {
-                    $('#message').html(n[1]);
-                    $('#comments_too_much').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                    return false;
-                }
                 var editCheck,
                     str,
                     data = n[0][0],
                     auth = n.auth;
-                editCheck = (auth === data.uid && data.editable) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deleteComment_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
+                editCheck = (auth === data.uid) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
                 str = fillPostContent(data, editCheck);
                 $('#newsticker').prepend(str);
-            }
-        });
-    });
-    jQuery(document).on('click', '[id^="editComment_"]', function () {
-        var id = $(this).attr('id').split('_')[1];
-        $.ajax({
-            type: 'POST',
-            url: 'news/getcomment',
-            data: {
-                id: id
-            },
-            success: function (n) {
-                window.unAuthorized(n);
-                $('#addComment_' + n.post_id).trigger('click');
-                $('#comment_text_' + n.post_id).val(n.comment_text);
-                $('#comment-add-area_' + n.post_id).append('<input id="comment_id_' + n.post_id + '" name="comment_id" type="hidden" value="' + n.id + '">');
             }
         });
     });

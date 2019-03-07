@@ -15,9 +15,9 @@ class IsClerk
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isClerk() || \User::isLoggedAdmin()) {
+        if (\User::isClerk()) {
             return $next($request);
         }
-        return redirect()->back()->withErrors(['error' => 'Nur für Administratoren']);
+        return redirect()->intended('/');
     }
 }

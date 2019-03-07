@@ -11,7 +11,7 @@
         <div class="row">
            <div class="col-sm-12 col-md-12 posts">
                 <h4>{!!$p->created_at!!}: {!!trans('news.post_from')!!} <a href="{!!URL::to('user/profile')!!}/{!!$p->user_id!!}">{!!$p->user_login_name!!}</a>
-                    <span>@if(Auth::id() == $p->uid && $p->editable == '1')<span id="editPost_{!!$p->id!!}" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_{!!$p->id!!}" class="glyphicon glyphicon-remove edit"></span>@endif</span>
+                    <span>@if(Auth::id() == $p->uid)<span id="editPost_{!!$p->id!!}" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_{!!$p->id!!}" class="glyphicon glyphicon-remove edit"></span>@endif</span>
                 </h4>
             </div>
         </div>

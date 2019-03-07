@@ -18,6 +18,9 @@ class IsAdmin
         if (\User::isLoggedAdmin() || \User::isManager()) {
             return $next($request);
         }
-        return redirect()->back()->withErrors(['error' => 'Nur für Administratoren']);
+        if (\User::isClerk() && $request->is('admin/bills*')) {
+            return $next($request);
+        }
+        return redirect()->back()->withErrors(['error' => '"' . trans('navigation.' . ltrim($request->getPathInfo(), '/')) . '" ist nur für Administratoren']);
     }
 }

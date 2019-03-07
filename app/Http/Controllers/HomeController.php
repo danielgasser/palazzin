@@ -26,9 +26,9 @@ class HomeController extends Controller
     protected $layout = 'layout.master';
 
     /**
-     * Create a new controller instance.
+     * Create a new controller instance
      *
-     * @return void
+     * HomeController constructor.
      */
     public function __construct()
     {
@@ -71,13 +71,17 @@ class HomeController extends Controller
         }
         return Response::json(['error' => 'E-Mail konnte nicht gesendet werden. Bitte versuche es später noch einmal']);
     }
+
     /**
-     * /home
-     *
-     * @return mixed View
+     * @return mixed
+     * @throws \Exception
      */
     public function getHome()
     {
+        $user = User::find(Auth::id());
+        if ($user->isLoggedClerk()) {
+            return redirect('userlist');
+        }
         date_default_timezone_set(trans('formats.tz'));
         $today = new \DateTime();
         //$today->setTimestamp(time());
@@ -85,7 +89,6 @@ class HomeController extends Controller
 
         $t = \Carbon\Carbon::createFromFormat('Y-m-d H:m:s', $r)->formatLocalized(trans('formats.short-date-time'));
         $login = LoginStat::where('user_id', '=', Auth::id())->orderBy('created_at', 'DESC')->skip(1)->first();
-        $user = User::find(Auth::id());
         $post = new Post();
         $posts = $post->getNewsTicker();
         $wasNotHere = DB::table('password_reminders')->select('email')->where('email', '=', $user->email)->count();

@@ -72,6 +72,7 @@ class UserController extends Controller
                     ->withErrors(trans('errors.passive'));
             }
 
+
             $time = new \DateTime();
             $time->format('Y-m-d H:m:s');
             $user->user_last_login = $time;
@@ -83,25 +84,9 @@ class UserController extends Controller
             if (User::isKeeper()) {
                 return redirect('keeper/reservations');
             }
-            // WHILE TESTs
-            $mail = [
-                'id' => $user->id,
-                'user_login_name' => $user->user_login_name,
-                'email' => $user->email,
-            ];
-            // New Comment available
-            if (Input::has('new_comment') && Input::has('new_comment_user_id')) {
-                $comment = new \Comment();
-                if (is_numeric(Input::get('new_comment_user_id'))) {
-                    $comment = $comment->where('user_id', '=', Input::get('new_comment_user_id'))->first();
-                    if (!empty($comment)) {
-                        Session::put('new_comment', Input::get('new_comment'));
-                        Session::put('new_comment_user_id', $comment->user_id);
-                    }
-                }
+            if (User::isClerk()) {
+                return redirect('admin/bills');
             }
-            // ToDo foreign key
-            //$loginStat->push();
             Session::put('lifetime', $time->format('Y-m-d H:m:s'));
             return Redirect::intended('home');
         }

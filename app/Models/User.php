@@ -291,22 +291,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (Auth::guest()) return 0;
         $roles = self::find(Auth::id())->roles;
         foreach($roles as $role){
-            if ($role->role_code == 'ADMIN') return 1;
+            if ($role->role_code == 'ADMIN') return true;
         }
-        return 0;
+        return false;
     }
 
     /**
      *
      * @param $r role code
-     * @return int
+     * @return bool
      */
     public function getUsersRole($r) {
         $roles = self::find($this->id)->roles;
         foreach($roles as $role){
-            if ($role->role_code == $r) return 1;
+            if ($role->role_code == $r) return true;
         }
-        return 0;
+        return false;
     }
     /**
      *
@@ -316,9 +316,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (Auth::guest()) return 0;
         $roles = self::find(Auth::id())->roles;
         foreach($roles as $role){
-            if ($role->role_code == 'VR') return 1;
+            if ($role->role_code == 'VR') return true;
         }
-        return 0;
+        return false;
     }
 
     /**
@@ -329,9 +329,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (Auth::guest()) return 0;
         $roles = self::find(Auth::id())->roles;
         foreach($roles as $role){
-            if ($role->role_code == 'BB' || $role->role_code == 'AB' || $role->role_code == 'GU') return 1;
+            if ($role->role_code == 'BB' || $role->role_code == 'AB' || $role->role_code == 'GU') return true;
         }
-        return 0;
+        return false;
     }
 
     /**
@@ -342,9 +342,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (Auth::guest()) return 0;
         $roles = self::find(Auth::id())->roles;
         foreach($roles as $role){
-            if ($role->role_code == 'BUHA') return 1;
+            if ($role->role_code == 'BUHA') return true;
         }
-        return 0;
+        return false;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isLoggedClerk() {
+        $roles = self::find(Auth::id())->roles;
+        foreach($roles as $role){
+            if ($role->role_code == 'BUHA') return true;
+        }
+        return false;
     }
 
     /**
@@ -355,9 +367,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (Auth::guest()) return 0;
         $roles = self::find(Auth::id())->roles;
         foreach($roles as $role){
-            if ($role->role_code == 'KP') return 1;
+            if ($role->role_code == 'KP') return true;
         }
-        return 0;
+        return false;
     }
 
     /**

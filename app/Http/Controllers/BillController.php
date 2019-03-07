@@ -19,9 +19,8 @@ class BillController extends Controller
 {
 
     /**
-     * Shows all bills
-     *
-     * @return mixed View
+     * @return mixed
+     * @throws \Exception
      */
     public function showBills()
     {
@@ -34,10 +33,10 @@ class BillController extends Controller
             ->with('users', $users)
             ->with('today', $today->format('Y-m-d'));
     }
+
     /**
-     * Shows all bills
-     *
-     * @return mixed View
+     * @return mixed
+     * @throws \Exception
      */
     public function showBillsPrint()
     {
@@ -127,6 +126,9 @@ class BillController extends Controller
         return Response::json(['due' => $bill->bill_due, 'paid' => $bill->bill_paid, 'billid' => $bill->id]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getBillFilesList()
     {
         $fs = new Filesystem();
@@ -146,6 +148,9 @@ class BillController extends Controller
         return \Response::download($filename, 200, $headers);
     }
 
+    /**
+     * @return mixed
+     */
     public function cronBills()
     {
         $bill = new Bill();
