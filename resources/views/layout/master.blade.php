@@ -114,7 +114,8 @@ if (strlen($routeStr) === 0) {
     <link href="{{asset('libs/fontawesome-free-5.4.1-web/css/all.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{{asset('libs/DataTables/datatables.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{{asset('css/main.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
-    @if (Request::is('/') || Request::is('login'))
+    <link href="{{asset('libs/bootstrap-toggle/bootstrap-toggle.css')}}" rel="stylesheet" media="screen" type="text/css" />
+@if (Request::is('/') || Request::is('login'))
         <style>
             body {
                 background-color: rgba(24,19,12,0.05);
@@ -300,9 +301,8 @@ if (strlen($routeStr) === 0) {
     @show
    @section('scripts')
         <script src="{{asset('libs/jquery/jquery.2.1.1.min.js')}}"></script>
+        <script src="{{asset('libs/bootstrap/bootstrap.min.js')}}"></script>
         <script src="{{asset('libs/bootstrap-toggle/bootstrap-toggle.min.js')}}"></script>
-        <script src="{{asset('libs/bootstrap-toggle/bootstrap-toggle.min.js')}}"></script>
-        <script src="{{asset('libs/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')}}"></script>
         <script src="{{asset('libs/DataTables/datatables.min.js')}}"></script>
         <script src="{{asset('js/funcs.min.js')}}"></script>
         <script>
@@ -316,6 +316,6 @@ if (strlen($routeStr) === 0) {
                 route = '{{Route::getFacadeRoot()->current()->uri()}}';
         </script>
     <script src="{{asset('js/master_init.min.js')}}"></script>
-    @show
+@show
 </body>
 </html>

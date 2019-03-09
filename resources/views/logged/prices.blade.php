@@ -38,6 +38,8 @@
 </div>
     @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
+    <script src="{{asset('js/pricelist_init.min.js')}}"></script>
     @stop
 
 @stop

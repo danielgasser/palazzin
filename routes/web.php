@@ -11,7 +11,10 @@
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return view('welcome');
+    }
+    return view('auth.login');
 });
 Route::get('check-session', 'HomeController@getHome');
 

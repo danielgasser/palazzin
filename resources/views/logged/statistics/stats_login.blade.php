@@ -25,17 +25,13 @@
                     route = '{{Request::url()}}';
 
         </script>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/data.js"></script>
-        <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <link href="/assets/js/libs/bootstrap_switch/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
-        <script src="/assets/js/libs/bootstrap_switch/js/bootstrap-switch.js"></script>
-        <script>
-    </script>
-
-        <script src="/assets/js/stats/stats.js"></script>
-        <script src="/assets/js/stats/stats_login.js"></script>
+        <script src="{{asset('libs/highcharts/highcharts.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-data.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-3d.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-export.js')}}"></script>
+        <script src="{{asset('libs/tableToExcel/tableToExcel.js')}}"></script>
+        <script src="{{asset('js/stats.min.js')}}"></script>
+        <script src="{{asset('js/stats_login.min.js')}}"></script>
     @stop
 
 @stop

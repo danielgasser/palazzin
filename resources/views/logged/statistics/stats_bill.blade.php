@@ -15,12 +15,6 @@
 </div>
 @section('scripts')
         @parent
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/data.js"></script>
-        <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <link href="/assets/js/libs/bootstrap_switch/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
-        <script src="/assets/js/libs/bootstrap_switch/js/bootstrap-switch.js"></script>
         <script>
             var allReservations = $.parseJSON('{!!  json_encode($allReservations) !!}'),
                     checkedYear = [],
@@ -32,8 +26,7 @@
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 chart;
         </script>
-        <script src="/assets/js/stats/stats.js"></script>
-        <script src="/assets/js/stats/stats_bill.js"></script>
+        <script src="{{asset('js/stats_bill.min.js')}}"></script>
 @stop
 
 @stop
