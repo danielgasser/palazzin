@@ -59,7 +59,7 @@
     @stop
     @section('scripts')
     @parent
-    <script src="{{asset('assets/js/funcs.js')}}"></script>
-        <script src="{{asset('assets/min/js/settings_help_init.min.js')}}"></script>
+    <script src="{{asset('js/funcs.js')}}"></script>
+        <script src="{{asset('public/js/inits/settings_help.js')}}"></script>
     @stop
 @stop

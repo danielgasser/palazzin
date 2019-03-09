@@ -47,7 +47,6 @@
             rolesTrans = JSON.parse('{!!json_encode($rolesTrans)!!}'),
             fullMonthNames = JSON.parse('{!!json_encode(trans('calendar.month-names'))!!}'),
             datePickersStart = [],
-            paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
             reservations = JSON.parse('{!!$allRes!!}'),
             guestTitle = '{{trans('reservation.guest_many_no_js.one')}}: ',
             datePickersEnd = [],

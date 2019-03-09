@@ -29,7 +29,6 @@
     <script>
         var autid = '{{Auth::id()}}';
     </script>
-        <script src="{{asset('assets/js/libs/tablesorter/jquery.tablesorter.min.js')}}"></script>
     @stop
 
 @stop

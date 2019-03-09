@@ -1,10 +1,15 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp_reservation.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" href="{{asset('css/reservation.min.css')}}"
+          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/all_reservation.min.css')}}"
+          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/new_reservation.min.css')}}"
+          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{asset('css')}}/datatables_roomapp_reservation.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
 
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
 
 @stop
 @section('content')
@@ -12,7 +17,7 @@
     <div id="reservationInfo">
         <h4></h4>
     </div>
-    <div id="table_all_reservations" class="table-responsive">
+    <div id="container_table_all_reservations" class="table-responsive">
             <table id="table_all_reservations" class="table">
                 <thead>
                 <tr>
@@ -87,6 +92,7 @@
     @include('logged.dialog.no_delete_reservation')
 @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
     <script>
         var startDate,
             endDate,
@@ -100,8 +106,8 @@
             token = '{{ csrf_token() }}',
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}');
     </script>
-    <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
-    <script src="{{asset('assets/js/v3/events.js')}}"></script>
+    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
+    <script src="{{asset('js/events.min.js')}}"></script>
 
 @stop
 @stop

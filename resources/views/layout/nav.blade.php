@@ -49,7 +49,7 @@
                                     @foreach($clan_name as $clan)
                                         <li style="font-weight: bold">
                                             <a class="nav-clan">
-                                                <img style="width: 22px" src="{{asset('assets/img/' . $clan->clan_code . '.png')}}" alt="{{ $clan->clan_description }}" title="{{ $clan->clan_description }}" />
+                                                <img style="width: 22px" src="{{asset('img/' . $clan->clan_code . '.png')}}" alt="{{ $clan->clan_description }}" title="{{ $clan->clan_description }}" />
                                                 <span class="{{ $clan->clan_code }}-text" style="color: white;">{{ $clan->clan_description }} ({{ $clan->clan_code }})</span>
                                             </a>
                                         </li>
@@ -99,22 +99,6 @@
                 </ul>
             </div>
 
-        </div>
-        <div class="container-fluid">
-            <div class="navbar-default" id="footerNav">
-                <ul id="bottom-bottom-nav" class="nav navbar-nav" style="margin: 0; float: right;">
-                    <li class="clear-nav-entry{{Request::is('/help/') ? ' active' : '' }}" style="float: right;">
-                        <?php
-                        $current = \Illuminate\Support\Facades\Route::getFacadeRoot()->current();
-                        if (!is_null($current)) {
-                            $helper = explode('/', \Illuminate\Support\Facades\Route::getFacadeRoot()->current()->uri());
-                        }
-                        ?>
-                        <a href="{{URL::to('/help/' . $helper[0])}}"><i class="fas fa-question"></i><span class="hideContent">&nbsp;{{trans('navigation.help')}}</span></a>
-                    </li>
-
-                </ul>
-            </div>
         </div>
     </nav>
 

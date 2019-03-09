@@ -69,8 +69,7 @@
     @parent
 
     <script>
-        var paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
-            billPaid = [
+        var billPaid = [
                 '{{trans('bill.un_paid')}}',
                 '{{trans('bill.paid')}}'
             ];

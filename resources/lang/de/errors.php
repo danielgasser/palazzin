@@ -55,12 +55,6 @@ return array(
     'data-deleted' => ':d wurde gelöscht',
     'must' => 'Pflichtfeld',
     'old_pass_false' => 'Altes Passwort ist falsch',
-    'modernizr' => 'Diese Webseite läuft <b>ausschliesslich</b> auf modernen Browsern.<br>' .
-'Empfohlen wird die neueste Version folgender Browser:<ul>' .
-'<li>Fürs Desktop: <a href="https://www.google.ch/intl/de/chrome/browser/desktop/index.html" target="_blank">CHROME</a></li>' .
-'<li>Oder: <a href="https://www.mozilla.org/de/firefox/new/" target="_blank">FIREFOX</a></li>' .
-'<li>Oder: <a href="http://www.opera.com/de" target="_blank">OPERA</a></li>' .
-'<li>Oder der Browser auf Deinem mobilen Gerät (IPad, IPhone, Samsung)</li></ul><br>Besorg Dir einen solchen Browser, um weiter zu kommen!',
     'noscript' => 'Diese Webseite benötigt zwingend Javascript. Bitte aktivieren Sie Javascript.',
     'cookies' => 'Diese Webseite funktioniert nur mit Cookies. Bitte aktivieren Sie Cookies.',
     'new_mail' => 'Du hast Deine Haupt-E-Mail Adresse geändert.<br>Bitte beachte, dass es bis zu 24 Stunden dauern kann bis dies in den Verteilern (z.B. alle@palazzin.ch) geändert wird',

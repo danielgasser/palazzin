@@ -1,10 +1,9 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('css')}}/datatables_roomapp.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
 
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
 @stop
 @section('content')
         {{Form::open(array('url' => 'userlist', 'class' => 'form-inline', 'style' => 'margin-bottom: 2em', 'role'=> 'form', 'method' => 'post'))}}
@@ -95,15 +94,15 @@
     @include('logged.dialog.fourchar')
     @section('scripts')
     @parent
-        <script>
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
+    <script>
         var cols = $('th'),
             yl = [],
             families = JSON.parse('{!!json_encode($families)!!}'),
             ml = [],
-            paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
             isManager = ('{{ User::isManager() || User::isLoggedAdmin() }}' === '1');
         </script>
-    <script src="{{asset('assets/js/inits/search_user_tables_init.js')}}"></script>
+    <script src="{{asset('js/search_user_tables_init.min.js')}}"></script>
     @stop
 
 @stop

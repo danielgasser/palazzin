@@ -13,7 +13,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('help/{topic?}', 'HelpController@showHelp');
 Route::get('check-session', 'HomeController@getHome');
 
 Auth::routes();

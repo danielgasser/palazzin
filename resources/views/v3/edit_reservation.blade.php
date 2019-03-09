@@ -1,16 +1,16 @@
 @extends('layout.master')
 @section('header')
     @parent
-
-    <link rel="stylesheet" href="{{asset('assets/js/v3/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
+    <link rel="stylesheet" href="{{asset('css/reservation.min.css')}}"
           rel="stylesheet" media="screen" type="text/css">
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3')}}/datepicker-init.js"></script>
-    <link rel="stylesheet" href="{{asset('assets/css')}}/bootstrap-datepicker.css"
+    <link rel="stylesheet" href="{{asset('css/all_reservation.min.css')}}"
+          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/new_reservation.min.css')}}"
+          rel="stylesheet" media="screen" type="text/css">
+    <link rel="stylesheet" href="{{asset('libs/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" media="screen" type="text/css">
+
+    <link rel="stylesheet" href="{{asset('css')}}/bootstrap-datepicker.min.css"
           rel="stylesheet" media="screen" type="text/css">
 
 @stop
@@ -178,18 +178,23 @@
             startGuestPicker = [],
             endGuestPicker = [],
             endDateString,
-            userPeriod = GlobalFunctions.getUSerPeriod(periods, 'freeBeds'),
+            userPeriod = GlobalFunctions.getUserPeriod(periods, 'freeBeds'),
             reservations = JSON.parse('{!!$my_reservations!!}'),
             guestEntryView = '{!!  $guestEntryView !!}',
             newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod),
             newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_');
     </script>
-    <script src="{{asset('assets/js/inits/edit_reservation_init.js')}}"></script>
-    <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
+    <script type="text/javascript"
+            src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
+    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
+    <script src="{{asset('js/new_reservation_init.min.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>
-    <script src="{{asset('assets/js/v3/events.js')}}"></script>
+    <script src="{{asset('js/events.min.js')}}"></script>
+
 @stop
 @stop

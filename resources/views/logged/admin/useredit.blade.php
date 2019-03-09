@@ -157,7 +157,7 @@
             addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
 
     </script>
-    <script src="{{asset('assets/js/inits/useredit_init.js')}}"></script>
+    <script src="{{asset('js/useredit_init.min.js')}}"></script>
     @stop
     @section('scripts-end')
     @parent

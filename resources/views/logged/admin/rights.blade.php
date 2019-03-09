@@ -41,8 +41,7 @@
     @section('scripts')
     @parent
     <script>
-        var paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
-            autid = '{{Auth::id()}}';
+        var autid = '{{Auth::id()}}';
     </script>
     <script src="{{asset('assets/js/inits/right_init.js')}}"></script>
 

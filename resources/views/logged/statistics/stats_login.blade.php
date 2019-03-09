@@ -11,7 +11,7 @@
         </div>
         <div id="chart_div_two" style="min-width: 310px; height: 400px; margin: 20px auto;">
         </div>
-        <table id="datatable" class="table table-striped table-hover tablesorter table-stats">
+        <table id="datatable" class="table table-striped table-hover table-stats">
         </table>
     </div>
 @section('scripts')

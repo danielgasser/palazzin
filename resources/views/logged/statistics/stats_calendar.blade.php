@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
 <div id="mPDF_Print">
-    <table id="datatable-short" class="table table-striped table-hover tablesorter table-stats">
+    <table id="datatable-short" class="table table-striped table-hover table-stats">
         <thead style="display: none">
         <tr>
             <th></th>

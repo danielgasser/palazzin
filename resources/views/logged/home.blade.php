@@ -1,4 +1,5 @@
 @extends('layout.master')
+
 @section('content')
 
     <h3 style="color: #dfb20d">WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="{{asset('/public/files/___checklist/Checkliste_Benutzer_Palazzin.pdf')}}">Benutzer-Checkliste</a></h3>
@@ -32,7 +33,8 @@
         var lang = $.parseJSON('{!!json_encode((trans('news')))!!}'),
             autid = '{{Auth::id()}}';
     </script>
-    <script src="{{asset('assets/js/inits/news_init.js')}}"></script>
+    <script src="{{asset('libs/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{asset('js/news_init.min.js')}}"></script>
 
 @stop
 @stop

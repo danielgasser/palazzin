@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAGA,CAAE;EACA,KAAK,ECAK,OAAS",
-"sources": ["../scss/links.scss","../scss/vars.scss"],
-"names": [],
-"file": "links.css"
-}

@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAEA;sBACuB;EACnB,OAAO,EAAC,IAAI;;AAGhB;oCACqC;EACjC,WAAW,EAAE,aAAa;EAC1B,aAAa,EAAE,GAAG;EAClB,SAAS,EAAE,IAAI;;AAGnB,iCAAkC;EAC9B,OAAO,EAAE,OAAO;EAAE,kBAAkB;;AAGxC,yCAA0C;EACtC,OAAO,EAAE,OAAO;EAAE,YAAY;;AAGlC,oCAAqC;EACjC,OAAO,EAAE,OAAO;EAAE,iBAAiB;;AAGvC,4CAA6C;EACzC,OAAO,EAAE,OAAO;EAAE,WAAW",
-"sources": ["../scss/checkbox_radio.scss"],
-"names": [],
-"file": "checkbox_radio.css"
-}

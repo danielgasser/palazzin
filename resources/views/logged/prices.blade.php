@@ -2,7 +2,7 @@
 @section('content')
 <div>
     <div class="table-responsive">
-        <table id="pricelist" class="table tablesorter">
+        <table id="pricelist" class="table">
             <thead>
                 <tr>
                     <th>{{trans('roles.role_code')}}</th>

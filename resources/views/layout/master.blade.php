@@ -24,23 +24,13 @@ if (strlen($routeStr) === 0) {
     @else
     <title>{{Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())}} | Palazzin</title>
     @endif
-    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('assets/img/favicon')}}/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('assets/img/favicon')}}/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/img/favicon')}}/favicon-16x16.png">
-    <link rel="manifest" href="{{asset('assets/img/favicon')}}/site.webmanifest">
-    <link rel="mask-icon" href="{{asset('assets/img/favicon')}}/safari-pinned-tab.svg" color="#333333">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon')}}/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon')}}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/favicon')}}/favicon-16x16.png">
+    <link rel="manifest" href="{{asset('img/favicon')}}/site.webmanifest">
+    <link rel="mask-icon" href="{{asset('img/favicon')}}/safari-pinned-tab.svg" color="#333333">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-    <script src="{{asset('assets/js/libs/jquery/jquery.2.1.1.min.js')}}"></script>
-    <!--script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script-->
-    <!--script src="{{asset('assets/js/libs/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script-->
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <link href="{{asset('assets/css/stats_print.css')}}" rel="stylesheet" media="mpdf" type="text/css" />
-    <link href="{{asset('assets/css/print.css')}}" rel="stylesheet" media="print" type="text/css" />
-    <!--link href="{{asset('assets/css/font-awesome/fontawesome-all.min.css')}}" rel="stylesheet" type="text/css" /-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-
     <style>
         .alert {
             position: fixed;
@@ -52,7 +42,6 @@ if (strlen($routeStr) === 0) {
 
     </style>
 @if (Request::is('stats'))
-        <link href="{{asset('assets/css/stats.css')}}" rel="stylesheet" media="screen" type="text/css" />
         <style>
             .pagebreak {
                 background-color: #18130c !important;}
@@ -122,11 +111,9 @@ if (strlen($routeStr) === 0) {
             }
         </style>
     @endif
-    <link href="{{asset('assets/css/main.css')}}" rel="stylesheet" media="screen" type="text/css" />
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="{{asset('libs/fontawesome-free-5.4.1-web/css/all.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
+    <link href="{{asset('libs/DataTables/datatables.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
+    <link href="{{asset('css/main.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
     @if (Request::is('/') || Request::is('login'))
         <style>
             body {
@@ -137,7 +124,7 @@ if (strlen($routeStr) === 0) {
             }
             #wrap:after {
                 content: "";
-                background: url({{asset('assets/img/bg_images/login/6tja0l4xj9.png')}});
+                background: url({{asset('img/bg_images/login/6tja0l4xj9.png')}});
                 background-repeat: no-repeat;
                 background-size: 100% 96%;
                 opacity: 0.5;
@@ -156,17 +143,6 @@ if (strlen($routeStr) === 0) {
         }
     </style>
 
-   <script src="{{asset('assets/js/libs/modernizr/modernizr.custom.42303.js')}}"></script>
-    @if(Request::is('new_reservation') || Request::is('admin/bills'))
-        <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
-    @endif
-    @if(Request::is('edit_reservation*'))
-        <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
-    @endif
-    @if(Request::is('all_reservations'))
-        <link href="{{asset('assets/css/new_reservation.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('assets/css/all_reservation.css')}}" rel="stylesheet" type="text/css" />
-    @endif
 </head>
 @show
 <body>
@@ -175,7 +151,7 @@ if (strlen($routeStr) === 0) {
  @include('logged.reservation_edit')
     @endif
 <div id="wrap">
-    <img id="loading" alt="{{trans('dialog.charging')}}" title="{{trans('dialog.charging')}}" src="{{asset('assets/img/preloader.gif')}}">
+    <img id="loading" alt="{{trans('dialog.charging')}}" title="{{trans('dialog.charging')}}" src="{{asset('img/preloader.gif')}}">
     @section('errors')
         @if ($errors->any())
             <div class="modal fade in" tabindex="-1" role="dialog">
@@ -323,20 +299,23 @@ if (strlen($routeStr) === 0) {
         @include('layout.footer')
     @show
    @section('scripts')
-    {{--<script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>--}}
-    <script src="{{asset('assets/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')}}"></script>
-    <script src="{{asset('assets/js/funcs.js')}}"></script>
-    <script src="{{asset('assets/js/inits/master_init.js')}}"></script>
-        <script src="{{asset('assets/js/libs/ckeditor/ckeditor.js')}}"></script>
+        <script src="{{asset('libs/jquery/jquery.2.1.1.min.js')}}"></script>
+        <script src="{{asset('libs/bootstrap-toggle/bootstrap-toggle.min.js')}}"></script>
+        <script src="{{asset('libs/bootstrap-toggle/bootstrap-toggle.min.js')}}"></script>
+        <script src="{{asset('libs/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js')}}"></script>
+        <script src="{{asset('libs/DataTables/datatables.min.js')}}"></script>
+        <script src="{{asset('js/funcs.min.js')}}"></script>
         <script>
             var urlTo = '{{URL::to('/')}}',
                 langDialog = {!!json_encode(Lang::get('dialog'))!!},
+                paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
                 settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                 token = '{{ csrf_token() }}',
                 monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 oldie = '{{$isOldWin}}',
                 route = '{{Route::getFacadeRoot()->current()->uri()}}';
-     </script>
+        </script>
+    <script src="{{asset('js/master_init.min.js')}}"></script>
     @show
 </body>
 </html>
