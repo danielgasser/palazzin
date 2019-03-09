@@ -1,0 +1,17 @@
+@import "bootstrap-variables";
+@import "vars";
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(137, 137, 137, 0.27);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: $color-h1;
+}

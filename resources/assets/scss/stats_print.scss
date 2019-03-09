@@ -1,0 +1,79 @@
+body {
+  background-color: white !important;
+}
+.highcharts-axis {
+  font-size: 16px;
+  padding: 0.2em;
+}
+#datatable-short, .datatableyear {
+  thead{
+    tr {
+      th{
+        font-size: 14px !important;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        font-size: 14px !important;
+      }
+    }
+  }
+}
+.datatable-shorty, .datatableyear {
+  thead{
+    tr {
+      th{
+        font-size: 14px !important;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        font-size: 14px !important;
+      }
+    }
+  }
+}
+.datatable_month, .datatableyear {
+  thead{
+    tr {
+      th{
+        font-size: 16px !important;
+        border: 1px solid #cccccc !important;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        font-size: 16px !important;
+        border: 1px solid #cccccc !important;
+        padding: 2px;
+      }
+    }
+  }
+}
+#data-total-short, .datatable-shorty, .datatableyear, #data-short {
+  .total {
+    color: rgb(223, 112, 21) !important;
+    width: 8%;
+  }
+  .paid {
+    color: rgb(22, 146, 39) !important;
+  }
+  .unpaid {
+    color: rgb(146, 40, 37) !important;
+  }
+}
+#footer {
+  display: none !important;
+}
+h6 {
+  color: #000000;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 auto;
+}

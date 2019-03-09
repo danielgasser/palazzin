@@ -1,0 +1,32 @@
+#main-nav, #loading, h1, form {
+  display: none;
+}
+.table-responsive {
+  overflow: hidden;
+  width: auto;
+}
+.table-head tr th:first-of-type {
+  width: 0px;
+}
+th {
+  border: 1px solid #ccc;
+  padding: 2px;
+}
+td {
+  padding: 2px;
+}
+tr:nth-child(odd) td {
+  border: 1px solid #ccc;
+}
+tr:nth-child(even) td {
+  border: none;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+body {
+  font-family: "Arial", Helvetica, sans-serif;
+  font-size: 14px;
+}
+.mailz tbody tr td, .fonz tbody tr td, .rolez tbody tr td {
+  border: none;
+}

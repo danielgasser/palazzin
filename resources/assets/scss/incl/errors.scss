@@ -1,0 +1,98 @@
+@import "bootstrap-variables";
+@import "vars";
+
+.error-container {
+    width: 68%;
+    margin: 0 auto;
+    height: 214px;
+    h1 {
+        text-align: center;
+        font-size: 12em;
+        font-variant: small-caps;
+    }
+    #subtitle {
+        font-size: 25px;
+        margin-top: -39px;
+        font-style: italic;
+        text-align: center;
+    }
+    #content {
+        color: #9b280b;
+        text-align: left;
+        #error-code {
+            font-size: 1.52em;
+        }
+        #error-status {
+            transform: rotate(-90deg);
+            transform-origin: left top 0;
+            text-align: left;
+            margin-top: 1px;
+            margin-left: 72px;
+            width: 42px !important;
+            font-size: 13px;
+            display: block;
+        }
+        #error-text {
+            margin-top: -29px;
+            display: block;
+        }
+    }
+}
+
+
+#message {
+    h3, p, span {
+        color: #000000;
+    }
+}
+
+.modal-dialog {
+    color: #000000;
+}
+
+#error-wrap {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0%;
+    z-index: 10000;
+    height: 100%;
+    .alert-danger {
+        background-color: $color-h1;
+    }
+    #errors {
+        width: 100%;
+        position: fixed;
+        top: 57px;
+        border-radius: 0;
+        border: none;
+        button.close {
+            color: white;
+            opacity: 1;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0px;
+            li {
+                h3 {
+                    margin-bottom: 20px;
+                    text-align: center;
+                    color: white;
+                    .glyphicon-warning-sign {
+                        padding-right: 1.2em;
+                    }
+                }
+            }
+        }
+    }
+}
+.error-field {
+    :before {
+
+        content: " '";
+    }
+    :after {
+        content: "' ";
+    }
+    font-style: italic;
+}

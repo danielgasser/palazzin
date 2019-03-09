@@ -1,0 +1,369 @@
+@import "bootstrap-variables";
+@import "vars";
+i {
+    min-width: 19.25px;
+}
+#footer {
+    .container {
+        .navbar-fixed-bottom {
+            border-bottom: none;
+        }
+        nav.navbar {
+            position: absolute;
+            top: 0;
+            height: 39px;
+            min-height: 1px !important;
+            li {
+                a {
+                    color: #f7f7f7;
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    font-weight: normal;
+                    font-size: 1.2em;
+                    &:hover, &:focus, &:active, &:focus-within {
+                        background-color: #b7282e !important;
+                        color: white !important;
+                    }
+                }
+                ul {
+                    li {
+                        a {
+                            font-size: 1em;
+                        }
+                    }
+                }
+                &.open {
+                    a {
+                        color: white !important;
+                    }
+                }
+            }
+        }
+    }
+}
+#footerNav {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+ul {
+    li.dropup, li.dropdown-toggle {
+        ul.dropdown-menu {
+            transition: width 1s linear;
+            background-color: #333;
+            position: absolute;
+            min-width: 55px;
+            border: 1px solid rgba(0, 0, 0, 1);
+            border-radius: 4px;
+            -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            li {
+                a {
+                    color: white !important;
+                }
+            }
+            .divider {
+                margin: 0;
+            }
+        }
+    }
+}
+.open {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.dropdown-toggle-up {
+    i:after {
+        content: "\f077" !important;
+    }
+}
+.dropdown-toggle-down:not(.topNav) {
+    i:after {
+        content: "\f078" !important;
+    }
+}
+.navbar-default {
+  font-weight: bold;
+  .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus, .navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
+    background-color: $color-h1 !important;
+    color: white !important;
+  }
+    .navbar-nav {
+        float: none !important;
+        background: #333;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+  .navbar-nav>li {
+      float: none !important;
+  }
+  .navbar-nav>li>a {
+    color: #f7f7f7;
+      font-weight: normal;
+      font-size: 1.1em;
+      width: 100%;
+      height: 55px;
+      display: inline-block;
+      .hideContent {
+          position: absolute;
+          top: 18px;
+          left: -72px;
+          display: inline;
+          visibility:hidden;
+          white-space: nowrap;
+          opacity:0;
+          transition: left 0.3s linear,opacity 0.3s linear;
+      }
+    padding: 18px;
+  }
+  .navbar-nav>li>a:hover, .navbar-nav>li>a:focus, .navbar-nav>li>a:active {
+    background-color: $color-h1 !important;
+    color: white !important;
+      padding: 18px 18px;
+  }
+  .navbar-nav>li:not(.nav-clan)>a:not([href]):hover, .navbar-nav>li:not(.nav-clan)>a:not([href]):focus, .navbar-nav>li:not(.nav-clan)>a:not([href]):active {
+    background-color: #333 !important;
+    color: white !important;
+  }
+
+}
+.navbar-toggle {
+  background-color: $brand-danger;
+  padding: 8px 10px;
+    margin-top: 12px;
+}
+.icon-bar {
+  background-color: white !important;
+}
+.navbar-brand {
+    margin: 0.15em 0 0.15em -8px !important;
+    padding: 16px 21px !important;
+    width: 100%;
+    font-family: Palazzin, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    a {
+        color: #f7f7f7 !important;
+        font-weight: normal;
+        font-size: 2em;
+        .hideBrandContent {
+            visibility:hidden;
+            white-space: nowrap;
+            opacity:0;
+            transition: left 0.3s linear,opacity 0.3s linear;
+        }
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
+}
+.navbar-default, .navbar-default .navbar-form {
+  border-color: $color-h1;
+  color: #333;
+}
+.navbar {
+    position: fixed;
+    width: 55px;
+    height: 100%;
+    z-index: 1001;
+    border-radius: 0px;
+    border-bottom: 1px solid white;
+    background-color: #333;
+    min-height: 58px !important;
+    border-left: none;
+    border-right: none;
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+        .navbar-default {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+.navbar-header {
+    width: 55px;
+    margin-bottom: 0;
+    z-index: 11;
+    border-bottom: 1px solid #f7f7f7;
+    transition: width 0.5s linear;
+
+}
+#top-nav {
+    width: 55px;
+    transition: width 1s linear;
+    background: transparent;
+}
+#bottom-nav {
+    background: white;
+    li {
+        a {
+            padding-left: 12px;
+        }
+        ul {
+            left: -8.1em;
+            border: 1px solid $brand-danger;
+        }
+    }
+}
+#res-nav {
+    min-height: 63px;
+    width: 100%;
+    #free_beds, #timeliner-container {
+        .fa-clock:after {
+            content: "\f078";
+            padding-left: 8px;
+        }
+        li {
+            a {
+                font-size: 1.1em;
+            }
+        }
+    }
+}
+#all-nav-welcome {
+    width: 100%;
+    background: transparent;
+    position: inherit;
+    border: none;
+    .navbar-default {
+        background: transparent !important;
+    }
+    #main-nav-welcome {
+        background: transparent;
+        li {
+            background: transparent;
+            color: #fff;
+            a {
+                background: #b7282e;
+                border: 1px solid transparent;
+                color: white;
+                display: block;
+                padding: 0.5em;
+                margin: 0.25em;
+                font-size: 1.5em;
+                width: 98%;
+                &:hover {
+                    text-decoration: none !important;
+                    border: 1px solid #b7282e !important;
+                    background: transparent !important;
+                    color: #b7282e !important;
+                }
+            }
+        }
+    }
+}
+#all-nav {
+    width: 55px;
+    height: 100%;
+    opacity: 0.75;
+    transition: width 1s;
+    #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
+        .fa-cog:after, .fa-wrench:after {
+            content: "\f077";
+            padding-left: 8px;
+        }
+        .fa-thermometer-half:after {
+            content: "\f078";
+            padding-left: 8px;
+        }
+        .fa-user:after {
+            content: "\f078";
+            padding-left: 4px;
+        }
+    }
+    #main-nav-container {
+        position: absolute;
+        width: 100%;
+        top: 112px;
+    }
+}
+#closeNav {
+    &:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f061";
+        font-weight: 900;
+    }
+    &:active, &:focus, &:focus-within {
+        background-color: transparent !important;
+    }
+}
+#hide-top-nav {
+    background: #ffffff;
+}
+#topNav {
+    ul {
+        background: transparent;
+        margin-right: 0 !important;
+        li {
+            a {
+                color: #333;
+                &:hover, &:focus, &:active {
+                    background-color: $brand-danger !important;
+                }
+            }
+        }
+    }
+    ul:not(.dropdown-menu) {
+        float: right !important;
+    }
+    ul.dropdown-menu {
+        position: absolute;
+        width: 174px;
+    }
+}
+#adminNav {
+    background: white !important;
+}
+.all-nav-hover {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    width: 222px !important;
+    opacity: 1 !important;
+    transition: width 1s !important;
+    #top-nav {
+        width: 222px;
+    }
+    #closeNav:before {
+        content: "\f060";
+        font-weight: 900;
+    }
+    #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
+        li {
+            a {
+                .hideContent {
+                    top: 18px;
+                    left: 52px;
+                    visibility:visible;
+                    opacity:1;
+                }
+            }
+        }
+    }
+    .navbar-header {
+        width: 222px;
+    }
+    .navbar-brand {
+        a {
+            .hideBrandContent {
+                visibility: visible;
+                white-space: nowrap;
+                opacity:1;
+                &:after {
+                    content: "alazzin"
+                }
+            }
+        }
+    }
+    .dropdown-menu {
+        width: 190px;
+    }
+}
+
+@media (max-width: 1px) {
+    .navbar-left {
+        float: left !important;
+        margin: 0;
+    }
+}

@@ -1,0 +1,137 @@
+@import "incl/bootstrap-variables";
+@import "incl/vars";
+@import "incl/mixins";
+[id^="all_reservations_"] {
+  border: 1px solid $brand-danger;
+  padding: 23px;
+    font-size: 16px;
+}
+#table_all_reservations {
+    width: auto;
+    thead, tbody {
+        tr {
+            th, td {
+                font-size: 1.2em;
+            }
+            &.odd {
+                background-color: #cbcbcb;
+            }
+            &.even {
+                border-bottom: 1px solid $brand-danger;
+                border-top: 1px solid $brand-danger;
+            }
+        }
+    }
+}
+#guestTable {
+    border-left: 1px solid $brand-danger;
+    border-top: 1px solid $brand-danger;
+    thead {
+        tr {
+            display: block;
+        }
+    }
+    tbody {
+        display: block;
+        overflow: auto;
+        height: 58px;
+        width: 100%;
+    }
+    thead, tbody {
+        tr {
+            th {
+                border-bottom: 1px solid #333;
+            }
+            th, td {
+                font-size: 1.0em;
+                padding: 0.25em;
+                border-right: 1px solid #333;
+            }
+            td:first-child {
+                min-width: 28px;
+            }
+            th:nth-child(2) {
+                min-width: 183px;
+            }
+            td:nth-child(3) {
+                min-width: 65px;
+            }
+            td:nth-child(4) {
+                min-width: 97px;
+            }
+            th:nth-child(5) {
+                min-width: 157px;
+            }
+            th:nth-child(6) {
+                min-width: 52px;
+                text-align: right;
+            }
+            td:nth-child(7) {
+                min-width: 91px;
+                text-align: right;
+            }
+            td:nth-child(8) {
+                min-width: 66px;
+            }
+            td:nth-child(9) {
+                min-width: 78px;
+                border-right: none;
+                text-align: right;
+            }
+            th:nth-child(9) {
+                min-width: 78px;
+                border-right: none;
+            }
+        }
+    }
+}
+.show_total_res {
+  border: .13333em solid #b7b7b7;
+  border-radius: .13333em;
+  padding: 2vh 0.36667em 0 0;
+  margin-bottom: 0.5em;
+  position: relative;
+}
+
+[id^="hide_guest_"], [id^="hide_res"] {
+  display: inline;
+  text-align: right;
+  border: none;
+  padding: 0 0.5em 0 0;
+  margin: 0;
+  height: 1em;
+  vertical-align: sub;
+  background-color: transparent;
+  font-size: 2em;
+  color: $brand-danger;
+  cursor: pointer;
+  &:hover, &:focus, &:active {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    color: $brand-danger;
+  }
+}
+[id^="guests_date_"] {
+  border: 1px solid #b7b7b7;
+  margin-top: 2vh;
+  position: relative;
+}
+
+.hide-guest {
+  display: inline-block;
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  height: 27px;
+  padding: 0px 9px;
+  margin: 1px;
+  background-color: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  font-weight: bold;
+  span {
+    display: inline-block;
+  }
+}
