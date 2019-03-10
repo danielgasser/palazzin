@@ -256,6 +256,7 @@ class Reservation extends Model {
      * @param       $year
      * @param array $family_code
      * @return array
+     * @throws Exception
      */
     public function getReservationsStats ($year, $family_code = array('5', '7', '8', '9'))
     {

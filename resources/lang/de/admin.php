@@ -39,6 +39,10 @@ return array(
         'title' => 'Statistiken: Jahreskalender (Logiernächte)',
         'etc' => '...',
     ),
+    'stats_list' => array(
+        'title' => 'Alle Statistiken als PDF',
+        'etc' => '...',
+    ),
     'stats_chron' => array(
         'title' => 'Statistiken: Chronologische Anmeldungen (Gästebuch)',
         'etc' => '...',

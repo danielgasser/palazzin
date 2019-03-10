@@ -3,6 +3,11 @@
     @parent
     <link rel="stylesheet" type="text/css" href="{{asset('css')}}/datatables_roomapp.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
+    <style>
+        .form-control {
+            margin: 0;
+        }
+    </style>
 
 @stop
 @section('content')

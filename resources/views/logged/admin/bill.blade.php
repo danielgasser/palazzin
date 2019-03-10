@@ -1,23 +1,27 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
 
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.js"></script>
-    <link rel="stylesheet" href="{{asset('assets/js/v3/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
+    <link rel="stylesheet" href="{{asset('libs/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
           rel="stylesheet" media="screen" type="text/css">
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript"
-            src="{{asset('assets/js/v3/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <link rel="stylesheet" href="{{asset('assets/css')}}/bootstrap-datepicker.css"
+
+    <link rel="stylesheet" href="{{asset('css')}}/bootstrap-datepicker.min.css"
           rel="stylesheet" media="screen" type="text/css">
+    <style>
+        .dataTables_wrapper {
+            margin: 0;
+            border: none;
+        }
+        .form-control {
+            width: auto;
+        }
+    </style>
     @stop
 @section('content')
     </div>
     <div class="row">
-        <table id="bills">
+        <table id="bills" style="width: 100%">
             <thead>
                 <tr>
                     <th></th>
@@ -67,6 +71,7 @@
 
 @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
 
     <script>
         var billPaid = [
@@ -75,7 +80,11 @@
             ];
 
     </script>
-    <script src="{{asset('assets/js/inits/bill_init.js')}}"></script>
+    <script type="text/javascript"
+            src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
+    <script src="{{asset('js/bill_init.min.js')}}"></script>
 
 @stop
 

@@ -142,16 +142,17 @@ form {
     input[name=example] {
         background-color: #ffffff !important;
     }
-  .btn:focus, .btn:active:focus, .btn.active:focus {
-      outline: 5px auto $brand-danger !important;
-      outline-offset: -2px;
-      -webkit-appearance:none;
-      box-shadow: none;
-      -webkit-box-shadow: none;
-        border: 1px solid $brand-danger;
-    }
+
 }
 
+.btn:focus, .btn:active:focus, .btn.active:focus, button:focus, button:active {
+    outline: 5px auto $brand-danger !important;
+    outline-offset: -2px !important;
+    -webkit-appearance:none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    border: 1px solid $brand-danger !important;
+}
 
 .btn-primary {
   background-color: $brand-danger;

@@ -218,25 +218,4 @@ class StatsController extends Controller
         $mPdf->Output(public_path() . '/files/__stats/' . Input::get('filename') . '.pdf');
         return '/files/__stats/' . Input::get('filename') . '.pdf';
     }
-    /**
-     * Shows all bills
-     *
-     * @return mixed View
-     */
-    public function showStatsPrint()
-    {
-        $allPdfs = [];
-        $path = public_path() . '/files/__stats/';
-        $pdfs = scandir($path);
-        $i = 0;
-        foreach ($pdfs as $p) {
-            if (is_file($path . $p)) {
-                $allPdfs[$i]['link'] = 'https://' . $_SERVER['SERVER_NAME'] . '/public/files/__stats/' . $p;
-                $allPdfs[$i]['name'] = $p;
-            }
-            $i++;
-        }
-        return view('logged.statistics.stats_list')
-            ->with('allBills', $allPdfs);
-    }
 }

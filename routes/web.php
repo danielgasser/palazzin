@@ -77,7 +77,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('stats_chron_guest_night_total', 'StatsController@showStatsNightsTotalGuests');
         Route::get('stats_calendar_month', 'StatsController@showStatsReservationsCalendarPerMonth');
         Route::get('stats_calendar_total_day', 'StatsController@showStatsReservationsCalendarTotalPerDay');
-        Route::get('stats_list', 'StatsController@showStatsPrint');
     });
 
     // Admin

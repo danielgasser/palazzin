@@ -22,50 +22,9 @@ hr{
   text-align: left;
   margin: 0;
 }
-table.tablesorter {
-  font-size: 16pt;
-  width: 100% !important;
-  background-color: white !important;
-  color: #000000 !important;
-  margin: 10px 0 !important;
-}
-#datatable-short thead tr th, .datatable-shorty thead tr th, #datatable-total thead tr th, #datatable thead tr th, [id^="datatable-year-"] thead tr th {
-  color: #000000;
-  background-color: #ffffff !important;
-  font-size: 16px;
-  border: 1px solid #909090;
+#datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
+    border: 1px solid #333 !important;
 
-}
-.datatable_month thead tr th, .datatable_month tbody tr td {
-  color: #000000 !important;
-  font-size: 16px;
-  border: 1px solid #909090;
-}
-.datatableyear thead tr th, .datatableyear tbody tr td {
-  color: #000000 !important;
-  font-size: 16px;
-  border: 1px solid #909090;
-}
-#datatable-short tbody tr td, .datatable-shorty tbody tr td, #datatable-total tbody tr td, #datatable tbody tr td, [id^="datatable-year-"] tbody tr td {
-  color: #000000;
-  background-color: #ffffff !important;
-  font-size: 16px;
-  border: 1px solid #909090;
-  hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #909090;
-    margin: 0 0 0.25em 0;
-    padding: 0;
-  }
-}
-h6 {
-  color: #000000;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0 auto;
-  display: block;
 }
 #datatable-short tbody tr td:first-child, .datatable-shorty tbody tr td:first-child {
     width: 1%;
@@ -99,31 +58,6 @@ h6 {
     }
   }
 
-  table.table-stats thead tr th{
-    font-size: 16px;
-    width: 8.166666667%;
-    border: 1px solid #909090;
-  }
-  table.table-stats thead tr th:first-child{
-    font-size: 16px;
-    width: 2%;
-    border: 1px solid #909090;
-  }
-  table.datatable_month thead tr th{
-    font-size: 16px;
-    width: 3.096774194%;
-    border: 1px solid #909090;
-  }
-  table.datatable_month tbody tr td{
-    font-size: 16px;
-    width: 3.096774194%;
-    border: 1px solid #909090;
-  }
-  table.datatable_month thead tr th:nth-child(1){
-    font-size: 16px;
-    width: 4%;
-    border: 1px solid #909090;
-  }
   .stats_select {
     padding: 6px;
     .label {
@@ -170,7 +104,7 @@ h6 {
   padding: 0 4%;
 }
 #mPDF_Print {
-  top: 301px;
+  margin-top: 1em;
 
 }
 .highcharts-container {

@@ -1,4 +1,185 @@
-var graphSeries = [],
+var dataTableOptions = {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                text: 'Kopieren',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'csv',
+                text: 'CSV',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'excel',
+                text: 'Excel',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'pdf',
+                text: 'PDF',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'print',
+                text: 'Drucken',
+                className: 'btn btn-default'
+            }
+        ],
+        searching: false,
+        pageLength: 12,
+        paging: false,
+        sortable: false,
+        ordering: false,
+        language: {
+            paginate: {
+                first: window.paginationLang.first,
+                previous: window.paginationLang.previous,
+                next: window.paginationLang.next,
+                last: window.paginationLang.last
+            },
+            info: window.paginationLang.info,
+            sLengthMenu: window.paginationLang.length_menu
+        },
+        responsive: true,
+        autoWidth: false,
+        fixedHeader: {
+            header: false,
+            footer: false
+        },
+        columns: [
+            {
+                width: "76px",
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+    },
+    dataTableOptionsTotals = {
+        columnDefs: [
+            {
+                targets: [0],
+                visible: true,
+                orderable: true,
+                data: 'bill_no',
+            },
+            {
+                targets: [1],
+                visible: true,
+                orderable: true,
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [2],
+                visible: true,
+                orderable: true,
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [3],
+                visible: true,
+                orderable: true,
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4],
+                visible: true,
+                orderable: true,
+                type: 'numeric-comma',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        console.log(parseFloat(data.split(' ')[1]))
+                        return parseFloat(data.split(' ')[1])
+                    }
+                    return data;
+                }
+            }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                text: 'Kopieren',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'csv',
+                text: 'CSV',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'excel',
+                text: 'Excel',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'pdf',
+                text: 'PDF',
+                className: 'btn btn-default'
+            },
+            {
+                extend: 'print',
+                text: 'Drucken',
+                className: 'btn btn-default'
+            }
+        ],
+        searching: true,
+        paging: false,
+        sortable: true,
+        ordering: true,
+        language: {
+            emptyTable: 'Keine Daten vorhanden',
+            paginate: {
+                first: window.paginationLang.first,
+                previous: window.paginationLang.previous,
+                next: window.paginationLang.next,
+                last: window.paginationLang.last
+            },
+            search: window.langDialog.search,
+            info: window.paginationLang.info,
+            sLengthMenu: window.paginationLang.length_menu
+        },
+        responsive: true,
+        autoWidth: true,
+        fixedHeader: {
+            header: false,
+            footer: false
+        }
+    },
+    graphSeries = [],
     chart,
     fillMonthTable = function (data, years) {
         'use strict';
@@ -14,17 +195,33 @@ var graphSeries = [],
                 '</thead>';
         ele.html('');
         $.each(years, function (i, y) {
-            var year = window.parseInt(y, 10);
-            ele.append('<table id="datatable_' + year + '" class="datatableyear table table-striped table-hover tablesorter"></table>')
+            let year = window.parseInt(y, 10);
+            ele.append('<div style="font-weight: bold; text-align: center; border-top: 4px solid #18130c;"><h4>' + year + '</h4></div>')
+            ele.append('<table id="datatable_' + year + '" class="table table-stats"></table>')
             if (i < years.length - 1) {
                 ele.append('<pagebreak />');
             }
-            $('#datatable_' + year).append(thead);
-            $('#datatable_' + year).append('<tbody id="sep_year_' + year + '"><tr><td colspan="5" style="font-weight: bold; text-align: center; border-top: 4px solid #18130c;">' + year + '</td></tr></tbody>');
+            $('#datatable_' + year)
+                .append(thead)
+                .append('<tbody id="sep_year_' + year + '">');
         });
         $.each(data, function (j, n) {
             var paid = (n.bill_paid !== null) ? n.bill_paid_show : '-';
-            $('#sep_year_' + n.bill_bill_year).append('<tr><td><a target="_blank" href="' + n.bill_path + '">' + n.bill_no + '</a></td><td>' + n.bill_bill_date_show + '</td><td>' + n.reservation_started_at_show + '</td><td>' + paid + '</td><td>' + n.bill_currency + ' ' + n.bill_total + '</td></tr>');
+            $('#sep_year_' + n.bill_bill_year).append('<tr>' +
+                '<td><a target="_blank" href="' + n.bill_path + '">' + n.bill_no + '</a></td>' +
+                '<td>' + n.bill_bill_date_show + '</td>' +
+                '<td>' + n.reservation_started_at_show + '</td>' +
+                '<td>' + paid + '</td>' +
+                '<td>' + n.bill_currency + ' ' + n.bill_total + '</td>' +
+                '</tr>');
+        });
+        $.each(years, function (i, y) {
+            let year = window.parseInt(y, 10),
+                el = '#datatable_' + year;
+            if ($.fn.DataTable.isDataTable(el)) {
+                $(el).destroy();
+            }
+            $(el).DataTable(dataTableOptionsTotals);
         });
     },
     fillTotalTotalTable = function (data, years) {
@@ -32,9 +229,10 @@ var graphSeries = [],
         var graphTotalSeries = 0,
             graphPaidSeries = 0,
             graphUnpaidSeries = 0,
-            table = '<table  autosize="1" width="500" style="font-size: 16px !important; border-collapse: collapse; width: 100%; float: left;" cellpadding="0" cellspacing="0" id="datatable-total" class="datatableyear table table-hover table-stats">',
+            table = '<table id="datatable-total" class="table table-stats">',
             yearLabel = [],
             totalAllYears,
+            tableContainer = $('#total-total-tables'),
             paidAllYears,
             unpaidAllYears,
             show_totalAllYears,
@@ -50,7 +248,7 @@ var graphSeries = [],
         $.each(years, function (i, n) {
             yearLabel.push(window.parseInt(n));
         });
-        $('#total-total-tables').html('');
+        tableContainer.html('');
         table += '<thead>';
         table += '<tr>';
         table += '<th colspan="3" id="total_total_label"><h6>Total alle Jahre ' + yearLabel.join(', ') + '</h6></th>';
@@ -67,11 +265,11 @@ var graphSeries = [],
         table += '<td class="total" id="total_paid"></td>';
         table += '<td class="unpaid" id="total_unpaid"></td>';
         table += '</tr>';
-        table += '<tr><td colspan="3" style="width: 547px"><div id="chart_total_total"></div></td>';
-        table += '</tr>';
         table += '</tbody>';
         table += '</table><pagebreak />';
-        $('#total-total-tables').append(table);
+        tableContainer
+            .append(table)
+            .append('<div id="chart_total_total"></div>');
         if (totals !== undefined) {
             totalAllYears = (totals.total !== undefined) ? totals.total : 0;
             paidAllYears = (totals.paid !== undefined) ? totals.paid : 0;
@@ -156,7 +354,7 @@ var graphSeries = [],
         $('#all-year-tables').html('');
         $.each(years, function (i, y) {
             var year = window.parseInt(y, 10),
-                table = '<table autosize="1" width="547" style="font-size: 16px !important; border-collapse: collapse; width: 100%; float: left;" cellpadding="0" cellspacing="0" id="datatable-year-' + year + '" class="datatableyear table table-hover table-stats">',
+                table = '<table autosize="1" id="datatable-year-' + year + '" class="table table-stats">',
                 totalYear,
                 paidYear,
                 unpaidYear,
@@ -290,12 +488,12 @@ var graphSeries = [],
                 totalPaidValue = 0,
                 totalUnpaidValue = 0,
                 year = window.parseInt(y);
-            dataHtml.append('<table id="datatable-short_' + year + '" class="datatable-shorty table table-striped table-hover tablesorter table-stats" style="table-layout: fixed"></table><pagebreak />');
+            dataHtml.append('<div id="charts_' + year + '"></div>');
+            dataHtml.append('<table id="datatable-short_' + year + '" class="table table-stats"></table><pagebreak />');
             ele = $('#datatable-short_' + year);
-            ele.append('<thead></thead>');
+            ele.append('<thead><tr id="month_' + year + '"><th>&nbsp;</th>');
             ele.append('<tbody id="data-total-short_' + year + '"></tbody>');
-            $('#data-total-short_' + year).append('<tr><td style="padding: 0 !important;" colspan="14"  id="charts_' + year + '"></td></tr>')
-            htmlStringMonth += '<tr id="month_' + year + '"><td>&nbsp;</td>';
+            htmlStringMonth += '';
             htmlStringTotal += '<tr id="total_' + year + '"><td class="total">Total</td>';
             htmlStringPaid += '<tr id="paid_' + year + '"><td class="paid">Bezahlt</td>';
             htmlStringUnpaid += '<tr id="unpaid_' + year + '"><td class="unpaid">Unbezahlt</td>';
@@ -305,7 +503,7 @@ var graphSeries = [],
                 amountPaidValue = (data_paid[ele_month] === undefined) ? '0.00' : data_paid[ele_month];
                 amountTUnpaidValue = (data_unpaid[ele_month] === undefined) ? '0.00' : data_unpaid[ele_month];
 
-                htmlStringMonth += '<td>' + window.langCalendar[month - 1] + '</td>';
+                htmlStringMonth += '<th>' + window.langCalendar[month - 1] + '</th>';
                 htmlStringTotal += '<td class="total" id="total_month_short_' + ele_month + '">' + amountTotalValue + '</td>';
                 htmlStringPaid += '<td class="paid" id="paid_month_short_' + ele_month + '">' + amountPaidValue + '</td>';
                 htmlStringUnpaid += '<td class="unpaid" id="unpaid_month_short_' + ele_month + '">' + amountTUnpaidValue + '</td>';
@@ -329,7 +527,7 @@ var graphSeries = [],
             $.each(unpaidData, function (i, t) {
                 totalUnpaidValue += parseFloat(t);
             });
-            htmlStringMonth += '<td>Total</td></tr>';
+            htmlStringMonth += '<th>Total</th></tr></thead>';
             htmlStringTotal += '<td class="total">' + totalTotalValue.toLocaleString("de-CH", {minimumFractionDigits: 2}) + '</td></tr>';
             htmlStringPaid += '<td class="paid">' + totalPaidValue.toLocaleString("de-CH", {minimumFractionDigits: 2}) + '</td></tr>';
             htmlStringUnpaid += '<td class="unpaid">' + totalUnpaidValue.toLocaleString("de-CH", {minimumFractionDigits: 2}) + '</td></tr>';
@@ -337,11 +535,10 @@ var graphSeries = [],
             totalPaidValue = 0;
             totalUnpaidValue = 0;
 
-            $('#data-total-short_' + year).append(htmlStringMonth);
+            $('#month_' + year).append(htmlStringMonth);
             $('#data-total-short_' + year).append(htmlStringTotal);
             $('#data-total-short_' + year).append(htmlStringPaid);
             $('#data-total-short_' + year).append(htmlStringUnpaid);
-            $('#data-total-short_' + year).append('<tr><td colspan="14">&nbsp;</td></tr>');
             graphSeries.push(
                 {
                     name: 'Bezahlt',
@@ -356,8 +553,7 @@ var graphSeries = [],
                     color: '#ff9900'
                 }
             );
-            $('#charts_' + year).append('<div style="width:98%;margin: 0 1%;" id="chart_div_' + year + '" style="min-width: 600px; margin: 14px auto;"></div>')
-            //  $('#charts_' + year).append('<pagebreak type="NEXT-ODD" resetpagenum="1" pagenumstyle="i" suppress="off" />');
+            $('#charts_' + year).append('<div id="chart_div_' + year + '"></div>')
             if (unpaidData.reduce(function (pv, cv) {
                     return pv + cv;
                 }, 0) > 0 || paidData.reduce(function (pv, cv) {
@@ -462,6 +658,10 @@ var graphSeries = [],
             totalData = [];
             paidData = [];
             unpaidData = [];
+            if ($.fn.DataTable.isDataTable(ele)) {
+                $(ele).destroy();
+            }
+            $(ele).DataTable(dataTableOptions);
         });
         window.getStatsData('/stats_bill_total', years, fillYearTotalTable);
         window.getStatsData('/stats_bill', years, fillMonthTable);

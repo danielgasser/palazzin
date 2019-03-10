@@ -1,11 +1,8 @@
-/**
- * Created by pc-shooter on 17.12.14.
- */
 var billTable,
     dataTableSettings = {
         dataSrc: '',
-        responsive: true,
-        autoWidth: false,
+        responsive: false,
+        autoWidth: true,
         fixedHeader: {
             header: true,
             footer: true

@@ -26,6 +26,11 @@
                     langCalendar = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 chart;
         </script>
+        <script src="{{asset('libs/highcharts/highcharts.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-data.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-3d.js')}}"></script>
+        <script src="{{asset('libs/highcharts/highcharts-export.js')}}"></script>
+        <script src="{{asset('js/stats.min.js')}}"></script>
         <script src="{{asset('js/stats_bill.min.js')}}"></script>
 @stop
 

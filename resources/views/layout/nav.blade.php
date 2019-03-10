@@ -87,7 +87,6 @@
                                     <li class="{{ Request::is('stats_calendar') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_calendar')}}">Logiernächte</a></li>
                                     <li class="{{ Request::is('stats_bill') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_bill')}}">Jahresabrechnung</a></li>
                                     <li class="{{ Request::is('stats_login') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_login')}}">Logindaten</a></li>
-                                    <li class="{{ Request::is('stats_list') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_list')}}">Alle Statistiken als PDF</a></li>
                                 </ul>
                             </li>
                         @endif

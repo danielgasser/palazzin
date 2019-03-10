@@ -29,7 +29,6 @@
         <script src="{{asset('libs/highcharts/highcharts-data.js')}}"></script>
         <script src="{{asset('libs/highcharts/highcharts-3d.js')}}"></script>
         <script src="{{asset('libs/highcharts/highcharts-export.js')}}"></script>
-        <script src="{{asset('libs/tableToExcel/tableToExcel.js')}}"></script>
         <script src="{{asset('js/stats.min.js')}}"></script>
         <script src="{{asset('js/stats_login.min.js')}}"></script>
     @stop

@@ -222,11 +222,14 @@ if (strlen($routeStr) === 0) {
             @break
             @case (strpos($route, 'stats') !== false)
                 <div id="menu_stats">
+                    @if ($route !== 'stats_list')
                     <h1>{{trans('admin.' . $route . '.title')}} <span id="stats_title"></span></h1>
-                    {{-- @include('layout.stats_menu')--}}
                     <div id="stats_select_menu">
                         @include('layout.stats_select')
                     </div>
+                    @else
+                        <h1>{{trans('admin.stats_list.title')}}</h1>
+                    @endif
                 </div>
             @break
             @case(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)

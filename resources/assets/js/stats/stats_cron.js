@@ -18,14 +18,14 @@ var distinctArray = function (arr) {
         family_props = null,
         total_nights_guest = {},
         total_guests = null,
-        year,
+        tableHeader = '',
         the_years = years,
-        p,
-        props = [],
+        dataTable = $('#datatable'),
         guest_props = [],
         last = window.route.substr(window.route.lastIndexOf('/') + 1),
         further_url = window.route.replace(last, '');
-    $.ajax({
+        dataTable.html('');
+        $.ajax({
         type: 'GET',
         url: further_url + 'stats_chron_guest_night_total',
         data: {
@@ -48,67 +48,95 @@ var distinctArray = function (arr) {
             fillFamilyCakeStats(total_guests, yy, 'chart_div_four', total_nights_guest, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', guest_props);
         }
     });
-    $('#datatable').html('');
-    $('#datatable').append('<thead><tr><th><h6>Monat</h6></th><th><h6>Name/Vorname</h6></th><th><h6>Stamm</h6></th><th><h6>Halb-Stamm</h6></th><th><h6>Ankunft</h6></th><th><h6>Abreise</h6></th><th><h6>Nächte</h6></th><th><h6>Rechnungs<br>betrag</h6></th><th><h6>Gäste</h6></th></tr></thead>');
-    for (i = 0; i < years.length; i += 1) {
-        y = window.parseInt(years[i], 10);
-        if (i > 0) {
-            $('#datatable').append('<pagebreak />')
+        tableHeader = '<thead>' +
+            '<tr>' +
+            '<th>' +
+            '<h6>Monat</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Name/Vorname</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Stamm</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Halb-Stamm</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Ankunft</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Abreise</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Nächte</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Rechnungs<br>betrag</h6>' +
+            '</th>' +
+            '<th>' +
+            '<h6>Gäste</h6>' +
+            '</th>' +
+            '</tr>' +
+            '</thead>';
+        for (i = 0; i < years.length; i += 1) {
+            y = window.parseInt(years[i], 10);
+            if(family_sum[y] === undefined) {
+                continue;
+            }
+            dataTable.append('<div style="font-weight: bold; text-align: center; border-top: 1px solid #18130c;"><h4>' + y + '</h4></div>' +
+                '<table id="dataTable_' + y + '" style="width: 100%">' + tableHeader + '<tbody id="cron_year_' + y + '"></tbody></table>');
+            yy.push(y);
         }
-        if(family_sum[y] === undefined) {
-            continue;
-        }
-        $('#datatable').append('<tbody id="cron_year_' + y + '"><tr><td style="font-weight: bold; text-align: center; border-top: 1px solid #18130c;" colspan="9">' + y + '</td></tr></tbody>');
-        yy.push(y);
-    }
-    $.each(data, function (i, n) {
-        htmlString = '';
-        htmlString += '<tr>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += window.langCalendar[(n.reservation_started_at_month - 1)] + '\'' + n.reservation_started_at_year;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.user_first_name + ' ' + n.user_name;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.clan_description;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.family_description;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.reservation_started_at_show;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.reservation_ended_at_show;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        htmlString += n.reservation_nights;
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top">';
-        if (n.bill !== undefined && n.bill.length > 0) {
-            $.each(n.bill, function (j, m) {
-                htmlString += m.bill_total;
-            });
-        } else {
-            htmlString += '-';
-        }
-        htmlString += '</td>';
-        htmlString += '<td style="vertical-align: top"><div class="guests">';
-        if (n.guest !== undefined && n.guest.length > 0) {
-            $.each(n.guest, function (j, m) {
-                var endline = (j === (n.guest.length - 1)) ? '' : '<br>';
-                htmlString += m.guest_number + ' x ' + m.role_description + endline;
-            });
-            htmlString += '<hr>' + n.guest_sum + ' Gäste Total';
-        } else {
-            htmlString += 'Keine Gäste';
-        }
-        htmlString += '</div></td>';
-        htmlString += '</tr>';
-        $('#cron_year_' + n.reservation_started_at_year).append(htmlString);
-    });
-},
+        $.each(data, function (i, n) {
+            htmlString = '';
+            htmlString += '<tr>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += window.langCalendar[(n.reservation_started_at_month - 1)] + ' ' + n.reservation_started_at_year;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.user_first_name + ' ' + n.user_name;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.clan_description;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.family_description;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.reservation_started_at_show;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.reservation_ended_at_show;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            htmlString += n.reservation_nights;
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top">';
+            if (n.bill !== undefined && n.bill.length > 0) {
+                $.each(n.bill, function (j, m) {
+                    htmlString += m.bill_total;
+                });
+            } else {
+                htmlString += 0.0;
+            }
+            htmlString += '</td>';
+            htmlString += '<td style="vertical-align: top"><div class="guests">';
+            if (n.guest !== undefined && n.guest.length > 0) {
+                $.each(n.guest, function (j, m) {
+                    var endline = (j === (n.guest.length - 1)) ? '' : '<br>';
+                    htmlString += m.guest_number + ' x ' + m.role_description + endline;
+                });
+                htmlString += '<hr>' + n.guest_sum + ' Gäste Total';
+            } else {
+                htmlString += 'Keine Gäste';
+            }
+            htmlString += '</div></td>';
+            htmlString += '</tr>';
+            $('#cron_year_' + n.reservation_started_at_year).append(htmlString);
+        });
+
+    },
     fillFamilyCakeStats = function (nights, yearLabel, el, t_nights, title, pie, props) {
         var options;
         $('#' + el).html('');
@@ -215,9 +243,14 @@ var distinctArray = function (arr) {
                 },
                 labels: {
                     overflow: 'justify'
-                }
+                },
             },
             plotOptions: {
+                column: {
+                    colorByPoint: true,
+                    colors: window.guestColors[0],
+
+                },
                 bar: {
                     dataLabels: {
                         enabled: true
@@ -258,7 +291,7 @@ var distinctArray = function (arr) {
                 {
                     name: n,
                     data: dats,
-                    color: window.yearColorsSet[i],
+                    color: window.guestColors[i],
                     fontSize: '18px'
                 }
             );
@@ -288,5 +321,5 @@ $(document).on('click', '#getYears', function () {
     if (window.checkedYear.length === 0) {
         $('[name^="year"]').trigger('change');
     }
-    window.getStatsData('/stats_chron', window.checkedYear, window.fillTable);
+    window.getStatsData('/stats_chron', window.checkedYear, fillTable);
 });

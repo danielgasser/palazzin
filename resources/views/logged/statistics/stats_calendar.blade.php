@@ -1,7 +1,7 @@
 @extends('layout.master')
 @section('content')
 <div id="mPDF_Print">
-    <table id="datatable-short" class="table table-striped table-hover table-stats">
+    <table id="datatable-short-calendar" class="table" style="width: 100%">
         <thead style="display: none">
         <tr>
             <th></th>
@@ -40,7 +40,6 @@
         <script src="{{asset('libs/highcharts/highcharts-data.js')}}"></script>
         <script src="{{asset('libs/highcharts/highcharts-3d.js')}}"></script>
         <script src="{{asset('libs/highcharts/highcharts-export.js')}}"></script>
-        <script src="{{asset('libs/tableToExcel/tableToExcel.js')}}"></script>
         <script src="{{asset('js/stats.min.js')}}"></script>
         <script src="{{asset('js/stats_calendar.min.js')}}"></script>
 

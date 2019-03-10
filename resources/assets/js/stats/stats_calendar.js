@@ -1,4 +1,55 @@
-var graphDaySeries = [],
+var dataCalendarTableOptions = {
+    dom: 'Bfrtip',
+    buttons: [
+        {
+            extend: 'copy',
+            text: 'Kopieren',
+            className: 'btn btn-default'
+        },
+        {
+            extend: 'csv',
+            text: 'CSV',
+            className: 'btn btn-default'
+        },
+        {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-default'
+        },
+        {
+            extend: 'pdf',
+            text: 'PDF',
+            className: 'btn btn-default'
+        },
+        {
+            extend: 'print',
+            text: 'Drucken',
+            className: 'btn btn-default'
+        }
+    ],
+    searching: false,
+    pageLength: 12,
+    paging: false,
+    sortable: false,
+    ordering: false,
+    language: {
+        paginate: {
+            first: paginationLang.first,
+            previous: paginationLang.previous,
+            next: paginationLang.next,
+            last: paginationLang.last
+        },
+        info: paginationLang.info,
+        sLengthMenu: paginationLang.length_menu
+    },
+    responsive: true,
+    autoWidth: false,
+    fixedHeader: {
+        header: false,
+        footer: false
+    },
+},
+    graphDaySeries = [],
     prepareDataTable = function (years, data) {
         'use strict';
         var i,
@@ -23,7 +74,7 @@ var graphDaySeries = [],
             if (data[theYear] === undefined) {
                 continue;
             }
-            dataHtmlTable.append('<table autosize="1" width="547" style="font-size: 16px !important; border-collapse: collapse; width: 547px" cellpadding="0" cellspacing="0" id="datatable_' + theYear + '" class="datatable_month table table-striped table-hover tablesorter table-stats"></table><pagebreak />');
+            dataHtmlTable.append('<table autosize="1" width="547" style="font-size: 16px !important; border-collapse: collapse; width: 547px" cellpadding="0" cellspacing="0" id="datatable_' + theYear + '" class="datatable_month table table-stats"></table><pagebreak />');
             //dataHtmlTable.append('<pagebreak />');
             dataHtml = $('#datatable_' + theYear);
             dataHtml.append('<thead><tr id="datatable-head-year_' + theYear + '"></tr><tr id="datatable-head_' + theYear + '"></tr></thead>');
@@ -42,6 +93,11 @@ var graphDaySeries = [],
                 }
                 $('#year_' + theYear).append('<tr id="theMonth_' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '"><td>' + window.langCalendar[month - 1] + '</td>' + daysString + '</tr>');
             }
+            if ($.fn.DataTable.isDataTable(this)) {
+                dataHtml.destroy();
+            }
+            dataHtml.DataTable(dataCalendarTableOptions);
+
         }
     },
     fillTableShort = function (data_month, data_year, years) {
@@ -89,7 +145,7 @@ var graphDaySeries = [],
         if (data_month.length === 0) {
             $('#chart_div_total').html('<b>Keine Daten</b>');
         } else {
-            $('#datatable-short>thead').show();
+            $('#datatable-short-calendar>thead').show();
             ele.html('');
             for (i = 0; i < years.length; i += 1) {
                 theYear = window.parseInt(years[i], 10);
@@ -144,6 +200,10 @@ var graphDaySeries = [],
             window.all_charts.push(chart);
         }
         $('[data-empty="empty"]').hide();
+        if ($.fn.DataTable.isDataTable( '#datatable-short-calendar' )) {
+            $('#datatable-short-calendar').destroy();
+        }
+        $('#datatable-short-calendar').DataTable(dataCalendarTableOptions);
     },
     fillTable = function (data, years) {
         'use strict';

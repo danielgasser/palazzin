@@ -405,8 +405,8 @@ table.tablesorter, table.tablesorter thead tr th {
 }
 #loading {
     position: fixed;
-    top: 42%;
-    left: 45%;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
     z-index: 100000;
     display: none;
     font-weight: bold;
@@ -757,4 +757,50 @@ table {
     .tooltip-arrow {
         border-top-color: $brand-danger;
     }
+}
+.pagination {
+    li {
+        a:hover, a:focus, span:hover, span:focus {
+            background-color: $brand-danger;
+            border-color: $brand-danger;
+            color: #fff;
+        }
+    }
+    .paginate_button {
+        a {
+            color: $brand-danger;
+        }
+    }
+    .active {
+        a, a:hover, a:focus, span, span:hover, span:focus {
+            background-color: $brand-danger;
+            border-color: $brand-danger;
+            color: #fff;
+        }
+    }
+}
+.dataTables_wrapper {
+    margin: 1em 0;
+    border: 1px solid #000;
+    padding: 0.25em;
+}
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc_disabled:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0dd";
+    color: $brand-danger;
+    font-size: 125%;
+}
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0de";
+    color: $brand-danger;
+    font-size: 125%;
 }
