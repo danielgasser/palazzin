@@ -1,6 +1,8 @@
 var dataTableSettings = {
     responsive: true,
     autoWidth: false,
+    paging: false,
+    orderable: false,
     fixedHeader: {
         header: true,
         footer: true

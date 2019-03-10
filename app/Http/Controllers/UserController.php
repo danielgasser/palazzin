@@ -349,6 +349,7 @@ class UserController extends Controller
         } elseif (is_object($role)) {
             $role->destroy();
         }
+        $user->push();
         return json_encode([]);
     }
 

@@ -1,4 +1,12 @@
 @extends('layout.master')
+    @section('header')
+        @parent
+        <style>
+        .table>tbody>tr>td {
+            border: none !important;
+        }
+    </style>
+    @stop
 @section('content')
 
 </div>
@@ -126,9 +134,10 @@
                role_delete = '{{URL::to('admin/users/edit/delete')}}',
                families = {!!json_encode($families)!!},
                route = '{{Route::getFacadeRoot()->current()->uri()}}',
+           allRoles = JSON.parse('{!!json_encode($rolesAll) !!}'),
            addedRoles = JSON.parse('{!!json_encode(Session::get('addedRoles')) !!}');
         </script>
-    <script src="{{asset('assets/js/inits/useradd_init.js')}}"></script>
+    <script src="{{asset('js/useradd_init.min.js')}}"></script>
 
     {{Session::forget('addedRoles')}}
     @stop

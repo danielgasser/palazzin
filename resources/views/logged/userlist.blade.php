@@ -7,6 +7,12 @@
         .form-control {
             margin: 0;
         }
+        .dataTables_wrapper {
+            border: none;
+        }
+        #datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
+            border: none !important;
+        }
     </style>
 
 @stop

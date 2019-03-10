@@ -1,6 +1,3 @@
-/**
- * Created by pc-shooter on 17.12.14.
- */
 $(document).ready(function () {
     let sum = 0,
         reservationTable = $('#table_all_reservations').DataTable({

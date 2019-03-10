@@ -4,3 +4,7 @@
 a {
   color: $color-h1;
 }
+a:hover, a:focus {
+    color:$color-h1 !important;
+    text-decoration: none !important;
+}

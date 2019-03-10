@@ -23,6 +23,8 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
             },
             {
                 targets: [1],
+                responsivePriority: 1,
+                visible: false,
                 orderable:      false,
                 sortable: false,
                 className: 'user_id',

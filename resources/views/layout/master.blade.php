@@ -181,7 +181,7 @@ if (strlen($routeStr) === 0) {
                              <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
                          </div>
                          <div class="modal-body">
-                             <p>{{Session::get('info_message')}} {{Session::get('message')}}</p>
+                             <p>{!! Session::get('info_message') !!} {!! Session::get('message') !!}</p>
                          </div>
                          <div class="modal-footer">
                              <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>

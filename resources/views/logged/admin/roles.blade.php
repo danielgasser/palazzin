@@ -1,10 +1,17 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp-roles.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
-
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('css')}}/datatables_roomapp-roles.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
+    <style>
+        .dataTables_wrapper {
+            margin: 0;
+            border: none;
+        }
+        .form-control {
+            width: auto;
+        }
+    </style>
 @stop
 @section('content')
         <table id="roles">
@@ -70,10 +77,11 @@
         </table>
     @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
     <script>
         var autid = '{{Auth::id()}}';
     </script>
-    <script src="{{asset('assets/js/inits/role_init.js')}}"></script>
+    <script src="{{asset('js/role_init.min.js')}}"></script>
 
 
     @stop

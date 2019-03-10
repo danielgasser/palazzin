@@ -1,11 +1,22 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp_reservation.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
 
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
+    <link rel="stylesheet" href="{{asset('libs/bootstrap-datepicker')}}/css/bootstrap-datepicker3.min.css"
+          rel="stylesheet" media="screen" type="text/css">
 
+    <link rel="stylesheet" href="{{asset('css')}}/bootstrap-datepicker.min.css"
+          rel="stylesheet" media="screen" type="text/css">
+    <style>
+        .dataTables_wrapper {
+            margin: 0;
+            border: none;
+        }
+        .form-control {
+            width: auto;
+        }
+    </style>
 @stop
 @section('content')
     <a name="top"></a>
@@ -40,6 +51,7 @@
      --}}
 @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
     <script>
         var startDate,
             endDate,
@@ -52,9 +64,9 @@
             datePickersEnd = [],
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}');
     </script>
-    <script src="{{asset('assets/js/v3/V3Reservation.js')}}"></script>
-    <script src="{{asset('assets/js/v3/events.js')}}"></script>
-    <script src="{{asset('assets/js/inits/reservation_init.js')}}"></script>
+    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
+    <script src="{{asset('js/events.min.js')}}"></script>
+    <script src="{{asset('js/reservation_init.min.js')}}"></script>
 
 @stop
 @stop

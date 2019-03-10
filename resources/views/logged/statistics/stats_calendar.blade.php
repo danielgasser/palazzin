@@ -1,4 +1,14 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <style>
+        #datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
+            border: 1px solid #333;
+
+        }
+
+    </style>
+@stop
 @section('content')
 <div id="mPDF_Print">
     <table id="datatable-short-calendar" class="table" style="width: 100%">

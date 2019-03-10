@@ -97,6 +97,7 @@ class AdminController extends Controller
         return view('logged.admin.useradd')
             ->with('clans', [trans('dialog.select')] + Clan::pluck('clan_description', 'id')->toArray())
             ->with('allRoles', [trans('dialog.select')] + Role::getRoles())
+            ->with('rolesAll', RoleController::getAllRolesAjax())
             ->with('families', $allFams)
             ->with('user', new User());
     }

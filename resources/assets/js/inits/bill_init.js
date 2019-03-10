@@ -1,6 +1,10 @@
 var billTable,
     dataTableSettings = {
         dataSrc: '',
+        stripeClasses: [
+            'odd',
+            'even'
+        ],
         responsive: false,
         autoWidth: true,
         fixedHeader: {
@@ -42,30 +46,58 @@ var billTable,
             {
                 targets: [2],
                 responsivePriority: 2,
-                data: 'bill_total'
+                visible: true,
+                orderable: true,
+                data: 'bill_bill_date',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
             },
             {
                 targets: [3],
-                responsivePriority: 3,
-                data: 'user_id'
+                responsivePriority: 2,
+                visible: true,
+                orderable: true,
+                data: 'bill_total',
+                type: 'numeric-comma',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d = data.split(' ');
+                        return parseFloat(d[1])
+                    }
+                    return data;
+                }
             },
-
             {
                 targets: [4],
-                responsivePriority: 4,
-                data: 'bill_due'
+                responsivePriority: 3,
+                visible: true,
+                orderable: true,
+                data: 'user_id'
             },
-
             {
                 targets: [5],
+                responsivePriority: 4,
+                visible: true,
+                orderable: true,
+                data: 'bill_due'
+            },
+            {
+                targets: [6],
                 responsivePriority: 5,
                 orderable: false,
                 data: 'bill_paid'
             },
-
             {
-                targets: [6],
+                targets: [7],
                 responsivePriority: 6,
+                visible: true,
+                orderable: true,
                 data: 'bill_path'
             },
 

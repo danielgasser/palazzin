@@ -1,4 +1,14 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <style>
+        #datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
+            border: 1px solid #333;
+
+        }
+
+    </style>
+@stop
 @section('content')
 <div id="chart_div" style="min-width: 310px; height: 400px; margin: 0 auto;">
 </div>

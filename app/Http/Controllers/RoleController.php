@@ -43,10 +43,10 @@ class RoleController extends Controller
      */
     public static function getRolesAjax($id = null, $json = true)
     {
-        if (is_null($id)) {
-            $id = Input::get('id');
+        if (is_null($id) || $id === '') {
+            $id = Input::get('role_id_add');
         }
-        if (is_null($id)) {
+        if (is_null($id) && !$json) {
             return json_encode([]);
         }
         $role = Role::find($id);
@@ -65,6 +65,28 @@ class RoleController extends Controller
             return $defRoles;
         }
         return json_encode($defRoles);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAllRolesAjax()
+    {
+        $rolea = Role::all();
+        $defRoles = [];
+        foreach($rolea as $k => $role) {
+            $defRoles[$k]['id'] = $role->id;
+            $defRoles[$k]['role_c'] = $role->role_code;
+            $defRoles[$k]['role_code'] = trans('roles.' . $role->role_code);
+            $defRoles[$k]['role_tax_annual'] = $role->role_tax_annual;
+            $defRoles[$k]['role_tax_night'] = $role->role_tax_night;
+            $defRoles[$k]['role_tax_stock'] = $role->role_tax_stock;
+            $defRoles[$k]['role_guest'] = $role->role_guest;
+            foreach ($role->rights as $r) {
+                $defRoles[$k]['role_rights'][] = trans('rights.' . $r->right_code);
+            }
+        }
+        return $defRoles;
     }
 
     /**

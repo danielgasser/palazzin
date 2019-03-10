@@ -1,4 +1,12 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <style>
+        .table>tbody>tr>td {
+            border: none !important;
+        }
+    </style>
+    @stop
 @section('content')
 
 
