@@ -16,7 +16,7 @@
     {{-- CalendarStart --}}
     {{Form::label('setting_calendar_start', trans('settings.CalendarStart'), array('class' => 'col-sm-3 col-md-6'))}}
     <div class="col-sm-9 col-md-6">
-        {{Form::input('text', 'setting_calendar_start', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $globalSettings->setting_calendar_start)->formatLocalized('%Y-%m-%d'), array('class' => 'form-control datepicker date_type', 'data-provide' => 'datepicker'))}}
+        {{Form::input('text', 'setting_calendar_start', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $globalSettings->setting_calendar_start)->formatLocalized('%Y-%m-%d'), array('class' => 'form-control datepicker date_type', 'data-provide' => 'datepicker', 'placeholder' => 'YYYY-MM-DD'))}}
     </div>
 </div>
 <div class="row">
@@ -82,17 +82,6 @@
     </div>
 </div>
 <div class="row">
-    <h3>{{trans('settings.setting_app_logo')}}:</h3>
-    {{-- BG-Image --}}
-    {{Form::label('setting_app_logo', trans('settings.setting_app_logo'), array('class' => 'col-sm-6 col-md-6'))}}
-    <div class="col-sm-2 col-md-2">
-        <img src="{{$globalSettings->setting_app_logo}}" style="background-color: white;" />
-        {{Form::file('setting_app_logo', array('class' => 'form-control'))}}
-        {{Form::hidden('setting_app_logo', $globalSettings->setting_app_logo)}}
-    </div>
-</div>
-
-<div class="row">
     <h3>{{trans('settings.site')}}:</h3>
 
         {{-- SiteName --}}
@@ -101,16 +90,6 @@
         {{Form::text('setting_site_name', $globalSettings->setting_site_name, array('class' => 'form-control'))}}<br>
         {{Form::input('url', 'setting_site_url', $globalSettings->setting_site_url, array('class' => 'form-control'))}}
     </div>
-</div>
-<div class="row">
-    <h3>{{trans('settings.PaymentMethod')}}:</h3>
-    @foreach(explode(',', $globalSettings->setting_payment_methods) as $key => $s)
-        <div class="col-sm-4 col-md-4">
-        {{Form::label('setting_payment_methods', 'N° ' . ($key + 1))}}
-        {{-- SitPayment --}}
-        {{Form::text('setting_payment_methods[]', $s, array('class' => 'form-control'))}}
-        </div>
-    @endforeach
 </div>
 <div class="row">
     <h3>{{trans('settings.tax_global')}} in %:</h3>
@@ -130,39 +109,21 @@
     <h3>{{trans('settings.setting_bill_text')}}:</h3>
     <div class="col-sm-12 col-md-6">
         {{-- SitPayment --}}
-        {{Form::textarea('setting_bill_text', $globalSettings->setting_bill_text, array('class' => 'form-control'))}}
+        {{Form::textarea('setting_bill_text', $globalSettings->setting_bill_text, array('class' => 'form-control', 'id' => 'setting_bill_text'))}}
     </div>
 </div>
 <div class="row">
     <h3>{{trans('settings.setting_bill_mail_text')}}:</h3>
     <div class="col-sm-12 col-md-6">
         {{-- SitPayment --}}
-        {{Form::textarea('setting_bill_mail_text', $globalSettings->setting_bill_mail_text, array('class' => 'form-control'))}}
+        {{Form::textarea('setting_bill_mail_text', $globalSettings->setting_bill_mail_text, array('class' => 'form-control', 'id' => 'setting_bill_mail_text'))}}
     </div>
 </div>
 <div class="row">
     <h3>{{trans('settings.setting_start_reservation_mail_text')}}:</h3>
     <div class="col-sm-12 col-md-6">
         {{-- Text for reservation reminders --}}
-        {{Form::textarea('setting_start_reservation_mail_text', $globalSettings->setting_start_reservation_mail_text, array('class' => 'form-control'))}}
-    </div>
-</div>
-<div class="row">
-    <h3>{{trans('settings.posts')}}:</h3>
-    {{-- Posts --}}
-    {{Form::label('setting_editable_record_time', trans('settings.setting_editable_record_time'), array('class' => 'col-sm-6 col-md-6'))}}
-    <div class="col-sm-1 col-md-1">
-        {{Form::text('setting_editable_record_time', $globalSettings->setting_editable_record_time, array('class' => 'form-control'))}}
-    </div>
-</div>
-<div class="row">
-    <h3>{{trans('settings.login_bg_img')}}:</h3>
-    {{-- BG-Image --}}
-    {{Form::label('setting_login_bg_image', trans('settings.setting_login_bg_image'), array('class' => 'col-sm-6 col-md-6'))}}
-    <div class="col-sm-1 col-md-1">
-        <img src="{{$globalSettings->setting_login_bg_image}}" width="250" />
-        {{Form::file('setting_login_bg_image', array('class' => 'form-control'))}}
-        {{Form::hidden('setting_login_bg_image_none', $globalSettings->setting_login_bg_image)}}
+        {{Form::textarea('setting_start_reservation_mail_text', $globalSettings->setting_start_reservation_mail_text, array('class' => 'form-control', 'id' => 'setting_start_reservation_mail_text'))}}
     </div>
 </div>
 <div class="row">
@@ -174,10 +135,10 @@
         <a class="btn btn-default" href="{{ route('calc-periods') }}">{{ trans('settings.periods') }}</a>
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin-bottom: 20px;">
     <h3>{{trans('settings.title')}} {{trans('settings.go')}}</h3>
     <div class="col-sm-2 col-md-3">
-        <button type="button" class="btn btn-default" id="saveIt">{{trans('dialog.save')}}</button>
+        <button type="submit" class="btn btn-default" id="saveIt">{{trans('dialog.save')}}</button>
 
     </div>
  </div>
@@ -186,5 +147,6 @@
     @stop
     @section('scripts')
     @parent
-        <script src="{{asset('assets/min/js/admin.min.js')}}"></script>
+    <script src="{{asset('libs/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{asset('js/settings_help_init.min.js')}}"></script>
     @stop

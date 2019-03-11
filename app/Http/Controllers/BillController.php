@@ -134,6 +134,7 @@ class BillController extends Controller
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function cronBills()
     {

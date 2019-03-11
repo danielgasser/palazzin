@@ -146,52 +146,12 @@ class SettingController extends Controller
      */
     public function setSettings()
     {
-        $file = null;
-        $logo = null;
         $inputs = Input::except('id', '_token', 'setting_login_bg_image_none');
-        if (Input::hasFile('setting_login_bg_image')) {
-            $file = Input::file('setting_login_bg_image');
-        }
-        if (Input::hasFile('setting_app_logo')) {
-            $logo = Input::file('setting_app_logo');
-        }
         $set = Setting::getStaticSettings();
 
         $t = \Carbon\Carbon::createFromFormat('Y-m-d', $inputs['setting_calendar_start'])->formatLocalized('%Y-%m-%d 00:00:00');
-        $p = implode(',', $inputs['setting_payment_methods']);
         $inputs['setting_calendar_start'] = $t;
-        $inputs['setting_payment_methods'] = $p;
-        if ($file != null) {
-            $path = public_path() . '/files/bg_images/login';
-            $fileName = self::generateRandomString() . '.' . $file->getClientOriginalExtension();
-            $savePath = str_replace(public_path(), '', $path);
-            $file->move($path, $fileName);
-            $image = Image::make($path . '/' . $fileName);
-            $image->resize(800, 600, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $image->save();
-            $inputs['setting_login_bg_image'] = $savePath . '/' . $fileName;
-        } else {
-            $inputs['setting_login_bg_image'] = Input::get('setting_login_bg_image_none');
-        }
-        if ($logo != null) {
-            $pathLogo = public_path() . '/assets/img';
-            $fileNameLogo = self::generateRandomString() . '.' . $logo->getClientOriginalExtension();
-            $savePathLogo = str_replace(public_path(), '', $pathLogo);
-            $logo->move($pathLogo, $fileNameLogo);
-            /**
-             * https://stackoverflow.com/a/50566950/1387233
-             */
-            $imageLogo = Image::make($pathLogo . '/' . $fileNameLogo);
-            $imageLogo->resize(182, 55, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $imageLogo->save();
-            $inputs['setting_app_logo'] = $savePathLogo . '/' . $fileNameLogo;
-        } else {
-            $inputs['setting_app_logo'] = Input::get('setting_app_logo');
-        }
+
         if (($inputs['setting_calendar_duration'] != $set->setting_calendar_duration) || ($inputs['setting_calendar_start'] != $set->setting_calendar_start)) {
             Period::calculatePeriods();
         }

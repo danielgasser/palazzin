@@ -101,19 +101,17 @@ class Bill extends Model {
                 $bill->push();
 
                 $r->reservation_sum = 0;
-                $userForBill = \User::find($r->user_id)->toArray();
-                $clerkForBill = \User::where('user_login_name', '=', 'gilhawley.owen')->first()->toArray();
-                $path = public_path() . '/files/' . str_replace('.', '_', $userForBill['user_login_name']);
+                $userForBill = \User::find($r->user_id);
+                $path = public_path() . '/files/' . str_replace('.', '_', $userForBill->user_login_name);
                 if (file_exists($path) === false) {
                     mkdir($path);
                 }
                 chmod($path, 0777);
                 $billDate = new \DateTime($bill->bill_bill_date);
                 $userForBillCountry = DB::select(DB::raw('select `country_name_' . trans('formats.langjs') . '` from countries where country_code = ' . $userForBill['user_country_code']));
-                $billPDFNo = 'No-' . substr($bill->id . '-' . str_replace([' ', ':', '-'], '', $bill->bill_bill_date), 0, -6);
-                $resStart = \Carbon\Carbon::createFromFormat('Y_m_d', $r->reservation_started_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
-                $resEnd = \Carbon\Carbon::createFromFormat('Y_m_d', $r->reservation_ended_at)->formatLocalized(trans('formats.long-date-no-time-no-day'));
-                $defPath = $path . '/' . $set->setting_site_name . '-' . trans('bill.bill') . '-' . $billPDFNo . '.pdf';
+                $billPDFNo = 'No-' . substr($bill->id . '-' . str_replace([' ', ':', '-', '.'], '', $bill->bill_bill_date), 0, -6);
+                $resStart = date("d.m.Y", strtotime($r->reservation_started_at));
+                $resEnd = date("d.m.Y", strtotime($r->reservation_ended_at));
                 $pdfTitle = $set->setting_site_name . '-' . trans('bill.bill') . '-' . $billPDFNo . '.pdf';
 
                 $bill->bill_path = '/files/' . str_replace('.', '_', $userForBill['user_login_name']) . '/' . $set->setting_site_name . '-' . trans('bill.bill') . '-' . $billPDFNo . '.pdf';
@@ -130,36 +128,27 @@ class Bill extends Model {
                     'resDate' => array($resStart, $resEnd),
                     'currency' => $bill->bill_currency,
                     'tax' => $bill->bill_tax,
+                    'billusertext' => $set->setting_bill_mail_text,
                     'billtext' => $set->setting_bill_text,
                     'setting_bill_deadline' => $set->setting_bill_deadline,
                     'billAddressCountry' => $userForBillCountry[0]->{'country_name_' . trans('formats.langjs')},
                     'baseUrl' => $set->setting_site_url
 
                 );
-                $view = View::make('pdfs.bill')
-                    ->with('bill', $arr)
-                    ->with('settings', $set)
-                    ->render();
-             //   dd('?');
-                $mPdf = new \mPDF();
-                $mPdf->setTitle($pdfTitle);
-                $mPdf->WriteHTML($view, 2);
-                $mPdf->allow_charset_conversion = true;
-                $mPdf->charset_in = 'UTF-8';
-                $mPdf->Output($defPath, 'F');
-                $mPdf->Output(public_path() . '/files/__clerk/' . $pdfTitle);
+                $data = [
+                    'bill' => $arr,
+                    'settings' => $set
+                ];
+                $pdf = App::make('dompdf.wrapper');
+                $pdf->loadView('pdfs.bill', $data);
+                $pdf->save(public_path() . '/files/__clerk/' . $pdfTitle)
+                    ->stream($pdfTitle);
                 //mail
-
+                $arr['attachment'] = public_path() . '/files/__clerk/' . $pdfTitle;
                 if (intval($bill->bill_sent) == 0) {
-                    $data_view = array(
-                        'ss' => 'WWWTTTFFF',
-                        'pp' => $r->toArray(),
-                        'billtext' => $set->setting_bill_mail_text,
-                        'bill_clerk_text' => 'Eine neue Palazzin-Rechnung wurde verschickt.'
-                    );
-
+                    $userForBill->notify(new \App\Notifications\SendBill($arr, $userForBill));
                     // Config::set('mail.driver', 'mail');
-
+/*
                     Mail::send('emails.new_bill', $data_view, function($message) use($userForBill, $defPath, $pdfTitle, $set)
                     {
                         $message->to($userForBill['email'], $userForBill['user_first_name'] . ' ' . $userForBill['user_name'])
@@ -176,7 +165,7 @@ class Bill extends Model {
                             ->attach($defPath, array('as' => $pdfTitle, 'mime' => 'application/pdf'))
                             ->subject(trans('bill.bill_noo'));
                     });
-
+*/
                     $bill->bill_sent = 1;
                 }
                 $bill->push();
@@ -185,7 +174,7 @@ class Bill extends Model {
             $r->reservation_bill_sent = 1;
             $r->save();
         });
-        return $reservations->toArray();
+        return var_dump($reservations->toArray());
     }
 
     /**

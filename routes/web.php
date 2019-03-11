@@ -117,6 +117,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('password/new/{pass}', 'AdminController@manualPass');
         Route::get('bills/filelist', 'BillController@getBillFilesList');
 
+        Route::get('cronjobs/bills', 'BillController@cronBills');
 
     });
 
