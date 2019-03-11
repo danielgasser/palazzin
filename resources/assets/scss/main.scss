@@ -68,6 +68,9 @@
         }
     }
 }
+.modal-dialog {
+    z-index: 999;
+}
 .modal.in {
     display: block;
 }

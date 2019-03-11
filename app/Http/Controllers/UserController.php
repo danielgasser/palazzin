@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\ProfileChange;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
@@ -37,9 +38,8 @@ class UserController extends Controller
     }
 
     /**
-     * Authenticates a user after login
-     *
-     * @return mixed View/Redirect
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function postLogin()
     {
@@ -134,17 +134,10 @@ class UserController extends Controller
         } else {
             $user->family_description = '';
         }
-        $settings = \Setting::getStaticSettings();
-        $pm = $settings['setting_payment_methods'];
-        $payMethods = [];
-        foreach (explode(',', $pm) as $p) {
-            $payMethods[$p] = trans('profile.' . $p);
-        }
         if (isset($user->user_birthday)) {
             $user->user_birthday = \DateTime::createFromFormat('Y-m-d H:i:s', $user->user_birthday)->format('d.m.Y');
         }
         return view('user.profile')
-            ->with('payment_method', $payMethods)
             ->with('info_message', 'blah_')
             ->with('user', $user)
             //->with('birthday', $birthday->format('d.m.Y'))
@@ -188,10 +181,7 @@ class UserController extends Controller
                 'user_country_code' => 'required',
                 'user_fon1_label' => 'required',
                 'user_fon1' => 'required|min:3',
-                'user_payment_method' => 'required|not_in:0',
                 'user_avatar' => 'image',
-                'user_answer' => 'required|min:3',
-                'user_question' => 'required|min:3',
             ],
             [
                 'regex' => '<div class="messagebox">Format des Felds <span class="error-field"><span class="error-field">:attribute</span></span> ist ungültig:<br>
@@ -204,8 +194,7 @@ class UserController extends Controller
             ]
         );
         if ($validator->fails()) {
-            Session::put('error', $validator);
-            return Redirect::back()->withErrors($validator);
+            return back()->withErrors($validator->messages());
         }
         if ($file != null) {
             $path = public_path() . '/files/' . str_replace('.', '_', $user->user_login_name);
@@ -223,23 +212,21 @@ class UserController extends Controller
             $new_mail_message = '<br>' . trans('errors.new_mail');
         }
         $fon1label = (strlen(Input::get('user_fon1_label')) <= 2) ? 'x' : ltrim(Input::get('user_fon1_label'), '#');
-        $fon2label = (strlen(Input::get('user_fon2_label')) <= 2) ? 'x' : ltrim(Input::get('user_fon2_label'), '#');
-        $fon3label = (strlen(Input::get('user_fon3_label')) <= 2) ? 'x' : ltrim(Input::get('user_fon3_label'), '#');
         $args = Input::except('user_fon1_label_show', 'user_fon2_label_show', 'user_fon3_label_show', 'user_avatar', 'user_birthday');
         $birthday = \DateTime::createFromFormat('d.m.Y', Input::get('user_birthday'));
-        $user->user_birthday = $birthday->format('Y-m-d') . ' 00:00:00';
+        if (is_object($birthday)) {
+            $user->user_birthday = $birthday->format('Y-m-d') . ' 00:00:00';
+        }
         $user->user_new = 0;
         $user->update($args);
         $user->user_fon1_label  = $fon1label;
-        $user->user_fon2_label  = $fon2label;
-        $user->user_fon3_label  = $fon3label;
-        //$user->family_code = Input::get('user_family');
+
 
         $user->save();
+        $recipientUsers = User::find(1)->get();
+        $data = ['id' => $user->id, 'old_email' => $user_old_email, 'email' => $user->email, 'login' => $user->user_login_name];
         if ($user_old_email != $user->email) {
-            Mail::send('emails.profile_change', ['id' => $user->id, 'old_email' => $user_old_email, 'email' => $user->email, 'login' => $user->user_login_name], function ($message) {
-                $message->to(['software@daniel-gasser.com', 'luciana@vigano.ch'], 'Daniel Gasser')->subject('Palazzin: Profile Change');
-            });
+            \Notification::send($recipientUsers, (new ProfileChange($user, $data)));
         }
         return Redirect::back()
             ->with('user', $user)

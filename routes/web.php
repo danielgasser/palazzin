@@ -19,10 +19,13 @@ Route::get('/', function () {
 Route::get('check-session', 'HomeController@getHome');
 
 //cronjobs
-Route::get('cronjobs/bills', 'BillController@cronBills');
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('cronjobs/bills', 'CronController@sendBill'); // after midnight
+    Route::get('cronjobs/birthdays', 'CronController@sendBirthdayNotification'); // after midnight
+    Route::get('cronjobs/reservation/reminder/{sendToHousekeeper?}', 'CronController@getFutureReservations'); // after midnight
+});
 
 Auth::routes();
-//Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
 Route::group(['middleware' => 'auth'], function () {
 

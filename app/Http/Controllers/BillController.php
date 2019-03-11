@@ -131,14 +131,4 @@ class BillController extends Controller
         ];
         return \Response::download($filename, 200, $headers);
     }
-
-    /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function cronBills()
-    {
-        $bill = new Bill();
-        return $bill->generateBills();
-    }
 }

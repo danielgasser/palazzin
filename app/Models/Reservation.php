@@ -614,66 +614,6 @@ class Reservation extends Model {
     }
 
     /**
-     * @param $sendToHousekeeper
-     * @param $set
-     * @return array
-     * @throws Exception
-     */
-    public function getFutureReservations ($sendToHousekeeper, $set) {
-        $today = new \DateTime();
-        $tomorrow = new \DateTime();
-        $tomorrow->modify('+' . $set->setting_reminder_days . ' day');
-        $today->setTime(0, 0, 0);
-        $tomorrow->setTime(0, 0, 0);
-        $data = [];
-        $res = self::whereBetween('reservation_started_at', [$today->format('Y-m-d') . ' 00:00:00', $tomorrow->format('Y-m-d') . ' 00:00:00'])
-            ->where('reservation_reminder_sent', '=', '0')
-            ->join('users', 'users.id', '=', 'reservations.user_id')
-            ->join('guests', 'guests.reservation_id', '=', 'reservations.id')
-            ->select('guests.guest_number', 'users.email', 'users.user_fon1', 'users.user_first_name', 'users.user_name', 'reservations.*')
-            ->get();
-        $counter = 0;
-        $res->each(function ($r) use(&$data, $set, &$counter, $today)  {
-
-            $data[$counter]['address'] = $r->user_first_name . ' ' . $r->user_name;
-            $data[$counter]['message_text'] = $set->setting_start_reservation_mail_text;
-            $data[$counter]['to'] = $r->email;
-            $data[$counter]['guests'] = $r->guest_number;
-            $data[$counter]['fon'] = $r->user_fon1;
-            $data[$counter]['from'] = \Carbon\Carbon::createFromFormat('Y_m_d', $r->reservation_started_at)->formatLocalized(trans('formats.long-date-no-time'));
-            $data[$counter]['till'] = \Carbon\Carbon::createFromFormat('Y_m_d', $r->reservation_ended_at)->formatLocalized(trans('formats.long-date-no-time'));
-            $counter++;
-            $r->reservation_reminder_sent = 1;
-            $r->reservation_reminder_sent_at = $today->format('Y-m-d') . ' 00:00:00';
-            $r->push();
-        });
-        $errors = [];
-        if ($sendToHousekeeper && $res->count() > 0) {
-            $houseKeeper = \User::whereHas('roles', function ($q) {
-                $q->where('role_code', '=', 'KP');
-            })
-                ->get();
-            $houseKeeper->each(function($h) use(&$data, $set, $errors) {
-                //Tools::dd($data);
-                Mail::send('emails.reservation_reminder_housekeeper', ['data' => $data] + ['address_h' => $h->user_name] + ['settings' => $set], function ($message) use ($h, $set) {
-                    $message->from($set->setting_app_owner_email, $set->setting_app_owner);
-                    $message->to($h->email)->subject($set->setting_app_owner . ': ' . trans('reservation.begin_res_housekeeper', ['z' => '']));
-                });
-                $errors[]['mail_errors'] = Mail::failures();
-            });
-        }
-        foreach($data as $r) {
-            Mail::send('emails.reservation_reminder', ['res' => $r] + ['settings' => $set], function ($message) use($r, $set) {
-                $message->from($set['setting_app_owner_email'], $set['setting_app_owner']);
-                $message->to($r['to'])->subject($set['setting_app_owner'] . ': ' . trans('reservation.begin_res'));
-            });
-            $errors[]['mail_errors'] = Mail::failures();
-        }
-        $data['errors'] = $errors;
-        return $data;
-    }
-
-    /**
      * @param $start
      * @param $end
      * @return bool

@@ -147,25 +147,6 @@ class Bill extends Model {
                 $arr['attachment'] = public_path() . '/files/__clerk/' . $pdfTitle;
                 if (intval($bill->bill_sent) == 0) {
                     $userForBill->notify(new \App\Notifications\SendBill($arr, $userForBill));
-                    // Config::set('mail.driver', 'mail');
-/*
-                    Mail::send('emails.new_bill', $data_view, function($message) use($userForBill, $defPath, $pdfTitle, $set)
-                    {
-                        $message->to($userForBill['email'], $userForBill['user_first_name'] . ' ' . $userForBill['user_name'])
-                            ->from($set->setting_app_owner_email, $set->setting_app_owner)
-                            ->sender($set->setting_app_owner_email, $set->setting_app_owner)
-                            ->attach($defPath, array('as' => $pdfTitle, 'mime' => 'application/pdf'))
-                            ->subject(trans('bill.bill_noo'));
-                    });
-                    Mail::send('emails.new_bill_clerk', $data_view, function($message) use($clerkForBill, $defPath, $pdfTitle, $set)
-                    {
-                        $message->to(array($clerkForBill['email'], 'software@toesslab.ch'), $clerkForBill['user_first_name'] . ' ' . $clerkForBill['user_name'])
-                            ->from($set->setting_app_owner_email, $set->setting_app_owner)
-                            ->sender($set->setting_app_owner_email, $set->setting_app_owner)
-                            ->attach($defPath, array('as' => $pdfTitle, 'mime' => 'application/pdf'))
-                            ->subject(trans('bill.bill_noo'));
-                    });
-*/
                     $bill->bill_sent = 1;
                 }
                 $bill->push();

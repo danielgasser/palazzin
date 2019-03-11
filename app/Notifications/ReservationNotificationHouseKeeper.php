@@ -2,30 +2,29 @@
 
 namespace App\Notifications;
 
-use \User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class SendBill extends Notification
+class ReservationNotificationHouseKeeper extends Notification
 {
     use Queueable;
 
-    protected $data;
     protected $user;
+    protected $data;
 
     /**
      * Create a new notification instance.
      *
-     * SendBill constructor.
-     * @param      $data
-     * @param User $user
+     * @param \User $user
+     * @param array $data
+     * @return void
      */
-    public function __construct($data, User $user)
+    public function __construct(\User $user, array $data = [])
     {
-        $this->data = $data;
         $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -49,13 +48,15 @@ class SendBill extends Notification
     {
         return (new MailMessage)
             ->from(env('MAIL_USERNAME'), env('APP_NAME'))
-            ->subject(env('MAIL_SUBJECT') . ' ' . trans('bill.bill_noo'))
-            ->line($this->data['billusertext'])
-            ->line('<hr>')
-            ->line($this->data['billtext'])
-            ->line('<hr>')
-            ->attach($this->data['attachment'])
-            ->markdown('vendor.notifications.bill_email', ['user' => $this->user]);
+            ->subject(env('MAIL_SUBJECT') . ' ' . trans('reservation.begin_res'))
+            ->line('<h4>' . $this->data['message_text'] . '</h4>')
+            ->line('<p>' . trans('reservation.arrival') . ':')
+            ->line('<br><b>' . $this->data['from'] . '</b></p>')
+            ->line('<p>' . trans('reservation.depart') . ':')
+            ->line('<br><b>' . $this->data['till'] . '</b></p>')
+            ->line('<p>' . trans('reservation.guests.title') . ':')
+            ->line('<ul>' . $this->data['guests'] . '</ul></p>')
+            ->markdown('vendor.notifications.reservation_remninder_email', ['user' => $this->user]);
     }
 
     /**

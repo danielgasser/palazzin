@@ -12,6 +12,7 @@ port table settings (structure) (adapt url & texts)
 port table password_resets (structure?)
 port table guests new field guest_title (structure)
 port table reservation new field reservation_title (structure)
+port table users (structure)
 delete table comments (structure)
 delete settings setting_num_comments (structure)
 users secure question raus!

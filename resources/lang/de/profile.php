@@ -11,7 +11,7 @@ return array(
     'names' => 'Name & Benutzername',
     'roles' => 'Rollen & Rechte',
     'emails' => 'E-Mail Adressen & Webseite',
-    'fons' => 'Telefonnummern',
+    'fons' => 'Telefonnummer',
     'fons_one' => 'Telefonnummer',
     'www' => 'URL Webseite',
     'www_label' => 'Name Webseite',

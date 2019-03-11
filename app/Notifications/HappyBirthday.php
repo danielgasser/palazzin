@@ -2,29 +2,25 @@
 
 namespace App\Notifications;
 
-use \User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class SendBill extends Notification
+class HappyBirthday extends Notification
 {
     use Queueable;
 
-    protected $data;
     protected $user;
 
     /**
      * Create a new notification instance.
      *
-     * SendBill constructor.
-     * @param      $data
-     * @param User $user
+     * BirthdayMessage constructor.
+     * @param \User $user
      */
-    public function __construct($data, User $user)
+    public function __construct(\User $user)
     {
-        $this->data = $data;
         $this->user = $user;
     }
 
@@ -49,13 +45,10 @@ class SendBill extends Notification
     {
         return (new MailMessage)
             ->from(env('MAIL_USERNAME'), env('APP_NAME'))
-            ->subject(env('MAIL_SUBJECT') . ' ' . trans('bill.bill_noo'))
-            ->line($this->data['billusertext'])
-            ->line('<hr>')
-            ->line($this->data['billtext'])
-            ->line('<hr>')
-            ->attach($this->data['attachment'])
-            ->markdown('vendor.notifications.bill_email', ['user' => $this->user]);
+            ->subject(env('MAIL_SUBJECT') . ' Happy Birthday')
+            ->line('<h1 style="text-align: center">' . $this->user->user_first_name . ', alles Gute zum Geburtstag!</h1>')
+            ->line('<div><img src="' . asset('img/happy_birthday.jpg') . '"></div>')
+            ->markdown('vendor.notifications.birthday_email', ['user' => $this->user]);
     }
 
     /**

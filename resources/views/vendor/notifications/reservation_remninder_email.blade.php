@@ -5,6 +5,8 @@
 @else
 @if ($level == 'error')
 # @lang('Whoops!')
+@else
+    # @lang('Hallo ') {{ $user->user_first_name }}
 @endif
 @endif
 

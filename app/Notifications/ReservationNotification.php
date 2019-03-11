@@ -7,20 +7,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class BirthdayMessage extends Notification
+class ReservationNotification extends Notification
 {
     use Queueable;
 
-    protected $user_first_name;
+    protected $user;
+    protected $data;
+
     /**
      * Create a new notification instance.
      *
-     * @param $user_first_name
+     * @param \User $user
+     * @param array $data
      * @return void
      */
-    public function __construct($user_first_name)
+    public function __construct(\User $user, array $data = [])
     {
-        $this->user_first_name = $user_first_name;
+        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -31,11 +35,7 @@ class BirthdayMessage extends Notification
      */
     public function via($notifiable)
     {
-        return (new MailMessage)
-            ->from(env('MAIL_USERNAME'), env('APP_NAME'))
-            ->subject(env('MAIL_SUBJECT') . ' Happy birthday')
-            ->line('<h1 style="text-align: center">Happy Birthday ' . $this->user_first_name . '!</h1>')
-            ->markdown('vendor.notifications.email', ['user' => $this->user]);
+        return ['mail'];
     }
 
     /**
@@ -47,9 +47,16 @@ class BirthdayMessage extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->from(env('MAIL_USERNAME'), env('APP_NAME'))
+            ->subject(env('MAIL_SUBJECT') . ' ' . trans('reservation.begin_res'))
+            ->line('<h4>' . $this->data['message_text'] . '</h4>')
+            ->line('<p>' . trans('reservation.arrival') . ':')
+            ->line('<br><b>' . $this->data['from'] . '</b></p>')
+            ->line('<p>' . trans('reservation.depart') . ':')
+            ->line('<br><b>' . $this->data['till'] . '</b></p>')
+            ->line('<p>' . trans('reservation.guests.title') . ':')
+            ->line('<ul>' . $this->data['guests'] . '</ul></p>')
+            ->markdown('vendor.notifications.reservation_remninder_email', ['user' => $this->user]);
     }
 
     /**

@@ -19,7 +19,7 @@ return array(
     'email2' => 'E-Mail 2',
     'fon_label' => 'Art N° :n',
     'fonalllabel' => 'Art N°',
-    'fon' => 'N°:n',
+    'fon' => 'N°',
     'fonlabel' => array(
         'mobile' => 'Natel',
         'home' => 'Privat',
