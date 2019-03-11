@@ -157,6 +157,9 @@ $btn-primary-border:           lighten($brand-primary, 5%);
 
 //* Deprecated `$dropdown-caret-color` as of v3.1.0
 // $dropdown-caret-color:           #000
+$gray-600: #6c757d !default;
+
+$breadcrumb-active-color:           $gray-600 !default;
 
 //-- Z-index master list
 //
@@ -184,6 +187,11 @@ $btn-primary-border:           lighten($brand-primary, 5%);
 // $screen-xs-min:              $screen-xs
 //* Deprecated `$screen-phone` as of v3.0.1
 // $screen-phone:               $screen-xs-min
+
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+$screen-lg:                  1200px !default;
+$screen-lg-min:              $screen-lg !default;
 
 // Small screen / tablet
 //* Deprecated `$screen-sm` as of v3.0.1

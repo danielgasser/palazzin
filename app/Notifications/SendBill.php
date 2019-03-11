@@ -53,6 +53,7 @@ class SendBill extends Notification
             ->line($this->data['billusertext'])
             ->line('<hr>')
             ->line($this->data['billtext'])
+            ->line('<hr>')
             ->attach($this->data['attachment'])
             ->markdown('vendor.notifications.email', ['user' => $this->user]);
     }

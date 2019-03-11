@@ -18,6 +18,9 @@ Route::get('/', function () {
 });
 Route::get('check-session', 'HomeController@getHome');
 
+//cronjobs
+Route::get('cronjobs/bills', 'BillController@cronBills');
+
 Auth::routes();
 //Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
@@ -116,9 +119,6 @@ Route::group(['middleware' => 'auth'], function () {
         // Manual Passwords
         Route::get('password/new/{pass}', 'AdminController@manualPass');
         Route::get('bills/filelist', 'BillController@getBillFilesList');
-
-        Route::get('cronjobs/bills', 'BillController@cronBills');
-
     });
 
 });

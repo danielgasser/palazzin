@@ -298,7 +298,6 @@ if (strlen($routeStr) === 0) {
     </div>
     @show
 </div>
-        @include('logged.dialog.session')
     @section('footer')
         @include('layout.footer')
     @show
@@ -320,5 +319,7 @@ if (strlen($routeStr) === 0) {
         </script>
     <script src="{{asset('js/master_init.min.js')}}"></script>
 @show
+@include('logged.dialog.session')
+
 </body>
 </html>
