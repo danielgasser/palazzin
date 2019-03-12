@@ -102,12 +102,23 @@ class CronController extends Controller
             $u = User::find($r['uid']);
             $u->notify(new ReservationNotification($u, $r));
         }
-        if ($sendToHousekeeper) {
-            $data['hk']['address'] = $houseKeeper->user_first_name . ' ' . $houseKeeper->user_name;
-            $data['hk']['to'] = $houseKeeper->email;
-            $data['hk']['message_text'] = trans('reservation.begin_res_housekeeper', ['z' => $total]);
+        if ($sendToHousekeeper && $total > 0) {
+            $str = '';
+            foreach ($data as $d) {
+                $str .= '<ul>';
+                $str .= '<li>' . trans('reservation.arrival') . ':' . $d['from'] . '</li>';
+                $str .= '<li>' . trans('reservation.depart') . ':' . $d['till'] . '</li>';
+                $str .= '<li>' . trans('reservation.guests.title') . ':<ul>' . $d['guests'] . '</ul></li>';
+                $str .= '<li>' . trans('profile.user_name') . ':' . $d['address'] . '</li>';
+                $str .= '<li>' . trans('profile.fons') . ':' . $d['fon'] . '</li>';
+                $str .= '</ul>';
+            }
+            $data['addressHK'] = $houseKeeper->user_name;
+            $data['message_text'] = trans('reservation.begin_res_housekeeper', ['z' => $total]);
+            $data['text'] = $str;
+            $data['total'] = $total;
             if ($sendToHousekeeper) {
-                $houseKeeper->notify(new ReservationNotification($houseKeeper, $r));
+                $houseKeeper->notify(new ReservationNotification($houseKeeper, $data, $sendToHousekeeper));
             }
         }
 

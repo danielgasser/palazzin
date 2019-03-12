@@ -39,8 +39,8 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-12 login-checkbox">
                                 <label for="remember">
+                                    <input type="checkbox" data-toggle="toggle" data-on="Ja" data-off="Nein" data-offstyle="warning" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     {{ __('login.stay') }}
-                                    <input type="checkbox" data-onstyle="success" data-offstyle="warning" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 </label>
                             </div>
                         </div>

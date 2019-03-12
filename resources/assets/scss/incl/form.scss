@@ -155,6 +155,11 @@ form {
 .btn-primary {
   background-color: $brand-danger;
 }
+.btn-warning {
+    background-color: #fff;
+    color: $brand-danger;
+    border-color: #b7282e;
+}
 #login-btn {
   width: 100%;
   margin-left: 5px !important;
@@ -166,8 +171,14 @@ form {
 .toggle-group, .toggle {
   .btn-primary, .btn-default {
     border: none;
+    background-color: $brand-danger;
+      color: white;
+  }
+}
+.toggle-group, .toggle {
+  .btn-warning {
     background-color: white;
-    color: black;
+    color: $brand-danger;
   }
 }
 .input-error {

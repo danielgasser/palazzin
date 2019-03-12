@@ -295,9 +295,9 @@ class NewReservationController extends Controller
         if ($today > $start) {
             return json_encode(['error' => 'no_delete_reservation']);
         }
-        // ToDo check if reservation is before today => don't delete but message
         $res->guests()->delete();
         $res->delete();
+
         return json_encode(['success' => 'deleted_reservation']);
     }
 

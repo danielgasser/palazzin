@@ -22,7 +22,7 @@ $brand-danger: #b7282e;
 $brand-primary: $brand-danger;
 $brand-success: #1a861c;
 $brand-info: $brand-danger;
-// $brand-warning:         #f0ad4e
+$brand-warning:         $brand-danger;
 
 //== Scaffolding
 //
@@ -78,7 +78,7 @@ $btn-primary-border:           lighten($brand-primary, 5%);
 // $btn-info-border:                darken($btn-info-bg, 5%)
 
 // $btn-warning-color:              #fff
-// $btn-warning-bg:                 $brand-warning
+$btn-warning-bg:                 $brand-warning;
 // $btn-warning-border:             darken($btn-warning-bg, 5%)
 
 // $btn-danger-color:               #fff

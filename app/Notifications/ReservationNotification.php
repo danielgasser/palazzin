@@ -13,18 +13,21 @@ class ReservationNotification extends Notification
 
     protected $user;
     protected $data;
+    protected $houseKeeper;
 
     /**
      * Create a new notification instance.
      *
      * @param \User $user
      * @param array $data
+     * @param bool $houseKeeper
      * @return void
      */
-    public function __construct(\User $user, array $data = [])
+    public function __construct(\User $user, array $data = [], bool $houseKeeper = false)
     {
         $this->user = $user;
         $this->data = $data;
+        $this->houseKeeper = $houseKeeper;
     }
 
     /**
@@ -46,6 +49,15 @@ class ReservationNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        if ($this->houseKeeper) {
+            return (new MailMessage)
+                ->from(env('MAIL_USERNAME'), env('APP_NAME'))
+                ->subject(env('MAIL_SUBJECT') . ' ' . trans('reservation.begin_res_housekeeper', ['z' => $this->data['total']]))
+                ->line('<h1>' . trans('address.hello_official_m') . ' ' . $this->data['addressHK'] . '</h1>')
+                ->line('<h4>' . $this->data['message_text'] . '</h4>')
+                ->line('<p>' . $this->data['text'] . '</p>')
+                ->markdown('vendor.notifications.reservation_remninder_housekeeper_email');
+        }
         return (new MailMessage)
             ->from(env('MAIL_USERNAME'), env('APP_NAME'))
             ->subject(env('MAIL_SUBJECT') . ' ' . trans('reservation.begin_res'))

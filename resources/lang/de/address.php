@@ -10,7 +10,8 @@ return array(
     'your_m' => 'Dein',
     'your_f' => 'Deine',
     'hello' => 'Hallo',
-    'hello_official' => 'Hallo :d',
+    'hello_official_m' => 'Sehr geehrter Herr',
+    'hello_official_f' => 'Sehr geehrte Frau',
     'mr' => 'Herr',
     'mrs' => 'Frau'
 );
