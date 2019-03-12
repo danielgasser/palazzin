@@ -11,7 +11,7 @@ input[readonly], input[disabled] {
 .form-control {
   background-color: #fff;
   background-image: none;
-  margin: 0.35em;
+  margin: 0.35em 0;
   border: 1px solid $color-h1;
   color: $color-form-el;
   border-radius: 4px;
@@ -162,10 +162,8 @@ form {
 }
 #login-btn {
   width: 100%;
-  margin-left: 5px !important;
 }
 .login-checkbox {
-  padding-left: 20px;
   margin-bottom: 5px;
 }
 .toggle-group, .toggle {

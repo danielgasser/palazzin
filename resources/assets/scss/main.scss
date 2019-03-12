@@ -27,14 +27,11 @@
   z-index: 10;
   background-color: rgba(58, 58, 58, 0.5);
 }
-#noview {
-    margin-left: 2em;
-    .topRow {
-        border-bottom: 1px solid #b7282e;
-        z-index: 1000;
-        h1 {
-            border-bottom: none;
-        }
+.topRow {
+    border-bottom: 1px solid #b7282e;
+    z-index: 1000;
+    h1 {
+        border-bottom: none;
     }
 }
 #pricelist {
@@ -69,7 +66,7 @@
     }
 }
 .modal-dialog {
-    z-index: 999;
+    z-index: 1100;
 }
 .modal.in {
     display: block;
@@ -421,8 +418,8 @@ table.tablesorter, table.tablesorter thead tr th {
 }
 
 #wrap > .container {
-    padding-left: 50px;
-    padding-right: 27px;
+    margin-left: 55px;
+    width: calc(100% - 55px);
 }
 
 .modal {

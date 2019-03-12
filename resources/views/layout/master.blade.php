@@ -209,7 +209,7 @@ if (strlen($routeStr) === 0) {
             @include('logged.dialog.old_ie')
         @endif
 
-<div id="noview">
+
     <div class="row topRow">
         <div class="col-md-6 col-sm-6 col-xs-12">
         @switch($route)
@@ -297,7 +297,7 @@ if (strlen($routeStr) === 0) {
         </div>
     </div>
     @show
-</div>
+
     @section('footer')
         @include('layout.footer')
     @show
@@ -317,7 +317,12 @@ if (strlen($routeStr) === 0) {
                 oldie = '{{$isOldWin}}',
                 route = '{{Route::getFacadeRoot()->current()->uri()}}';
         </script>
+        @guest
+        <script src="{{asset('js/guest_init.min.js')}}"></script>
+        @endguest
+    @auth
     <script src="{{asset('js/master_init.min.js')}}"></script>
+       @endauth
 @show
 @include('logged.dialog.session')
 

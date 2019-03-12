@@ -16,7 +16,7 @@ Route::get('/', function () {
     }
     return view('auth.login');
 });
-Route::get('check-session', 'HomeController@getHome');
+Route::get('check-session', 'CronController@getSession');
 
 //cronjobs
 Route::group(['middleware' => 'guest'], function () {

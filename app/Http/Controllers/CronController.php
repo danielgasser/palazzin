@@ -126,5 +126,12 @@ class CronController extends Controller
         return $data;
     }
 
+    public function getSession()
+    {
+        if (Auth::check()) {
+            return (Session::has('lifetime')) ? '1' : '0';
+        }
+        return true;
+    }
 
 }

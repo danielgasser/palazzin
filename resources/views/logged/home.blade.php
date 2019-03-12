@@ -2,8 +2,10 @@
 
 @section('content')
 
+    <div class="col-sm-4 col-md-4">
     <h3 style="color: #dfb20d">WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="{{asset('/public/files/___checklist/Checkliste_Benutzer_Palazzin.pdf')}}">Benutzer-Checkliste</a></h3>
-    <div class="col-sm-6 col-md-6">
+    </div>
+    <div class="col-sm-4 col-md-4">
         <h5>{{trans('home.yourroles')}}:</h5>
         <ul>
           @foreach($roles as $role)
@@ -11,7 +13,7 @@
           @endforeach
         </ul>
     </div>
-    <div class="col-sm-6 col-md-6">
+    <div class="col-sm-4 col-md-4">
         <h5>{{trans('home.yourclan')}}:</h5>
         <ul>
           @foreach($clan_name as $clan)
