@@ -237,10 +237,10 @@ if (strlen($routeStr) === 0) {
                 <div class="col-md-6 col-sm-6 col-xs-12 title-res">
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-3 col-sm-3 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.timeliner')
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-3 col-sm-3 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
                 </div>
             </div>

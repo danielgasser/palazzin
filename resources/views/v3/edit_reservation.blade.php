@@ -45,7 +45,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12" id="res_info">
                     <div class="form-group">
                         <div class="alert alert-info" id="total_res">
-                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true" title="{{trans('dialog.texts.warning_no_free_beds')}}">{{$userRes[0]->sum_guest}}</span> {{trans('reservation.guests.pe')}}&nbsp
+                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true">{{$userRes[0]->sum_guest}}</span> {{trans('reservation.guests.pe')}}&nbsp
                             CHF <span id="reservation_costs_total">{{$userRes[0]->sum_total}}</span>
                         </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{{$userRes[0]->sum_total_hidden}}">
@@ -62,7 +62,7 @@
                                 <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
                                         id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
                                 <button title="{{trans('dialog.add_on_upper')}}"
-                                        class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest" disabled><i
+                                        class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}"><i
                                         class="fas fa-plus"></i></button>
                                 <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]" value="{!! $guest->guest_title!!}">
                                 <input type="hidden" id="guest_id_{{ $i }}" name="guest_id[]" value="{!! $guest->id!!}">
@@ -92,7 +92,7 @@
                                 <div class="form-group">
                                     <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
                                     <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num.' . $i) ? ' input-error' : ''}}" id="reservation_guest_num_{{ $i }}"
-                                           name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" title="{!!trans('dialog.texts.warning_no_free_beds')!!}" type="number" min="1"
+                                           name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" type="number" min="1"
                                            max="{{$settings['setting_num_bed'] - 1}}" value="{{ $guest->guest_number }}">
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
     <script src="{{asset('js/V3Reservation.min.js')}}"></script>
-    <script src="{{asset('js/new_reservation_init.min.js')}}"></script>
+    <script src="{{asset('js/edit_reservation_init.min.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);

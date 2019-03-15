@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Notifications\ReservationNotification;
 use Bill;
-use Illuminate\Filesystem\Filesystem;
 use User;
-use Illuminate\Support\Facades\Input;
 use Response;
+use Auth;
 
 /**
  * Created by PhpStorm.
@@ -128,10 +127,7 @@ class CronController extends Controller
 
     public function getSession()
     {
-        if (Auth::check()) {
-            return (Session::has('lifetime')) ? '1' : '0';
-        }
-        return true;
+        return (Session::has('lifetime')) ? '1' : '0';
     }
 
 }

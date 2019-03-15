@@ -1,4 +1,22 @@
 @extends('layout.master')
+@section('header')
+    @parent
+    <link rel="stylesheet" type="text/css" href="{{asset('css')}}/datatables_roomapp.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
+    <style>
+        .form-control {
+            margin: 0;
+        }
+        .dataTables_wrapper {
+            border: none;
+        }
+        #datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
+            border: none !important;
+        }
+    </style>
+
+@stop
+
 @section('content')
 <div>
     <div class="table-responsive">

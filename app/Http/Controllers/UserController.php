@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Notifications\ProfileChange;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\Session;
@@ -403,12 +402,25 @@ class UserController extends Controller
             $countries[$c->country_code] = $c->country_name;
         }
         asort($countries);
-        return view('logged.userlist-print')
+        $data = [
+            'allUsers' => $users,
+            'clans' => $clans[0],
+            'countries' => $countries,
+            'roleList' => $roles[0],
+            'families' => $families[0]
+        ];
+        /*
+        return view('pdfs.userlist-print')
             ->with('allUsers', $users)
             ->with('clans', $clans[0])
             ->with('countries', $countries)
             ->with('roleList', $roles[0])
             ->with('families', $families[0]);
+        */
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView('pdfs.userlist-print', $data);
+        $pdf->save(public_path() . '/files/___userlists/' . 'xxx.pdf')
+            ->stream('xxx.pdf');
     }
 
     /**

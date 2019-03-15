@@ -207,19 +207,27 @@ ul {
     }
 }
 #res-nav {
-    min-height: 63px;
+    min-height: 70px;
     width: 100%;
-    #free_beds, #timeliner-container {
+    #free_beds, #timeliner-container, #timeliner {
+        height: 70px;
+        border: none;
         .fa-clock:after {
             content: "\f078";
             padding-left: 8px;
         }
         li {
+            height: 70px;
             a {
+                height: 70px;
+                display: block;
                 font-size: 1.1em;
             }
         }
     }
+}
+#timeliner {
+    min-height: 350px;
 }
 #all-nav-welcome {
     width: 100%;

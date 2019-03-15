@@ -5,7 +5,7 @@
         <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
                 id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
         <button title="{{trans('dialog.add_on_upper')}}"
-                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest" disabled><i
+                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}" disabled><i
                 class="fas fa-plus"></i></button>
 
     </div>

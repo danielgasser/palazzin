@@ -1,7 +1,7 @@
 <ul id="free_beds" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left;">
     <li class="dropdown-toggle">
         <a data-toggle="dropdown" href="#" id="show-all-free-beds">
-            <i class="fas fa-bed"></i><span class="hideContent">&nbsp;{{ trans('reservation.beds_free') }}</span>
+            <i class="fas fa-bed"></i>&nbsp;{{ trans('reservation.beds_free') }}
         </a>
     </li>
 </ul>

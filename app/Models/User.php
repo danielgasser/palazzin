@@ -72,12 +72,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_generation',
         'user_stock_country_code',
         'user_fon1',
-        'user_fon2',
-        'user_fon3',
         'clan_id',
         'user_fon1_label',
-        'user_fon2_label',
-        'user_fon3_label',
         'user_birthday',
         'user_avatar',
         'user_payment_method',
@@ -102,11 +98,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'user_zip',
         'user_generation',
         'user_fon1',
-        'user_fon2',
-        'user_fon3',
         'user_fon1_label',
-        'user_fon2_label',
-        'user_fon3_label',
         'user_new'
 
     );

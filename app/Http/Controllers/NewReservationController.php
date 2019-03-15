@@ -302,9 +302,8 @@ class NewReservationController extends Controller
     }
 
     /**
-     * Searches reservations for lists
-     *
-     * @return mixed json
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
      */
     public function AdminSearchAllReservations()
     {

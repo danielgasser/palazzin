@@ -42,7 +42,7 @@
         {{Form::close()}}
         <div class="col-sm-12 col-md-12">
             <a href="{{URL::to(Request::url())}}" class="btn btn-default">{{trans('dialog.all')}}</a>
-            <button id="printChoice" class="btn btn-default">{{trans('dialog.choice')}} {{trans('dialog.print')}}</button>
+            <button id="printChoice" class="btn btn-default">{{trans('dialog.choice')}} {{trans('dialog.print')}} (PDF)</button>
         </div>
 
         </div>

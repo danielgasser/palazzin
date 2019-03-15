@@ -83,9 +83,9 @@ jQuery(document).on('click', '#all-nav', function (e) {
     }
     $('#closeNav').trigger('click');
 });
-jQuery(document).on('click', '#wrap', function (e) {
-    if (e.target !== this) {
-        return;
+jQuery(document).on('click', 'body', function (e) {
+    if (e.target.id === 'closeNav' || e.target.id == 'all-nav') {
+      return false;
     }
     $('.dropdownToggleUp')
         .removeClass('dropdown-toggle-up')
@@ -134,8 +134,4 @@ jQuery(document).on('keyup', '#user_first_name, #user_name', function (e) {
     endLogin = endLogin.replace(/([^a-z.]+)/gi, '');
     $('#user_login_name, #user_login_name_show').val(endLogin);
     jQuery(this).val(valStr);
-});
-jQuery(document).on('click', '#post_new_post', function (e) {
-    e.preventDefault();
-    alert('dfgdfdfgh hdfhdfgdfgdfgd  gfdhjkjhkhkfghdfhdf')
 });

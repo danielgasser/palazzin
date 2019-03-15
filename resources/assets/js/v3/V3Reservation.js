@@ -657,7 +657,7 @@ var V3Reservation = {
             .addClass('alert-danger')
             .removeClass('alert-info');
         $('#save_reservation').attr('disabled', true);
-        $('#clone_guest').attr('disabled', true);
+        $('[id^="clone_guest_"]').attr('disabled', true);
         $('#show-all-free-beds>.hideContent').addClass('showContent');
     },
     enoughBeds: function (id) {
@@ -671,7 +671,7 @@ var V3Reservation = {
             .addClass('alert-info');
         $('#no_free_beds').hide();
         $('#save_reservation').attr('disabled', false);
-        $('#clone_guest').attr('disabled', false);
+        $('[id^="clone_guest_"]').attr('disabled', false);
     },
     checkExistentReservation: function (s, e) {
         let start = s.getFullYear() + '-' + GlobalFunctions.smallerThenTen((s.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(s.getDate()),
