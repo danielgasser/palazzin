@@ -151,6 +151,8 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -215,6 +217,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'MPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
     ],
 
 ];

@@ -768,7 +768,12 @@ table {
         a:hover, a:focus, span:hover, span:focus {
             background-color: $brand-danger;
             border-color: $brand-danger;
-            color: #fff;
+            color: #fff !important;
+        }
+        a.page-link:hover, a.page-link:focus {
+            background-color: #fff;
+            border-color: $brand-danger;
+            color: $brand-danger !important;
         }
     }
     .paginate_button {

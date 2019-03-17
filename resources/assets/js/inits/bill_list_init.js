@@ -4,6 +4,7 @@
 $(function () {
     $('#bill_all_totals').dataTable({
         language: {
+            emptyTable: 'Keine Daten vorhanden',
             paginate: {
                 first: window.paginationLang.first,
                 previous: window.paginationLang.previous,

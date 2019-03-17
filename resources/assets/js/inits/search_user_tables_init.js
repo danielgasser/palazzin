@@ -158,10 +158,12 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                     return html;
                 }
             },
+
             {
                 targets: [16],
-                responsivePriority: 24,
-                data: 'last_login'
+                responsivePriority: 25,
+                data: 'last_login',
+                visible: false
             },
         ],
         searching: false,
@@ -220,19 +222,8 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
 $(document).ready(function () {
     "use strict";
     userTable = $('#users').DataTable(dataTableSettings);
-    $('#users tbody').on('click', 'td.00', function () {
-        let tr = $(this).closest('tr'),
-            row = userTable.row(tr);
-
-        if (row.child.isShown()) {
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            let theDesc = row.data();
-            row.child(theDesc).show();
-            tr.addClass('shown');
-        }
-    } );
+    $('#print_name_pdf').val('');
+    $('#print_table_name_message').html('');
     let d = new Date(),
         y = $('#year'),
         m = $('#month');
@@ -244,7 +235,29 @@ $(document).ready(function () {
     m.val(d.getMonth());
     //window.putUserSearchResultsToSession(urlSaveData, $('#printer').html());
     $('#newsMessage').hide();
-    searchSortPaginate(urlTop, search, 'user_name', 'ASC');
+    userTable.clear();
+    userTable.rows.add(window.allUsers);
+    userTable.draw();
+    let uIds = [];
+    $.each(window.allUsers, function (i, n) {
+        if (n.user_id !== '') {
+            uIds.push(n.user_id);
+        }
+    })
+    $('#uIDs').val(uIds.join(','))
+});
+$('#users tbody').on('click', 'td.00', function () {
+    let tr = $(this).closest('tr'),
+        row = userTable.row(tr);
+
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+    } else {
+        let theDesc = row.data();
+        row.child(theDesc).show();
+        tr.addClass('shown');
+    }
 });
 
 let timer,
@@ -261,27 +274,27 @@ let timer,
         role_search: $('#role_search').val()
     },
     searchIt = function (e) {
-    let sl,
-        field,
-        sortby;
-    $.each(search, function (i, n) {
-        if (n == null) {
-            search[i] = '';
+        let sl,
+            field,
+            sortby;
+        $.each(search, function (i, n) {
+            if (n == null) {
+                search[i] = '';
+            }
+        });
+        if (search.search_user.length < 3 && search.clan_search.length === 0 && search.family_search.length === 0 && search.role_search.length === 0) {
+            return false;
         }
-    });
-    if (search.search_user.length < 3 && search.clan_search.length === 0 && search.family_search.length === 0 && search.role_search.length === 0) {
-        return false;
-    }
-    if ((e.target.hasOwnProperty('config'))) {
-        sl = e.target.config.sortList[0];
-        field = $(window.cols[sl[0]]).attr('id');
-        sortby = (sl[1] === 1) ? 'ASC' : 'DESC';
-    } else {
-        field = 'user_name';
-        sortby = 'ASC';
-    }
-    searchSortPaginate(urlTop, search, field, sortby);
-};
+        if ((e.target.hasOwnProperty('config'))) {
+            sl = e.target.config.sortList[0];
+            field = $(window.cols[sl[0]]).attr('id');
+            sortby = (sl[1] === 1) ? 'ASC' : 'DESC';
+        } else {
+            field = 'user_name';
+            sortby = 'ASC';
+        }
+        searchSortPaginate(urlTop, search, field, sortby);
+    };
 $(document).on('change', '#clan_search', function (e) {
     "use strict";
     let famOpts = window.families,
@@ -307,6 +320,17 @@ $(document).on('change', '#clan_search', function (e) {
             ;
         }
     });
+    chk_me(e);
+});
+$(document).on('keyup', '#search_user', function (e) {
+    "use strict";
+    if (this.value.length < 3) return false;
+    chk_me(e);
+});
+$(document).on('change', '#family_search, #role_search', function (e) {
+    "use strict";
+    e.preventDefault();
+    chk_me(e);
 });
 $(document).on('submit', 'form:not(#sendToPrint)', function (e) {
     "use strict";
@@ -318,5 +342,43 @@ $(document).on('click', '#goSearch', function (e) {
     chk_me(e);
 });
 $(document).on('click', '#printChoice', function (e) {
-    $('#sendToPrint').submit();
+    e.preventDefault();
+    $('#print_table_name').modal();
+});
+$(document).on('click', '#dload', function (e) {
+    e.preventDefault();
+    $('#print_table_name').modal('hide');
+    window.open(
+        $(this).attr('href'),
+        '_blank'
+    );
+});
+$(document).on('click', '#sendToPrintSubmit', function (e) {
+    e.preventDefault();
+    let data = {
+        userIds: $('#uIDs').val(),
+        search_user: $('#search_user').val(),
+        clan_search: $('#clan_search').val(),
+        family_search: $('#family_search').val(),
+        role_search: $('#role_search').val(),
+        sort_field: $('#sort_field').val(),
+        order_by: $('#order_by').val(),
+        print_name_pdf: $('#print_name_pdf').val()
+    };
+    $('#sendToPrintSubmit').attr('disabled', true);
+    $.ajax({
+        url: window.userListPrintUrl,
+        method: 'POST',
+        data: data,
+        success: function (d) {
+            $('#sendToPrintSubmit').attr('disabled', false);
+            let data = JSON.parse(d),
+            el = $('#print_table_name_message');
+            if (data.hasOwnProperty('success')) {
+                $('#print_table_name_text').html('');
+                el.removeClass('alert-success').removeClass('alert-danger').html('Download: <a id="dload" target="_blank" href="' + data.success + '">' + data.pdf_name + '</a>');
+                return false;
+            }
+        }
+    })
 });

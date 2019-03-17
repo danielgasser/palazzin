@@ -142,6 +142,7 @@ return [
         'reservation_nights' => 'Anzahl Nächte',
 		'post_text' => 'Beitrag',
 		'comment_text' => 'Kommentar',
+        'print_name_pdf' => 'Name des PDF\'s'
     ],
 
 ];

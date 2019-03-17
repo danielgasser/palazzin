@@ -35,9 +35,8 @@ class BillController extends Controller
     }
 
     /**
-     * Search bills
-     *
-     * @return mixed json
+     * @return mixed
+     * @throws \Exception
      */
     public function searchAllBills()
     {

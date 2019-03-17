@@ -12,6 +12,7 @@ var billTable,
             footer: true
         },
         language: {
+            emptyTable: 'Keine Rechungen vorhanden',
             paginate: {
                 first: window.paginationLang.first,
                 previous: window.paginationLang.previous,

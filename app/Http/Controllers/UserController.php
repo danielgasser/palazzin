@@ -10,11 +10,13 @@ use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
+use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use User;
 use Clan;
 use Role;
 use Family;
-
+use Illuminate\Http\Request;
 
 /**
  * Created by PhpStorm.
@@ -376,26 +378,33 @@ class UserController extends Controller
             ->with('families', [0 => trans('dialog.all')] + $families[0]);
     }
 
-    public function userListPrint ()
+    public function userListPrint (Request $request)
     {
+        $inputName = $request->input('print_name_pdf');
+        $validator = Validator::make($request->all(), [
+            'print_name_pdf' => 'required|min:3'
+        ]);
+        if ($validator->fails()) {
+            $inputName = 'Benutzerliste';
+        }
+        $sortby = ($request->input('sort_field') == null || strlen($request->input('sort_field')) == 0) ? 'user_name' : $request->input('sort_field');
+        $orderby = ($request->input('order_by') == null || strlen($request->input('order_by')) == 0) ? 'ASC' : $request->input('order_by');
         $credentials = [
-            'user_ids' => Input::get('uIDs'),
+            'search_user' => $request->input('search_user'),
+            'search_clan' => $request->input('clan_search'),
+            'search_family' => $request->input('family_search'),
+            'search_role' => $request->input('role_search'),
+            'sort_field' => $sortby,
+            'order_by' => $orderby
         ];
-        $user = new User();
-        $users = $user->whereIn('id', explode(',', $credentials['user_ids']))
-            ->with('clans', 'families', 'roles')
-            ->groupBy('users.id')
-            ->get();
-        $clans = [
-            Clan::pluck('clan_description', 'id')->toArray()
-        ];
+
+        $pdfTmpName = str_replace(' ', '-', $inputName);
+        $pdfName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $pdfTmpName);
+        $pdfFinalName = preg_replace('/[^A-Za-z0-9\-]/', '', $pdfName);
         $roles = [
             Role::where('role_guest', '=', '0')->pluck('role_description', 'id')->toArray()
         ];
-        $families = [
-            Family::pluck('family_description', 'id')
-                ->toArray()
-        ];
+        $users = $this->searchUsers(true, $credentials);
         $cs = DB::select(DB::raw("select country_name_" . trans('formats.langjs') . " as country_name, country_code from countries order by country_name_" . trans('formats.langjs') . " asc"));
         $countries = [];
         foreach ($cs as $c) {
@@ -404,47 +413,69 @@ class UserController extends Controller
         asort($countries);
         $data = [
             'allUsers' => $users,
-            'clans' => $clans[0],
             'countries' => $countries,
             'roleList' => $roles[0],
-            'families' => $families[0]
+            'pdfTitle' => $pdfFinalName . '.pdf'
+
         ];
-        /*
-        return view('pdfs.userlist-print')
-            ->with('allUsers', $users)
-            ->with('clans', $clans[0])
-            ->with('countries', $countries)
-            ->with('roleList', $roles[0])
-            ->with('families', $families[0]);
-        */
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('pdfs.userlist-print', $data);
-        $pdf->save(public_path() . '/files/___userlists/' . 'xxx.pdf')
-            ->stream('xxx.pdf');
+        $view = view('pdfs.userlist-print', $data);
+        $contents = $view->render();
+        $mPdfConfig = [
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'default_font_size' => 11,
+            'default_font' => 'Arial',
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 16,
+            'margin_bottom' => 16,
+            'margin_header' => 9,
+            'margin_footer' => 4,
+            'orientation' => 'L',
+        ];
+        try {
+            $pdf = new Mpdf($mPdfConfig);
+            $pdf->debug = true;
+            $pdf->setHTMLHeader('<p style="width: 100%; border-bottom: 1px solid #333333; text-align: center">' . $pdfFinalName . '</p>');
+            $pdf->setHTMLFooter('<p style="width: 100%; border-top: 1px solid #333333; text-align: center">{PAGENO} / {nbpg}</p>');
+            $pdf->AddPage('L','BLANK','0','1','off');
+            $pdf->writeHTML($contents);
+            $pdf->Output(public_path() . '/files/___userlists/' . $pdfFinalName . '.pdf', \Mpdf\Output\Destination::FILE);
+        } catch (MpdfException $e) {
+            $e->getMessage();
+        }
+        return json_encode(['success' => url('/files/___userlists/' . $pdfFinalName . '.pdf'), 'pdf_name' => $pdfFinalName . '.pdf']);
+
     }
 
     /**
      * Searches a user by input
-     *
-     * @return mixed
+     * @param bool $json
+     * @param null $credentials
+     * @return false|string
      */
-    public function searchUsers()
+    public function searchUsers($json = false, $credentials = null)
     {
         $user = new User();
-        Input::flash();
-        $sortby = (Input::get('sort_field') == null || strlen(Input::get('sort_field')) == 0) ? 'user_name' : Input::get('sort_field');
-        $orderby = (Input::get('order_by') == null || strlen(Input::get('order_by')) == 0) ? 'ASC' : Input::get('order_by');
-        $credentials = [
-            'search_user' => Input::get('search_field'),
-            'search_clan' => Input::get('clan'),
-            'search_family' => Input::get('family'),
-            'search_role' => Input::get('role'),
-            'sort_field' => $sortby,
-            'order_by' => $orderby
-        ];
+        if (is_null($credentials)) {
+            Input::flash();
+            $sortby = (Input::get('sort_field') == null || strlen(Input::get('sort_field')) == 0) ? 'user_name' : Input::get('sort_field');
+            $orderby = (Input::get('order_by') == null || strlen(Input::get('order_by')) == 0) ? 'ASC' : Input::get('order_by');
+            $credentials = [
+                'search_user' => Input::get('search_field'),
+                'search_clan' => Input::get('clan'),
+                'search_family' => Input::get('family'),
+                'search_role' => Input::get('role'),
+                'sort_field' => $sortby,
+                'order_by' => $orderby
+            ];
+        }
         $users = $user->searchUser($credentials);
 
-        return json_encode($users);
+        if (!$json) {
+            return json_encode($users);
+        }
+        return $users->toArray();
     }
 
     /**

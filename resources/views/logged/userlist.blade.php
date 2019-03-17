@@ -94,15 +94,10 @@
         </table>
     </div>
 <div id="debug"></div>
-        <form id="sendToPrint" action="{{route('userlist_print')}}" method="post" style="display: inline-block">
-            {{csrf_field()}}
-            <input type="hidden" name="uIDs" id="uIDs">
-            <input type="hidden" name="sort_field" id="sort_field">
-            <input type="hidden" name="order_by" id="order_by">
-        </form>
     @include('logged.dialog.user_delete')
     @include('logged.dialog.messagesent')
     @include('logged.dialog.fourchar')
+    @include('logged.dialog.print_table_name')
     @section('scripts')
     @parent
     <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
@@ -110,8 +105,10 @@
         var cols = $('th'),
             yl = [],
             families = JSON.parse('{!!json_encode($families)!!}'),
+            allUsers = JSON.parse('{!!$allUsers!!}'),
             ml = [],
-            isManager = ('{{ User::isManager() || User::isLoggedAdmin() }}' === '1');
+            isManager = ('{{ User::isManager() || User::isLoggedAdmin() }}' === '1'),
+            userListPrintUrl = '{{route('userlist_print')}}';
         </script>
     <script src="{{asset('js/search_user_tables_init.min.js')}}"></script>
     @stop
