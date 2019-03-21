@@ -727,6 +727,7 @@ var V3Reservation = {
         $('#save_reservation').attr('disabled', false);
         $('#clone_guest').attr('disabled', false);
     },
+    // ToDo Maybe it will be needed again in the future
     checkExistentReservation: function (s, e) {
         let start = s.getFullYear() + '-' + GlobalFunctions.smallerThenTen((s.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(s.getDate()),
             end = e.getFullYear() + '-' + GlobalFunctions.smallerThenTen((e.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(e.getDate());

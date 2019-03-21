@@ -19,7 +19,7 @@ return array(
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\CronController' => $baseDir . '/app/Http/Controllers/CronController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
-    'App\\Http\\Controllers\\NewReservationController' => $baseDir . '/app/Http/Controllers/NewReservationController.php',
+    'App\\Http\\Controllers\\ReservationController' => $baseDir . '/app/Http/Controllers/ReservationController.php',
     'App\\Http\\Controllers\\PeriodController' => $baseDir . '/app/Http/Controllers/PeriodController.php',
     'App\\Http\\Controllers\\PostController' => $baseDir . '/app/Http/Controllers/PostController.php',
     'App\\Http\\Controllers\\RightController' => $baseDir . '/app/Http/Controllers/RightController.php',

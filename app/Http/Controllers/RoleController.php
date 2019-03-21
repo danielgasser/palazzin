@@ -210,31 +210,8 @@ class RoleController extends Controller
     }
 
     /**
-     * Dropdown roles
-     *
-     * @return mixed json
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function roleList()
-    {
-        $p = Period::find(Input::get('period_id'));
-
-        $roles = Role::getRolesForGuest(($p->clan_id == Auth::user()->clan_id));
-        Tools::dd($roles, false);
-        return Response::json($roles);
-    }
-
-    /**
-     * Gets the opposite roles for dropdown that the clan of auth. user
-     *
-     * @return mixed json
-     */
-    public function getRoleForeignClan()
-    {
-        $p = Period::find(Input::get('period_id'));
-        $roles = Role::getRolesForGuest(($p->clan_id == Auth::user()->clan_id));
-        return Response::json($roles);
-    }
-
     public function getPriceList()
     {
         $roles = Role::where('role_code', 'like', '%G%')

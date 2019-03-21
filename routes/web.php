@@ -63,16 +63,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('news/delete', ['uses' => 'PostController@deletePost']);
 
         // Reservations
-        Route::get('{any}reservation/get-per-period', 'NewReservationController@getAllReservationInPeriod')->where('any', '.*');
-        Route::get('new_reservation', 'NewReservationController@newReservation')->name('new_reservation');
-        Route::get('all_reservations', 'NewReservationController@getUserReservations')->name('all_reservations');
-        Route::post('save_reservation/{res_id?}', 'NewReservationController@saveReservation')->name('save_reservation');
-        Route::post('delete_reservation', 'NewReservationController@deleteReservation')->name('delete_reservation');
-        Route::any('edit_reservation/{res_id}', 'NewReservationController@editReservation')->name('edit_reservation');
-        Route::get('reservation/month/v3', 'NewReservationController@getReservationsPerDateV3');
+        Route::get('{any}reservation/get-per-period', 'ReservationController@getAllReservationInPeriod')->where('any', '.*');
+        Route::get('new_reservation', 'ReservationController@newReservation')->name('new_reservation');
+        Route::get('all_reservations', 'ReservationController@getUserReservations')->name('all_reservations');
+        Route::post('save_reservation/{res_id?}', 'ReservationController@saveReservation')->name('save_reservation');
+        Route::post('delete_reservation', 'ReservationController@deleteReservation')->name('delete_reservation');
+        Route::any('edit_reservation/{res_id}', 'ReservationController@editReservation')->name('edit_reservation');
+        Route::get('reservation/month/v3', 'ReservationController@getReservationsPerDateV3');
 
         Route::post('user/profile', 'UserController@saveProfile');
-        Route::post('user/profile/changepass', 'UserController@changePassword');
         Route::get('user/bills', 'BillController@showBills');
 
         // stats
@@ -95,8 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('calc', 'PeriodController@calculatePeriods')->name('calc-periods');
         Route::post('settings', 'SettingController@setSettings')->name('save-settings');
         Route::get('users/delete/{id}', 'AdminController@deleteUser');
-        Route::get('reservations/search', 'NewReservationController@AdminSearchAllReservations');
-        Route::get('reservations', 'NewReservationController@AdminGetAllReservations');
+        Route::get('reservations', 'ReservationController@AdminGetAllReservations');
 
         // users
         Route::get('users', 'UserController@showUsers');
@@ -105,7 +103,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('users/activate', 'UserController@activateUser');
         Route::post('users/addrole', 'RoleController@getRolesAjax');
         Route::post('users/edit/delete', 'UserController@deleteRoleUser');
-        Route::post('users/add/sendnew', 'AdminController@postRemindNewUser');
         Route::get('users/edit/{id}', 'UserController@showEditUser');
         Route::post('users/edit/{id}', 'UserController@addRoleUser');
 
@@ -121,6 +118,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('rights', 'RightController@showRights');
         Route::post('rights', 'RightController@searchRights');
         Route::get('rights/edit/{id}', 'RightController@showEditRight');
+        // ToDo yet unused, maybe in the future
         Route::post('rights/edit/{id}', 'RightController@saveRight');
 
         // Manual Passwords

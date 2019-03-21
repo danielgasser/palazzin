@@ -238,7 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     *
+     * @param $id
      * @return mixed
      */
     public static function getRolesByID($id) {
@@ -410,7 +410,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $q->orWhere($s, 'like', '%' . $input . '%');
             }
         })
-            //->join('role_user', 'users.id', '=', 'role_user.user_id')
             ->with('clans', 'families', 'roles')
             ->CheckClan($clan)
             ->CheckFamily($family)
@@ -442,19 +441,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
-     * Dropdown userlist by opposite clan
-     *
-     * @param $clan_id
-     * @return mixed
-     */
-    public function getSimpleUsersListByNotThisClan ($clan_id) {
-        return User::select('id', 'user_login_name', 'email')
-            ->whereNotIn('clan_id', [$clan_id])
-            ->orderBy('user_login_name', 'asc')
-            ->get();
-    }
-
-    /**
      * Destroys a user model permanently if it hasn't got any bills
      *
      */
@@ -475,68 +461,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $this->destroy($this->id);
             return true;
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function sendBirthdayMail()
-    {
-        $set = Setting::getStaticSettings();
-        $today = new \DateTime();
-        $user = User::where('user_birthday', '=', $today->format('Y-m-d') . ' 00:00:00')->get();
-        if (is_object($user)) {
-            foreach ($user as $u) {
-                $mail = [
-                    'user_first_name' => $u->user_first_name,
-                ];
-                Mail::send('emails.birthday', $mail, function ($message) use ($set, $u) {
-                    $message->to($u->email, $u->user_first_name . ' ' . $u->user_name)
-                        ->from($set->setting_app_owner_email, $set->setting_app_owner)
-                        ->sender($set->setting_app_owner_email, $set->setting_app_owner)
-                        ->subject('Palazzin.ch: Happy Birthday ' . $u->user_first_name . '!');
-                });
-            }
-        }
-    }
-
-    /**
-     * @return int
-     */
-    public static function checkUsersOldWinBrowser()
-    {
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $os_array       =   array(
-            //'/windows nt 6.2/i'     =>  'Windows 8',
-            '/windows nt 6.1/i'     =>  'Windows 7',
-            '/windows nt 6.0/i'     =>  'Windows Vista',
-            '/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
-            '/windows nt 5.1/i'     =>  'Windows XP',
-            '/windows xp/i'         =>  'Windows XP',
-            '/windows nt 5.0/i'     =>  'Windows 2000',
-            '/windows me/i'         =>  'Windows ME',
-            '/win98/i'              =>  'Windows 98',
-            '/win95/i'              =>  'Windows 95',
-            '/win16/i'              =>  'Windows 3.11',
-            '/macintosh|mac os x/i' =>  'Mac OS X',
-            '/mac_powerpc/i'        =>  'Mac OS 9',
-            //'/linux/i'              =>  'Linux',
-            //'/ubuntu/i'             =>  'Ubuntu',
-            //'/iphone/i'             =>  'iPhone',
-            //'/ipod/i'               =>  'iPod',
-            //'/ipad/i'               =>  'iPad',
-            //'/android/i'            =>  'Android',
-            //'/blackberry/i'         =>  'BlackBerry',
-            //'/webos/i'              =>  'Mobile'
-        );
-        foreach ($os_array as $regex => $value) {
-            if (preg_match($regex, $user_agent)) {
-                if ((preg_match('/msie/i', $user_agent) || preg_match('/Trident/i', $user_agent)) && !preg_match('/opera/i', $user_agent)) {
-                    return 1;
-                }
-            }
-        }
-        return 0;
     }
 
     public function sendPasswordResetNotification($token)

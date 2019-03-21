@@ -74,38 +74,9 @@ class Post extends Model {
                 ->orderBy('posts.created_at', 'DESC')
                 ->get();
         }
-
-        $posts->each(function ($p) {
-            $p->editable = self::checkEditableRecord($p->created_at);
-        });
         if ($isJson) {
             return json_encode($posts);
         }
         return $posts;
     }
-
-    /**
-     * @param $createdAt
-     * @return int
-     * @throws Exception
-     */
-    public static function checkEditableRecord ($createdAt) {
-        $set = Setting::getStaticSettings();
-
-        date_default_timezone_set(date_default_timezone_get());
-        $editableDate = new \DateTime();
-        $created_at = new \DateTime(str_replace('.', '-', $createdAt));
-        $interval = $created_at->diff($editableDate);
-        $minutes = $interval->days * 24 * 60;
-        $minutes += $interval->h * 60;
-        $minutes += $interval->i;
-        //Tools::dd($minutes, false);
-        //Tools::dd($set->setting_editable_record_time, false);
-        if ($minutes < $set->setting_editable_record_time) {
-            return 1;
-        }
-        return 0;
-
-    }
-
 }

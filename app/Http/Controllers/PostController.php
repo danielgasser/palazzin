@@ -21,18 +21,6 @@ class PostController extends Controller
 {
 
     /**
-     * All posts
-     *
-     * @return mixed View
-     */
-    public function showPost()
-    {
-        $posts = new Post();
-        return view('news.post')
-            ->with('posts', $posts->getNewsTicker());
-    }
-
-    /**
      * Reload posts on event
      *
      * @return mixed json

@@ -29,82 +29,9 @@ class UserController extends Controller
 {
 
     /**
-     * gets the aut. users id
-     *
-     * @return int users id
+     * @param null $id
+     * @return mixed
      */
-    public function getAuthUserId()
-    {
-        return Auth::id();
-    }
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Exception
-     */
-    public function postLogin()
-    {
-        $stay = Input::get('stay_tuned');
-        $fieldToTake = filter_var(Input::get('user_login_name'), FILTER_VALIDATE_EMAIL) ? 'email' : 'user_login_name';
-        $credentials = [
-            $fieldToTake => Input::get('user_login_name'),
-            'password' => Input::get('password')
-
-        ];
-        $rules = [
-            $fieldToTake => 'required',
-            'password' => 'required'];
-
-        $validator = Validator::make(
-            $credentials,
-            $rules
-        );
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors([trans('login.wrong')]);
-        }
-        $rememberMe = ($stay == 'on') ? true : false;
-        if (Auth::attempt($credentials, $rememberMe) || Auth::viaRemember() && User::checkUsersOldWinBrowser() == 0) {
-            $user = User::find(Auth::id());
-            // If user is passive
-            if ($user->user_active == 0) {
-                Auth::logout();
-                Session::put('error', trans('errors.passive'));
-                return view('auth.login')
-                    ->withErrors(trans('errors.passive'));
-            }
-
-
-            $time = new \DateTime();
-            $time->format('Y-m-d H:m:s');
-            $user->user_last_login = $time;
-            $user->save();
-            // Write login stats
-            $loginStat = new \LoginStat();
-            $loginStat->user_id = $user->id;
-            $loginStat->save();
-            if (User::isKeeper()) {
-                return redirect('keeper/reservations');
-            }
-            if (User::isClerk()) {
-                return redirect('admin/bills');
-            }
-            Session::put('lifetime', $time->format('Y-m-d H:m:s'));
-            return Redirect::intended('home');
-        }
-
-        if ($validator->fails()) {
-            Session::put('error', $validator);
-            return Redirect::back()->withErrors($validator);
-        }
-        Session::put('error', trans('login.wrong'));
-        return Redirect::back()->withErrors([trans('login.wrong')]);
-    }
-
-    public function showAdmin()
-    {
-        return view('logged.admin.home');
-    }
-
     public function showProfile($id = null)
     {
         if ($id != null) {
@@ -125,11 +52,6 @@ class UserController extends Controller
         asort($countries);
         $clan = DB::table('clans')->where('id', '=', $user->clan_id)->select('id', 'clan_description', 'clan_code')->first();
         $families = DB::table('families')->where('id', '=', $user->family_code)->select('family_description')->first();
-        /*
-        foreach($families as $f){
-            $chooseFam[$f->id] = $f->family_description;
-        }
-        */
         if (!is_null($families)) {
             $user->family_description = $families->family_description;
         } else {
@@ -141,12 +63,10 @@ class UserController extends Controller
         return view('user.profile')
             ->with('info_message', 'blah_')
             ->with('user', $user)
-            //->with('birthday', $birthday->format('d.m.Y'))
             ->with('countries', $countries)
             ->with('disabledForm', $disabledForm)
             ->with('requIred', $requIred)
             ->with('clan_desc', $clan->clan_description);
-            //->with('families', $chooseFam);
     }
 
     /**
@@ -253,9 +173,7 @@ class UserController extends Controller
         foreach ($families as $key => $f) {
             $allFams[$f->clan_id][$f->id] = $f->family_description;
         }
-       // $countries = DB::table('countries')->lists('country_name_' . trans('formats.langjs'), 'id');
         $cs = DB::select(DB::raw("select country_name_" . trans('formats.langjs') . " as country_name, id, country_code from countries order by country_name_" . trans('formats.langjs') . " asc"));
-        //$countries = DB::table('countries')->lists('country_name_' . trans('formats.langjs'), 'country_code');
         foreach ($cs as $c) {
             $countries[$c->id] = $c->country_name;
         }
@@ -378,6 +296,11 @@ class UserController extends Controller
             ->with('families', [0 => trans('dialog.all')] + $families[0]);
     }
 
+    /**
+     * @param Request $request
+     * @return false|string
+     * @throws \Throwable
+     */
     public function userListPrint (Request $request)
     {
         $inputName = $request->input('print_name_pdf');
@@ -476,53 +399,5 @@ class UserController extends Controller
             return json_encode($users);
         }
         return $users->toArray();
-    }
-
-    /**
-     *
-     * @return mixed Redirect
-     */
-    public function changePassword()
-    {
-        $user = User::find(Auth::id());
-        $validator = Validator::make(
-            Input::except('old_pass'),
-            [
-                'new_pass' => ['required', 'regex:/([0-9@#$!?%A-Za-z])+/', 'confirmed'],
-                'new_pass_confirmation' => 'required',
-            ],
-            [
-                'regex' => '<div class="messagebox">Das Passwort muss mindestens<br>
-                        - 10 Zeichen lang sein.<br>
-                        - 1 Ziffer (0-9) enthalten.<br>
-                        - 1 Grossbuchstaben (A-Z) enthalten.<br>
-                        - 1 Kleinbuchstaben (a-z) enthalten.<br>
-                        - 1 Sonderzeichen (%^?!&@#) enthalten</div>',
-            ]
-        );
-        if ($validator->fails()) {
-            Session::put('error', $validator);
-            return Redirect::back()->withErrors($validator);
-        }
-        if (!Hash::check(Input::get('old_pass'), $user->password)) {
-            Session::put('error', trans('errors.old_pass_false'));
-            return Redirect::back()->withErrors([trans('errors.old_pass_false')]);
-        }
-        $user->password = Hash::make(Input::get('new_pass'));
-        $user->save();
-        Auth::logout();
-        return redirect('/')->with('info_message', trans('errors.data-saved', ['a' => 'Dein', 'data' => ' neues Passwort']));
-    }
-
-    /**
-     * Gets a user list opposite to the auth. users clan
-     *
-     * @return User
-     */
-    public function counterClanUsersList()
-    {
-        $user = new User();
-        $user = $user->getSimpleUsersListByNotThisClan(Input::get('clan_id'));
-        return $user;
     }
 }

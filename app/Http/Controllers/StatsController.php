@@ -13,11 +13,17 @@ use Request;
 class StatsController extends Controller
 {
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsMenu()
     {
         return view('logged.statistics.stats_menu');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsReservationsCalendarPerMonth()
     {
         $reservation = new Reservation();
@@ -30,6 +36,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsNightsTotal()
     {
         $reservation = new Reservation();
@@ -42,6 +51,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return mixed
+     */
     public function showStatsNightsTotalGuests()
     {
         $reservation = new Reservation();
@@ -55,6 +67,9 @@ class StatsController extends Controller
 
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsReservationsCalendarTotalPerDay()
     {
         $reservation = new Reservation();
@@ -67,6 +82,10 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
+     */
     public function showStatsReservations()
     {
         $reservation = new Reservation();
@@ -79,6 +98,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsReservationsCalendar()
     {
         $reservation = new Reservation();
@@ -91,6 +113,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsBills()
     {
         $bill = new Bill();
@@ -102,6 +127,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsBillsTotal()
     {
         $bill = new Bill();
@@ -113,6 +141,9 @@ class StatsController extends Controller
             ->with('allReservations', $res);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsBillsTotalPerYear()
     {
         $bill = new Bill();
@@ -124,6 +155,9 @@ class StatsController extends Controller
             ->with('allReservations', $billPaid);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showStatsLogin()
     {
         if (Input::get('year') == null) {

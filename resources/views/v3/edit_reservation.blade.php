@@ -21,7 +21,7 @@
     <a name="top"></a>
     <div id="reservationInfo">
     </div>
-        <form id="edit_reservation" method="post" action="{{  action('NewReservationController@saveReservation', ['id' => $userRes[0]->id])  }}">
+        <form id="edit_reservation" method="post" action="{{  action('ReservationController@saveReservation', ['id' => $userRes[0]->id])  }}">
             {{ csrf_field() }}
             <input type="hidden" id="periodID" name="periodID" value="{{$userRes[0]->period_id}}">
             <input type="hidden" id="id" name="id" value="{{$userRes[0]->id}}">

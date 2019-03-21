@@ -92,15 +92,6 @@ class Period extends Model {
         return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized(trans('formats.db-timestamp'));
     }
 
-    public function getPeriodStart()
-    {
-        return $this->period_start;
-    }
-
-    public function getPeriodID()
-    {
-        return $this->id;
-    }
     /**
      *
      * @param $value
@@ -109,6 +100,11 @@ class Period extends Model {
     public function getPeriodEndAttribute($value) {
         setlocale(LC_ALL, trans('formats.langlang'));
         return $carbonDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $value)->formatLocalized(trans('formats.db-timestamp'));
+    }
+
+    protected function getPeriodStart()
+    {
+        return $this->period_start;
     }
 
     /**
@@ -151,30 +147,6 @@ class Period extends Model {
     }
 
     /**
-     * @return false|string
-     * @throws Exception
-     */
-    public static function getJSONPeriods(){
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-        $arr = array();
-        $periods = self::join('clans', 'clans.id', '=', 'periods.clan_id')
-            ->select('period_start', 'period_end', 'clan_id', 'clans.clan_code', 'clans.clan_description')
-            ->where('period_end', '>=', $today->format('Y-m-d H:i:s'))
-            ->get();
-        foreach ($periods as $p) {
-            $start = new \DateTime($p->period_start);
-            $end = new \DateTime($p->period_end);
-            while ($start <= $end) {
-                $arr[] = $start->format('Y_m_d') . '|' . $p->clan_code;
-                $start->modify('+1 day');
-                $start->setTime(0, 0, 0);
-            }
-        }
-        return json_encode($arr);
-    }
-
-    /**
      * @return mixed
      * @throws Exception
      */
@@ -200,45 +172,6 @@ class Period extends Model {
         $e = $nowend->format('Y-m-d') . ' 00:00:00';
         return Period::whereBetween('period_start', [$n, $e])
             ->select('clan_id', 'period_start', 'period_end')->first();
-    }
-
-    /**
-     * @return mixed
-     * @throws Exception
-     */
-    public static function getPeriods(){
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-        $periods = [];
-        $self = new static;
-
-        if (Input::has('this_date')) {
-            $staDa = new \DateTime(Input::get('this_date'));
-            $neDa = new \DateTime($staDa->format('Y-m-d'));
-        } else {
-            $staDa = new \DateTime($self->setting->setting_calendar_start);
-            $neDa = new \DateTime($self->setting->setting_calendar_start);
-        }
-        $staDa->sub(new DateInterval('P6M'));
-        $neDa->add(new DateInterval('P5M'));
-        $period = Period::whereBetween('period_start', [$staDa->format('Y-m-d'), $neDa->format('Y-m-d')])
-            ->select('periods.id', 'periods.clan_id', 'period_start', 'period_end', 'clans.clan_code', 'clans.clan_description')
-            ->join('clans', 'clans.id', '=', 'clan_id')
-            ->orderBy('period_start', 'asc')
-            ->get();
-        $period->each(function ($i)use ($periods) {
-            $start = new \DateTime($i->period_start);
-            $end = new \DateTime($i->period_end);
-            $end->add(new DateInterval('P1D'));
-            $interval = new DateInterval('P1M');
-            $dateRange = new DatePeriod($start, $interval ,$end);
-            $i->periods = array();
-            foreach($dateRange as $key => $date) {
-                //$d = $date->sub(new DateInterval('P1M'));
-                $i->{$date->format('Y_m_d')} = $i->clan_code;
-            }
-        });
-        return $period->toJson();
     }
 
     /**

@@ -206,11 +206,6 @@ if (strlen($routeStr) === 0) {
             </h1>
             <h1 id="canvasCheck"></h1>
         </div>
-        @if($isOldWin == '1')
-            @include('logged.dialog.old_ie')
-        @endif
-
-
     <div class="row topRow">
         <div class="col-md-11 col-sm-11 col-xs-11">
         @switch($route)
@@ -324,7 +319,6 @@ if (strlen($routeStr) === 0) {
                 settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                 token = '{{ csrf_token() }}',
                 monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
-                oldie = '{{$isOldWin}}',
                 route = '{{Route::getFacadeRoot()->current()->uri()}}';
         </script>
         @guest

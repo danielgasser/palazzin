@@ -18,9 +18,13 @@ use Auth;
  * Time: 12:12
  */
 
-class NewReservationController extends Controller
+class ReservationController extends Controller
 {
 
+    /**
+     * @return mixed
+     * @throws \Throwable
+     */
     public function newReservation()
     {
         $args = $this->getReservationInfos();
@@ -43,6 +47,11 @@ class NewReservationController extends Controller
 
     }
 
+    /**
+     * @param $res_id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
     public function editReservation($res_id)
     {
         $args = $this->getReservationInfos();
@@ -97,38 +106,18 @@ class NewReservationController extends Controller
     }
 
     /**
-     * @return array
-     * @throws \Throwable
+     * @return mixed
      */
-    protected function getReservationInfos()
-    {
-        $args = [];
-        $user = User::find(Auth::id());
-        $userClanID = $user->getUserClan();
-        $start = new \DateTime();
-        $periods = new Period();
-        $checkPeriod = Period::getCurrentPeriod();
-
-
-        $args['userClan'] = $user->getUserClanName($userClanID);
-        $args['rolesTrans'] = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
-        $guestBlade = view('logged.dialog.guest_entry', ['rolesTrans' => $args['rolesTrans'], 'i' => 0]);
-        $guestEntryView = $guestBlade->render();
-        $args['guestEntryView'] = strtr($guestEntryView,"\n\r","  ");
-
-        $args['roleTaxes'] = Role::getRolesTaxV3();
-        $args['periods'] = $periods->getTimelinerPeriods($start->format('Y-m'));
-        $args['periodsDatePicker'] = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
-        $args['reservationsPerPeriod'] = $this->getReservationsPerDateV3($args['periods']->first()->id);
-        return $args;
-    }
-
     public function getAllReservationInPeriod()
     {
         $res = new Reservation();
         return $res->getReservationsPerPeriodV3(request()->get('pID'));
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function getUserReservations()
     {
         $user = User::find(Auth::id());
@@ -165,6 +154,10 @@ class NewReservationController extends Controller
             ->with('userRes', $userRes);
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function AdminGetAllReservations()
     {
         $user = User::find(Auth::id());
@@ -198,6 +191,11 @@ class NewReservationController extends Controller
         return $reservation->getReservationsPerPeriodV3($periodID, $isJson);
     }
 
+    /**
+     * @param SaveReservation $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
     public function saveReservation(SaveReservation $request)
     {
         $credentials = request()->all();
@@ -285,6 +283,8 @@ class NewReservationController extends Controller
      *
      * @return bool|string
      */
+    // ToDo Maybe it will be needed again in the future
+
     public function checkExistentReservation()
     {
         $credentials = request()->all();
@@ -299,6 +299,10 @@ class NewReservationController extends Controller
         return null;
     }
 
+    /**
+     * @return false|string
+     * @throws \Exception
+     */
     public function deleteReservation()
     {
         $resID = request()->all('res_id');
@@ -315,17 +319,29 @@ class NewReservationController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \Exception
+     * @return array
+     * @throws \Throwable
      */
-    public function AdminSearchAllReservations()
+    protected function getReservationInfos()
     {
-        $reservation = new Reservation();
-        if (sizeof(Input::all()) == 0) {
-            return view('logged.keeper.reservation')
-                ->with('allReservations', $reservation->getReservations());
-        }
-        return Response::json($reservation->getReservationsAjax(Input::except('resetKeeper')));
-    }
+        $args = [];
+        $user = User::find(Auth::id());
+        $userClanID = $user->getUserClan();
+        $start = new \DateTime();
+        $periods = new Period();
+        $checkPeriod = Period::getCurrentPeriod();
 
+
+        $args['userClan'] = $user->getUserClanName($userClanID);
+        $args['rolesTrans'] = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $guestBlade = view('logged.dialog.guest_entry', ['rolesTrans' => $args['rolesTrans'], 'i' => 0]);
+        $guestEntryView = $guestBlade->render();
+        $args['guestEntryView'] = strtr($guestEntryView,"\n\r","  ");
+
+        $args['roleTaxes'] = Role::getRolesTaxV3();
+        $args['periods'] = $periods->getTimelinerPeriods($start->format('Y-m'));
+        $args['periodsDatePicker'] = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
+        $args['reservationsPerPeriod'] = $this->getReservationsPerDateV3($args['periods']->first()->id);
+        return $args;
+    }
 }

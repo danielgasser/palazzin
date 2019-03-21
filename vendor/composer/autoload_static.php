@@ -401,7 +401,7 @@ class ComposerStaticInita60eb19c7889e7eadbd70bcff75040a7
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CronController' => __DIR__ . '/../..' . '/app/Http/Controllers/CronController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
-        'App\\Http\\Controllers\\NewReservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/NewReservationController.php',
+        'App\\Http\\Controllers\\ReservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReservationController.php',
         'App\\Http\\Controllers\\PeriodController' => __DIR__ . '/../..' . '/app/Http/Controllers/PeriodController.php',
         'App\\Http\\Controllers\\PostController' => __DIR__ . '/../..' . '/app/Http/Controllers/PostController.php',
         'App\\Http\\Controllers\\RightController' => __DIR__ . '/../..' . '/app/Http/Controllers/RightController.php',

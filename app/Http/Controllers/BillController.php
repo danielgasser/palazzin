@@ -49,56 +49,6 @@ class BillController extends Controller
      * @return mixed
      * @throws \Exception
      */
-    public function searchAllBills()
-    {
-        $bill = new Bill();
-        return $bill->getBillsAjax(Input::except('resetKeeper'));
-    }
-
-    /**
-     * Search bills
-     *
-     * @return mixed json
-     */
-    public function searchByBillNo()
-    {
-        $bill = new Bill();
-        return $bill->getBillsNoAjax(Input::get('bill_no'));
-    }
-
-    /**
-     * Search bills
-     *
-     * @return mixed json
-     */
-    public function searchAllBillsUser()
-    {
-        $bill = new Bill();
-       // Tools::dd(Input::all(), true);
-
-        return Response::json($bill->getBillsAjaxUser(Input::except('resetKeeper')));
-    }
-
-    /**
-     * Generates bills
-     * Route = admin/bills/generate
-     * ToDo admin/bills/generate as Cron Job
-     *
-     */
-    public function generateBills()
-    {
-        $b = new Bill();
-        // ToDo add settings param
-        if (!$b->generateBills()) {
-            abort(403);
-        }
-    }
-
-    /**
-     * @param $bill_id
-     * @return mixed
-     * @throws \Exception
-     */
     public function reSendBill()
     {
         $set = \Setting::getStaticSettings();
@@ -157,16 +107,9 @@ class BillController extends Controller
             ->with('allBills', $files);
     }
 
-    public function downloadBills($filename)
-    {
-        dd('ff', $filename);
-        return $filename;
-        $headers = [
-            'Content-Type' => 'application/pdf'
-        ];
-        return \Response::download($filename, 200, $headers);
-    }
-
+    /**
+     * @return mixed
+     */
     public function getAllTotals ()
     {
         $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1')[0]->total, 2, '.', '\'');

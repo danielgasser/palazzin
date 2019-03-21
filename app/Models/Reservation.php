@@ -163,6 +163,8 @@ class Reservation extends Model {
      * @param $uID
      * @return mixed
      */
+    // ToDo Maybe it will be needed again in the future
+
     public function checkExistentReservationByUidV3($start, $end, $uID)
     {
         return self::where(function ($q) use ($start, $end, $uID) {
@@ -187,36 +189,6 @@ class Reservation extends Model {
                 $q->where('reservation_started_at', '<=', $end);
                 $q->where('reservation_ended_at', '>=', $end);
                 $q->where('user_id', '=', $uID);
-            })
-            ->first();
-    }
-
-    /**
-     * by Day
-     * @param $start
-     * @param $end
-     * @return mixed
-     */
-    public function checkExistentReservationByDateV3($start, $end)
-    {
-        return self::where(function ($q) use ($start, $end) {
-                $q->where('reservation_started_at', '<=', $start);
-                $q->where('reservation_ended_at', '>=', $end);
-            })
-            ->orWhere(function ($q) use ($start, $end) {
-                $q->where('reservation_started_at', '<=', $start);
-                $q->where('reservation_ended_at', '<=', $end);
-                $q->where('reservation_ended_at', '>=', $start);
-            })
-            ->orWhere(function ($q) use ($start, $end) {
-                $q->where('reservation_started_at', '>=', $start);
-                $q->where('reservation_started_at', '<=', $end);
-                $q->where('reservation_ended_at', '<=', $end);
-            })
-            ->orWhere(function ($q) use ($start, $end) {
-                $q->where('reservation_started_at', '>=', $start);
-                $q->where('reservation_started_at', '<=', $end);
-                $q->where('reservation_ended_at', '>=', $end);
             })
             ->first();
     }
@@ -542,97 +514,6 @@ class Reservation extends Model {
             }
         }
         return $totals;
-    }
-
-    /**
-     * @param $opts
-     * @return mixed
-     * @throws Exception
-     */
-    public function getReservationsAjax ($opts) {
-        if (!isset($opts['start']) || strlen($opts['start'] == 0)) {
-            $d = new \DateTime($this->setting['setting_calendar_start']);
-            $startD = $d->format('Y-m-d');
-            $d->modify('+' . $this->setting['setting_calendar_duration'] . ' year');
-            $endD = $d->format('Y-m-d');
-        } else {
-            $d = new \DateTime($opts['start']);
-            $startD = $d->format('Y-m-d');
-            $d->modify('+1 month');
-            $endD = $d->format('Y-m-d');
-        }
-        if ($opts['monthyear'] != '') {
-            $my = '%' . $opts['monthyear'] . '%';
-        } else {
-            $my = '%%';
-        }
-        $searchField = (isset($opts['search_field'])) ? $opts['search_field'] : '';
-        $sortField = (isset($opts['sort_field'])) ? $opts['sort_field'] : 'reservation_started_at';
-        $orderby = (isset($opts['sort_field'])) ? $opts['order_by'] : 'ASC';
-        if(empty($searchField)) {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('reservations.user_id', 'users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->whereBetween('reservation_started_at', [$startD, $endD])
-                ->where('reservations.reservation_started_at', 'LIKE', $my)
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->orderBy($sortField, $orderby)
-                ->get();
-        } else {
-            $reservations = $this
-                ->join('users', 'users.id', '=', 'reservations.user_id')
-                ->select('reservations.user_id', 'users.user_first_name', 'users.user_name', 'reservations.*')->with('guests')
-                ->where('reservations.user_id', '=', $searchField)
-                ->whereBetween('reservation_started_at', [$startD, $endD])
-                ->where('reservations.reservation_started_at', 'LIKE', $my)
-                ->with(array('guests'=>function($query){
-                    $query
-                        ->join('roles', 'roles.id', '=', 'guests.role_id')
-                        ->select('guests.*', 'roles.id','roles.role_code', 'roles.role_tax_night');
-                }))
-                ->orderBy($sortField, $orderby)
-                ->get();
-
-        }
-        $reservations->each(function ($r) {
-            $s = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
-            $d = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
-            $r->reservation_started_at_show = $s->format(trans('formats.short-date-ts'));
-            $r->reservation_ended_at_show = $d->format(trans('formats.short-date-ts'));
-            $r->guests->each(function ($g) {
-                $ss = new \DateTime(str_replace('_', '-', $g->guest_started_at));
-                $dd = new \DateTime(str_replace('_', '-', $g->guest_ended_at));
-                $g->guest_started_at_show = $ss->format(trans('formats.short-date-ts'));
-                $g->guest_ended_at_show = $dd->format(trans('formats.short-date-ts'));
-            });
-        });
-        return $reservations;
-    }
-
-    /**
-     * @param $start
-     * @param $end
-     * @return bool
-     * @throws Exception
-     */
-    public static function isReservationBeforeToday ($start, $end) {
-        $today = new \DateTime();
-        $testStart = new \DateTime($start);
-        $testEnd = new \DateTime($end);
-        $today->setTime(0, 0, 0);
-        $intStart = $testStart->diff($today);
-        $intEnd = $testEnd->diff($today);
-        $minutes = $intStart->days * 24 * 60;
-        $minutes += $intStart->h * 60;
-        $minutes += $intStart->i;
-        if (intval($minutes) > 0 && intval($intEnd->invert) == 0) {// +startres <> inputres
-            return true;
-        }
-        return false;
     }
 
     /**

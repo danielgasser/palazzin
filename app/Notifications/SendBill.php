@@ -5,7 +5,6 @@ namespace App\Notifications;
 use \User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class SendBill extends Notification

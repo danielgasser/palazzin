@@ -28,61 +28,6 @@ class AdminController extends Controller
 {
 
     /**
-     * Get all logins
-     *
-     * @return mixed View
-     */
-    public function showStats()
-    {
-        setlocale(LC_ALL, Lang::get('formats.langlang'));
-        $months = [];
-        $years = [];
-        $dt = date('Y-m-d', time());
-        $dtt = date('Y-m-d', time());
-        $set = Setting::getStaticSettings();
-
-
-        $loginStats = new LoginStat();
-        $loginStats = $loginStats->getLoginsByDate();
-        foreach ($loginStats as $ls) {
-            foreach ($ls->userDates as $val) {
-                $f = new \DateTime($val['updated_at']);
-                $months[\Carbon\Carbon::createFromFormat('Y-m-d', $f->format('Y-m-d'))->formatLocalized(trans('%m'))] = \Carbon\Carbon::createFromFormat('Y-m-d', $f->format('Y-m-d'))->formatLocalized(trans('%B'));
-                $years[] = $f->format('Y');
-            }
-        }
-        ksort($months);
-        return view('logged.admin.stats')
-            ->with('settings', $set)
-            ->with('loginStats', $loginStats)
-            ->with('todayMonthYearStart', \Carbon\Carbon::createFromFormat('Y-m-d', $dt)->formatLocalized(trans('formats.long-month-short-year')))
-            ->with('todayMonthYearEnd', \Carbon\Carbon::createFromFormat('Y-m-d', $dtt)->formatLocalized(trans('formats.long-month-short-year')))
-            ->with('calcTodayMonthYearStart', \Carbon\Carbon::createFromFormat('Y-m-d', $dt)->formatLocalized(trans('formats.calc-month-short-year')))
-            ->with('calcTodayMonthYearEnd', \Carbon\Carbon::createFromFormat('Y-m-d', $dtt)->formatLocalized(trans('formats.calc-month-short-year')))
-            ->with('monthNames', array_unique($months))
-            ->with('startMonthSelected', \Carbon\Carbon::createFromFormat('Y-m-d', $dt)->formatLocalized(trans('%m')))
-            ->with('endMonthSelected', \Carbon\Carbon::createFromFormat('Y-m-d', $dtt)->formatLocalized(trans('%m')))
-            ->with('startYearSelected', \Carbon\Carbon::createFromFormat('Y-m-d', $dt)->formatLocalized(trans('%Y')))
-            ->with('endYearSelected', \Carbon\Carbon::createFromFormat('Y-m-d', $dtt)->formatLocalized(trans('%Y')))
-            ->with('years', array_unique($years));
-    }
-
-    /**
-     * Search logins
-     *
-     * @return mixed json
-     */
-    public function postAdminSearchLogins()
-    {
-        Input::flash();
-        setlocale(LC_ALL, trans('formats.langlang'));
-        $loginStats = new LoginStat();
-        $loginStats->getLoginsByDate(Input::except('_token'));
-        $loginStats->filterLogins(Input::get('searchParams'));
-        return Response::json($loginStats);
-    }
-
-    /**
      * Returns a view add user form
      *
      * @return mixed View
@@ -115,8 +60,8 @@ class AdminController extends Controller
         $validator = Validator::make(
             $input,
             [
-                'user_name' => 'required|min:3|alpha_dash',
-                'user_first_name' => 'required|min:3|alpha_dash',
+                'user_name' => 'required|min:3|regex:/^[\pL\s\-]+$/u',
+                'user_first_name' => 'required|min:3|regex:/^[\pL\s\-]+$/u',
                 'clan_id' => 'required|not_in:0',
                 'user_family' => 'required|not_in:0',
                 'email' => 'required|email|unique:users',
@@ -150,10 +95,8 @@ class AdminController extends Controller
         $user->user_fon1_label = 'x';
         $user->user_active = $request->input('user_active');
         $user->save();
-        $request = Request::create('admin/users/add/sendnew', 'POST');
-        \Route::dispatch($request);
         return back()
-            ->with('info_message', trans('errors.data-saved', ['a' => 'Neuer', 'data' => 'Benutzer']) . '.<br>' . trans('reminders.sent'));
+            ->with('info_message', trans('errors.data-saved', ['a' => 'Neuer', 'data' => 'Benutzer']));
     }
 
     /**
@@ -199,42 +142,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Changes the clan of a user
+     * creates a password at url password/new/{pass}
      *
+     * @param $pass
      */
-    public function changeClan()
-    {
-        $i = Input::except('_token');
-        $user = \User::find($i['id']);
-        $user->clan_id = $i['clan_id'];
-        $user->save();
-    }
-
     public function manualPass($pass)
     {
         $password = \Hash::make($pass);
         \Tools::dd('neues pass: ' . $pass, false);
         \Tools::dd('neues pass: ' . $password, true);
     }
-
-    public function postRemindNewUser()
-    {
-        $set = Setting::getStaticSettings();
-        $credentials = ['email' => Input::get('email')];
-        Config::set('auth.reminder.email', 'emails.auth.reminder_new');
-        $response = Password::remind($credentials, function ($message, $c) use ($set) {
-            $message->subject($set->setting_app_owner . ': ' . trans('reset.title'));
-            $message->user = $c;
-            $message->all = true;
-        });
-        switch ($response) {
-            case Password::INVALID_USER:
-                return Redirect::back()->with('error', Lang::get($response));
-
-            case Password::REMINDER_SENT:
-                return redirect('/')->with('info_message', Lang::get($response));
-        }
-    }
-
-
 }

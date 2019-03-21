@@ -21,13 +21,11 @@ class ViewDataComposer
     protected $yearColors = [
         '#88590f', '#283327', '#FF4500', '#FFD700', '#8A2BE2', '#ffa188', '#1E90FF', '#ffcc00', '#1500ff', '#12aa1c', '#00ff2d'
     ];
-    protected $isOldWin;
     protected $toesslab = 'https://toesslab.ch/application/files/5614/5854/7379/favicon.ico';
     protected $userData = [];
 
     public function compose(View $view)
     {
-        $this->isOldWin = User::checkUsersOldWinBrowser();
         shuffle($this->monthColors);
         $user = User::find(Auth::id());
         $userCompleteName = '';
@@ -46,7 +44,6 @@ class ViewDataComposer
         $view->with('lastLogin', (!is_null($login)) ? $login->created_at : '');
         $view->with('monthColors', $this->monthColors);
         $view->with('yearColors', $this->yearColors);
-        $view->with('isOldWin', $this->isOldWin);
         $view->with('toesslab', $this->toesslab);
         $view->with('otherClanRoleId', $this->getOtherClanRoleId());
         $view->with('roles', $userRole);

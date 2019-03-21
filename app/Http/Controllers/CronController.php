@@ -21,6 +21,7 @@ class CronController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('guest');
         $setting = \Illuminate\Support\Facades\App::make(\Setting::class);
         $this->setting = $setting::getStaticSettings();
