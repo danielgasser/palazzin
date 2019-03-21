@@ -236,7 +236,6 @@ var billTable,
         });
     },
     resendBill = function (id) {
-        var paid;
         $.ajax({
             type: 'POST',
             url: '/admin/send_bill',
@@ -251,6 +250,29 @@ var billTable,
                 return false;
             }
         });
+    },
+    getBillTotals = function (year) {
+        let url = (year === 'all') ? '/admin/bills/totals' : '/stats_bill_total_year';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                year: year
+            },
+            success: function (data) {
+                let unpaid = (data.hasOwnProperty('unpaid')) ? data.unpaid[year] : '-',
+                    paid = (data.hasOwnProperty('paid')) ? data.paid[year] : '-',
+                    total = (data.hasOwnProperty('total')) ? data.total[year] : '-';
+                if (year === 'all') {
+                    unpaid = data.unpaid;
+                    paid = data.paid;
+                    total = data.total;
+                }
+                $('#paid').html('CHF ' + paid);
+                $('#total').html('CHF ' + total);
+                $('#unpaid').html('CHF ' + unpaid);
+            }
+        })
     };
 
 $(document).ready(function () {
@@ -263,4 +285,7 @@ $(document).on('click', '.paginate_button>a', function () {
 $(document).on('click', '[id^="bill_sent_"]', function () {
     let id = $(this).attr('id').split('_')[2];
         resendBill(id);
+});
+$(document).on('change', '#year', function () {
+   getBillTotals(this.value)
 });

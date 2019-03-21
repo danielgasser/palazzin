@@ -20,6 +20,26 @@
     @stop
 @section('content')
     </div>
+    <div class="row" style="border-bottom: 1px solid #b7282e;">
+        <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
+            <h5>Jahr</h5>
+            <select id="year" name="year" class="form-control">
+                <option value="all">Alle</option>
+            @foreach($years as $y) {
+                    <option value="{{$y}}">{{$y}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
+            <h5>Total<br><span id="total">CHF {{$allTotals['total']}}</span></h5>
+        </div>
+        <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
+            <h5>Bezahlt<br><span id="paid">CHF {{$allTotals['paid']}}</span></h5>
+        </div>
+        <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
+            <h5>Unbezahlt<br><span id="unpaid">CHF {{$allTotals['unpaid']}}</span></h5>
+        </div>
+    </div>
     <div class="row">
         <table id="bills">
             <thead>

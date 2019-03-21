@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => ['admin', 'clerk']], function () {
         Route::get('admin/bills/filelist', 'BillController@getBillFilesList');
         Route::get('admin/bills', 'BillController@showBills');
+        Route::get('admin/bills/totals', 'BillController@getAllTotals');
         Route::get('admin/bills/paid', 'BillController@payBill');
         Route::get('admin/bills/unpaid', 'BillController@unPayBill');
         Route::post('admin/send_bill', 'BillController@reSendBill');
@@ -79,7 +80,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('stats', 'StatsController@showStatsMenu');
         Route::get('stats_bill', 'StatsController@showStatsBills');
         Route::get('stats_login', 'StatsController@showStatsLogin');
-        Route::post('stats_print', 'StatsController@printStats');
         Route::get('stats_bill_total', 'StatsController@showStatsBillsTotal');
         Route::get('stats_bill_total_year', 'StatsController@showStatsBillsTotalPerYear');
         Route::get('stats_chron', 'StatsController@showStatsReservations');

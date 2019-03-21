@@ -560,7 +560,6 @@ class Bill extends Model {
         $totals['totals']['total_show'] = number_format($totals['totals']['total'], 2, '.', '\'');
         $totals['currency'] = $bills->bill_currency;
         return $totals;
-
     }
 
     /**
@@ -580,6 +579,7 @@ class Bill extends Model {
             ->get();
         $totals = array();
         $bills->month_total = [];
+        $bills->year_total = [];
         $bills->month_total_unpaid = [];
         $bills->each(function ($b) use($bills) {
             $bm = new \DateTime($b->bill_bill_date);
@@ -589,11 +589,21 @@ class Bill extends Model {
                 } else {
                     $bills->month_total['unpaid'][$bm->format('Y_m')] = $b->bill_total;
                 }
+                if (isset($bills->year_total['unpaid'][$bm->format('Y')])) {
+                    $bills->year_total['unpaid'][$bm->format('Y')] += $b->bill_total;
+                } else {
+                    $bills->year_total['unpaid'][$bm->format('Y')] = $b->bill_total;
+                }
             } else {
                 if (isset($bills->month_total['paid'][$bm->format('Y_m')])) {
                     $bills->month_total['paid'][$bm->format('Y_m')] += $b->bill_total;
                 } else {
                     $bills->month_total['paid'][$bm->format('Y_m')] = $b->bill_total;
+                }
+                if (isset($bills->year_total['paid'][$bm->format('Y')])) {
+                    $bills->year_total['paid'][$bm->format('Y')] += $b->bill_total;
+                } else {
+                    $bills->year_total['paid'][$bm->format('Y')] = $b->bill_total;
                 }
             }
             if (isset($bills->month_total['total'][$bm->format('Y_m')])) {
@@ -601,15 +611,22 @@ class Bill extends Model {
             } else {
                 $bills->month_total['total'][$bm->format('Y_m')] = $b->bill_total;
             }
-
-            //$bills->bill_paid = ($b->bill_paid != null) ? $b->bill_total : 0;
+            if (isset($bills->year_total['total'][$bm->format('Y')])) {
+                $bills->year_total['total'][$bm->format('Y')] += $b->bill_total;
+            } else {
+                $bills->year_total['total'][$bm->format('Y')] = $b->bill_total;
+            }
         });
         foreach($bills->month_total as $key => $total){
             foreach($total as $k => $t){
                 $totals[$key][$k] = number_format($t, 2, '.', '\'');
             }
         }
+        foreach($bills->year_total as $key => $total){
+            foreach($total as $k => $t){
+                $totals[$key][$k] = number_format($t, 2, '.', '\'');
+            }
+        }
         return $totals;
     }
-
 }

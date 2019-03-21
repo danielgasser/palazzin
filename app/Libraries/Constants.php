@@ -26,7 +26,7 @@ class Constants {
      */
     const webMaster = 'Administrator';
     const webMasterName = 'Daniel Gasser';
-    const webMasterMail = 'software@daniel-gasser.com';
+    const webMasterMail = 'software@toesslab.ch';
 
     /**
      * @var array fon-labels

@@ -116,7 +116,7 @@ class StatsController extends Controller
     public function showStatsBillsTotalPerYear()
     {
         $bill = new Bill();
-        $billPaid = $bill->getBillsTotalStatsPerYear(Input::get('year'));
+        $billPaid = $bill->getBillsTotalStatsPerYear([request()->input('year') . '-%']);
         if (Request::ajax()) {
             return Response::json($billPaid);
         }
@@ -135,87 +135,5 @@ class StatsController extends Controller
         if (Request::ajax()) {
             return Response::json($res);
         }
-    }
-
-    public function printStats()
-    {
-        $html = '<style>
-            body, html {
-                font-family: "Ubuntu",sans-serif !important;
-                font-size: 14px;
-            }';
-        $html .= '.highcharts-axis {
-                font-size: 14px !important;
-            }';
-        $html .= 'a {
-                color: #dfb20d;
-            }';
-        $html .= '#mPDF_Print {
-                background-color: #ffffff !important;
-                         font-size: 14px !important;
-            }';
-        //    body{
-        //        background-color:white !important
-        //    }
-        //    .highcharts-axis{
-        //        font-size:16px;
-        //        padding:0.2em
-        //    }
-        $html .= 'th{
-                font-size:22px !important;
-                font-weight: bolder
-            }';
-        $html .= 'td{
-                font-size:16px !important;
-                padding: 2px;
-            }';
-        $html .= 'h6 {
-                color: #000000;
-                font-size: 14px !important;
-                font-weight: bold;
-                display: block;
-                 line-height: 22px;
-           }';
-        $html .= 'tspan {
-                line-height: 22px;
-            }';
-        $html .= '.total{
-                 color:#df7015 !important;
-                 width:8%
-             }
-             .paid{
-                 color:#169227 !important
-             }
-             .unpaid{
-                 color:#922825 !important
-             }
-             .highcharts-tooltip {
-                display:none !important
-             }';
-             //#footer{
-             //    display:none !important
-             //}
-        $html .= '</style>';
-        $stylesheet = file_get_contents(public_path() . '/assets/css/stats.css');
-        $stylesheet .= file_get_contents(public_path() . '/assets/css/stats_print.css');
-        $html .= Input::get('html');
-        $mPdf = new Mpdf(['utf-8'], 'A4-' . Input::get('dir'), 0, '', 12.7, 12.7, 14, 12.7, 8, 8);
-        $mPdf->SetDisplayMode('fullpage');
-        $mPdf->setHTMLHeader('<div style="font-size: 12pt;text-align: center; font-weight: bold; color: #000000">' . Input::get('title') . '</div>');
-        $mPdf->keep_table_proportions = true;
-        $mPdf->tableMinSizePriority = true;
-
-        $mPdf->DefHTMLFooterByName('Footer', '<div style="width: 100%; border-top: 1px solid #333333"></div><div style="font-size: 10pt; float: left; width: 49%">
-            RoomApp © created by <a target="_blank" href="https://toesslab.ch/">toesslab - solutions</a>
-            </div>
-            <div style="font-size: 10pt; float: right; width: 49%; text-align: right">Charts by <a target="_blank" href="http://www.highcharts.com/">HIGHCHARTS</a></div></div>');
-        $mPdf->SetHTMLFooterByName('Footer', 'O');
-        //$mPdf->SetHTMLHeaderByName('Header', 'O');
-        //$mPdf->SetDefaultBodyCSS('font-size', '22px');
-        $mPdf->CSSselectMedia = 'mpdf';
-        $mPdf->WriteHTML($stylesheet, 1);
-        $mPdf->WriteHTML($html, 0);
-        $mPdf->Output(public_path() . '/files/__stats/' . Input::get('filename') . '.pdf');
-        return '/files/__stats/' . Input::get('filename') . '.pdf';
     }
 }

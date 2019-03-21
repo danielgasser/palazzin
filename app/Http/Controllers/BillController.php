@@ -7,6 +7,8 @@ use Illuminate\Filesystem\Filesystem;
 use User;
 use Illuminate\Support\Facades\Input;
 use Response;
+use Illuminate\Support\Facades\DB;
+
 
 /**
  * Created by PhpStorm.
@@ -26,11 +28,20 @@ class BillController extends Controller
     {
         $bill = new Bill();
         $today = new \DateTime();
+        $set = \Setting::getStaticSettings();
+        $yearDate = new \DateTime($set->setting_calendar_start);
         $users = User::select('id', 'user_first_name', 'user_name')
         ->orderBy('user_name', 'asc')->get();
+        $years = [];
+        for($i = 0; $i < $set->setting_calendar_duration; $i++) {
+            $years[] = $yearDate->format('Y');
+            $yearDate->modify('+ 1 year');
+        }
         return view('logged.admin.bill')
             ->with('allBills', $bill->getBillsWithUserReservation())
             ->with('users', $users)
+            ->with('years', $years)
+            ->with('allTotals', $this->getAllTotals())
             ->with('today', $today->format('Y-m-d'));
     }
 
@@ -155,4 +166,16 @@ class BillController extends Controller
         ];
         return \Response::download($filename, 200, $headers);
     }
+
+    public function getAllTotals ()
+    {
+        $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1')[0]->total, 2, '.', '\'');
+        $arr['paid'] = number_format(DB::select(DB::raw('select sum(bill_total) as paid from bills where bill_sent = 1 and bill_due = 0'))[0]->paid, 2, '.', '\'');
+        $arr['unpaid'] = number_format(DB::select(DB::raw('select sum(bill_total) as unpaid from bills where bill_sent = 1 and bill_due = 1'))[0]->unpaid, 2, '.', '\'');
+        if (request()->ajax()) {
+            return Response::json($arr);
+        }
+        return $arr;
+    }
+
 }

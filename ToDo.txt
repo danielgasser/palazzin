@@ -7,6 +7,9 @@ mail settings
 DB:
 port table roles (structure????)
 delete table comments (structure)
+Credentials!
+Config!!
 
+check unused functions!!!!!!
 
 Debug settings off
