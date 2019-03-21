@@ -11,8 +11,9 @@ public/assets/css/test.css.map
 public/assets/css/test.css
 public/assets/scss/test.scss
 resources/views/errors/500.blade.php
-resources/views/errors/404.blade.php
 public/assets/img/fkkq7rr1u7.png
 public/assets/img/jpie56ufw5.png
 public/assets/img/sgmnwmmrqz.png
 public/assets/img/neif7pxjnz.png
+*.map
+*.DS_Store
