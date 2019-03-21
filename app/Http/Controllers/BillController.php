@@ -84,6 +84,31 @@ class BillController extends Controller
     }
 
     /**
+     * @param $bill_id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function reSendBill()
+    {
+        $set = \Setting::getStaticSettings();
+        $bill_id = request()->input('id');
+        $bill = Bill::find($bill_id);
+        $user = User::find($bill->bill_user_id);
+        $data['billusertext'] = '<b>Wir hoffen, Du hast Deinen Aufenthalt im Palazzin genossen.</b>';
+        $data['billusertext'] .= '<p>Wir haben festgestellt, dass folgende Rechnung noch nicht beglichen wurde:<br><b>' . $bill->bill_no . '</b></p>';
+        $data['billusertext'] .= '<p>Anbei findest Du Deine Rechnung.</p>';
+        $data['billtext'] = $set->setting_bill_text;
+        $data['attachment'] = public_path() . $bill->bill_path;
+        $user->notify(new \App\Notifications\SendBill($data, $user));
+        $bill->bill_resent = 1;
+        $bill_resent_at = new \DateTime();
+        $bill->bill_resent = 1;
+        $bill->bill_resent_date = $bill_resent_at->format('Y-m-d');
+        $bill->push();
+        return Response::json(['due' => $bill->bill_due, 'resent_data_sort' => $bill_resent_at->format(trans('Y-m-d')), 'resent' => $bill_resent_at->format(trans('formats.short-date-ts')), 'billid' => $bill->id]);
+    }
+
+    /**
      * Sets the bill_paid date
      *
      */

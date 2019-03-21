@@ -1,4 +1,11 @@
 let GlobalFunctions = {
+    arraySearch: function (arr, val) {
+        for (let i = 0; i < arr.length; i++)
+            if (arr[i] === val) {
+                return i;
+            }
+        return false;
+    },
     getUserPeriod: function (p) {
         for (let i = 0; i < p.length; i++) {
             if (p[i].id === parseInt(window.periodID, 10)) {

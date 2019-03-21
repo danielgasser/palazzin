@@ -2,7 +2,9 @@ $(document).on('click', '#timeliner > [id^="tl-"]', function (e) {
     let id = $(this).attr('id'),
         dateString = id.split('-'),
         startDate = new Date(dateString[1], (dateString[2] - 1), 1, 0, 0, 0);
-    V3Reservation.init($(this).attr('data-period-id'), false, startDate, true);
+    if (localStorage.getItem('new_res') !== '0') {
+        V3Reservation.initNew($(this).attr('data-period-id'), startDate, true);
+    }
 });
 $(document).on('click', '#reset_reservation', function (e) {
     e.preventDefault();
@@ -47,10 +49,13 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
     }
     if (this.value !== '0') {
         $('#reservation_guest_price_' + id).text(window.rolesTaxes[this.value]);
-        $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value])
+        $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value]);
+        $('#save_reservation').attr('disabled', false);
+        $('#reservation_guest_num_' + id).show().attr('disabled', false);
     } else {
         $('#reservation_guest_price_' + id).val('');
         $('#hidden_reservation_guest_price_' + id).val('')
+        $('#save_reservation').attr('disabled', true);
     }
 });
 
@@ -68,13 +73,6 @@ $(document).on('click', '[id^="chooseuser_"]', function () {
 });
 
 /**
- * Guest number & guest kind
- */
-$(document).on('change', '[id^="reservation_guest_num_"], [id^="reservation_guest_guests_"]', function () {
-    //V3Reservation.getNewBeds();
-});
-
-/**
  * Guest number
  */
 $(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)', function () {
@@ -87,12 +85,11 @@ $(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_guest_n
         guest_guest_val = $('#reservation_guest_guests_' + id).val(),
         provResObject = [];
     V3Reservation.enoughBeds(id);
-    $('#save_reservation').attr('disabled', false);
+    $('#save_reservation').attr('disabled', true);
     if (val > num) {
         $(this).val(num);
     }
     if ($(this).val() !== '' && guest_guest_val !== '0') {
-        $('#clone_guest_' + id).show().attr('disabled', false);
         while (guest_start < guest_end) {
             let strNew = guest_start.getFullYear() + '_' + GlobalFunctions.smallerThenTen(guest_start.getMonth()) + '_' + GlobalFunctions.smallerThenTen(guest_start.getDate()),
                 strStorage = strNew.split('_').join('-'),
@@ -112,15 +109,19 @@ $(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_guest_n
                 });
             }
             guest_start.setDate(guest_start.getDate() + 1);
+            $('#save_reservation').attr('disabled', false);
         }
         let dates = {startDate: window.startGuestPicker[id].datepicker('getDate'), endDate: guest_end};
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#number_nights_' + id);
         V3Reservation.calcAllPrices();
         V3Reservation.setGuestHeaderText(id, dates, guest_guest_val, $(this).val(), $('#number_nights_' + id).text());
-        V3Reservation.checkOccupiedBeds(parseInt($('#reservation_guest_num_total').text(), 10));
+        console.log($(this).val(), guest_guest_val)
+        $('#clone_guest_' + id).show().attr('disabled', false);
     } else {
         $('[id^="clone_guest_"]').show().attr('disabled', true);
     }
+    V3Reservation.checkOccupiedBeds(parseInt($('#reservation_guest_num_total').text(), 10));
+
 });
 
 $(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle:not(#show-all-free-beds)', function () {
@@ -131,7 +132,7 @@ $(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle:not(
 /**
  * Clone guest entry
  */
-$(document).on('click', '[id^="clone_guest_"]', function (e) {
+$(document).on('click', '[id*="clone_guest_"]', function (e) {
     e.preventDefault();
     let counter = $('[id^="guests_date_"]').length,
         div = $(window.guestEntryView)
@@ -141,13 +142,14 @@ $(document).on('click', '[id^="clone_guest_"]', function (e) {
         today = window.resStartPicker.datepicker('getDate'),
         tomorrow = window.resEndPicker.datepicker('getDate'),
         guestDateEl;
+    $('#addZeroGuest').hide();
 
     if (today === null) {
         today = new Date();
         today.setHours(0, 0, 0, 0);
     }
     $('#guest_entries').append(div);
-    $('#reservation_guest_num_' + counter).val('');
+    $('#reservation_guest_num_' + counter).val('1');
     $('#number_nights_' + counter).text('');
     $('#hidden_number_nights_' + counter).val('');
     $('#price_' + counter).text('');
@@ -176,6 +178,9 @@ $(document).on('click', '[id^="clone_guest_"]', function (e) {
     if (counter > 0) {
         V3Reservation.calcNights(today, tomorrow, '#number_nights_' + counter);
     }
+    $.each($('input:not([type="hidden"]), select'), function () {
+        window.allInputs.push($(this).attr('id'));
+    });
 
 });
 
@@ -187,6 +192,13 @@ $(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e
     }
 });
 
+$(document).on('change', 'input:not([type="hidden"]), select', function (e) {
+    e.preventDefault();
+    let id = $(this).attr('id'),
+        key = GlobalFunctions.arraySearch(window.allInputs, id);
+    $('input:not([type="hidden"]), select').removeClass('giveFocus');
+    $('#' + window.allInputs[key + 1]).addClass('giveFocus');
+});
 /**
  * Remove guest entry
  */
@@ -241,6 +253,10 @@ $(document).on('click', '#confirm_delete_guest', function () {
     };
     $("#delete_guest").modal('hide');
     $('#guests_date_' + id).remove();
+    if ($('[id^="guests_date_"]').length === 0) {
+        $('#addZeroGuest').show();
+        $('#save_reservation').attr('disabled', false);
+    }
     $.each($('[id^="guests_date_"]'), function (i, n) {
         let child = $(n).find('*');
         let id = $(this).attr('id').split('_');
@@ -320,8 +336,17 @@ $(document).on('click', '[id^="hide_all_res"]', function () {
     $('[id^="show_res"]').find('[class^="col-"]').not('#res_info').slideToggle('slow');
     $(this).children('span').toggleClass('fa-caret-down');
     $(this).children('span').toggleClass('fa-caret-up');
-    //$('#res_info').clone();
-    $( '[id^="hider_"]').trigger('click')
+    let up = ($('#hide_res').hasClass('fa-caret-up'));
+
+    $.each($('[id^="guests_date_"]'), function (i, n) {
+        if (up) {
+            $(n).find('[class^="col-"]:not(.no-hide)').slideDown('slow');
+            $('#hide_guest_' + i).addClass('fa-caret-up').removeClass('fa-caret-down')
+        } else {
+            $(n).find('[class^="col-"]:not(.no-hide)').slideUp('slow');
+            $('#hide_guest_' + i).addClass('fa-caret-down').removeClass('fa-caret-up')
+        }
+    })
 });
 
 /**

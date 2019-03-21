@@ -48,68 +48,77 @@
                             <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true">{{$userRes[0]->sum_guest}}</span> {{trans('reservation.guests.pe')}}&nbsp
                             CHF <span id="reservation_costs_total">{{$userRes[0]->sum_total}}</span>
                         </div>
+                        <div id="addZeroGuest" style="display: none">
+                            <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
+                                    id="remove_guest_0"><i class="fas fa-trash-alt"></i></button>
+                            <button title="{{trans('dialog.add_on_upper')}}"
+                                    class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_0" disabled><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{{$userRes[0]->sum_total_hidden}}">
                         <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{{$userRes[0]->sum_guest}}">
                     </div>
                 </div>
             </div>
             <div id="guest_entries">
-                @if((sizeof($userRes[0]->guests) > 0))
-                @foreach($userRes[0]->guests as $i => $guest)
-                        <div class="row" id="guests_date_{{ $i }}">
-                            <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
-                                <span id="hide_guest_{{ $i }}" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: {!! $guest->guest_title!!}</span>
-                                <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
-                                        id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
-                                <button title="{{trans('dialog.add_on_upper')}}"
-                                        class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}"><i
-                                        class="fas fa-plus"></i></button>
-                                <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]" value="{!! $guest->guest_title!!}">
-                                <input type="hidden" id="guest_id_{{ $i }}" name="guest_id[]" value="{!! $guest->id!!}">
-                            </div>
-                            <div class="col-md-4 col-sm-12 col-xs-12">
-                                <label>{!!trans('reservation.arrival_departure')!!}</label>
-                                <div class="input-daterange input-group" id="guestDates_{{ $i }}">
-                                    <input type="text" id="reservation_guest_started_at_{{ $i }}" name="reservation_guest_started_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_started_at.' . $i) ? ' input-error' : ''}}"
-                                           placeholder="{!!trans('reservation.arrival')!!}" readonly value="{{ $guest->guest_started_at }}"/>
-                                    <span class="input-group-addon">bis</span>
-                                    <input type="text" id="reservation_guest_ended_at_{{ $i }}" name="reservation_guest_ended_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_ended_at.' . $i) ? ' input-error' : ''}}"
-                                           placeholder="{!!trans('reservation.depart')!!}" readonly value="{{ $guest->guest_ended_at }}"/>
+                    @if((sizeof($userRes[0]->guests) > 0))
+                        @foreach($userRes[0]->guests as $i => $guest)
+                            <div class="row" id="guests_date_{{ $i }}">
+                                <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
+                                    <span id="hide_guest_{{ $i }}" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: {!! $guest->guest_title!!}</span>
+                                    <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]" value="{!! $guest->guest_title!!}">
+                                    <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
+                                            id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
+                                    <button title="{{trans('dialog.add_on_upper')}}"
+                                            class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}"><i
+                                            class="fas fa-plus"></i></button>
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label>{!!trans('reservation.guest_kind')!!}</label>
-                                    <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests.' . $i) ? ' input-error' : ''}}" id="reservation_guest_guests_{{ $i }}"
-                                            name="reservation_guest_guests[]">
-                                        @foreach($rolesTrans as $k => $r)
-                                            <option {{ ($guest->role_id == $k) ? ' selected' : '' }} value="{{$k}}">{{$r}}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input type="hidden" id="guest_id_{{ $i }}" name="guest_id[]" value="{!! $guest->id!!}">
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-sm-6 col-xs-6">
-                                <div class="form-group">
-                                    <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
-                                    <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num.' . $i) ? ' input-error' : ''}}" id="reservation_guest_num_{{ $i }}"
-                                           name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" type="number" min="1"
-                                           max="{{$settings['setting_num_bed'] - 1}}" value="{{ $guest->guest_number }}">
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+                                    <label>{!!trans('reservation.arrival_departure')!!}</label>
+                                    <div class="input-daterange input-group" id="guestDates_{{ $i }}">
+                                        <input type="text" id="reservation_guest_started_at_{{ $i }}" name="reservation_guest_started_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_started_at.' . $i) ? ' input-error' : ''}}"
+                                               placeholder="{!!trans('reservation.arrival')!!}" readonly value="{{ $guest->guest_started_at }}"/>
+                                        <span class="input-group-addon">bis</span>
+                                        <input type="text" id="reservation_guest_ended_at_{{ $i }}" name="reservation_guest_ended_at[]" class="input-sm form-control show_reservation{{ $errors->has('reservation_guest_ended_at.' . $i) ? ' input-error' : ''}}"
+                                               placeholder="{!!trans('reservation.depart')!!}" readonly value="{{ $guest->guest_ended_at }}"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12 no-hide">
-                                <div class="form-group">
-                                    <div class="alert alert-info" id="total_guest_{{ $i }}">
-                                        CHF <span id="reservation_guest_price_{{ $i }}">{{ $guest->guest_tax }}</span>/{!!trans('roles.tax_only')!!}&nbsp;
-                                        <span id="number_nights_{{ $i }}">{{$guest->guest_night}}</span> {!!trans('reservation.nights')!!}
-                                        CHF <span id="price_{{ $i }}">{{$guest->guest_all_total}}</span>
-                                        <input type="hidden" name="number_nights[]" id="hidden_number_nights_{{ $i }}" value="{{$guest->guest_night}}">
-                                        <input type="hidden" name="price[]" id="hidden_price_{{ $i }}" value="{{ $guest->guest_tax }}">
-                                        <input type="hidden" name="hidden_reservation_guest_price[]" id="hidden_reservation_guest_price_{{ $i }}" value="{{$guest->guest_all_total}}">
+                                <div class="col-md-2 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label>{!!trans('reservation.guest_kind')!!}</label>
+                                        <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests.' . $i) ? ' input-error' : ''}}" id="reservation_guest_guests_{{ $i }}"
+                                                name="reservation_guest_guests[]">
+                                            @foreach($rolesTrans as $k => $r)
+                                                <option {{ ($guest->role_id == $k) ? ' selected' : '' }} value="{{$k}}">{{$r}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-6 col-xs-6">
+                                    <div class="form-group">
+                                        <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
+                                        <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num.' . $i) ? ' input-error' : ''}}" id="reservation_guest_num_{{ $i }}"
+                                               name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" type="number" min="1"
+                                               max="{{$settings['setting_num_bed'] - 1}}" value="{{ $guest->guest_number }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 no-hide">
+                                    <div class="form-group">
+                                        <div class="alert alert-info" id="total_guest_{{ $i }}">
+                                            CHF <span id="reservation_guest_price_{{ $i }}">{{ $guest->guest_tax }}</span>/{!!trans('roles.tax_only')!!}&nbsp;
+                                            <span id="number_nights_{{ $i }}">{{$guest->guest_night}}</span> {!!trans('reservation.nights')!!}
+                                            CHF <span id="price_{{ $i }}">{{$guest->guest_all_total}}</span>
+                                            <input type="hidden" name="number_nights[]" id="hidden_number_nights_{{ $i }}" value="{{$guest->guest_night}}">
+                                            <input type="hidden" name="price[]" id="hidden_price_{{ $i }}" value="{{ $guest->guest_tax }}">
+                                            <input type="hidden" name="hidden_reservation_guest_price[]" id="hidden_reservation_guest_price_{{ $i }}" value="{{$guest->guest_all_total}}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                @endforeach
+                        @endforeach
                     @endif
             </div>
             <div class="row" id="resButtons">
@@ -181,19 +190,20 @@
             userPeriod = GlobalFunctions.getUserPeriod(periods, 'freeBeds'),
             reservations = JSON.parse('{!!$my_reservations!!}'),
             guestEntryView = '{!!  $guestEntryView !!}',
-            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod),
-            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_');
+            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod, 'freeBeds_'),
+            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_'),
+            allInputs = [];
     </script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
-    <script src="{{asset('js/edit_reservation_init.min.js')}}"></script>
+    <script src="{{asset('js/V3Reservation.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>
+    <script src="{{asset('js/edit_reservation_init.min.js')}}"></script>
     <script src="{{asset('js/events.min.js')}}"></script>
 
 @stop

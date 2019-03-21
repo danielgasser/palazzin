@@ -1,18 +1,12 @@
 ToDo:
 
 -before going life with v3:
-set calendar duration = 10
-calculate periods : /admin/calc
 routes.php:129 add colors to have a total of 10
 mail settings
 
 DB:
-port table roles (structure?)
-port table settings (structure) (adapt url & texts)
-port table password_resets (structure?)
-port table guests new field guest_title (structure)
-port table reservation new field reservation_title (structure)
-port table users (structure)
+port table roles (structure????)
 delete table comments (structure)
-delete settings setting_num_comments (structure)
-users secure question raus!
+
+
+Debug settings off

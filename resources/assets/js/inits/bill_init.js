@@ -1,3 +1,9 @@
+$.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
+{
+    return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+        return $('#' + td.id).children('input').val();
+    } );
+};
 var billTable,
     dataTableSettings = {
         dataSrc: '',
@@ -29,7 +35,6 @@ var billTable,
         ],
         paging: false,
         columnDefs: [
-            { "orderable": false, "targets": 4 },
             {
                 targets: [0],
                 responsivePriority: 1,
@@ -79,29 +84,66 @@ var billTable,
                 responsivePriority: 3,
                 visible: true,
                 orderable: true,
-                data: 'user_id'
+                sortable: true,
+                data: 'user_first_name user_name',
+                type: 'string',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        return $(data).html();
+                    }
+                    return data
+                }
             },
             {
                 targets: [5],
                 responsivePriority: 4,
                 visible: true,
-                orderable: true,
+                orderable: false,
                 data: 'bill_due'
             },
             {
                 targets: [6],
                 responsivePriority: 5,
-                orderable: false,
-                data: 'bill_paid'
+                orderable: true,
+                data: 'bill_paid',
+                render: function (data, type, full, meta) {
+                    let val = $('#' + data.split(' ')[7].split('"')[1]).val();
+                    if (type === 'sort') {
+                        let d_string = val.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
             },
             {
                 targets: [7],
                 responsivePriority: 6,
                 visible: true,
-                orderable: true,
+                orderable: false,
                 data: 'bill_path'
             },
-
+            {
+                targets: [8],
+                responsivePriority: 7,
+                visible: true,
+                orderable: false
+            },
+            {
+                targets: [9],
+                responsivePriority: 8,
+                visible: true,
+                orderable: true,
+                data: 'bill_resent_date',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
+            },
         ],
         initComplete: function () {
             this.api().columns(5).every( function () {
@@ -158,7 +200,6 @@ var billTable,
         arr[0] = tmp[2];
         return arr.join('-');
     },
-
     payBill = function (e, dbDate) {
         var id = e.target.id.split('_')[1],
             url,
@@ -177,16 +218,39 @@ var billTable,
             url: '/admin/bills/' + url,
             data: {
                 id: id,
-                bill_paid: dbDate
+                bill_paid: dbDate,
+                paid_at: $('#paidAt_' + id).val()
             },
             success: function (data) {
                 GlobalFunctions.unAuthorized(data);
                 let el = $('#paidAt_' + id);
                 $('#paid_' + id).html(paid);
                 el.val(data.paid);
+                if (data.paid === null) {
+                    $('#bill_sent_' + id).hide();
+                } else {
+                    $('#bill_sent_' + id).show();
+                }
+                return false;
             }
         });
-
+    },
+    resendBill = function (id) {
+        var paid;
+        $.ajax({
+            type: 'POST',
+            url: '/admin/send_bill',
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                GlobalFunctions.unAuthorized(data);
+                $('#re_sent_' + id)
+                    .html(data.resent)
+                    .attr('data-sort', data.resent_data_sort);
+                return false;
+            }
+        });
     };
 
 $(document).ready(function () {
@@ -195,4 +259,8 @@ $(document).ready(function () {
 });
 $(document).on('click', '.paginate_button>a', function () {
     datePickerInit();
-})
+});
+$(document).on('click', '[id^="bill_sent_"]', function () {
+    let id = $(this).attr('id').split('_')[2];
+        resendBill(id);
+});

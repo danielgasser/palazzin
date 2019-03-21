@@ -30,7 +30,7 @@ return array(
     'admin/reservations' => 'Reservierungen',
     'user/reservations' => 'Deine Reservierungen',
     'admin/bills' => 'Rechnungen',
-    'admin/bills/filelist' => 'Alle Rechnungen',
+    'admin/bills/filelist' => 'Liste Rechnungen (PDF\'s)',
     'user/bills' => 'Deine Rechnungen',
     'keeper/reservations' => 'Alle Reservierungen',
     'admin/users' => 'Benutzer',

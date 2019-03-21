@@ -5,7 +5,7 @@
         <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
                 id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
         <button title="{{trans('dialog.add_on_upper')}}"
-                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}" disabled><i
+                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}" disabled="disabled"><i
                 class="fas fa-plus"></i></button>
 
     </div>
@@ -19,7 +19,7 @@
                    placeholder="{!!trans('reservation.depart')!!}" readonly value=""/>
         </div>
     </div>
-    <div class="col-md-2 col-sm-6 col-xs-6">
+    <div class="col-md-2 col-sm-6 col-xs-12">
         <div class="form-group">
             <label>{!!trans('reservation.guest_kind')!!}</label>
             <select class="form-control show_reservation_guest{{ $errors->has('reservation_guest_guests.' . $i) ? ' input-error' : ''}}" id="reservation_guest_guests_{{ $i }}"
@@ -30,12 +30,12 @@
             </select>
         </div>
     </div>
-    <div class="col-md-2 col-sm-6 col-xs-6">
+    <div class="col-md-2 col-sm-6 col-xs-12">
         <div class="form-group">
             <label>{!!trans('reservation.guests.number')!!} {!!trans('reservation.guests.title')!!}</label>
             <input class="form-control show_reservation_guest{{ $errors->has('reservation_guest_num.' . $i) ? ' input-error' : ''}}" id="reservation_guest_num_{{ $i }}"
-                   name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" title="{!!trans('dialog.texts.warning_no_free_beds')!!}" type="number" min="1"
-                   max="{{$settings['setting_num_bed'] - 1}}" value="{{ old('reservation_guest_num.' . $i) }}">
+                   name="reservation_guest_num[]" data-toggle="tooltip" data-html="true" type="number" min="1"
+                   max="{{$settings['setting_num_bed'] - 1}}" value="{{ old('reservation_guest_num.' . $i) }}" disabled="disabled">
         </div>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 no-hide">

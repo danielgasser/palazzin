@@ -21,7 +21,7 @@
 @section('content')
     </div>
     <div class="row">
-        <table id="bills" style="width: 100%">
+        <table id="bills">
             <thead>
                 <tr>
                     <th></th>
@@ -32,6 +32,8 @@
                     <th>{{trans('bill.paid')}}</th>
                     <th>{{trans('bill.paid_at')}}</th>
                     <th>PDF</th>
+                    <th>{{trans('bill.send_bill')}}</th>
+                    <th>{{trans('bill.sent_at')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,16 +43,24 @@
                     <td>{{$b->bill_no}}</td>
                     <td data-sort="{{$b->bill_bill_date}}">{{$b->bill_bill_date_show}}</td>
                     <td data-sort="{{$b->bill_total}}">{{$b->bill_currency}} {{$b->bill_total}}</td>
-                    <td>
+                    <td data-sort="{{$b->user->user_first_name}} {{$b->user->user_name}}">
                         <a href="{{URL::to('user/profile/' . $b->reservation->user_id)}}">{{$b->user->user_first_name}} {{$b->user->user_name}}</a>
                     </td>
                     <td id="paid_{{$b->id}}">{{(isset($b->bill_paid)) ? trans('bill.paid') : trans('bill.un_paid') }}</td>
                     <td data-sort="{{$b->bill_paid}}" id="datePicker_{{$b->id}}">
-                        <input class="form-control input-sm show_reservation" placeholder="{{trans('bill.un_paid')}}" readonly="readonly" name="paidAt_{{$b->id}}" id="paidAt_{{$b->id}}" value="{{$b->bill_paid_show}}@" />
+                        <input class="form-control input-sm show_reservation" placeholder="{{trans('bill.un_paid')}}" readonly="readonly" name="paidAt_{{$b->id}}" id="paidAt_{{$b->id}}" value="{{$b->bill_paid_show}}" />
                     </td>
                     <td>
                         <a class="bill_path" target="_blank" href="{{URL::to('/')}}{{$b->bill_path}}">{{$b->bill_no}}.pdf</a>
                     </td>
+                    <td id="re_send_{{$b->id}}">
+                        @if(!isset($b->bill_paid))
+
+                        <button class="btn btn-default"  id="bill_sent_{{$b->id}}">{{trans('bill.send_bill')}}</button>
+                            @endif
+                    </td>
+                    <td id="re_sent_{{$b->id}}" data-sort="{{$b->bill_resent_date}}">{{$b->bill_resent_date_show}}</td>
+                </tr>
                 </tr>
             @endforeach
             </tbody>
@@ -64,6 +74,8 @@
                 <th>{{trans('bill.paid')}}</th>
                 <th>{{trans('bill.paid_at')}}</th>
                 <th>PDF</th>
+                <th>{{trans('bill.send_bill')}}</th>
+                <th>{{trans('bill.sent_at')}}</th>
             </tr>
             </tfoot>
         </table>

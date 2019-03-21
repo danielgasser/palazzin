@@ -145,6 +145,7 @@ form {
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus, button:focus, button:active {
+    color: #777;
     outline: 5px auto $brand-danger !important;
     outline-offset: -2px !important;
     -webkit-appearance:none !important;

@@ -28,13 +28,14 @@ class NewReservationController extends Controller
         $userRes = Reservation::where('user_id', '=', $user->id)
             ->orderBy('reservation_started_at', 'desc')
             ->get();
-
+        $clans = \Clan::pluck('clan_description', 'clan_code')->toArray();
         $reservations = Reservation::setFreeBeds($userRes, 'user_Res_Dates_', true, 'Y_m_d', false);
         return view('v3.new_reservation')
             ->with('rolesTrans', $args['rolesTrans'])
             ->with('roleTaxes', $args['roleTaxes'])
             ->with('guestEntryView', $args['guestEntryView'])
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
+            ->with('allClans', $clans)
             ->with('periods', $args['periods'])
             ->with('userRes', $reservations)
             ->with('userClan', $args['userClan'])
@@ -60,13 +61,14 @@ class NewReservationController extends Controller
                 ->with('reservations', $reservations);
         }
         $today = new \DateTime();
+        $today->modify('+1 day');
         $today->setTime(23, 59, 59, 999);
         $res->each(function ($ur) use($today) {
             $resEnd = new \DateTime($ur->reservation_ended_at);
             $ur->sum_total = 0.00;
             $ur->sum_guest = 1;
             if ($ur->guests->isEmpty()) {
-                $ur->guests = [];
+                $ur->guests = new Guest([]);
             } else {
                 $ur->guests->each(function ($g) use ($ur, $today) {
                     $ur->sum_total += $g->guest_tax * $g->guest_number * $g->guest_night;
@@ -78,7 +80,7 @@ class NewReservationController extends Controller
             }
             $ur->sum_total =  number_format($ur->sum_total, 2, '.', "'");
             $ur->sum_total_hidden =  $ur->sum_total;
-            $ur->editable = ($today < $resEnd);
+            $ur->editable = ($today <= $resEnd->modify('+ 1 day'));
         });
         $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', false);
 
@@ -137,7 +139,8 @@ class NewReservationController extends Controller
             ->with('guests')
             ->get();
         $today = new \DateTime();
-        $today->setTime(23, 59, 59, 999);
+        $today->modify('+1 day');
+        $today->setTime(0, 0, 0, 0);
         $userRes->each(function ($ur) use($today) {
             $resEnd = new \DateTime($ur->reservation_ended_at);
             $ur->sum_total = 0.00;
@@ -154,7 +157,7 @@ class NewReservationController extends Controller
                 });
             }
             $ur->sum_total =  number_format($ur->sum_total, 2, '.', "'");
-            $ur->editable = ($today < $resEnd);
+            $ur->editable = ($today <= $resEnd->modify('+ 1 day'));
         });
         return view('v3.all_reservation')
             ->with('roles', Role::getRolesTaxV3())
@@ -199,7 +202,6 @@ class NewReservationController extends Controller
     {
         $credentials = request()->all();
         $validated = $request->validated();
-       // ToDo if beds == 1 only check total beds from localStorage
         $resID = request()->all('id');
         $resStart = Reservation::createDbDateFromInput($validated['reservation_started_at']);
         $resEnd = Reservation::createDbDateFromInput($validated['reservation_ended_at']);
@@ -258,7 +260,18 @@ class NewReservationController extends Controller
             $saved = $res->push();
         }
         if ($saved) {
-            return back()
+            $resInfo = $this->getReservationInfos();
+            $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', false);
+            return redirect('edit_reservation/' . $res->id)
+                ->with('userRes', $res)
+                ->with('rolesTrans', $resInfo['rolesTrans'])
+                ->with('roleTaxes', $resInfo['roleTaxes'])
+                ->with('guestEntryView', $resInfo['guestEntryView'])
+                ->with('reservationsPerPeriod', $resInfo['reservationsPerPeriod'])
+                ->with('periods', $resInfo['periods'])
+                ->with('userClan', $resInfo['userClan'])
+                ->with('my_reservations', json_encode($my_reservations, JSON_HEX_APOS))
+                ->with('periodsDatePicker', $resInfo['periodsDatePicker'])
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
         }
     }

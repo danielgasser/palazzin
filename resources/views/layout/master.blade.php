@@ -16,6 +16,7 @@ if (strlen($routeStr) === 0) {
 <html lang="{{App::getLocale()}}">
 <head>
     <meta charset="utf-8">
+    <meta name="robots" content="noindex">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
@@ -211,7 +212,7 @@ if (strlen($routeStr) === 0) {
 
 
     <div class="row topRow">
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-11 col-sm-11 col-xs-11">
         @switch($route)
             @case ('/')
                 <h1>{{trans('home.welcome', ['back' => '', 'name' => ''])}}</h1>
@@ -234,15 +235,24 @@ if (strlen($routeStr) === 0) {
             @break
             @case(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
             <div id="res-nav">
-                <div class="col-md-6 col-sm-6 col-xs-12 title-res">
+                <div class="col-md-4 col-sm-4 col-xs-12 title-res">
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.timeliner')
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
                 </div>
+                <div class="col-md-4 col-sm-4 col-xs-6 title-res navbar-default">
+                    <ul class="nav priority">
+                        <li>
+                            <a class="WO-datepicker-content">Wolf</a>
+                            <a class="GU-datepicker-content">Guggenbühl</a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
                 @break
                 @case (strpos($route, 'bills') !== false)
@@ -288,7 +298,10 @@ if (strlen($routeStr) === 0) {
             @break
         @endswitch
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-1 col-sm-1 col-xs-1">
+            @if(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
+            <div id="reservationInfo"></div>
+            @endif
             @include('layout.top_nav')
         </div>
     </div>
@@ -298,9 +311,6 @@ if (strlen($routeStr) === 0) {
     </div>
     @show
 
-    @section('footer')
-        @include('layout.footer')
-    @show
    @section('scripts')
         <script src="{{asset('libs/jquery/jquery.2.1.1.min.js')}}"></script>
         <script src="{{asset('libs/bootstrap/bootstrap.min.js')}}"></script>

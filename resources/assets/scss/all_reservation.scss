@@ -13,9 +13,6 @@
             th, td {
                 font-size: 1.2em;
             }
-            &.odd {
-                background-color: #cbcbcb;
-            }
             &.even {
                 border-bottom: 1px solid $brand-danger;
                 border-top: 1px solid $brand-danger;
@@ -34,7 +31,7 @@
     tbody {
         display: block;
         overflow: auto;
-        height: 58px;
+        height: 84px;
         width: 100%;
     }
     thead, tbody {
@@ -51,16 +48,24 @@
                 min-width: 28px;
             }
             th:nth-child(2) {
-                min-width: 183px;
+                max-width: 120px;
+                min-width: 120px;
+            }
+            td:nth-child(2) {
+                max-width: 120px;
+                min-width: 120px;
             }
             td:nth-child(3) {
-                min-width: 65px;
+                min-width: 66px;
             }
             td:nth-child(4) {
                 min-width: 97px;
             }
             th:nth-child(5) {
-                min-width: 157px;
+                min-width: 187px;
+            }
+            td:nth-child(5) {
+                min-width: 187px;
             }
             th:nth-child(6) {
                 min-width: 52px;

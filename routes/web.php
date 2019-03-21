@@ -24,7 +24,10 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('cronjobs/birthdays', 'CronController@sendBirthdayNotification'); // after midnight
     Route::get('cronjobs/reservation/reminder/{sendToHousekeeper?}', 'CronController@getFutureReservations'); // after midnight
 });
-
+Route::get('logout', function () {
+    Auth::logout();
+    return redirect('/login');
+});
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
@@ -35,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('admin/bills', 'BillController@showBills');
         Route::get('admin/bills/paid', 'BillController@payBill');
         Route::get('admin/bills/unpaid', 'BillController@unPayBill');
+        Route::post('admin/send_bill', 'BillController@reSendBill');
     });
 
     // Users, Cöerk
@@ -44,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('userlist', 'UserController@showUsers');
         Route::get('pricelist', 'RoleController@getPriceList');
         Route::post('userlist/print', 'UserController@userListPrint')->name('userlist_print');
+        Route::get('user/profile/{id?}', 'UserController@showProfile');
 
     });
     // Users
@@ -65,7 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::any('edit_reservation/{res_id}', 'NewReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'NewReservationController@getReservationsPerDateV3');
 
-        Route::get('user/profile/{id?}', 'UserController@showProfile');
         Route::post('user/profile', 'UserController@saveProfile');
         Route::post('user/profile/changepass', 'UserController@changePassword');
         Route::get('user/bills', 'BillController@showBills');

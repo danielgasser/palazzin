@@ -19,13 +19,14 @@
                             <li class="dropdown-toggle" style="border-bottom: 1px solid white;">
                                 <a href="#" class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
                                 <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
-                                    <li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
+                                    {{--<li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
                                     <li><a>{{$lastLogin}}</a></li>
-                                    <li class="divider"></li>
+                                    <li class="divider"></li>--}}
                                     <li>
-                                        {{ Form::open(array('url' => '/logout')) }}
+                                        <a href="{{url('logout')}}">{{trans('navigation.logout')}}</a>
+                                        {{-- Form::open(array('url' => '/logout')) }}
                                         {{ Form::submit(trans('navigation.logout'), ['class' => 'btn-link-style']) }}
-                                        {{ Form::close() }}
+                                        {{ Form::close() --}}
                                     </li>
                                 </ul>
                             </li>
@@ -36,10 +37,10 @@
                         @else
                             <li class="dropdown-toggle" style="border-bottom: 1px solid white;">
                                 <a href="#" class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
-                                <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
-                                    <li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
+                                <ul class="dropdown-menu multi-level nav navbar-nav" id="userNav" role="menu">
+                                   {{-- <li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
                                     <li><a>{{$lastLogin}}</a></li>
-                                    <li class="divider"></li>
+                                    <li class="divider"></li>--}}
                                     <li><a style="font-weight: bold">{{trans('home.yourroles')}}:</a></li>
                                     @foreach($roles as $role)
                                         <li class="{{ Request::is('user/profile') ? 'active' : '' }}"><a>{{ trans('roles.' . $role->role_code) }} ({{ $role->role_code }})</a></li>
@@ -62,9 +63,10 @@
                                     @endif
                                     <li class="divider"></li>
                                     <li>
-                                        {{ Form::open(array('url' => '/logout')) }}
+                                        <a href="{{url('logout')}}">{{trans('navigation.logout')}}</a>
+                                        {{-- Form::open(array('url' => '/logout')) }}
                                         {{ Form::submit(trans('navigation.logout'), ['class' => 'btn-link-style']) }}
-                                        {{ Form::close() }}
+                                        {{ Form::close() --}}
                                     </li>
                                 </ul>
                             </li>

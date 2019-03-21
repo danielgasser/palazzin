@@ -14,7 +14,7 @@ var V3Reservation = {
         let classList;
         if (e.target.id === 'reservation_started_at') {
             if (e.date === undefined) {
-                return false
+                return false;
             }
             let endString = $('#reservation_ended_at').val().split('.'),
                 dates = {
@@ -24,7 +24,7 @@ var V3Reservation = {
             V3Reservation.adaptChanged(dates, window.endDate, true);
         } else if (e.target.id === 'reservation_ended_at') {
             if (e.date === undefined) {
-                return false
+                return false;
             }
             let startString = $('#reservation_started_at').val().split('.'),
                 dates = {
@@ -131,7 +131,7 @@ var V3Reservation = {
         window.endDate.setFullYear(window.endDate.getFullYear() + parseInt(window.settings.setting_calendar_duration));
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
-        $('#reservationInfo').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text">' + period.clan_description + '</span>');
+        $('#reservationInfo').html(window.reservationStrings.prior + ': ' + '<span class="' + period.clan_code + '-text ' + period.clan_code + '-datepicker-content">' + period.clan_description + '</span>');
         if (window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')] !== undefined) {
             titleString = window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1];
         }
@@ -157,10 +157,16 @@ var V3Reservation = {
                 return V3Reservation.addBeforeShowDay(Date, otherClanDate, false);
             }
         };
+
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('hide', function (e) {
             console.log('h', e);
             let formatDateStr = V3Reservation.formatDate(e.date, false, '_'),
-             str = window.datePickerPeriods[formatDateStr].split('|');
+             str;
+            if (!formatDateStr) {
+                $('[id^="reservation_guest_"]').attr('disabled', true);
+                return false;
+            }
+            str = window.datePickerPeriods[formatDateStr].split('|');
             $('#periodID').val(str[2]);
             V3Reservation.onHide(e);
         });
@@ -456,11 +462,14 @@ var V3Reservation = {
         $('[id^="price_"]').trigger('input');
     },
     formatDate: function (d, long, separator) {
+        if (d === undefined) return false;
         if (separator === undefined) {
             separator = '.';
         }
         if (typeof d === 'string') {
             return d;
+        }
+        if (!d instanceof Date) {
         }
         let jsMonth = d.getMonth() + 1,
             day = (d.getDate() < 10) ? '0' + d.getDate() : d.getDate(),
@@ -657,7 +666,7 @@ var V3Reservation = {
             .addClass('alert-danger')
             .removeClass('alert-info');
         $('#save_reservation').attr('disabled', true);
-        $('[id^="clone_guest_"]').attr('disabled', true);
+        $('#clone_guest').attr('disabled', true);
         $('#show-all-free-beds>.hideContent').addClass('showContent');
     },
     enoughBeds: function (id) {
@@ -671,7 +680,7 @@ var V3Reservation = {
             .addClass('alert-info');
         $('#no_free_beds').hide();
         $('#save_reservation').attr('disabled', false);
-        $('[id^="clone_guest_"]').attr('disabled', false);
+        $('#clone_guest').attr('disabled', false);
     },
     checkExistentReservation: function (s, e) {
         let start = s.getFullYear() + '-' + GlobalFunctions.smallerThenTen((s.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(s.getDate()),

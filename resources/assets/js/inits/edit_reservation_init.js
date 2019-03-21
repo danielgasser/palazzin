@@ -11,4 +11,11 @@ $(document).ready(function () {
     V3Reservation.initEdit(window.periodID, window.startDate);
     $('[id^="reservation_guest_guests_"]').attr('disabled', false);
     $('[id^="reservation_guest_num_"]').attr('disabled', false);
+    if ($('[id^="guests_date_"]').length === 0) {
+        $('#addZeroGuest').show();
+    }
+    $.each($('input:not([type="hidden"]), select'), function () {
+        window.allInputs.push($(this).attr('id'));
+    });
+
 })

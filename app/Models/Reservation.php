@@ -654,32 +654,34 @@ class Reservation extends Model {
             } else {
                 $r->user_id_ab_name = '';
             }
-            $r->guests->each(function  ($j) use ($r, $preFix, $format, $withResID) {
-                $role_tax = Role::find($j->role_id);
-                $j->role_tax_night = $role_tax->role_tax_night;
-                $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
-                $end = new DateTime(str_replace('_', '-', $j->guest_ended_at));
-                $checkEnd = new DateTime(str_replace('_', '-', $j->guest_ended_at));
-                $end->add(new DateInterval('P1D'));
-                $interval = new DateInterval('P1D');
-                $dateRange = new DatePeriod($start, $interval ,$end);
-                foreach($dateRange as $key => $date) {
-                    $d = explode('_', $date->format($format));
-                    $dd = intval($d[1]) - 1;
-                    $d[1] = ($dd < 10) ? '0' . $dd : $dd;
-                    if ($date < $checkEnd) {
-                        $r->{$preFix . implode('_', $d)} += $j->guest_number;
-                        if ($withResID && Auth::id() == $r->user_id) {
-                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
-                        }
-                    } else {
-                        $r->{$preFix . implode('_', $d)} += 0;
-                        if ($withResID && Auth::id() == $r->user_id) {
-                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
+            if ($r->guests->count() > 0) {
+                $r->guests->each(function  ($j) use ($r, $preFix, $format, $withResID) {
+                    $role_tax = Role::find($j->role_id);
+                    $j->role_tax_night = $role_tax->role_tax_night;
+                    $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
+                    $end = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                    $checkEnd = new DateTime(str_replace('_', '-', $j->guest_ended_at));
+                    $end->add(new DateInterval('P1D'));
+                    $interval = new DateInterval('P1D');
+                    $dateRange = new DatePeriod($start, $interval ,$end);
+                    foreach($dateRange as $key => $date) {
+                        $d = explode('_', $date->format($format));
+                        $dd = intval($d[1]) - 1;
+                        $d[1] = ($dd < 10) ? '0' . $dd : $dd;
+                        if ($date < $checkEnd) {
+                            $r->{$preFix . implode('_', $d)} += $j->guest_number;
+                            if ($withResID && Auth::id() == $r->user_id) {
+                                $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
+                            }
+                        } else {
+                            $r->{$preFix . implode('_', $d)} += 0;
+                            if ($withResID && Auth::id() == $r->user_id) {
+                                $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         });
         if ($asJSON) {
             return $reservations->toJson();

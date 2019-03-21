@@ -7,6 +7,8 @@
  */
 return array(
     'bill' => 'Rechnung',
+    'send_bill' => 'Rechnung erneut verschicken',
+    'sent_at' => 'Erneut verschickt am',
     'billno' => 'Rechnung N°',
     'bill_sent' => 'Rechnung verschickt',
     'currency' => 'Währung',

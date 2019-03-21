@@ -206,6 +206,33 @@ ul {
         }
     }
 }
+#userNav {
+    background-color: #777777c9;
+    li {
+        a {
+            padding-left: 15px;
+        }
+    }
+}
+.priority {
+    background: transparent;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    float: left !important;
+    li {
+        float: left;
+        min-width: 112px;
+        a {
+            display: block;
+            color: #333;
+            padding-top: 12px;
+            padding-bottom: 14px;
+            text-align: center;
+        }
+    }
+}
 #res-nav {
     min-height: 70px;
     width: 100%;

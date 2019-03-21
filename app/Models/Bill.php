@@ -30,7 +30,9 @@ class Bill extends Model {
         'bill_currency',
         'bill_tax',
         'bill_no',
-        'bill_user_id'
+        'bill_user_id',
+        'bill_resent_date',
+        'bill_resent'
     );
 
     /**
@@ -201,6 +203,11 @@ class Bill extends Model {
             if (isset($b->bill_paid)) {
                 $bds = new \DateTime($b->bill_paid);
                 $b->bill_paid_show = $bds->format(trans('formats.short-date-ts'));
+            }
+
+            if (isset($b->bill_resent_date)) {
+                $bds = new \DateTime($b->bill_resent_date);
+                $b->bill_resent_date_show = $bds->format(trans('formats.short-date-ts'));
             }
 
             $ubc = DB::select(DB::raw('select `country_name_' . trans('formats.langjs') . '` from countries where country_code = ' . $b->user->user_country_code));

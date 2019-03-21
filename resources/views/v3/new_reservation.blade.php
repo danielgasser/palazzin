@@ -18,11 +18,19 @@
 @section('content')
 
     <a name="top"></a>
-        <div id="reservationInfo" class="col-md-12 col-sm-12 col-xs-12"></div>
     </div>
         <form id="new_reservation" method="post" action="{{  route('save_reservation')  }}">
             {{ csrf_field() }}
             <input type="hidden" id="periodID" name="periodID" value="">
+            <div class="row" id="resButtons">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
+                                id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="row show_total_res arrow" id="show_res" style="display: block">
                 <div class="hide-guest" id="hide_all_res">
                     <span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{{trans('reservation.title_short')}}:
@@ -46,8 +54,15 @@
                             <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true" title="{{trans('dialog.texts.warning_no_free_beds')}}">1</span> {{trans('reservation.guests.pe')}}&nbsp;
                             CHF <span id="reservation_costs_total">0.-</span>
                         </div>
+                        <div id="addZeroGuest" style="display: none">
+                            <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
+                                    id="remove_guest_0"><i class="fas fa-trash-alt"></i></button>
+                            <button title="{{trans('dialog.add_on_upper')}}"
+                                    class="btn btn-danger btn-v3 show_reservation_guest" id="head_clone_guest_0"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{{ old('hidden_reservation_costs_total') }}">
-                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{{ old('hidden_reservation_guest_num_total') }}">
+                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{{ old('hidden_reservation_guest_num_total') or 1 }}">
                     </div>
                 </div>
             </div>
@@ -60,21 +75,6 @@
                     @include('logged.dialog.guest_entry', ['rolesTrans' => $rolesTrans])
                 @endfor
             </div>
-            <div class="row" id="resButtons">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
-                                id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" disabled
-                                id="reset_reservation"><i class="fas fa-ban"></i>{{trans('reservation.delete')}}</button>
-                    </div>
-                </div>
-            </div>
-
         </form>
     </div>
     @include('logged.dialog.reservation_exists')
@@ -117,13 +117,15 @@
             resStartPicker,
             guestEntryView = '{!!  $guestEntryView !!}',
             resEndPicker,
+            allClans = JSON.parse('{!!json_encode($allClans) !!}'),
             startGuestPicker = [],
             endGuestPicker = [],
             oldReservationStarted = '{{ old('reservation_started_at') }}',
             oldPeriodID = '{{ old('periodID') }}',
             reservations = JSON.parse('{!!$userRes!!}'),
             newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod, 'freeBeds_'),
-            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_');
+            newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_'),
+            allInputs = [];
     </script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
