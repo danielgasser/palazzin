@@ -78,15 +78,6 @@
         </form>
     </div>
     @include('logged.dialog.reservation_exists')
-    {{--
-       @include('logged.dialog.guest_nan')
-       @include('logged.dialog.night_nan')
-       @include('logged.dialog.no_delete_reservation')
-       @include('logged.dialog.cross_reserv')
-       @include('logged.dialog.cross_reserv_user_list')
-       @include('logged.dialog.delete_reservation')
-       @include('logged.dialog.not_invited')
-       --}}
     @if ($errors->any())
     @include('logged.dialog.no_free_beds')
     @endif
@@ -131,8 +122,7 @@
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <script src="{{asset('js/V3Reservation.js')}}"></script>
-    {{--<script src="{{asset('js/V3Reservation.min.js')}}"></script>--}}
+    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
     <script src="{{asset('js/new_reservation_init.min.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);

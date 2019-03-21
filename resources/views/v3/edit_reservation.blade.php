@@ -198,7 +198,7 @@
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
-    <script src="{{asset('js/V3Reservation.js')}}"></script>
+    <script src="{{asset('js/V3Reservation.min.js')}}"></script>
     <script>
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
