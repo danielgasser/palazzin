@@ -18,10 +18,10 @@ return array(
     'new_pass_email' => 'Gib Deine E-Mail Adresse ein. Eine E-Mail mit Instruktionen wird Dir zugesandt.',
     'email2' => 'E-Mail 2',
     'fon_label' => 'Art N° :n',
-    'fonalllabel' => 'Art N°',
+    'fonalllabel' => 'Telefon',
     'fon' => 'N°',
     'fonlabel' => array(
-        'mobile' => 'Natel',
+        'mobile' => 'Mobil',
         'home' => 'Privat',
         'business' => 'Geschäft',
         'x' => ''

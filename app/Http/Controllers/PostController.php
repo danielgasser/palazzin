@@ -7,7 +7,6 @@ use Setting;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Auth;
-use Illuminate\Support\Facades\Redirect;
 use Response;
 
 /**
@@ -59,20 +58,6 @@ class PostController extends Controller
         $post->post_text = Input::get('post_text');
         $post->save();
         $posts = new Post();
-        // TEST
-        if (!Input::has('id')) {
-            $mail = [
-                'id' => $post->id,
-                'user_id' => $post->user_id,
-                'post_text' => $post->post_text,
-            ];
-            Mail::send('emails.post_info', $mail, function ($message) use ($set) {
-                $message->to('daenuboehmle@gmail.com', 'Daniel Gasser')
-                    ->from($set->setting_app_owner_email, $set->setting_app_owner)
-                    ->sender($set->setting_app_owner_email, $set->setting_app_owner)
-                    ->subject('Post Info!');
-            });
-        }
 
         return Response::json([$posts->getNewsTicker($post->id), 'auth' => Auth::id()]);
     }

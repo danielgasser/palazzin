@@ -131,6 +131,7 @@ jQuery(document).on('keyup', '#user_first_name, #user_name', function (e) {
         endLogin = endLogin.replace(n, replaceWith[i]);
     });
     endLogin = endLogin.replace(/([^a-z.]+)/gi, '');
-    $('#user_login_name, #user_login_name_show').val(endLogin);
+    $('#user_login_name').val(endLogin);
+    $('#user_login_name_show').text(endLogin);
     jQuery(this).val(valStr);
 });

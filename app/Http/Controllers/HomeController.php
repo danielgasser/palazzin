@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use LoginStat;
 use Post;
 use User;
@@ -32,7 +31,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //parent::__construct();
         $this->middleware('auth');
     }
 
@@ -48,7 +46,6 @@ class HomeController extends Controller
         }
         date_default_timezone_set(trans('formats.tz'));
         $today = new \DateTime();
-        //$today->setTimestamp(time());
         $r = $today->format('Y-m-d H:m:s');
 
         $t = \Carbon\Carbon::createFromFormat('Y-m-d H:m:s', $r)->formatLocalized(trans('formats.short-date-time'));

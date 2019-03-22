@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Tools;
-use Period;
 use Role;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use Response;
@@ -144,7 +142,6 @@ class RoleController extends Controller
             $rules
         );
         if ($validator->fails()) {
-            Session::put('error', $validator);
             return Redirect::back()->withErrors($validator);
         }
         $role = Role::find($id);

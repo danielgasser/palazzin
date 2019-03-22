@@ -174,7 +174,12 @@ if (strlen($routeStr) === 0) {
             </div>
         @endif
             @if (Session::has('info_message') || Session::has('message'))
-             <div class="modal fade in" tabindex="-1" role="dialog">
+                @php
+                $info_message = Session::get('info_message');
+                $message = Session::get('message');
+                Session::forget(['info_message', 'message'])
+                @endphp
+                <div class="modal fade in" tabindex="-1" role="dialog">
                  <div class="modal-dialog" role="document">
                      <div class="modal-content">
                          <div class="modal-header">
@@ -182,7 +187,7 @@ if (strlen($routeStr) === 0) {
                              <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
                          </div>
                          <div class="modal-body">
-                             <p>{!! Session::get('info_message') !!} {!! Session::get('message') !!}</p>
+                             <p>{!! $info_message !!} {!! $message !!}</p>
                          </div>
                          <div class="modal-footer">
                              <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
@@ -191,6 +196,7 @@ if (strlen($routeStr) === 0) {
                  </div>
              </div>
             @endif
+
     @show
     @section('navigation')
         @include('layout.nav')

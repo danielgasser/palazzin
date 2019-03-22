@@ -33,7 +33,7 @@ Route::get('logout', function () {
 });
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'revalidate']], function () {
 
     // Clerk
     Route::group(['middleware' => ['admin', 'clerk']], function () {
@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     // Users, Cöerk
-    Route::group(['middleware' => 'clerk-reservator'], function () {
+    Route::group(['middleware' => ['clerk-reservator', 'revalidate']], function () {
 
         Route::post('userlist_search', 'UserController@searchUsers');
         Route::get('userlist', 'UserController@showUsers');
@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('all_reservations', 'ReservationController@getUserReservations')->name('all_reservations');
         Route::post('save_reservation/{res_id?}', 'ReservationController@saveReservation')->name('save_reservation');
         Route::post('delete_reservation', 'ReservationController@deleteReservation')->name('delete_reservation');
+        Route::post('delete_guest', 'ReservationController@deleteGuest')->name('delete_guest');
         Route::any('edit_reservation/{res_id}', 'ReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'ReservationController@getReservationsPerDateV3');
 

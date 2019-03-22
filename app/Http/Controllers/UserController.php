@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\ProfileChange;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Auth;

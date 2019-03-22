@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Period;
-use User;
-use Illuminate\Support\Facades\Input;
 
 /**
  * Created by PhpStorm.

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Bill;
 use LoginStat;
-use Mpdf\Mpdf;
 use Reservation;
 use Illuminate\Support\Facades\Input;
 use Response;

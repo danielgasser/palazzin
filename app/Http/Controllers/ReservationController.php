@@ -268,8 +268,13 @@ class ReservationController extends Controller
         }
     }
 
-    public function deleteGuest($res_id, $guest_id)
+    /**
+     * @return false|string
+     */
+    public function deleteGuest()
     {
+        $res_id = request()->input('res_id');
+        $guest_id = request()->input('guest_id');
         $guest = Reservation::find($res_id)->with('guests', function ($query) use ($guest_id) {
             $query->where('id', '=', $guest_id);
         });

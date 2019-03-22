@@ -5,16 +5,12 @@ namespace App\Http\Controllers;
 use Clan;
 use Family;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use LoginStat;
 use Role;
-use Setting;
 use User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
 use Response;
 
 /**

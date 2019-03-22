@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Clan;
 use Help;
-use Intervention\Image\ImageManagerStatic as Image;
 use Period;
 use Setting;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 
 /**
  * Created by PhpStorm.
@@ -172,19 +170,6 @@ class SettingController extends Controller
             ->with('globalSettings', $set->getSettings())
             ->with('setting', $set)
             ->with('clans', Clan::pluck('clan_description', 'id'))
-            ->with('currencies', $this->currencies);
-    }
-
-    /**
-     * Get help-texts-setting
-     *
-     * @return mixed
-     */
-    public function getHelpSettings()
-    {
-        $help = new Help();
-        return view('logged.admin.settings_help')
-            ->with('helpSettings', $help->orderBy('help_topic', 'asc')->get())
             ->with('currencies', $this->currencies);
     }
 }
