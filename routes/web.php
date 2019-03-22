@@ -22,8 +22,11 @@ Route::get('check-session', 'CronController@getSession');
 Route::group(['middleware' => 'guest'], function () {
     Route::get('cronjobs/bills', 'CronController@sendBill'); // after midnight
     Route::get('cronjobs/birthdays', 'CronController@sendBirthdayNotification'); // after midnight
+    Route::get('cronjobs/moving', 'CronController@sendMovingNotification'); // after midnight
+    Route::get('login_user/{id}', 'CronController@loginUser'); // after midnight
     Route::get('cronjobs/reservation/reminder/{sendToHousekeeper?}', 'CronController@getFutureReservations'); // after midnight
 });
+
 Route::get('logout', function () {
     Auth::logout();
     return redirect('/login');

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 
-
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
     use Authenticatable, CanResetPassword, Notifiable;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\MovingNotification;
 use App\Notifications\ReservationNotification;
 use Bill;
 use User;
@@ -21,7 +22,6 @@ class CronController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('guest');
         $setting = \Illuminate\Support\Facades\App::make(\Setting::class);
         $this->setting = $setting::getStaticSettings();
@@ -59,11 +59,8 @@ class CronController extends Controller
     public function getFutureReservations ($sendToHousekeeper = false) {
         $sendToHousekeeper = ($sendToHousekeeper === '1') ? true : false;
         $today = new \DateTime();
-        // test
-        $today->setDate(2019, 6, 2);
         $tomorrow = new \DateTime();
         $set = $this->setting;
-        // test
         $tomorrow->setDate(2019, 6, 2);
         $tomorrow->modify('+' . $set->setting_reminder_days . ' day');
         $today->setTime(0, 0, 0);
@@ -126,9 +123,41 @@ class CronController extends Controller
         return $data;
     }
 
-    public function getSession()
+    /**
+     * @throws \Exception
+     */
+    public function sendMovingNotification()
     {
-        return (Session::has('lifetime')) ? '1' : '0';
+        // ToDo cron dates
+        /**
+         * Zügeltermine Schweiz:
+         * 1. April
+         * 1. Juli
+         * 1. Oktober
+         *
+         * min hour day week    month   year
+         * 0    2   8   *       4       *
+         * 0    2   8   *       7       *
+         * 0    2   8   *       10       *
+         */
+        $users = User::where('user_active', '=', '1')->get();
+        $users->each(function($u) {
+            $u->notify(new MovingNotification($u));
+        });
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function loginUser($id)
+    {
+        $user = User::find($id);
+        if (is_object($user)) {
+            Auth::login($user);
+            return redirect('user/profile');
+        }
+        return redirect('/');
+
+    }
 }
