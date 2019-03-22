@@ -13,10 +13,6 @@
             th, td {
                 font-size: 1.2em;
             }
-            &.even {
-                border-bottom: 1px solid $brand-danger;
-                border-top: 1px solid $brand-danger;
-            }
         }
     }
 }
@@ -31,7 +27,7 @@
     tbody {
         display: block;
         overflow: auto;
-        height: 84px;
+        height: 110px;
         width: 100%;
     }
     thead, tbody {
@@ -42,7 +38,8 @@
             th, td {
                 font-size: 1.0em;
                 padding: 0.25em;
-                border-right: 1px solid #333;
+                border-right: 1px solid #33333336;
+                border-bottom: 1px solid #33333336;
             }
             td:first-child {
                 min-width: 28px;
@@ -68,6 +65,10 @@
                 min-width: 187px;
             }
             th:nth-child(6) {
+                min-width: 52px;
+                text-align: right;
+            }
+            td:nth-child(6) {
                 min-width: 52px;
                 text-align: right;
             }

@@ -19,14 +19,8 @@
                             <li class="dropdown-toggle" style="border-bottom: 1px solid white;">
                                 <a href="#" class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
                                 <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
-                                    {{--<li><a style="font-weight: bold">{{trans('navigation.lastlogin')}}:</a></li>
-                                    <li><a>{{$lastLogin}}</a></li>
-                                    <li class="divider"></li>--}}
                                     <li>
                                         <a href="{{url('logout')}}">{{trans('navigation.logout')}}</a>
-                                        {{-- Form::open(array('url' => '/logout')) }}
-                                        {{ Form::submit(trans('navigation.logout'), ['class' => 'btn-link-style']) }}
-                                        {{ Form::close() --}}
                                     </li>
                                 </ul>
                             </li>

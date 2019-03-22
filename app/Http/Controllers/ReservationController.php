@@ -75,9 +75,9 @@ class ReservationController extends Controller
         $res->each(function ($ur) use($today) {
             $resEnd = new \DateTime($ur->reservation_ended_at);
             $ur->sum_total = 0.00;
-            $ur->sum_guest = 1;
+            $ur->sum_guest = 0;
             if ($ur->guests->isEmpty()) {
-                $ur->guests = new Guest([]);
+                $ur->guests = null;
             } else {
                 $ur->guests->each(function ($g) use ($ur, $today) {
                     $ur->sum_total += $g->guest_tax * $g->guest_number * $g->guest_night;
@@ -91,7 +91,7 @@ class ReservationController extends Controller
             $ur->sum_total_hidden =  $ur->sum_total;
             $ur->editable = ($today <= $resEnd->modify('+ 1 day'));
         });
-        $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', false);
+        $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', true);
 
         return view('v3.edit_reservation')
             ->with('userRes', $res)
@@ -246,14 +246,8 @@ class ReservationController extends Controller
                 } else {
                     $guest = Guest::find($credentials['guest_id'][$i]);
                 }
-               // $guest->roles()->associate($role);
                 $guest->fill($args);
-                if (!isset($credentials['guest_id'][$i])) {
-                   // $guest->push();
-                } else {
-                }
                 $res->guests()->save($guest);
-                //
             }
             $saved = $res->push();
         }
@@ -272,6 +266,18 @@ class ReservationController extends Controller
                 ->with('periodsDatePicker', $resInfo['periodsDatePicker'])
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
         }
+    }
+
+    public function deleteGuest($res_id, $guest_id)
+    {
+        $guest = Reservation::find($res_id)->with('guests', function ($query) use ($guest_id) {
+            $query->where('id', '=', $guest_id);
+        });
+        if (is_object($guest)) {
+            $guest->delete();
+            return json_encode(['success' => 'Gast wurde gelöscht']);
+        }
+        return json_encode(['error' => 'Gast konnte nicht gelöscht werden']);
     }
 
     /**
@@ -307,6 +313,9 @@ class ReservationController extends Controller
     {
         $resID = request()->all('res_id');
         $res = Reservation::find($resID['res_id']);
+        if (!is_object($res)) {
+            return json_encode(['error' => 'no_delete_reservation']);
+        }
         $today = new \DateTime();
         $start = new \DateTime($res->reservation_ended_at);
         if ($today > $start) {

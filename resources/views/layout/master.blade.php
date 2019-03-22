@@ -239,13 +239,10 @@ if (strlen($routeStr) === 0) {
                 <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-6 title-res navbar-default">
-                    <ul class="nav priority">
-                        <li>
-                            <a class="WO-datepicker-content">Wolf</a>
-                            <a class="GU-datepicker-content">Guggenbühl</a>
-                        </li>
-                    </ul>
+                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                    @if(strpos('edit_reservation', $routeStr) === false)
+                        @include('logged.dialog.legend')
+                        @endif
                 </div>
 
             </div>
@@ -318,6 +315,7 @@ if (strlen($routeStr) === 0) {
                 paginationLang = $.parseJSON('{!!json_encode((trans('pagination')))!!}'),
                 settings = JSON.parse({!!json_encode($settingsJSON)!!}),
                 token = '{{ csrf_token() }}',
+                autid = '{{Auth::id()}}',
                 monthNames = {!!json_encode(Lang::get('calendar.month-names'))!!},
                 route = '{{Route::getFacadeRoot()->current()->uri()}}';
         </script>

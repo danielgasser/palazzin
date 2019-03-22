@@ -58,6 +58,8 @@ class Bill extends Model {
     public function generateBills() {
         $set = Setting::getStaticSettings();
         $today = new \DateTime();
+        // ToDo check, once it's live
+        $today->modify('+1 day');
         $reservations = new Reservation();
 
         $reservations = $reservations

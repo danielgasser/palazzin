@@ -26,6 +26,20 @@
             <input type="hidden" id="periodID" name="periodID" value="{{$userRes[0]->period_id}}">
             <input type="hidden" id="id" name="id" value="{{$userRes[0]->id}}">
             <input type="hidden" id="isEdit" name="isEdit" value="1">
+            <div class="row" id="resButtons">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-default show_reservation" disabled
+                                id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <button title="{{trans('dialog.delete')}}" class="btn btn-default show_reservation"
+                                id="delete_reservation_{{$userRes[0]->id}}"><i class="fas fa-ban"></i>{{trans('reservation.delete')}}</button>
+                    </div>
+                </div>
+            </div>
             <div class="row show_total_res arrow" id="show_res" style="display: block">
                 <div class="hide-guest" id="hide_all_res">
                     <span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{{trans('reservation.title_short')}}:
@@ -52,7 +66,7 @@
                             <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
                                     id="remove_guest_0"><i class="fas fa-trash-alt"></i></button>
                             <button title="{{trans('dialog.add_on_upper')}}"
-                                    class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_0" disabled><i
+                                    class="btn btn-danger btn-v3 show_reservation_guest" id="head_clone_guest_0"><i
                                     class="fas fa-plus"></i></button>
                         </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{{$userRes[0]->sum_total_hidden}}">
@@ -61,6 +75,7 @@
                 </div>
             </div>
             <div id="guest_entries">
+                @if(!is_null($userRes[0]->guests))
                     @if((sizeof($userRes[0]->guests) > 0))
                         @foreach($userRes[0]->guests as $i => $guest)
                             <div class="row" id="guests_date_{{ $i }}">
@@ -120,26 +135,7 @@
                             </div>
                         @endforeach
                     @endif
-            </div>
-            <div class="row" id="resButtons">
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <div class="form-group">
-                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-danger btn-v3 show_reservation" disabled
-                                id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <div class="form-group">
-                        <a href="{{Request::fullUrl()}}" title="{{trans('dialog.reset')}}" class="btn btn-danger btn-v3 show_reservation"
-                                id="reload_reservation"><i class="fas fa-undo"></i>{{trans('dialog.reset')}}</a>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                    <div class="form-group">
-                        <button title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation"
-                                id="delete_reservation_{{$userRes[0]->id}}"><i class="fas fa-ban"></i>{{trans('reservation.delete')}}</button>
-                    </div>
-                </div>
+                @endif
             </div>
         </form>
     </div>

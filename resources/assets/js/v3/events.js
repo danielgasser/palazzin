@@ -28,11 +28,13 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
     let id = $(this).attr('id').split('_')[3],
         guest_num_val = $('#reservation_guest_num_' + id).val(),
     dates = {startDate: $('#reservation_guest_started_at_' + id).val(), endDate: $('#reservation_guest_ended_at_' + id).val()};
+    $('#save_reservation').attr('disabled', true);
     if ($(this).val() !== '0' && guest_num_val !== '') {
         $('#clone_guest_' + id).show().attr('disabled', false);
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#number_nights_' + id);
         V3Reservation.calcAllPrices();
         V3Reservation.setGuestHeaderText(id, dates, $(this).val(), $('#reservation_guest_num_' + id).val(), $('#number_nights_' + id).text());
+        $('#save_reservation').attr('disabled', false);
     } else {
         $('#clone_guest_' + id).show().attr('disabled', true);
     }
@@ -50,7 +52,6 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
     if (this.value !== '0') {
         $('#reservation_guest_price_' + id).text(window.rolesTaxes[this.value]);
         $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value]);
-        $('#save_reservation').attr('disabled', false);
         $('#reservation_guest_num_' + id).show().attr('disabled', false);
     } else {
         $('#reservation_guest_price_' + id).val('');
@@ -61,7 +62,6 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
 
 /**
  * Choose user if "Anderer Gastgeber"
- * ToDo
  */
 $(document).on('click', '[id^="chooseuser_"]', function () {
     let uid = $(this).attr('id').split('_'),

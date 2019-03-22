@@ -160,4 +160,12 @@ class CronController extends Controller
         return redirect('/');
 
     }
+
+    /**
+     * @return string
+     */
+    public function getSession()
+    {
+        return (Session::has('lifetime')) ? '1' : '0';
+    }
 }

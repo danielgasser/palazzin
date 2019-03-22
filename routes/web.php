@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::any('edit_reservation/{res_id}', 'ReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'ReservationController@getReservationsPerDateV3');
 
+
         Route::post('user/profile', 'UserController@saveProfile');
         Route::get('user/bills', 'BillController@showBills');
 

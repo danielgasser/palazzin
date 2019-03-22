@@ -3,7 +3,6 @@
  */
 var p = [/ü/gi, /ä/gi, /ö/gi, /ò/gi, /é/gi, /è/gi, /à/gi, '-'],
     replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'];
-
 jQuery(document).ready(function () {
     "use strict";
     $('[data-toggle="popover"]').popover({

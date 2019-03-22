@@ -21,12 +21,11 @@
             <table id="table_all_reservations" class="table">
                 @if(sizeof($userRes) > 0)
                 <thead>
-                <tr>
-                    <th scope="col" class="0" id="edit"></th>
+                <tr style="border-bottom: 1px solid #33333336;">
+                    <th scope="col" class="0" id="edit">Aktionen</th>
                     <th scope="col" class="1" id="arrival">{{trans('reservation.arrival_departure')}}</th>
                     <th scope="col" class="3" id="total_nights">{{trans('reservation.guests.nights')}}</th>
                     <th scope="col" class="4" id="total_all_bill">{{trans('bill.total_all')}}</th>
-                    <th scope="col" class="6" id="guests"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,17 +36,19 @@
                     <tr class="{{$class}}" id="delete_table_all_reservations_{{$res->id}}">
                         <td>
                             @if($res->editable)
-                                <a style="width: 50px" title="{{trans('dialog.edit')}}" class="btn btn-danger btn-v3 show_reservation" id="edit_reservation_{{$res->id}}" href="{{  route('edit_reservation', ['id' => $res->id])  }}"><i class="fas fa-edit"></i></a>
+                                <a style="width: 50px; display: inline-block" title="{{trans('dialog.edit')}}" class="btn btn-default btn-v3 show_reservation" id="edit_reservation_{{$res->id}}" href="{{  route('edit_reservation', ['id' => $res->id])  }}"><i class="fas fa-edit"></i></a>
                             <form style="display: inline-block" id="delete_table_all_reservations_{{$res->id}}" method="post" action="{{  route('delete_reservation', ['id' => $res->id])  }}">
                                 {{ csrf_field() }}
-                                <button style="width: 50px" title="{{trans('dialog.delete')}}" class="btn btn-danger btn-v3 show_reservation" id="delete_reservation_{{$res->id}}"><i class="fas fa-trash"></i></button>
+                                <button style="width: 50px; height: 2em; display: inline-block;" title="{{trans('dialog.delete')}}" class="btn btn-default btn-v3 show_reservation" id="delete_reservation_{{$res->id}}"><i class="fas fa-trash"></i></button>
                             </form>
                                 @endif
                         </td>
                         <td>{{$res->reservation_started_at}}-{{$res->reservation_ended_at}}</td>
                         <td>{{$res->reservation_nights}}</td>
                         <td>{{$res->sum_total}}</td>
-                        <td scope="col" class="6" id="guests">
+                    </tr>
+                    <tr style="border-bottom: 1px solid #b7282e;">
+                        <td scope="col" colspan="4" class="6" id="guests">
                             @if(sizeof($res->guests) > 0)
                                 <b>{{$res->sum_guest}} {{trans('reservation.guests.title')}}</b>
                                 <table id="guestTable">
@@ -81,7 +82,7 @@
                                 </tbody>
                             </table>
                                 @else
-                                <b>Keine Gäste</b>
+                                <i>Keine Gäste</i>
                                 @endif
                         </td>
                     </tr>

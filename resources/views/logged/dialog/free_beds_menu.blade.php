@@ -1,6 +1,6 @@
 <ul id="free_beds" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left;">
     <li class="dropdown-toggle">
-        <a data-toggle="dropdown" href="#" id="show-all-free-beds">
+        <a data-toggle="dropdown" href="#" id="show-all-free-beds" class="noClick">
             <i class="fas fa-bed"></i>&nbsp;{{ trans('reservation.beds_free') }}
         </a>
     </li>

@@ -26,6 +26,7 @@ var V3Reservation = {
                 $('#reservation_guest_started_at_' + i).addClass('noClick');
             });
             $('#reservation_ended_at').addClass('noClick');
+            $('#show-all-free-beds').addClass('noClick');
         } else {
             $.each($('[id^="reservation_guest_ended_at_"]'), function (i, n) {
                 $(n).removeClass('noClick');
@@ -34,6 +35,7 @@ var V3Reservation = {
                 $('#reservation_guest_started_at_' + i).removeClass('noClick');
             });
             $('#reservation_ended_at').removeClass('noClick');
+            $('#show-all-free-beds').removeClass('noClick');
         }
     },
     onHide: function (e) {
@@ -78,6 +80,10 @@ var V3Reservation = {
             }
             V3Reservation.adaptChanged(dates, window.endDate, false);
         } else if (e.target.id.indexOf('reservation_guest') > -1) {
+            if (e.date === undefined) {
+                return false;
+            }
+
             let id = $('#' + e.target.id).attr('id').split('_')[4];
             if (id === undefined) {
                 id = 0;
@@ -110,6 +116,9 @@ var V3Reservation = {
             isEnabled = window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && d <= otherClanDate) || window.endDate === d,
             hasFreeBeds = (occupied + host < numBeds),
             returnObject;
+        if (window.newAllGuestBeds['freeBeds_' + dateStr + 'uID' + window.autid] !== undefined) {
+            isEnabled = false;
+        }
         if (isEdit) {
             oB = window.newUserRes['user_Res_Dates_' + dateStr];
             if (isNaN(oB)) {
@@ -167,7 +176,7 @@ var V3Reservation = {
         window.endDate.setFullYear(window.endDate.getFullYear() + parseInt(window.settings.setting_calendar_duration));
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
-        priority.html(window.reservationStrings.prior + ': ' + priorityContent).css({color: '#b7282e'});
+        priority.html(window.reservationStrings.prior + ': ' + priorityContent).css({color: '#b7282e !important'});
         if (window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')] !== undefined) {
             titleString = window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1];
         }
@@ -175,7 +184,7 @@ var V3Reservation = {
             format: "dd.mm.yyyy",
             weekStart: 1,
             todayBtn: "linked",
-            clearBtn: true,
+            clearBtn: false,
             language: 'de',
             calendarWeeks: true,
             autoclose: true,
@@ -264,7 +273,7 @@ var V3Reservation = {
                 month: today.getMonth(),
                 day: today.getDate()
             },
-            orientation: 'auto top',
+            orientation: 'auto bottom',
             immediateUpdates: true,
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDay(Date, otherClanDate, true, this.startDate);
@@ -360,9 +369,7 @@ var V3Reservation = {
         }
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
         V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
-        //V3Reservation.checkExistentReservation(dates.startDate, dates.endDate);
         V3Reservation.getFreeBeds(dates.startDate, dates.endDate, 'freeBeds_');
-        $('#save_reservation').attr('disabled', false);
     },
     getFreeBeds: function (start, end, prefix) {
         let reservations = window.reservationsPerPeriod;
@@ -384,9 +391,9 @@ var V3Reservation = {
                         // total - (occupied + 1)
                         if (window.parseInt(res[key], 10) > 0) {
                             free -= (window.parseInt(res[key], 10) + 1)
+                            window.localStorage.setItem(c[1] + '-' + c[2] + '-' + c[3], free);
+                            V3Reservation.freeBeds[c[1] + '-' + c[2] + '-' + c[3]] = free;
                         }
-                        window.localStorage.setItem(c[1] + '-' + c[2] + '-' + c[3], free);
-                        V3Reservation.freeBeds[c[1] + '-' + c[2] + '-' + c[3]] = free;
                     }
                 });
         }
@@ -552,7 +559,6 @@ var V3Reservation = {
             }
             V3Reservation.calcNights(start, end, '#number_nights_' + i);
         });
-        //V3Reservation.calcNights(start, end, '#reservation_nights_total');
     },
     setGuestHeaderText: function (id, dates, guestKind, numberGuest, numberNight) {
         let guest_kind = (guestKind == '0') ? '' : '&nbsp;x&nbsp;' + window.rolesTrans[guestKind],
