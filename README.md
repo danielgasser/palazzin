@@ -38,7 +38,7 @@ Zahl, sowie 1 Sonderzeichen beinhalten.
 - Der VR setzt die Anzahl Aktien pro Aktionär fest. Eine Jahresrechnung wird automatisch verschickt.
 - Jeder AG muss eine gültige Rechnungsadresse für die Aktienrechnung angeben.
 ### Benutzer
-- 
+
 - Nur BB's dürfen reservieren.
 - Alle BB's dürfen alle Reservationen einsehen.
 - Jeder BB kann Gäste zu seiner Reservation hinzufügen. (Gasteintrag) Siehe R ESERVATIONEN 1.4.4
