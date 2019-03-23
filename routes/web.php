@@ -10,12 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    if (Auth::check()) {
-        return view('welcome');
-    }
-    return view('auth.login');
-});
 Route::get('check-session', 'CronController@getSession');
 
 //cronjobs
@@ -29,7 +23,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::get('logout', function () {
     Auth::logout();
-    return redirect('/login');
+    return view('welcome');
 });
 Auth::routes();
 
@@ -47,6 +41,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
 
     // Users, Cöerk
     Route::group(['middleware' => ['clerk-reservator', 'revalidate']], function () {
+        Route::get('/', 'HomeController@getHome')->name('home');
 
         Route::post('userlist_search', 'UserController@searchUsers');
         Route::get('userlist', 'UserController@showUsers');
@@ -57,7 +52,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
     });
     // Users
     Route::group(['middleware' => 'reservator'], function () {
-        Route::get('home', 'HomeController@getHome')->name('home');
+        Route::get('news', 'NewsController@getNews')->name('news');
 
         //News
         Route::get('news_reloaded', 'PostController@reloadPost');

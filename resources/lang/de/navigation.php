@@ -6,6 +6,7 @@
  * Time: 07:46
  */
 return array(
+    'newa' => 'Newsticker',
     'home' => 'Startseite',
     'profile' => 'Profil',
     'admin' => 'Administration',
@@ -32,7 +33,7 @@ return array(
     'user/reservations' => 'Deine Reservierungen',
     'admin/bills' => 'Rechnungen',
     'admin/bills/filelist' => 'Liste Rechnungen (PDF\'s)',
-    'user/bills' => 'Deine Rechnungen',
+    'user/bills' => 'Meine Rechnungen',
     'keeper/reservations' => 'Alle Reservierungen',
     'admin/users' => 'Benutzer',
     'admin/users/edit' => 'Administration - Benutzer bearbeiten',

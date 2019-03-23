@@ -116,7 +116,7 @@ if (strlen($routeStr) === 0) {
     <link href="{{asset('libs/DataTables/datatables.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{{asset('css/main.min.css')}}" rel="stylesheet" media="screen" type="text/css" />
     <link href="{{asset('libs/bootstrap-toggle/bootstrap-toggle.css')}}" rel="stylesheet" media="screen" type="text/css" />
-@if (Request::is('/') || Request::is('login'))
+@if (Request::is('/') || Request::is('login') || Request::is('stats'))
         <style>
             body {
                 background-color: rgba(24,19,12,0.05);
@@ -128,7 +128,7 @@ if (strlen($routeStr) === 0) {
                 content: "";
                 background: url({{asset('img/bg_images/login/6tja0l4xj9.png')}});
                 background-repeat: no-repeat;
-                background-size: 100% 96%;
+                background-size: 100% 100%;
                 opacity: 0.5;
                 top: 0;
                 left: 0;
@@ -216,8 +216,40 @@ if (strlen($routeStr) === 0) {
         <div class="col-md-11 col-sm-11 col-xs-11">
         @switch($route)
             @case ('/')
-                <h1>{{trans('home.welcome', ['back' => '', 'name' => ''])}}</h1>
-            @break
+            <div id="res-nav">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <h1>{{trans('home.welcome', ['back' => 'zurück', 'name' => $first_name])}}</h1>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12 navbar-default" style="background-color: transparent">
+                    <ul id="your_roles" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left; background-color: transparent">
+                        <li class="dropdown-toggle" id="your_roles_li">
+                            <a style="color: #b7282e" data-toggle="dropdown" href="#" id="show-all-your_roles">
+                                <i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{{ trans('home.yourroles') }}
+                            </a>
+                            <ul class="dropdown-menu multi-level nav navbar-nav">
+                                @foreach($roles as $role)
+                                    <li><a>{{ $role->role_code }} - {{ trans('roles.' . $role->role_code) }}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12 navbar-default" style="background-color: transparent">
+                    <ul id="your_clan" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left; background-color: transparent">
+                        <li class="dropdown-toggle" id="your_clan_li">
+                            <a style="color: #b7282e" data-toggle="dropdown" href="#" id="show-your_clan">
+                                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;{{ trans('home.yourclan') }}
+                            </a>
+                            <ul class="dropdown-menu multi-level nav navbar-nav">
+                                @foreach($clan_name as $clan)
+                                    <li><a><span class="{{ $clan->clan_code }}-text">{{ $clan->clan_description }}</span></a></li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+                @break
             @case ('home')
                 <h1>{{trans('home.welcome', array('back' => (User::find(Auth::id())->user_new == 0) ? 'zurück, ' : '',
 'name' => User::find(Auth::id())->user_first_name))}}</h1>

@@ -8,6 +8,7 @@
 return array(
     'dear' => 'Liebe:f',
     'your_m' => 'Dein',
+    'my_m' => 'Mein',
     'your_f' => 'Deine',
     'hello' => 'Hallo',
     'hello_official_m' => 'Sehr geehrter Herr',

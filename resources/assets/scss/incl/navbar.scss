@@ -236,7 +236,7 @@ ul {
 #res-nav {
     min-height: 70px;
     width: 100%;
-    #free_beds, #timeliner-container, #timeliner, #legend-container {
+    #free_beds, #timeliner-container, #timeliner, #legend-container, #your_roles, #your_clan {
         height: 70px;
         border: none;
         .fa-clock:after {
@@ -249,6 +249,27 @@ ul {
                 height: 70px;
                 display: block;
                 font-size: 1.1em;
+            }
+        }
+        #your_roles_li, #your_clan_li {
+            background-color: transparent;
+            ul {
+                background-color: white;
+                width: 100%;
+                border: none;
+                border-radius: 0;
+                li {
+                    font-weight: normal;
+                    a {
+                        padding: 18px 20px;
+                        color: $brand-danger !important;
+                        background-color: white;
+                        &:hover {
+                            background-color: $brand-danger !important;
+                            color: white !important;
+                        }
+                    }
+                }
             }
         }
     }

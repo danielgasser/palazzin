@@ -8,7 +8,7 @@ use User;
 use Auth;
 use DB;
 
-class HomeController extends Controller
+class NewsController extends Controller
 {
     /*
         |--------------------------------------------------------------------------
@@ -38,18 +38,15 @@ class HomeController extends Controller
      * @return mixed
      * @throws \Exception
      */
-    public function getHome()
+    public function getNews()
     {
         $user = User::find(Auth::id());
         if ($user->isLoggedClerk()) {
             return redirect('userlist');
         }
-        $message = '<h3>WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="' . \URL::to('/files/___checklist/Checkliste_Benutzer_Palazzin.pdf') . '">Benutzer-Checkliste</a></h3>';
-        session()->flash('info_message', $message);
-        return view('welcome')
-            ->with('roles', $user->getRoles())
-            ->with('first_name', $user->user_first_name)
-            ->with('clan', $user->getUserClan())
-            ->with('clan_name', $user->getUserClanName($user->clan_id));
+        $post = new Post();
+        $posts = $post->getNewsTicker();
+        return view('logged.news')
+            ->with('posts', $posts);
     }
 }

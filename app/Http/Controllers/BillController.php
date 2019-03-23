@@ -8,7 +8,7 @@ use User;
 use Illuminate\Support\Facades\Input;
 use Response;
 use Illuminate\Support\Facades\DB;
-
+use Auth;
 
 /**
  * Created by PhpStorm.
@@ -112,9 +112,13 @@ class BillController extends Controller
      */
     public function getAllTotals ()
     {
-        $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1')[0]->total, 2, '.', '\'');
-        $arr['paid'] = number_format(DB::select(DB::raw('select sum(bill_total) as paid from bills where bill_sent = 1 and bill_due = 0'))[0]->paid, 2, '.', '\'');
-        $arr['unpaid'] = number_format(DB::select(DB::raw('select sum(bill_total) as unpaid from bills where bill_sent = 1 and bill_due = 1'))[0]->unpaid, 2, '.', '\'');
+        $userBills = '';
+        if (!request()->is('admin/bills')) {
+            $userBills = ' and bill_user_id = ' . Auth::id();
+        }
+        $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1' . $userBills)[0]->total, 2, '.', '\'');
+        $arr['paid'] = number_format(DB::select(DB::raw('select sum(bill_total) as paid from bills where bill_sent = 1 and bill_due = 0' . $userBills))[0]->paid, 2, '.', '\'');
+        $arr['unpaid'] = number_format(DB::select(DB::raw('select sum(bill_total) as unpaid from bills where bill_sent = 1 and bill_due = 1' . $userBills))[0]->unpaid, 2, '.', '\'');
         if (request()->ajax()) {
             return Response::json($arr);
         }
