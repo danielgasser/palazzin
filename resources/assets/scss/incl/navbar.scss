@@ -256,7 +256,7 @@ ul {
 #timeliner {
     min-height: 350px;
 }
-#all-nav-welcome {
+#all-nav-welcome, #all-nav-stats {
     width: 100%;
     background: transparent;
     position: inherit;
@@ -264,7 +264,7 @@ ul {
     .navbar-default {
         background: transparent !important;
     }
-    #main-nav-welcome {
+    #main-nav-welcome, #main-nav-stats {
         background: transparent;
         li {
             background: transparent;

@@ -25,6 +25,7 @@ return array(
     '/' => 'Willkommen ',
     'admin/settings' => 'Globale Einstellungen',
     'admin/settings/help' => 'Globale Einstellungen - Hilfetexte',
+    'stats' => 'Statistiken',
     'admin/stats' => 'Statistiken',
     'admin/stats_list' => 'Alle Statistiken (PDF)',
     'admin/reservations' => 'Reservierungen',

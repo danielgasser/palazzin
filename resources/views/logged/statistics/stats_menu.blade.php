@@ -1,22 +1,14 @@
 @extends('layout.master')
-@section('header')
-    @parent
-    <style>
-        #datatable-short thead tr th, tbody tr td, #datatable-short-calendar thead tr th, tbody tr td {
-            border: 1px solid #333;
-
-        }
-
-    </style>
-@stop
 @section('content')
-    <h1>{{trans('admin.stats.title')}}</h1>
-    <div>
-    @include('layout.stats_menu')
+</div>
+<div class="row">
+    <div class="col-sm-4 col-md-4 col-xs-12"></div>
+    <div class="col-sm-4 col-md-4 col-xs-12 welcome-nav">
+            @include('layout.stats_menu')
     </div>
-@section('scripts')
-    @parent
-@stop
+    <div class="col-sm-4 col-md-4 col-xs-12"></div>
 
-@stop
+</div>
+@endsection
+
 

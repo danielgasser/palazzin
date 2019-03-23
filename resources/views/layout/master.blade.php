@@ -222,7 +222,7 @@ if (strlen($routeStr) === 0) {
                 <h1>{{trans('home.welcome', array('back' => (User::find(Auth::id())->user_new == 0) ? 'zurück, ' : '',
 'name' => User::find(Auth::id())->user_first_name))}}</h1>
             @break
-            @case (strpos($route, 'stats') !== false)
+            @case (strpos($route, 'stats_') !== false)
                 <div id="menu_stats">
                     @if ($route !== 'stats_list')
                     <h1>{{trans('admin.' . $route . '.title')}} <span id="stats_title"></span></h1>
