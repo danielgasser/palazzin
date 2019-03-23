@@ -660,11 +660,20 @@ var V3Reservation = {
                 if (isNaN(existentTotal)) {
                     existentTotal = 0;
                 }
-                if ((checkBedStorage - existentTotal + total > totalBeds) && !tooMuch) {
-                    tooMuch = true;
-                    V3Reservation.tooMuchBeds(str);
+                if (editRes !== '') {
+                    if ((checkBedStorage - existentTotal + total > totalBeds) && !tooMuch) {
+                        tooMuch = true;
+                        V3Reservation.tooMuchBeds(str);
 
-                    return false;
+                        return false;
+                    }
+                } else {
+                    if ((checkBedStorage + total > totalBeds) && !tooMuch) {
+                        tooMuch = true;
+                        V3Reservation.tooMuchBeds(str);
+
+                        return false;
+                    }
                 }
             };
         if (!tooMuch) {
@@ -781,5 +790,49 @@ var V3Reservation = {
                 }
             }
         })
+    },
+    deleteGuestEntry: function (id) {
+        let dates = {};
+        $('#guests_date_' + id).remove();
+        if ($('[id^="guests_date_"]').length === 0) {
+            $('#addZeroGuest').show();
+            $('#save_reservation').attr('disabled', false);
+        }
+        $.each($('[id^="guests_date_"]'), function (i, n) {
+            let child = $(n).find('*');
+            let id = $(this).attr('id').split('_');
+            id.pop();
+            $(this).attr('id', id.join('_') + '_' + i);
+            $.each(child, function () {
+                if ($(this).attr('id') !== undefined) {
+                    let id = $(this).attr('id').split('_');
+                    id.pop();
+                    $(this).attr('id', id.join('_') + '_' + i);
+                }
+            });
+        });
+        window.startGuestPicker.splice(id, 1);
+        window.endGuestPicker.splice(id, 1);
+        $('[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)').trigger('input');
+        for (let i = 0; i < window.startGuestPicker.length; i++) {
+            dates.startDate = window.startGuestPicker[i].datepicker('getDate');
+            dates.endDate = window.endGuestPicker[i].datepicker('getDate');
+            V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
+            V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
+            V3Reservation.checkOccupiedBeds(parseInt($('#reservation_guest_num_total').text(), 10));
+            V3Reservation.calcAllPrices();
+            V3Reservation.calcGuests();
+        }
+        if (window.startGuestPicker.length === 0) {
+            dates.startDate = window.resStartPicker.datepicker('getDate');
+            dates.endDate = window.resEndPicker.datepicker('getDate');
+            V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
+            V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
+            V3Reservation.calcAllPrices();
+            V3Reservation.calcGuests();
+        }
+        $('[id^="clone_guest"]').attr('disabled', false);
+        $('[id^="delete_reservation_"]').attr('disabled', true);
+        $('#total_res').removeClass('alert-danger').addClass('alert-info');
     }
 };

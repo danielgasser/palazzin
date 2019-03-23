@@ -51,7 +51,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12" id="res_info">
                     <div class="form-group">
                         <div class="alert alert-info" id="total_res">
-                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true" title="{{trans('dialog.texts.warning_no_free_beds')}}">1</span> {{trans('reservation.guests.pe')}}&nbsp;
+                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true">1</span> {{trans('reservation.guests.pe')}}&nbsp;
                             CHF <span id="reservation_costs_total">0.-</span>
                         </div>
                         <div id="addZeroGuest" style="display: none">

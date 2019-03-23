@@ -9,11 +9,11 @@
                 <p>{!!trans('dialog.texts.warning_delete_guest')!!}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-dialog-left" id="confirm_delete_guest">
+                <button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">
+                    {{ trans('dialog.n') }}
+                </button>
+                <button class="btn btn-default btn-dialog-right" id="confirm_delete_guest">
                   {{ trans('dialog.y') }}
-              </button>
-              <button class="btn btn-default btn-dialog-right close" data-dismiss="modal" aria-label="Close">
-                  {{ trans('dialog.n') }}
               </button>
             </div>
         </div>

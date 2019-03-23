@@ -23,7 +23,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::get('logout', function () {
     Auth::logout();
-    return view('welcome');
+    return redirect('/');
 });
 Auth::routes();
 

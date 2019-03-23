@@ -182,7 +182,6 @@ $(document).on('click', '[id*="clone_guest_"]', function (e) {
     $.each($('input:not([type="hidden"]), select'), function () {
         window.allInputs.push($(this).attr('id'));
     });
-
 });
 
 $(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e) {
@@ -199,20 +198,6 @@ $(document).on('change', 'input:not([type="hidden"]), select', function (e) {
         key = GlobalFunctions.arraySearch(window.allInputs, id);
     $('input:not([type="hidden"]), select').removeClass('giveFocus');
     $('#' + window.allInputs[key + 1]).addClass('giveFocus');
-});
-/**
- * Remove guest entry
- */
-$(document).on('click', '[id^="remove_guest_"]', function () {
-    let id = $(this).attr('id').split('_').pop();
-    $('#confirm_delete_guest').attr('data-id', id);
-    $('#confirm_delete_guest').attr('data-res-id', $('#id').val());
-    $('#confirm_delete_guest').attr('data-guest-id', $('#guest_id_' + id).val());
-    $('#delete_guest').modal({
-        backdrop: 'static',
-        keyboard: false
-    });
-    return false;
 });
 
 /**
@@ -248,53 +233,37 @@ $(document).on('click', '#cancel_reservation_exists', function () {
 /**
  * Remove guest entry
  */
+$(document).on('click', '[id^="remove_guest_"]', function () {
+    let id = $(this).attr('id').split('_').pop();
+    $('#confirm_delete_guest').attr('data-id', id);
+    $('#delete_guest').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+    return false;
+});
+
+/**
+ * Remove guest entry
+ */
 $(document).on('click', '#confirm_delete_guest', function () {
     let id = $('#confirm_delete_guest').attr('data-id'),
-    dates = {
-        start: null,
-        end: null
-    };
+    guest_id = $('#guest_id_' + id).val();
     $("#delete_guest").modal('hide');
+    if (guest_id === undefined) {
+        V3Reservation.deleteGuestEntry(id);
+        return false;
+    }
     $.ajax({
         method: 'POST',
-        url: 'delete_guest',
+        url: '/delete_guest',
         data: {
-            res_id: '',
-            guest_id: ''
+            guest_id: guest_id
         },
         success: function (data) {
-            if (data.hasOwnProperty('success')) {
-
+            if ($.parseJSON(data).hasOwnProperty('success')) {
+                V3Reservation.deleteGuestEntry(id);
             }
-            $('#guests_date_' + id).remove();
-            if ($('[id^="guests_date_"]').length === 0) {
-                $('#addZeroGuest').show();
-                $('#save_reservation').attr('disabled', false);
-            }
-            $.each($('[id^="guests_date_"]'), function (i, n) {
-                let child = $(n).find('*');
-                let id = $(this).attr('id').split('_');
-                id.pop();
-                $(this).attr('id', id.join('_') + '_' + i);
-                $.each(child, function () {
-                    if ($(this).attr('id') !== undefined) {
-                        let id = $(this).attr('id').split('_');
-                        id.pop();
-                        $(this).attr('id', id.join('_') + '_' + i);
-                    }
-                });
-            });
-            window.startGuestPicker.splice(id, 1);
-            window.endGuestPicker.splice(id, 1);
-            $('[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)').trigger('input');
-            for (let i = 0; i < window.startGuestPicker.length; i++) {
-                dates.startDate = window.startGuestPicker[i].datepicker('getDate');
-                dates.endDate = window.endGuestPicker[i].datepicker('getDate');
-                V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
-                V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
-                V3Reservation.checkOccupiedBeds(parseInt($('#reservation_guest_num_total').text(), 10));
-            }
-            $('[id^="clone_guest"]').attr('disabled', false);
         }
     });
 });
@@ -391,3 +360,4 @@ $(document).on('#save_reservation', function (e) {
     e.preventDefault();
 
 });
+// for min
