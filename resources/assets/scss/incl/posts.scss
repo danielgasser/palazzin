@@ -1,16 +1,21 @@
 @import "bootstrap-variables";
 @import "vars";
 .posts-top {
-  border-bottom: 1px solid $color-h1;
+  button {
+      width: 100%;
+  }
+    padding: 1em;
+    position: fixed;
+    height: 73px;
+    background-color: white;
+    z-index: 1000;
 }
 #newsMessage {
   margin-bottom: 2em;
 }
 #newstickerNewPost {
     display: none;
-    margin-top: 5em;
     padding: 15px;
-    border-bottom: 1px solid $brand-primary;
 }
 .new_comment_available {
     -webkit-box-shadow: -7px -5px 24px -8px rgba(26,88,21,1);
@@ -18,11 +23,10 @@
     box-shadow: -7px -5px 24px -8px rgba(26,88,21,1);
 }
 #newsticker {
-    height: 560px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    margin: auto;
+    margin: 75px 0 0 0;
     h1 {
         font-size: 15px;
         font-weight: bold;
@@ -39,9 +43,10 @@
         border: none;
     }
     h4 {
-        font-size: 12px;
+        font-size: 15px;
         font-weight: bold;
         border: none;
+        float: left;
     }
     h5 {
         font-size: 11px;
@@ -68,6 +73,9 @@
         .posts {
             border-right: 1px solid #CCCCCC;
         }
+        .tools {
+            float: right;
+        }
       .comments-titles {
         display: block;
       }
@@ -88,6 +96,9 @@
                 }
             }
         }
+    }
+    .post-entry {
+        margin: 15px 0;
     }
 }
 .add_post {

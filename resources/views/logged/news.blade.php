@@ -2,9 +2,6 @@
 
 @section('content')
 
-    <div class="col-sm-4 col-md-4">
-    <h3 style="color: #dfb20d">WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="{{asset('/public/files/___checklist/Checkliste_Benutzer_Palazzin.pdf')}}">Benutzer-Checkliste</a></h3>
-    </div>
 </div>
 @include('news.post', array('posts' => $posts))
 

@@ -64,13 +64,13 @@ class Post extends Model {
         $posts = new Post();
         if ($id == null) {
             $posts = $posts->join('users', 'user_id', '=', 'users.id')
-                ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_login_name', 'users.email')
+                ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_first_name', 'users.user_name', 'users.email')
                 ->orderBy('posts.created_at', 'DESC')
                 ->get();
         } else {
             $posts = $posts->join('users', 'user_id', '=', 'users.id')
                 ->where('posts.id', '=', $id)
-                ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_login_name', 'users.email')
+                ->select('posts.id', 'posts.created_at', 'posts.updated_at', 'post_text', 'users.id as uid', 'posts.user_id', 'users.user_first_name', 'users.user_name', 'users.email')
                 ->orderBy('posts.created_at', 'DESC')
                 ->get();
         }

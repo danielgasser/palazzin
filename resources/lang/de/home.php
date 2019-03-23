@@ -7,7 +7,7 @@
  */
 return array(
     'welcome' => 'Willkommen :back :name',
-    'yourroles' => 'Deine Rollen',
-    'yourclan' => 'Dein Stamm',
+    'yourroles' => 'Meine Rollen',
+    'yourclan' => 'Mein Stamm',
     'first_visit' => 'Klicke hier, um als 1. Dein Profil vervollständigen!'
 );
