@@ -8,8 +8,8 @@
                 <p>{!!trans('dialog.footer_texts.warning_delete_user')!!}</p>
             </div>
             <div class="modal-footer">
-                <button id="confirmDeleteUser" class="btn btn-default btn-dialog-left">{!!trans('dialog.yes')!!}</button>
                 <button class="btn btn-default btn-dialog-left">{!!trans('dialog.no')!!}</button>
+                <button id="confirmDeleteUser" class="btn btn-default btn-dialog-right">{!!trans('dialog.yes')!!}</button>
             </div>
         </div>
     </div>

@@ -119,27 +119,16 @@ class Role extends Model {
     /**
      * Gets roles corresponding to clan
      *
-     * @param $pid clan_id == user_id
      * @return array
      */
-    public static function getRolesForGuestV3 ($pid) {
+    public static function getRolesForGuestV3 () {
         $rolesTrans[] = trans('dialog.select');
-        if ($pid === true) {
-            $roles = Role::select('id', 'role_code', 'role_tax_night')
-                ->orWhere('role_guest', '=', 1)
-                ->orWhere('role_code', '=', 'BB')
-                ->orWhere('role_code', '=', 'AB')
-                ->orWhere('role_code', '=', 'GU')
-                ->orderBy('role_tax_night', 'desc')
-                ->get();
-        } else {
-            $roles = Role::select('id', 'role_code', 'role_tax_night')
-                ->orWhere('role_guest', '=', 1)
-                ->orWhere('role_code', '=', 'BB')
-                ->orWhere('role_code', '=', 'GU')
-                ->orderBy('role_tax_night', 'desc')
-                ->get();
-        }
+        $roles = Role::select('id', 'role_code', 'role_tax_night')
+            ->orWhere('role_guest', '=', 1)
+            ->orWhere('role_code', '=', 'BB')
+            ->orWhere('role_code', '=', 'GU')
+            ->orderBy('role_tax_night', 'desc')
+            ->get();
         foreach($roles as $role) {
             $rolesTrans[$role->id] = trans('roles.' . $role->role_code . '_short');
         }

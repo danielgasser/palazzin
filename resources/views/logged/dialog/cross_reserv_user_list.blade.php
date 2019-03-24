@@ -12,10 +12,10 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="choose-user" class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
-                <button type="button" class="btn btn-default btn-dialog-right" data-dismiss="modal">
+                <button type="button" class="btn btn-default btn-dialog-left" data-dismiss="modal">
                     {{ trans('dialog.no') }}
                 </button>
+                <button id="choose-user" class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

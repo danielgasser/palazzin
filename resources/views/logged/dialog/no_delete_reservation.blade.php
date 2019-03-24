@@ -8,7 +8,7 @@
                 <p>{!!trans('reservation.warnings.yesterday')!!}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+                <button class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

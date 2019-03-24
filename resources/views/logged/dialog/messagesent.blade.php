@@ -8,7 +8,7 @@
                 <p><span id="msent"></span></p>
             </div>
             <div class="modal-footer">
-                <button id="ok" class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+                <button id="ok" class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

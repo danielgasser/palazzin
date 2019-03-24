@@ -8,7 +8,7 @@
                 <p>{!!trans('dialog.texts.warning_no_free_beds')!!}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+                <button class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
                 <p>{!!trans('reservation.warnings.night_zero')!!}</p>
             </div>
             <div class="modal-footer">
-                <button id="cancel_guest_nan" class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+                <button id="cancel_guest_nan" class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

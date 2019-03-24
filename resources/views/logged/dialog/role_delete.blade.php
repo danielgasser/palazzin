@@ -14,8 +14,8 @@
     </ul>
             </div>
             <div class="modal-footer">
-                <button id="confirmDeleteRight" class="btn btn-default btn-dialog-left">{!!trans('dialog.yes')!!}</button>
-                <button class="btn btn-default btn-dialog-right close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.no')!!}</button>
+                <button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.no')!!}</button>
+                <button id="confirmDeleteRight" class="btn btn-default btn-dialog-right">{!!trans('dialog.yes')!!}</button>
             </div>
         </div>
     </div>

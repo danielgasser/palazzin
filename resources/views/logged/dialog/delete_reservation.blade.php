@@ -8,8 +8,8 @@
                 <p>{!!trans('dialog.texts.warning_delete_reservation')!!}</p>
             </div>
             <div class="modal-footer">
-                <button id="deleteRes" class="btn btn-default btn-dialog-left">{!!trans('dialog.y')!!}</button>
-                <button class="btn btn-default btn-dialog-right close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.no')!!}</button>
+                <button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.no')!!}</button>
+                <button id="deleteRes" class="btn btn-default btn-dialog-right">{!!trans('dialog.y')!!}</button>
             </div>
         </div>
     </div>

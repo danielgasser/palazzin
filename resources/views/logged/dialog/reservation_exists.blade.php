@@ -11,13 +11,13 @@
                 </p>
             </div>
             <div class="modal-footer">
+                <button id="clearReservation" type="button" class="btn btn-default btn-dialog-left" data-dismiss="modal">
+                    {{ trans('dialog.n') }}
+                </button>
                 <form id="edit_reservation_exists" method="post" action="">
                     {{ csrf_field() }}
-                    <button type="submit" id="edit_reservation_exists" class="btn btn-default btn-dialog-left">{!!trans('dialog.edit')!!}</button>
+                    <button type="submit" id="edit_reservation_exists" class="btn btn-default btn-dialog-right">{!!trans('dialog.edit')!!}</button>
                 </form>
-                <button id="clearReservation" type="button" class="btn btn-default btn-dialog-right" data-dismiss="modal">
-                {{ trans('dialog.n') }}
-                </button>
             </div>
         </div>
     </div>

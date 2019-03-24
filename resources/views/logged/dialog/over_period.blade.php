@@ -8,7 +8,7 @@
                 <p>{!! trans('dialog.texts.warning_over_period')!!}<span id="over_oeriod_date"></span></p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-dialog-left">{!!trans('dialog.no')!!}</button>
+                <button class="btn btn-default btn-dialog-right">{!!trans('dialog.no')!!}</button>
             </div>
         </div>
     </div>

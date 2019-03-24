@@ -9,8 +9,8 @@
                 <p>{{trans('dialog.texts.warning_save_global_settings', array('site' => Setting::getStaticSettings()->setting_site_url))}}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default btn-dialog-right">{!!trans('dialog.no')!!}</button>
-                {{Form::submit(trans('dialog.yes'), array('id' => 'saveSettings', 'class' => 'btn btn-default btn-dialog-left'))}}
+                <button class="btn btn-default btn-dialog-left">{!!trans('dialog.no')!!}</button>
+                {{Form::submit(trans('dialog.yes'), array('id' => 'saveSettings', 'class' => 'btn btn-default btn-dialog-right'))}}
             </div>
         </div>
     </div>

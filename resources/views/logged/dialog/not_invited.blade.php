@@ -8,7 +8,7 @@
                 <p><span id="not_invited_text"></span></p>
             </div>
             <div class="modal-footer">
-                <button id="cancel_other_host" class="btn btn-default btn-dialog-left">{!!trans('dialog.ok')!!}</button>
+                <button id="cancel_other_host" class="btn btn-default btn-dialog-right">{!!trans('dialog.ok')!!}</button>
             </div>
         </div>
     </div>

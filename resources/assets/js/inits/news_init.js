@@ -1,44 +1,16 @@
-var postLoadTimeOut = 10 * 60 * 1000,
-    comment_viewed = false,
-    counter = 0,
-    warningTimer,
+var counter = 0,
     fillPostContent =  function(d, editCheck) {
         return '<div id="post_' + d.id + '">' +
-            '<div class="row">' +
-            '<div class="col-sm-12 col-md-12 posts">' +
-            '<h4>' + window.lang.post_from + ' <a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_login_name + '</a></h4>' +
-            '<p>' + d.created_at + ' ' + editCheck + '</p>' +
-            '</div>' +
-            '</div>' +
             '<div class="row postrow">' +
-            '<div class="col-sm-12 col-md-12 posts">' +
-            d.post_text +
+                '<div class="col-sm-3 col-md-3 col-xs-2 posts">' +
+                    '<h4>' + d.created_at + '<br><a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_first_name + ' ' + d.user_name + '</a></h4>' +
+                    editCheck +
+                '</div>' +
+                '<div class="col-sm-9 col-md-9 col-xs-10 post-entry">' +
+                    d.post_text +
+                '</div>' +
             '</div>' +
-            '</div>' +
-            '</div>';
-    },
-    loadPosts = function () {
-        "use strict";
-        $.ajax({
-            type: 'GET',
-            contentType: "application/x-www-form-urlencoded;charset=utf-8",
-            url: 'news_reloaded',
-            success: function (n) {
-                GlobalFunctions.unAuthorized(n);
-                if (typeof n === 'string' && n.indexOf('<!DOCTYPE') > -1) {
-                    return false;
-                }
-                var editCheck,
-                    str = '',
-                    dats = n[0],
-                    auth = n.auth;
-                $.each(dats, function (i, data) {
-                    editCheck = (auth === data.uid) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
-                    str = fillPostContent(data, editCheck);
-                    $('#newsticker').append(str);
-                });
-            }
-        });
+        '</div>';
     };
 $(document).ready(function () {
     "use strict";
@@ -118,11 +90,16 @@ $(document).ready(function () {
             },
             success: function (n) {
                 GlobalFunctions.unAuthorized(n);
-                var editCheck,
+                var editCheck = '',
                     str,
                     data = n[0][0],
                     auth = n.auth;
-                editCheck = (auth === data.uid) ? '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span><span id="deletePost_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' : '';
+                if (auth === data.uid) {
+                    editCheck = '<div class="tools">' +
+                        '<span id="editPost_' + data.id + '" class="glyphicon glyphicon-pencil edit"></span>' +
+                        '<span id="deletePost_' + data.id + '" class="glyphicon glyphicon-remove edit"></span>' +
+                        '</div>';
+                }
                 str = fillPostContent(data, editCheck);
                 $('#newsticker').prepend(str);
             }

@@ -121,8 +121,7 @@ class ReservationController extends Controller
     public function getUserReservations()
     {
         $user = User::find(Auth::id());
-        $checkPeriod = Period::getCurrentPeriod();
-        $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $rolesTrans = Role::getRolesForGuestV3();
         $userRes = Reservation::where('user_id', '=', $user->id)
             ->orderBy('reservation_started_at', 'desc')
             ->with('guests')
@@ -160,10 +159,8 @@ class ReservationController extends Controller
      */
     public function AdminGetAllReservations()
     {
-        $user = User::find(Auth::id());
         $res = new Reservation();
-        $checkPeriod = Period::getCurrentPeriod();
-        $rolesTrans = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $rolesTrans = Role::getRolesForGuestV3();
         $allRes = $res->getReservations();
         $allRes->each(function ($ur) {
             if ($ur->guests->isEmpty()) {
@@ -340,11 +337,10 @@ class ReservationController extends Controller
         $userClanID = $user->getUserClan();
         $start = new \DateTime();
         $periods = new Period();
-        $checkPeriod = Period::getCurrentPeriod();
 
 
         $args['userClan'] = $user->getUserClanName($userClanID);
-        $args['rolesTrans'] = Role::getRolesForGuestV3((intval($user->clan_id) == intval($checkPeriod->clan_id)));
+        $args['rolesTrans'] = Role::getRolesForGuestV3();
         $guestBlade = view('logged.dialog.guest_entry', ['rolesTrans' => $args['rolesTrans'], 'i' => 0]);
         $guestEntryView = $guestBlade->render();
         $args['guestEntryView'] = strtr($guestEntryView,"\n\r","  ");

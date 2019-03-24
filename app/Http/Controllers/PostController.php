@@ -37,8 +37,6 @@ class PostController extends Controller
      */
     public function savePost()
     {
-        date_default_timezone_set(trans('formats.tz'));
-        $set = Setting::getStaticSettings();
         $credentials = [
             'user_id' => Auth::id(),
             'post_text' => Input::get('post_text')
