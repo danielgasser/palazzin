@@ -47,7 +47,7 @@
                         <td>{{$res->reservation_nights}}</td>
                         <td>{{$res->sum_total}}</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #b7282e;">
+                    <tr style="border-bottom: 1px solid #b7282e;" id="delete_table_all_reservations_guests_{{$res->id}}"">
                         <td scope="col" colspan="4" class="6" id="guests">
                             @if(sizeof($res->guests) > 0)
                                 <b>{{$res->sum_guest}} {{trans('reservation.guests.title')}}</b>

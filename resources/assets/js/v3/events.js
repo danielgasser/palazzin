@@ -61,18 +61,6 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
 });
 
 /**
- * Choose user if "Anderer Gastgeber"
- */
-$(document).on('click', '[id^="chooseuser_"]', function () {
-    let uid = $(this).attr('id').split('_'),
-        text = $(this).text(),
-        mid = $('#guestFormClanOtherId').text();
-    window.V3Reservation.toggleOtherHost(mid, text, false);
-    $('#cross_reserv_user_list').modal('hide');
-    $('#userIdAb').val(uid[1]);
-});
-
-/**
  * Guest number
  */
 $(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_guest_num_total)', function () {
@@ -188,7 +176,6 @@ $(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e
     e.preventDefault();
     let id = $(this).attr('id').split('_').pop();
     if (parseInt(this.innerText, 10) <= parseInt(window.settings.setting_num_bed)) {
-
     }
 });
 

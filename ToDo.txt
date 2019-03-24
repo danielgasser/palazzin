@@ -1,14 +1,10 @@
 ToDo:
 
--before going life with v3:
 routes.php:129 add colors to have a total of 10
-mail settings
 
 cron jobs --> web.php
 
 DB:
-port table roles (structure????)
-delete table comments (structure)
 Credentials!
 Config!!
 

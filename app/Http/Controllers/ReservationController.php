@@ -261,7 +261,7 @@ class ReservationController extends Controller
                 ->with('userClan', $resInfo['userClan'])
                 ->with('my_reservations', json_encode($my_reservations, JSON_HEX_APOS))
                 ->with('periodsDatePicker', $resInfo['periodsDatePicker'])
-                ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservation']));
+                ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservierung']));
         }
     }
 

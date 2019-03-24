@@ -50,7 +50,8 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::get('user/profile/{id?}', 'UserController@showProfile');
 
     });
-    // Users
+
+        // Users
     Route::group(['middleware' => 'reservator'], function () {
         Route::get('news', 'NewsController@getNews')->name('news');
 

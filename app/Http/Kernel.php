@@ -10,6 +10,7 @@ use App\Http\Middleware\IsClerkOrReservator;
 use App\Http\Middleware\isKeeper;
 use App\Http\Middleware\isLegitimeUser;
 use App\Http\Middleware\IsReservator;
+use App\Http\Middleware\NoRole;
 use App\Http\Middleware\RevalidateBackHistory;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -74,6 +75,6 @@ class Kernel extends HttpKernel
         'clerk' => IsClerk::class,
         'clerk-reservator' => IsClerkOrReservator::class,
         'ajax-session-expired' => AjaxSessionExpiredMiddleware::class,
-        'revalidate' => RevalidateBackHistory::class
+        'revalidate' => RevalidateBackHistory::class,
     ];
 }

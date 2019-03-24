@@ -101,22 +101,100 @@ var V3Reservation = {
         $('#reservation_guest_guests_0').attr('disabled', false);
         $('#reservation_guest_num_0').attr('disabled', false);
     },
-    addBeforeShowDay: function (d, otherClanDate, isEdit, selectedDate) {
+    addBeforeShowDayEdit: function (d, otherClanDate, isEdit) {
         let numBeds = window.settings.setting_num_bed,
             dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
             host = (occupied > 0) ? 1 : 0,
             oB = 0,
-            ownClass = (window.newUserRes.hasOwnProperty('user_Res_Dates_' + dateStr)) ? ' myRes' : '',
+            today = new Date(),
+            ownClass = (window.newUserRes.hasOwnProperty('user_Res_Dates_' + dateStr) && !isEdit) ? ' myRes' : '',
             occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - (occupied + host)) + '</span><span class="occB">' + (occupied + host) + '</span>',
             str = (window.datePickerPeriods[pickerDateStr] !== undefined) ? window.datePickerPeriods[pickerDateStr].split('|') : '',
             priority = $('.priority>li>.' + str[0] + '-datepicker-content'),
             bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
-            isEnabled = window.uID.clan_code === str[0] || (window.uID.clan_code !== str[0] && d <= otherClanDate) || window.endDate === d,
+            isEnabled = false,
             hasFreeBeds = (occupied + host < numBeds),
             returnObject;
-        if (window.newAllGuestBeds['freeBeds_' + dateStr + 'uID' + window.autid] !== undefined) {
+        today.setHours(0, 0, 0, 0);
+        if (isEdit) {
+            if (d.getTime() >= today.getTime()) {
+                isEnabled = true;
+            }
+            else if (window.uID.clan_code !== str[0] && d <= otherClanDate && d.getTime() >= today.getTime()) {
+                isEnabled = true;
+            } else {
+                isEnabled = false;
+            }
+        } else {
+            if (d.getTime() >= today.getTime()) {
+                isEnabled = true;
+            } else if (window.uID.clan_code === str[0]) {
+                isEnabled = true;
+            }else if (window.uID.clan_code !== str[0] && d <= otherClanDate && d.getTime() >= today.getTime()) {
+                isEnabled = true;
+            } else if (window.endDate === d) {
+                isEnabled = true;
+            } else if (window.newAllGuestBeds['freeBeds_' + dateStr + 'uID' + window.autid] === undefined) {
+                isEnabled = true;
+            } else {
+                isEnabled = false;
+            }
+        }
+        console.log(dateStr, isEnabled)
+
+        if (isEdit) {
+            oB = window.newUserRes['user_Res_Dates_' + dateStr];
+            if (isNaN(oB)) {
+                oB = 0;
+            }
+            hasFreeBeds = (occupied - oB + host < numBeds);
+        } else {
+            if (str[0] === 'WO') {
+                $('.priority>li>.GU-datepicker-content').html(window.allClans['GU']).css({color: '#333'})
+            } else {
+                $('.priority>li>.WO-datepicker-content').html(window.allClans['WO']).css({color: '#333'})
+            }
+            priority.html(window.reservationStrings.prior + ': ' + str[1]).css({color: '#b7282e'});
+        }
+        if (!hasFreeBeds) {
+            isEnabled = false;
+        }
+        returnObject = {
+            enabled: isEnabled,
+            tooltip: str[1],
+            classes: bothClasses + 'pID_' + str[2] + ownClass,
+            content: '<div class="datepicker-occupied-beds">' + occupiedBeds + '</div><div class="datepicker-day-date">' + d.getDate() + '</div>'
+        };
+        return returnObject;
+    },
+    addBeforeShowDayNew: function (d, otherClanDate, isEdit) {
+        let numBeds = window.settings.setting_num_bed,
+            dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
+            pickerDateStr = V3Reservation.formatDate(d, false, '_'),
+            occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
+            host = (occupied > 0) ? 1 : 0,
+            oB = 0,
+            today = new Date(),
+            otherClanMinDate = new Date(),
+            otherClanMaxDate = new Date(d.getTime()),
+            ownClass = (window.newUserRes.hasOwnProperty('user_Res_Dates_' + dateStr) && !isEdit) ? ' myRes' : '',
+            occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - (occupied + host)) + '</span><span class="occB">' + (occupied + host) + '</span>',
+            str = (window.datePickerPeriods[pickerDateStr] !== undefined) ? window.datePickerPeriods[pickerDateStr].split('|') : '',
+            priority = $('.priority>li>.' + str[0] + '-datepicker-content'),
+            bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
+            isEnabled = false,
+            hasFreeBeds = (occupied + host < numBeds),
+            returnObject;
+        today.setHours(0, 0, 0, 0);
+        otherClanMinDate.setDate(today.getDate() + 10);
+        otherClanMaxDate.setDate(d.getDate() + 10);
+        if (d.getTime() >= today.getTime() &&
+            window.newAllGuestBeds['freeBeds_' + dateStr + 'uID' + window.autid] === undefined) {
+            isEnabled = true;
+        }
+        if (window.uID.clan_code !== str[0] && otherClanMaxDate > otherClanMinDate) {
             isEnabled = false;
         }
         if (isEdit) {
@@ -199,7 +277,7 @@ var V3Reservation = {
             orientation: 'auto bottom',
             immediateUpdates: true,
             beforeShowDay: function (Date) {
-                return V3Reservation.addBeforeShowDay(Date, otherClanDate, false);
+                return V3Reservation.addBeforeShowDayNew(Date, otherClanDate, false);
             }
         };
 
@@ -276,7 +354,7 @@ var V3Reservation = {
             orientation: 'auto bottom',
             immediateUpdates: true,
             beforeShowDay: function (Date) {
-                return V3Reservation.addBeforeShowDay(Date, otherClanDate, true, this.startDate);
+                return V3Reservation.addBeforeShowDayEdit(Date, otherClanDate, true, this.startDate);
             }
         };
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('show', function (e) {
@@ -785,6 +863,7 @@ var V3Reservation = {
                     return false;
                 }
                 $('#delete_table_all_reservations_' + id).remove();
+                $('#delete_table_all_reservations_guests_' + id).remove();
                 if ($('[id^="all_reservations_"]').length === 0) {
                     $('#noview').find('h1').html(window.reservationStrings.no_bookings);
                 }
