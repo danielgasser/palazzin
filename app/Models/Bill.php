@@ -342,19 +342,37 @@ class Bill extends Model {
 
     /**
      * @param array $year
+     * @param null  $user_id
      * @return array
      */
-    public function getBillsTotalStatsPerYear($year = array('2015-%'))
+    public function getBillsTotalStatsPerYear($year = array('2015-%'), $user_id = null)
     {
-        $bills = $this->selectRaw("bill_bill_date, bill_due, bill_total, bill_bill_date")
-            ->where('bill_bill_date', 'like', $year[0])
-            ->where('bills.bill_sent', '=', '1')
-            ->orWhere(function ($query) use($year) {
-                foreach($year as $y){
-                    $query->orWhere('bill_bill_date', 'like', $y);
-                }
-            })
-            ->get();
+        if ($user_id === null) {
+            $bills = $this->selectRaw("bill_bill_date, bill_due, bill_total, bill_bill_date")
+                ->where('bill_bill_date', 'like', $year[0])
+                ->where('bills.bill_sent', '=', '1')
+                ->orWhere(function ($query) use($year) {
+                    foreach($year as $y){
+                        $query->orWhere('bill_bill_date', 'like', $y);
+                    }
+                })
+                ->get();
+        } else {
+            $bills = $this->selectRaw("bill_bill_date, bill_due, bill_total, bill_bill_date")
+                ->join('users', function ($join) use ($user_id) {
+                    $join->on('users.id', '=', 'bills.bill_user_id')
+                        ->where('bills.bill_user_id', '=', $user_id);
+                })
+                ->where('bill_bill_date', 'like', $year[0])
+                ->where('bills.bill_sent', '=', '1')
+                ->where('bills.bill_user_id', '=', $user_id)
+                ->orWhere(function ($query) use($year) {
+                    foreach($year as $y){
+                        $query->orWhere('bill_bill_date', 'like', $y);
+                    }
+                })
+                ->get();
+        }
         $totals = array();
         $bills->month_total = [];
         $bills->year_total = [];

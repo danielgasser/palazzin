@@ -5,7 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\AjaxSessionExpiredMiddleware;
 use App\Http\Middleware\beforeIsAdmin;
 use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\isClerk;
+use App\Http\Middleware\IsClerk;
 use App\Http\Middleware\IsClerkOrReservator;
 use App\Http\Middleware\isKeeper;
 use App\Http\Middleware\isLegitimeUser;

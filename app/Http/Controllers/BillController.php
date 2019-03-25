@@ -102,7 +102,6 @@ class BillController extends Controller
     {
         $fs = new Filesystem();
         $files = $fs->allFiles(public_path('/files/__clerk/'));
-        //dd($files);
         return view('logged.admin.bill_list')
             ->with('allBills', $files);
     }
@@ -113,7 +112,7 @@ class BillController extends Controller
     public function getAllTotals ()
     {
         $userBills = '';
-        if (!request()->is('admin/bills')) {
+        if (request()->is('user/bills')) {
             $userBills = ' and bill_user_id = ' . Auth::id();
         }
         $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1' . $userBills)[0]->total, 2, '.', '\'');
@@ -124,5 +123,4 @@ class BillController extends Controller
         }
         return $arr;
     }
-
 }

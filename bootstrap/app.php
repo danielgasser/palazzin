@@ -50,5 +50,14 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+$envFile = '.env';
+if ($_SERVER['HTTP_HOST'] === 'roomapp') {
+    $envFile = '.local.env';
+} else {
+    $envFile = '.production.env';
+}
+
+$app->loadEnvironmentFrom($envFile);
+
 
 return $app;

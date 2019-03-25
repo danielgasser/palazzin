@@ -109,7 +109,8 @@
         var billPaid = [
                 '{{trans('bill.un_paid')}}',
                 '{{trans('bill.paid')}}'
-            ];
+            ],
+        langBill = '{{trans('bill.send_bill')}}';
 
     </script>
     <script type="text/javascript"

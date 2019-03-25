@@ -57,11 +57,8 @@
                                 <hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #b7282e;"> </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 col-md-6">
+                            <div class="col-sm-12 col-md-12">
                                 <a class="btn btn-default" style="width: 100%;" href="{{ route('password.request') }}">{{ __('login.forgot') }}?</a>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <a class="btn btn-default" style="width: 100%;" href="{{URL::to('help/pl')}}">{{trans('login.login_prob')}}?</a>
                             </div>
                         </div>
                     </form>

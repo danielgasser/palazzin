@@ -2,7 +2,7 @@ $.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
 {
     return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
         return $('#' + td.id).children('input').val();
-    } );
+    });
 };
 var billTable,
     dataTableSettings = {
@@ -227,10 +227,13 @@ var billTable,
                 $('#paid_' + id).html(paid);
                 el.val(data.paid);
                 if (data.paid === null) {
-                    $('#bill_sent_' + id).hide();
+                    $('#re_send_' + id).html(
+                        '<button class="btn btn-default" id="bill_sent_' + id + '">' + window.langBill  + '</button>'
+                    );
                 } else {
-                    $('#bill_sent_' + id).show();
+                    $('#bill_sent_' + id).remove();
                 }
+                $('#year').trigger('change');
                 return false;
             }
         });
@@ -257,7 +260,8 @@ var billTable,
             type: 'GET',
             url: url,
             data: {
-                year: year
+                year: year,
+                user_id: (window.route.indexOf('user/bills') > -1)
             },
             success: function (data) {
                 let unpaid = (data.hasOwnProperty('unpaid')) ? data.unpaid[year] : '-',
@@ -287,5 +291,5 @@ $(document).on('click', '[id^="bill_sent_"]', function () {
         resendBill(id);
 });
 $(document).on('change', '#year', function () {
-   getBillTotals(this.value)
+   getBillTotals(this.value);
 });

@@ -146,7 +146,12 @@ class StatsController extends Controller
     public function showStatsBillsTotalPerYear()
     {
         $bill = new Bill();
-        $billPaid = $bill->getBillsTotalStatsPerYear([request()->input('year') . '-%']);
+        $user_id = null;
+        if (request()->input('user_id') === 'true') {
+            $user_id = \Auth::id();
+        }
+
+        $billPaid = $bill->getBillsTotalStatsPerYear([request()->input('year') . '-%'], $user_id);
         if (Request::ajax()) {
             return Response::json($billPaid);
         }
