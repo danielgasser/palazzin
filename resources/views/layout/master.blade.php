@@ -21,9 +21,9 @@ if (strlen($routeStr) === 0) {
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     @if (strpos('edit_reservation', $routeStr) !== false)
-        <title>{{Lang::get('reservation.edit_res')}} | Palazzin</title>
+        <title>Palazzin | {{Lang::get('reservation.edit_res')}}</title>
     @else
-    <title>{{Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())}} | Palazzin</title>
+    <title>Palazzin | {{Lang::get('navigation.' . Route::getFacadeRoot()->current()->uri())}}</title>
     @endif
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('img/favicon')}}/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon')}}/favicon-32x32.png">
@@ -128,7 +128,7 @@ if (strlen($routeStr) === 0) {
                 content: "";
                 background: url({{asset('img/bg_images/login/6tja0l4xj9.png')}});
                 background-repeat: no-repeat;
-                background-size: 100% 100%;
+                background-size: cover;
                 opacity: 0.5;
                 top: 0;
                 left: 0;
@@ -147,7 +147,9 @@ if (strlen($routeStr) === 0) {
 
 </head>
 @show
-<body>
+<body><button id="but" style="display: none">
+    Send Notification Now
+</button>
 <div id="hideAll"></div>
     @if (Request::is('reservation'))
  @include('logged.reservation_edit')
@@ -220,27 +222,17 @@ if (strlen($routeStr) === 0) {
                 <div class="col-md-4 col-sm-4 col-xs-12">
                     <h1>{{trans('home.welcome', ['back' => 'zurück', 'name' => $first_name])}}</h1>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12 navbar-default" style="background-color: transparent">
-                    <ul id="your_roles" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left; background-color: transparent">
-                        <li class="dropdown-toggle" id="your_roles_li">
-                            <a style="color: #b7282e" data-toggle="dropdown" href="#" id="show-all-your_roles">
-                                <i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{{ trans('home.yourroles') }}
-                            </a>
-                            <ul class="dropdown-menu multi-level nav navbar-nav">
+                <div class="col-md-3 col-sm-4 col-xs-12 navbar-default" style="background-color: transparent">
+                    <h5><i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{{ trans('home.yourroles') }}</h5>
+                            <ul>
                                 @foreach($roles as $role)
                                     <li><a>{{ $role->role_code }} - {{ trans('roles.' . $role->role_code) }}</a></li>
                                 @endforeach
                             </ul>
-                        </li>
-                    </ul>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12 navbar-default" style="background-color: transparent">
-                    <ul id="your_clan" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left; background-color: transparent">
-                        <li class="dropdown-toggle" id="your_clan_li">
-                            <a style="color: #b7282e" data-toggle="dropdown" href="#" id="show-your_clan">
-                                <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;{{ trans('home.yourclan') }}
-                            </a>
-                            <ul class="dropdown-menu multi-level nav navbar-nav">
+                <div class="col-md-4 col-sm-4 col-xs-12 navbar-default" style="background-color: transparent">
+                    <h5><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;{{ trans('home.yourclan') }}</h5>
+                            <ul>
                                 @foreach($clan_name as $clan)
                                     <li><a><span class="{{ $clan->clan_code }}-text">{{ $clan->clan_description }}</span></a></li>
                                 @endforeach
@@ -268,16 +260,16 @@ if (strlen($routeStr) === 0) {
             @break
             @case(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
             <div id="res-nav">
-                <div class="col-md-4 col-sm-4 col-xs-12 title-res">
+                <div class="col-md-4 col-sm-6 col-xs-12 title-res">
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @include('logged.dialog.timeliner')
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-6 title-res navbar-default">
+                <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @if(strpos('edit_reservation', $routeStr) === false)
                         @include('logged.dialog.legend')
                         @endif
@@ -347,6 +339,7 @@ if (strlen($routeStr) === 0) {
         <script src="{{asset('libs/bootstrap-toggle/bootstrap-toggle.min.js')}}"></script>
         <script src="{{asset('libs/DataTables/datatables.min.js')}}"></script>
         <script src="{{asset('js/funcs.min.js')}}"></script>
+        <script src="{{asset('js/browserNotification.min.js')}}"></script>
         <script>
             var urlTo = '{{URL::to('/')}}',
                 langDialog = {!!json_encode(Lang::get('dialog'))!!},

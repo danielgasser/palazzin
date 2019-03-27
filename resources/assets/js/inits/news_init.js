@@ -1,12 +1,13 @@
 var counter = 0,
     fillPostContent =  function(d, editCheck) {
         return '<div id="post_' + d.id + '">' +
+            '<a id="link_post_' + d.id + '">' +
             '<div class="row postrow">' +
-                '<div class="col-sm-3 col-md-3 col-xs-2 posts">' +
+                '<div class="col-sm-3 col-md-3 col-xs-12 posts">' +
                     '<h4>' + d.created_at + '<br><a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_first_name + ' ' + d.user_name + '</a></h4>' +
                     editCheck +
                 '</div>' +
-                '<div class="col-sm-9 col-md-9 col-xs-10 post-entry">' +
+                '<div class="col-sm-9 col-md-9 col-xs-12 post-entry">' +
                     d.post_text +
                 '</div>' +
             '</div>' +
@@ -102,6 +103,7 @@ $(document).ready(function () {
                 }
                 str = fillPostContent(data, editCheck);
                 $('#newsticker').prepend(str);
+                window.notifyMe('Neuer News-Ticker', n[0][0]);
             }
         });
     });

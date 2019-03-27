@@ -18,8 +18,8 @@
         <h4></h4>
     </div>
     <div id="container_table_all_reservations" class="table-responsive">
+        @if(sizeof($userRes) > 0)
             <table id="table_all_reservations" class="table">
-                @if(sizeof($userRes) > 0)
                 <thead>
                 <tr style="border-bottom: 1px solid #33333336;">
                     <th scope="col" class="0" id="edit">Aktionen</th>
@@ -69,7 +69,7 @@
                                     @foreach($res->guests as $k => $guest)
                                     <tr>
                                         <td>{{$k+=1}}</td>
-                                        <td>{{$guest->guest_started_at}}-{{$guest->guest_ended_at}}</td>
+                                        <td style="white-space: normal">{{$guest->guest_started_at}}-{{$guest->guest_ended_at}}</td>
                                         <td>{{$guest->guest_night}}</td>
                                         <td>{{$guest->guest_number}}</td>
                                         <td>{{$rolesTrans[$guest->role_id]}}</td>
@@ -88,17 +88,12 @@
                     </tr>
                     @endforeach
                 </tbody>
-                @else
-                    <thead>
-                    <tr>
-                        <td colspan="5"><h4>Du hast keine Reservierungen</h4></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5"><h5><a class="btn btn-default" href="{{URL::to('new_reservation')}}">Hier kannst Du reservieren</a></h5></td>
-                    </tr>
-                    </thead>
-                @endif
             </table>
+        @else
+            <h4>Du hast keine Reservierungen</h4>
+            <h5><a class="btn btn-default" href="{{URL::to('new_reservation')}}">Hier kannst Du reservieren</a></h5>
+        @endif
+
     </div>
     @include('logged.dialog.delete_reservation')
     @include('logged.dialog.no_delete_reservation')

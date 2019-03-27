@@ -37,6 +37,9 @@
                 ul {
                     padding-left: 2px;
                 }
+                &.details {
+                    min-width: 23px;
+                }
             }
             &.odd {
                 background-color: #cbcbcb;
@@ -54,5 +57,4 @@
             }
         }
     }
-
 }

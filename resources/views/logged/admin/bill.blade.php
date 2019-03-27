@@ -31,13 +31,13 @@
             </select>
         </div>
         <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
-            <h5>Total<br><span id="total">CHF {{$allTotals['total']}}</span></h5>
+            <h5>Total<br><span id="total"></span></h5>
         </div>
         <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
-            <h5>Bezahlt<br><span id="paid">CHF {{$allTotals['paid']}}</span></h5>
+            <h5>Bezahlt<br><span id="paid"></span></h5>
         </div>
         <div class="col-sm-3 col-md-3 col-sm-6 col-xs-12">
-            <h5>Unbezahlt<br><span id="unpaid">CHF {{$allTotals['unpaid']}}</span></h5>
+            <h5>Unbezahlt<br><span id="unpaid"></span></h5>
         </div>
     </div>
     <div class="row">
@@ -51,28 +51,31 @@
                     <th>{{trans('profile.names')}}</th>
                     <th>{{trans('bill.paid')}}</th>
                     <th>{{trans('bill.paid_at')}}</th>
-                    <th>PDF</th>
+                    @if(!request()->is('user/bills'))
                     <th>{{trans('bill.send_bill')}}</th>
                     <th>{{trans('bill.sent_at')}}</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
             @foreach($allBills as $b)
                 <tr id="{{$b->id}}">
                     <td></td>
-                    <td>{{$b->bill_no}}</td>
+                    <td><a class="bill_path" target="_blank" href="{{URL::to('/')}}{{$b->bill_path}}">{{$b->bill_no}}</a></td>
                     <td data-sort="{{$b->bill_bill_date}}">{{$b->bill_bill_date_show}}</td>
                     <td data-sort="{{$b->bill_total}}">{{$b->bill_currency}} {{$b->bill_total}}</td>
                     <td data-sort="{{$b->user->user_first_name}} {{$b->user->user_name}}">
                         <a href="{{URL::to('user/profile/' . $b->reservation->user_id)}}">{{$b->user->user_first_name}} {{$b->user->user_name}}</a>
                     </td>
                     <td id="paid_{{$b->id}}">{{(isset($b->bill_paid)) ? trans('bill.paid') : trans('bill.un_paid') }}</td>
+                    @if(!request()->is('user/bills'))
                     <td data-sort="{{$b->bill_paid}}" id="datePicker_{{$b->id}}">
                         <input class="form-control input-sm show_reservation" placeholder="{{trans('bill.un_paid')}}" readonly="readonly" name="paidAt_{{$b->id}}" id="paidAt_{{$b->id}}" value="{{$b->bill_paid_show}}" />
                     </td>
-                    <td>
-                        <a class="bill_path" target="_blank" href="{{URL::to('/')}}{{$b->bill_path}}">{{$b->bill_no}}.pdf</a>
-                    </td>
+                    @else
+                        <td data-sort="{{$b->bill_paid}}">{{$b->bill_paid_show}}</td>
+                    @endif
+                    @if(!request()->is('user/bills'))
                     <td id="re_send_{{$b->id}}">
                         @if(!isset($b->bill_paid))
 
@@ -80,6 +83,7 @@
                             @endif
                     </td>
                     <td id="re_sent_{{$b->id}}" data-sort="{{$b->bill_resent_date}}">{{$b->bill_resent_date_show}}</td>
+                    @endif
                 </tr>
                 </tr>
             @endforeach
@@ -93,9 +97,10 @@
                 <th>{{trans('profile.names')}}</th>
                 <th>{{trans('bill.paid')}}</th>
                 <th>{{trans('bill.paid_at')}}</th>
-                <th>PDF</th>
+                @if(!request()->is('user/bills'))
                 <th>{{trans('bill.send_bill')}}</th>
                 <th>{{trans('bill.sent_at')}}</th>
+                @endif
             </tr>
             </tfoot>
         </table>
@@ -110,6 +115,7 @@
                 '{{trans('bill.un_paid')}}',
                 '{{trans('bill.paid')}}'
             ],
+            isUserBill = '{{(request()->is('user/bills')) ? '1' : '0'}}',
         langBill = '{{trans('bill.send_bill')}}';
 
     </script>

@@ -42,10 +42,8 @@ class HomeController extends Controller
     {
         $user = User::find(Auth::id());
         if ($user->isLoggedClerk()) {
-            return redirect('userlist');
+            return redirect('admin/bills');
         }
-        $message = '<h3>WICHTIG! Bitte lesen!<br><a style="z-index: 1000;" target="_blank" href="' . \URL::to('/files/___checklist/Checkliste_Benutzer_Palazzin.pdf') . '">Benutzer-Checkliste</a></h3>';
-        session()->flash('info_message', $message);
         return view('welcome')
             ->with('roles', $user->getRoles())
             ->with('first_name', $user->user_first_name)

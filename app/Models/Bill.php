@@ -58,7 +58,6 @@ class Bill extends Model {
     public function generateBills() {
         $set = Setting::getStaticSettings();
         $today = new \DateTime();
-        // ToDo check, once it's live
         $today->modify('+1 day');
         $reservations = new Reservation();
 
@@ -113,7 +112,7 @@ class Bill extends Model {
                 chmod($path, 0777);
                 $billDate = new \DateTime($bill->bill_bill_date);
                 $userForBillCountry = DB::select(DB::raw('select `country_name_' . trans('formats.langjs') . '` from countries where country_code = ' . $userForBill['user_country_code']));
-                $billPDFNo = substr($bill->id . '-' . str_replace([' ', ':', '-', '.'], '', $bill->bill_bill_date), 0, -6);
+                $billPDFNo = 'No-' . substr($bill->id . '-' . str_replace([' ', ':', '-', '.'], '', $bill->bill_bill_date), 0, -6);
                 $resStart = date("d.m.Y", strtotime($r->reservation_started_at));
                 $resEnd = date("d.m.Y", strtotime($r->reservation_ended_at));
                 $pdfTitle = $set->setting_site_name . '-' . trans('bill.bill') . '-' . $billPDFNo . '.pdf';
@@ -147,6 +146,8 @@ class Bill extends Model {
                 $pdf->loadView('pdfs.bill', $data);
                 $pdf->save(public_path() . '/files/__clerk/' . $pdfTitle)
                     ->stream($pdfTitle);
+                $pdf->save($path . '/' . $pdfTitle)
+                    ->stream($pdfTitle);
                 //mail
                 $arr['attachment'] = public_path() . '/files/__clerk/' . $pdfTitle;
                 if (intval($bill->bill_sent) == 0) {
@@ -168,7 +169,6 @@ class Bill extends Model {
      * @return mixed Collection
      */
     public function getBillsWithUserReservation () {
-        setlocale(LC_ALL, Lang::get('formats.langlang'));
         if (strpos(Route::getFacadeRoot()->current()->uri(), 'admin') !== false) {
             $bills = self::select('*')->orderBy('bill_bill_date', 'DESC')->get();
         } else {

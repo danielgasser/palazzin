@@ -41,7 +41,6 @@ class BillController extends Controller
             ->with('allBills', $bill->getBillsWithUserReservation())
             ->with('users', $users)
             ->with('years', $years)
-            ->with('allTotals', $this->getAllTotals())
             ->with('today', $today->format('Y-m-d'));
     }
 
@@ -113,14 +112,18 @@ class BillController extends Controller
     {
         $userBills = '';
         if (request()->is('user/bills')) {
-            $userBills = ' and bill_user_id = ' . Auth::id();
+            $userBills .= ' and bill_user_id = ' . Auth::id();
         }
-        $arr['total'] =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1' . $userBills)[0]->total, 2, '.', '\'');
-        $arr['paid'] = number_format(DB::select(DB::raw('select sum(bill_total) as paid from bills where bill_sent = 1 and bill_due = 0' . $userBills))[0]->paid, 2, '.', '\'');
-        $arr['unpaid'] = number_format(DB::select(DB::raw('select sum(bill_total) as unpaid from bills where bill_sent = 1 and bill_due = 1' . $userBills))[0]->unpaid, 2, '.', '\'');
-        if (request()->ajax()) {
-            return Response::json($arr);
+        if (request()->input('year') !== 'all') {
+            $userBills .= ' and bill_bill_date LIKE "' . request()->input('year') . '-%"';
         }
-        return $arr;
+        $total =  number_format(DB::select('select sum(bill_total) as total from bills where bill_sent = 1' . $userBills)[0]->total, 2, '.', '\'');
+        $paid = number_format(DB::select(DB::raw('select sum(bill_total) as paid from bills where bill_sent = 1 and bill_due = 0' . $userBills))[0]->paid, 2, '.', '\'');
+        $unpaid = number_format(DB::select(DB::raw('select sum(bill_total) as unpaid from bills where bill_sent = 1 and bill_due = 1' . $userBills))[0]->unpaid, 2, '.', '\'');
+        return json_encode([
+            'total' => $total,
+            'paid' => $paid,
+            'unpaid' => $unpaid
+        ]);
     }
 }

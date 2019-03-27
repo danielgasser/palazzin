@@ -1,5 +1,4 @@
-$.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
-{
+$.fn.dataTable.ext.order['dom-text'] = function  (settings, col) {
     return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
         return $('#' + td.id).children('input').val();
     });
@@ -30,8 +29,8 @@ var billTable,
             sLengthMenu: window.paginationLang.length_menu
         },
         order: [
-            1,
-            'asc'
+            2,
+            'desc'
         ],
         paging: false,
         columnDefs: [
@@ -118,19 +117,12 @@ var billTable,
             },
             {
                 targets: [7],
-                responsivePriority: 6,
-                visible: true,
-                orderable: false,
-                data: 'bill_path'
-            },
-            {
-                targets: [8],
                 responsivePriority: 7,
                 visible: true,
                 orderable: false
             },
             {
-                targets: [9],
+                targets: [8],
                 responsivePriority: 8,
                 visible: true,
                 orderable: true,
@@ -143,6 +135,131 @@ var billTable,
                     }
                     return data;
                 }
+            },
+        ],
+        initComplete: function () {
+            this.api().columns(5).every( function () {
+                var column = this;
+                var select = $('<select class="form-control input-sm show_reservation"><option value=""></option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                        datePickerInit();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    },
+    dataTableSettingsUser = {
+        dataSrc: '',
+        stripeClasses: [
+            'odd',
+            'even'
+        ],
+        responsive: false,
+        autoWidth: true,
+        fixedHeader: {
+            header: true,
+            footer: true
+        },
+        language: {
+            emptyTable: 'Keine Rechungen vorhanden',
+            paginate: {
+                first: window.paginationLang.first,
+                previous: window.paginationLang.previous,
+                next: window.paginationLang.next,
+                last: window.paginationLang.last
+            },
+            search: window.langDialog.search,
+            info: window.paginationLang.info,
+            sLengthMenu: window.paginationLang.length_menu
+        },
+        order: [
+            1,
+            'desc'
+        ],
+        paging: false,
+        columnDefs: [
+            {
+                targets: [0],
+                responsivePriority: 1,
+                class: 'details',
+                visible: true,
+                orderable:      false,
+                data:           null,
+                defaultContent: ''
+            },
+            {
+                targets: [1],
+                responsivePriority: 1,
+                data: 'bill_no'
+            },
+            {
+                targets: [2],
+                responsivePriority: 2,
+                visible: true,
+                orderable: true,
+                data: 'bill_bill_date',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d_string = data.split('.'),
+                            d = new Date(d_string[2], d_string[1], d_string[0], 0, 0, 0)
+                        return d.getTime();
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [3],
+                responsivePriority: 2,
+                visible: true,
+                orderable: true,
+                data: 'bill_total',
+                type: 'numeric-comma',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        let d = data.split(' ');
+                        return parseFloat(d[1])
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4],
+                responsivePriority: 3,
+                visible: true,
+                orderable: true,
+                sortable: true,
+                data: 'user_first_name user_name',
+                type: 'string',
+                render: function (data, type, full, meta) {
+                    if (type === 'sort') {
+                        return $(data).html();
+                    }
+                    return data
+                }
+            },
+            {
+                targets: [5],
+                responsivePriority: 4,
+                visible: true,
+                orderable: false,
+                data: 'bill_due'
+            },
+            {
+                targets: [6],
+                responsivePriority: 5,
+                orderable: true,
+                data: 'bill_paid'
             },
         ],
         initComplete: function () {
@@ -254,33 +371,35 @@ var billTable,
             }
         });
     },
+    fillBillTotals = function (d) {
+        let data = $.parseJSON(d),
+            unpaid = data.unpaid,
+            paid = data.paid,
+            total = data.total;
+
+        $('#paid').html('CHF ' + paid);
+        $('#total').html('CHF ' + total);
+        $('#unpaid').html('CHF ' + unpaid);
+    },
     getBillTotals = function (year) {
-        let url = (year === 'all') ? '/admin/bills/totals' : '/stats_bill_total_year';
         $.ajax({
             type: 'GET',
-            url: url,
+            url: '/admin/bills/totals',
             data: {
                 year: year,
                 user_id: (window.route.indexOf('user/bills') > -1)
             },
             success: function (data) {
-                let unpaid = (data.hasOwnProperty('unpaid')) ? data.unpaid[year] : '-',
-                    paid = (data.hasOwnProperty('paid')) ? data.paid[year] : '-',
-                    total = (data.hasOwnProperty('total')) ? data.total[year] : '-';
-                if (year === 'all') {
-                    unpaid = data.unpaid;
-                    paid = data.paid;
-                    total = data.total;
-                }
-                $('#paid').html('CHF ' + paid);
-                $('#total').html('CHF ' + total);
-                $('#unpaid').html('CHF ' + unpaid);
+                fillBillTotals(data);
             }
         })
     };
-
 $(document).ready(function () {
-    billTable = $('#bills').DataTable(dataTableSettings);
+    if (window.isUserBill === '1') {
+        billTable = $('#bills').DataTable(dataTableSettingsUser);
+    } else {
+        billTable = $('#bills').DataTable(dataTableSettings);
+    }
     datePickerInit();
 });
 $(document).on('click', '.paginate_button>a', function () {
@@ -292,4 +411,8 @@ $(document).on('click', '[id^="bill_sent_"]', function () {
 });
 $(document).on('change', '#year', function () {
    getBillTotals(this.value);
+});
+
+$(document).ready(function () {
+   getBillTotals('all');
 });

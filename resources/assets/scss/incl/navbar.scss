@@ -85,6 +85,9 @@ ul {
     }
 }
 .navbar-default {
+    h5 {
+        color: $brand-danger;
+    }
   font-weight: bold;
   .navbar-nav>.active>a, .navbar-nav>.active>a:hover, .navbar-nav>.active>a:focus, .navbar-nav>.open>a, .navbar-nav>.open>a:hover, .navbar-nav>.open>a:focus {
     background-color: $color-h1 !important;
@@ -297,8 +300,7 @@ ul {
                 display: block;
                 padding: 0.5em;
                 margin: 0.25em;
-                font-size: 1.5em;
-                width: 98%;
+                font-size: 1.25em;
                 &:hover {
                     text-decoration: none !important;
                     border: 1px solid #b7282e !important;
@@ -313,6 +315,7 @@ ul {
     width: 55px;
     height: 100%;
     opacity: 0.75;
+    z-index: 1200;
     transition: width 1s;
     #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
         .fa-cog:after, .fa-wrench:after {

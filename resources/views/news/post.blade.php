@@ -5,9 +5,9 @@
 <div class="col-sm-6 col-md-6 col-xs-12"></div>
 <div id="newsticker" class="col-sm-12 col-md-12 col-xs-12">
     @foreach($posts as $p)
-    <div id="post_{!!$p->id!!}">
+    <div id="post_{!!$p->id!!}"><a id="link_post_{!!$p->id!!}">
         <div class="row postrow">
-            <div class="col-sm-3 col-md-3 col-xs-2 posts">
+            <div class="col-sm-3 col-md-3 col-xs-12 posts">
                 <h4>{!!$p->created_at!!}<br><a href="{!!URL::to('user/profile')!!}/{!!$p->user_id!!}">{!!$p->user_first_name!!} {!!$p->user_name!!}</a>
                 </h4>
                 @if(Auth::id() == $p->uid)
@@ -17,7 +17,7 @@
                     </div>
                 @endif
             </div>
-            <div class="col-sm-9 col-md-9 col-xs-10 post-entry">
+            <div class="col-sm-9 col-md-9 col-xs-12 post-entry">
                 {!!utf8_encode($p->post_text)!!}
             </div>
         </div>
