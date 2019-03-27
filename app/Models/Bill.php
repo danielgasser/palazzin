@@ -62,7 +62,7 @@ class Bill extends Model {
         $reservations = new Reservation();
 
         $reservations = $reservations
-            ->where('reservation_ended_at', '<=', $today->format('Y-m-d') . ' 00:00:00')
+            ->where('reservation_ended_at', '<', $today->format('Y-m-d') . ' 00:00:00')
             ->where('reservation_bill_sent', '=', '0')
             ->with(array(
                 'guests' => function ($q) {
@@ -73,12 +73,12 @@ class Bill extends Model {
         $arr = array();
         $overSeaUser = false;
         $reservations->each(function ($r) use ($arr, $set, $overSeaUser) {
-            $user = \User::getRolesByID($r->user_id);
-            $r->guests->each(function ($g) use ($arr, $r, $user) {
+            $userRoles = \User::getRolesByID($r->user_id);
+            $r->guests->each(function ($g) use ($arr, $r, $userRoles) {
                 $g->calcGuestSumTotals();
                 $r->reservation_sum += (float)$g->guestSum;
             });
-            foreach($user as $u) {
+            foreach($userRoles as $u) {
                 if($u->role_code == 'GU'){
                     $role = Role::getRoleByRoleCode('GU');
                     $r->reservation_sum += $r->reservation_nights * $role['role_tax_night'];
@@ -135,13 +135,19 @@ class Bill extends Model {
                     'billtext' => $set->setting_bill_text,
                     'setting_bill_deadline' => $set->setting_bill_deadline,
                     'billAddressCountry' => $userForBillCountry[0]->{'country_name_' . trans('formats.langjs')},
-                    'baseUrl' => $set->setting_site_url
-
+                    'baseUrl' => $set->setting_site_url,
+                    'settings' => $set,
+                    'url' => 'https://palazzin.ch'
                 );
                 $data = [
                     'bill' => $arr,
-                    'settings' => $set
+                    'settings' => $set,
+                    'url' => 'https://palazzin.ch'
                 ];
+                $view = view('pdfs.bill')
+                    ->with('bill', $data)
+                    ->with('settings', $set)
+                    ->with('url', URL::to('/'));
                 $pdf = App::make('dompdf.wrapper');
                 $pdf->loadView('pdfs.bill', $data);
                 $pdf->save(public_path() . '/files/__clerk/' . $pdfTitle)

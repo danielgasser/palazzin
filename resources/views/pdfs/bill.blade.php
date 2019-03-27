@@ -2,7 +2,9 @@
     <thead>
         <tr>
             <td colspan="7" style="border-bottom: none">
-                <img src="{!!$settings['setting_site_url']!!}/assets/img/palazzin_title.png" alt="{!!$settings['setting_app_owner']!!}" title="{!!$settings['setting_app_owner']!!}" />
+                <a href="{{ $url }}">
+                    <img src="{{ $url }}/public/img/logo.png" alt="{!!$settings['setting_app_owner']!!}" title="{!!$settings['setting_app_owner']!!}">
+                </a>
             </td>
         </tr>
         <tr>
