@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\NewPost;
 use Post;
 use Setting;
 use Illuminate\Support\Facades\Input;
@@ -79,5 +80,24 @@ class PostController extends Controller
     {
         Post::destroy(Input::get('id'));
         return [];
+    }
+
+    /**
+     * @return false|string
+     */
+    public function notifyNewPost()
+    {
+        $id = request()->input('post_id');
+        $post = Post::find($id);//112
+        if (is_object($post)) {
+            $oddUser = new \User();
+            $oddUser->forceFill([
+                'name' => env('APP_NAME'),
+                'email' => 'alle@palazzin.ch',
+                'user_first_name' => 'liebe Palazziner'
+            ])->notify(new NewPost($post, $oddUser));
+            return json_encode(['success' => 'Die Palazziner wurden benachrichtigt.']);
+        }
+        return json_encode(['error' => 'Die Palazziner konnten nicht benachrichtigt werden.']);
     }
 }

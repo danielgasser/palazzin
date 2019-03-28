@@ -12,7 +12,9 @@ jQuery(document).ready(function () {
     if (window.oldie === '1') {
         $('#old_ie').show();
     }
-
+    if (window.location.hash) {
+        window.localStorage.setItem('news_hash', window.location.hash)
+    }
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

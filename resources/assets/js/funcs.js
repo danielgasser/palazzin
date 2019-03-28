@@ -84,9 +84,10 @@ let GlobalFunctions = {
         }
         return GlobalFunctions.smallerThenTen(d.getDate()) + '. ' + GlobalFunctions.smallerThenTen((d.getMonth() + 1)) + '. ' + d.getFullYear();
     },
-    scrollIt: function (sel, h, speed) {
+    scrollIt: function (sel, speed) {
         "use strict";
-        $(sel).animate({scrollTop: h}, speed);
+        $('html, body').animate({
+            scrollTop: $(sel).offset().top}, speed);
     },
     createYearList: function () {
         "use strict";

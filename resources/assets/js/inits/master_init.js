@@ -2,32 +2,8 @@
  * Created by pc-shooter on 17.12.14.
  */
 var p = [/ü/gi, /ä/gi, /ö/gi, /ò/gi, /é/gi, /è/gi, /à/gi, '-'],
-    replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'],
-    notification,
-    options = {
-        title: 'Neue Benachrichtigung',
-        body: '',
-        icon: 'https://palazzin.ch/public/img/logo_notification.jpg'
-    },
-    notifyMe = function(data) {
-    if (!("Notification" in window)) {
-        return false;
-    }
-    if (data !== undefined) {
-        options.body = 'Neuer Post auf palazzin.ch: ' + data.post_text + ' <a href="' + window.urlTo + '/news#link_post_' + data.id + '>...Weiterlesen</a>';
-    }
-    if (Notification.permission === "granted") {
-        notification = new Notification(options.title, options);
-    }
+    replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'];
 
-    else if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
-            if (permission === "granted") {
-                notification = new Notification(options.title, options);
-            }
-        });
-    }
-};
 jQuery(document).ready(function () {
     "use strict";
     Notification.requestPermission().then(function(result) {
@@ -35,12 +11,17 @@ jQuery(document).ready(function () {
             console.log(result, Notification.permission);
         }
     });
+    if (window.location.hash) {
+        window.localStorage.setItem('news_hash', window.location.hash)
+    }
+
     $('[data-toggle="popover"]').popover({
         html: true
     });
     if (window.oldie === '1') {
         $('#old_ie').show();
     }
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

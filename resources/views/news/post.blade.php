@@ -5,10 +5,10 @@
 <div class="col-sm-6 col-md-6 col-xs-12"></div>
 <div id="newsticker" class="col-sm-12 col-md-12 col-xs-12">
     @foreach($posts as $p)
-    <div id="post_{!!$p->id!!}"><a id="link_post_{!!$p->id!!}">
+        <div id="post_{!!$p->id!!}"><a id="link_post_{!!$p->id!!}"></a>
         <div class="row postrow">
             <div class="col-sm-3 col-md-3 col-xs-12 posts">
-                <h4>{!!$p->created_at!!}<br><a href="{!!URL::to('user/profile')!!}/{!!$p->user_id!!}">{!!$p->user_first_name!!} {!!$p->user_name!!}</a>
+                {!!$p->created_at!!}<br><h4><a href="{!!URL::to('user/profile')!!}/{!!$p->user_id!!}">{!!$p->user_first_name!!} {!!$p->user_name!!}</a>
                 </h4>
                 @if(Auth::id() == $p->uid)
                     <div class="tools">
@@ -24,3 +24,4 @@
     </div>
     @endforeach
 </div>
+@include('logged.dialog.notify_new_post')

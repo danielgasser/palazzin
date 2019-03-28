@@ -70,6 +70,9 @@
         border-bottom: 1px solid $brand-primary;
         .posts {
             border-right: 1px solid #CCCCCC;
+            a {
+                color: #333;
+            }
         }
         .tools {
             float: right;

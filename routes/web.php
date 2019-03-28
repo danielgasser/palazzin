@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         // Users
     Route::group(['middleware' => 'reservator'], function () {
         Route::get('news', 'NewsController@getNews')->name('news');
+        Route::post('notify_new_post', 'PostController@notifyNewPost');
 
         //News
         Route::get('news_reloaded', 'PostController@reloadPost');
