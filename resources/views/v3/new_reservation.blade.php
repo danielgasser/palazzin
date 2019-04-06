@@ -98,6 +98,7 @@
             periodID = periods[0].id,
             endDate,
             reservationsPerPeriod = JSON.parse('{!! $reservationsPerPeriod !!}'),
+            reservationsSums = JSON.parse('{!! json_encode($reservationsSum) !!}'),
             guestTitle = '{{trans('reservation.guest_many_no_js.one')}}: ',
             datePickersEnd = [],
             today = new Date(),
@@ -114,9 +115,10 @@
             oldReservationStarted = '{{ old('reservation_started_at') }}',
             oldPeriodID = '{{ old('periodID') }}',
             reservations = JSON.parse('{!!$userRes!!}'),
-            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod, 'freeBeds_'),
+            newAllGuestBeds = GlobalFunctions.superFilter(reservationsSums, 'freeBeds_'),
             newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_'),
             allInputs = [];
+            console.log(newAllGuestBeds, newUserRes)
     </script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
@@ -125,6 +127,7 @@
     <script src="{{asset('js/V3Reservation.min.js')}}"></script>
     <script src="{{asset('js/new_reservation_init.min.js')}}"></script>
     <script>
+        V3Reservation.writeFreeBedsStorage(newAllGuestBeds, 'freeBeds_', today, today);
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>

@@ -16,13 +16,11 @@ let GlobalFunctions = {
     },
     superFilter: function (data, filter) {
         let arr = [];
-        for (let i = 0; i < data.length; i++) {
-            Object.keys(data[i]).filter(function(k) {
-                if (k.indexOf(filter) === 0 && data[i][k] !== undefined) {
-                    arr[k] = data[i][k];
-                }
-            });
-        }
+        Object.keys(data).filter(function(k) {
+            if (k.indexOf(filter) === 0 && data[k] !== undefined) {
+                arr[k] = data[k];
+            }
+        });
         return arr;
     },
     smallerThenTen: function (i, space) {

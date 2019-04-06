@@ -264,7 +264,10 @@ if (strlen($routeStr) === 0) {
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
-                    @include('logged.dialog.timeliner')
+                    @if(strpos('edit_reservation', $routeStr) === false)
+                        {{-- ToDo--}}
+                       {{--  @include('logged.dialog.timeliner')--}}
+                    @endif
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')
@@ -272,7 +275,7 @@ if (strlen($routeStr) === 0) {
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @if(strpos('edit_reservation', $routeStr) === false)
                         @include('logged.dialog.legend')
-                        @endif
+                    @endif
                 </div>
 
             </div>

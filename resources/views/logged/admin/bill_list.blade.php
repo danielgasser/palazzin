@@ -1,11 +1,17 @@
 @extends('layout.master')
 @section('header')
     @parent
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css')}}/datatables_roomapp_reservation.css"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/js/v3')}}/DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('libs')}}/DataTables/datatables.min.css"/>
 
-    <script type="text/javascript" src="{{asset('assets/js/v3')}}/DataTables/datatables.min.js"></script>
-
+    <style>
+        .dataTables_wrapper {
+            margin: 0;
+            border: none;
+        }
+        .form-control {
+            width: auto;
+        }
+    </style>
 @stop
 @section('content')
 {{--Tools::dd($allBills)--}}
@@ -20,7 +26,7 @@
         <tbody>
         @foreach($allBills as $b)
         <tr>
-            <td>
+            <td data-sort="{{$b->sortNumber}}">
                 <a href="{{asset('/files/__clerk/' . $b->getFileName())}}">{{$b->getFileName()}}</a>
         </tr>
             @endforeach
@@ -30,10 +36,11 @@
 </div>
     @section('scripts')
     @parent
+    <script type="text/javascript" src="{{asset('libs')}}/DataTables/datatables.min.js"></script>
     <script>
         var autid = '{{Auth::id()}}';
     </script>
-        <script src="{{asset('assets/js/inits/bill_list_init.js')}}"></script>
+        <script src="{{asset('js/bill_list_init.min.js')}}"></script>
     @stop
 
 @stop

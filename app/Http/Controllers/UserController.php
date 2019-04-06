@@ -128,9 +128,6 @@ class UserController extends Controller
             $image->save();
             $user->user_avatar = $savePath . '/' . $fileName;
         }
-        if (!str_is($user_old_email, Input::get('email'))) {
-            $new_mail_message = '<br>' . trans('errors.new_mail');
-        }
         $fon1label = (strlen(Input::get('user_fon1_label')) <= 2) ? 'x' : ltrim(Input::get('user_fon1_label'), '#');
         $args = Input::except('user_fon1_label_show', 'user_fon2_label_show', 'user_fon3_label_show', 'user_avatar', 'user_birthday');
         $birthday = \DateTime::createFromFormat('d.m.Y', Input::get('user_birthday'));
@@ -143,9 +140,10 @@ class UserController extends Controller
 
 
         $user->save();
-        $recipientUsers = User::find(1)->get();
+        $recipientUsers = User::find(1);
         $data = ['id' => $user->id, 'old_email' => $user_old_email, 'email' => $user->email, 'login' => $user->user_login_name];
-        if ($user_old_email != $user->email) {
+        if (!str_is($user_old_email, $user->email)) {
+            $new_mail_message = '<br>' . trans('errors.new_mail');
             \Notification::send($recipientUsers, (new ProfileChange($user, $data)));
         }
         return Redirect::back()

@@ -26,7 +26,8 @@ var billTable,
             },
             search: window.langDialog.search,
             info: window.paginationLang.info,
-            sLengthMenu: window.paginationLang.length_menu
+            sLengthMenu: window.paginationLang.length_menu,
+            infoFiltered:   "(gefiltert von _MAX_ Total Einträgen)"
         },
         order: [
             2,
@@ -181,7 +182,8 @@ var billTable,
             },
             search: window.langDialog.search,
             info: window.paginationLang.info,
-            sLengthMenu: window.paginationLang.length_menu
+            sLengthMenu: window.paginationLang.length_menu,
+            infoFiltered:   "(gefiltert von _MAX_ Total Einträgen)"
         },
         order: [
             1,
@@ -411,6 +413,11 @@ $(document).on('click', '[id^="bill_sent_"]', function () {
 });
 $(document).on('change', '#year', function () {
    getBillTotals(this.value);
+   if (this.value !== 'all') {
+       let filter = $('#bills_filter').find('input');
+       filter.val(this.value);
+       filter.trigger('keyup');
+   }
 });
 
 $(document).ready(function () {

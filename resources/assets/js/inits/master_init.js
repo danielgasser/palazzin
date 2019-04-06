@@ -8,7 +8,6 @@ jQuery(document).ready(function () {
     "use strict";
     Notification.requestPermission().then(function(result) {
         if (result === 'granted') {
-            console.log(result, Notification.permission);
         }
     });
     if (window.location.hash) {

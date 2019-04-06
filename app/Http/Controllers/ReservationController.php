@@ -41,7 +41,8 @@ class ReservationController extends Controller
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('allClans', $clans)
             ->with('periods', $args['periods'])
-            ->with('userRes', $reservations)
+            ->with('reservationsSum', $args['reservationsSum'])
+            ->with('userRes', $reservations[0])
             ->with('userClan', $args['userClan'])
             ->with('periodsDatePicker', $args['periodsDatePicker']);
 
@@ -64,10 +65,11 @@ class ReservationController extends Controller
             $userRes = Reservation::where('user_id', '=', $user->id)
                 ->orderBy('reservation_started_at', 'desc')
                 ->get();
-            $reservations = Reservation::setFreeBeds($userRes, 'user_Res_occupiedBeds');
+            $r = Reservation::setFreeBeds($userRes, 'user_Res_occupiedBeds');
             return redirect('all_reservations')
                 ->with('userRes', $userRes)
-                ->with('reservations', $reservations);
+                ->with('reservationsSum', $r[1])
+                ->with('reservations', $r[0]);
         }
         $today = new \DateTime();
         $today->modify('+1 day');
@@ -101,7 +103,8 @@ class ReservationController extends Controller
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
             ->with('userClan', $args['userClan'])
-            ->with('my_reservations', json_encode($my_reservations, JSON_HEX_APOS))
+            ->with('reservationsSum', $args['reservationsSum'])
+            ->with('my_reservations', json_encode($my_reservations[0], JSON_HEX_APOS))
             ->with('periodsDatePicker', $args['periodsDatePicker']);
     }
 
@@ -258,8 +261,9 @@ class ReservationController extends Controller
                 ->with('guestEntryView', $resInfo['guestEntryView'])
                 ->with('reservationsPerPeriod', $resInfo['reservationsPerPeriod'])
                 ->with('periods', $resInfo['periods'])
+                ->with('reservationsSum', $resInfo['reservationsSum'])
                 ->with('userClan', $resInfo['userClan'])
-                ->with('my_reservations', json_encode($my_reservations, JSON_HEX_APOS))
+                ->with('my_reservations', json_encode($my_reservations[0], JSON_HEX_APOS))
                 ->with('periodsDatePicker', $resInfo['periodsDatePicker'])
                 ->with('info_message', trans('errors.data-saved', ['a' => 'Die', 'data' => 'Reservierung']));
         }
@@ -348,7 +352,9 @@ class ReservationController extends Controller
         $args['roleTaxes'] = Role::getRolesTaxV3();
         $args['periods'] = $periods->getTimelinerPeriods($start->format('Y-m'));
         $args['periodsDatePicker'] = $periods->getTimelinerDatePickerPeriods($start->format('Y-m'));
-        $args['reservationsPerPeriod'] = $this->getReservationsPerDateV3($args['periods']->first()->id);
+        $r = $this->getReservationsPerDateV3($args['periods']->first()->id);
+        $args['reservationsPerPeriod'] = $r[0];
+        $args['reservationsSum'] = $r[1];
         return $args;
     }
 }

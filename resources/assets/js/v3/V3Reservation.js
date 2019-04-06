@@ -1,6 +1,7 @@
 var V3Reservation = {
     allPeriods: {},
     periodID: null,
+    fromPeriod: false,
     globalDateFormat: 'dd.MM.yyyy',
     tmpDate: new Date(),
     freeBeds: {},
@@ -106,16 +107,15 @@ var V3Reservation = {
             dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
-            host = (occupied > 0) ? 1 : 0,
             oB = 0,
             today = new Date(),
             ownClass = (window.newUserRes.hasOwnProperty('user_Res_Dates_' + dateStr) && !isEdit) ? ' myRes' : '',
-            occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - (occupied + host)) + '</span><span class="occB">' + (occupied + host) + '</span>',
+            occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - occupied) + '</span><span class="occB">' + occupied + '</span>',
             str = (window.datePickerPeriods[pickerDateStr] !== undefined) ? window.datePickerPeriods[pickerDateStr].split('|') : '',
             priority = $('.priority>li>.' + str[0] + '-datepicker-content'),
             bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
             isEnabled = false,
-            hasFreeBeds = (occupied + host < numBeds),
+            hasFreeBeds = (occupied < numBeds),
             returnObject;
         today.setHours(0, 0, 0, 0);
         if (isEdit) {
@@ -142,14 +142,13 @@ var V3Reservation = {
                 isEnabled = false;
             }
         }
-        console.log(dateStr, isEnabled)
 
         if (isEdit) {
             oB = window.newUserRes['user_Res_Dates_' + dateStr];
             if (isNaN(oB)) {
                 oB = 0;
             }
-            hasFreeBeds = (occupied - oB + host < numBeds);
+            hasFreeBeds = (occupied - oB < numBeds);
         } else {
             if (str[0] === 'WO') {
                 $('.priority>li>.GU-datepicker-content').html(window.allClans['GU']).css({color: '#333'})
@@ -174,18 +173,17 @@ var V3Reservation = {
             dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
-            host = (occupied > 0) ? 1 : 0,
             oB = 0,
             today = new Date(),
             otherClanMinDate = new Date(),
             otherClanMaxDate = new Date(d.getTime()),
             ownClass = (window.newUserRes.hasOwnProperty('user_Res_Dates_' + dateStr) && !isEdit) ? ' myRes' : '',
-            occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - (occupied + host)) + '</span><span class="occB">' + (occupied + host) + '</span>',
+            occupiedBeds = (window.newAllGuestBeds['freeBeds_' + dateStr] === undefined) ? '<span class="freeB">' + numBeds + '</span><span class="occB">0</span>' : '<span class="freeB">' + (numBeds - occupied) + '</span><span class="occB">' + occupied + '</span>',
             str = (window.datePickerPeriods[pickerDateStr] !== undefined) ? window.datePickerPeriods[pickerDateStr].split('|') : '',
             priority = $('.priority>li>.' + str[0] + '-datepicker-content'),
             bothClasses = (str.length === 4) ? str[0] + '-datepicker-' + str[3] + ' ' : str[0] + '-datepicker-content ',
             isEnabled = false,
-            hasFreeBeds = (occupied + host < numBeds),
+            hasFreeBeds = (occupied < numBeds),
             returnObject;
         today.setHours(0, 0, 0, 0);
         otherClanMinDate.setDate(today.getDate() + 10);
@@ -202,7 +200,7 @@ var V3Reservation = {
             if (isNaN(oB)) {
                 oB = 0;
             }
-            hasFreeBeds = (occupied - oB + host < numBeds);
+            hasFreeBeds = (occupied - oB < numBeds);
         } else {
             if (str[0] === 'WO') {
                 $('.priority>li>.GU-datepicker-content').html(window.allClans['GU']).css({color: '#333'})
@@ -224,12 +222,12 @@ var V3Reservation = {
     },
     initNew: function (pID, startDate, fromPeriod) {
         V3Reservation.periodID = pID;
+        V3Reservation.fromPeriod = fromPeriod;
         let period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID)),
             today = new Date(),
             guestDateEl,
             priority,
             priorityContent,
-            titleString = '',
             otherClanDate = new Date();
         otherClanDate.setDate(otherClanDate.getDate() + 10);
         otherClanDate.setHours(0, 0, 0, 0);
@@ -239,7 +237,7 @@ var V3Reservation = {
             period = $.parseJSON(localStorage.getItem('period_' + V3Reservation.periodID));
         }
         $('#periodID').val(V3Reservation.periodID);
-        if (startDate < today && !fromPeriod) {
+        if (startDate < today && !V3Reservation.fromPeriod) {
             startDate = today;
         }
         priority = $('.priority>li>.' + period.clan_code + '-datepicker-content');
@@ -248,16 +246,13 @@ var V3Reservation = {
         window.endDate = new Date(window.settings.setting_calendar_start);
         startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
-        if (fromPeriod) {
+        if (V3Reservation.fromPeriod) {
             window.endDate = V3Reservation.periodEndDate;
         }
         window.endDate.setFullYear(window.endDate.getFullYear() + parseInt(window.settings.setting_calendar_duration));
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
         priority.html(window.reservationStrings.prior + ': ' + priorityContent).css({color: '#b7282e !important'});
-        if (window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')] !== undefined) {
-            titleString = window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1];
-        }
         V3Reservation.datePickerSettings = {
             format: "dd.mm.yyyy",
             weekStart: 1,
@@ -295,13 +290,15 @@ var V3Reservation = {
         });
         window.resStartPicker = $('.input-daterange').find('#reservation_started_at');
         window.resEndPicker = $('.input-daterange').find('#reservation_ended_at');
-        if (fromPeriod) {
+        if (V3Reservation.fromPeriod) {
             window.resStartPicker.datepicker('setDate', startDate)
             let dates = {
                 startDate: startDate,
                 endDate: new Date(V3Reservation.periodEndDate.getTime()),
             };
             V3Reservation.adaptChanged(dates, dates.endDate, true);
+            window.resEndPicker.datepicker('setDate', null);
+            V3Reservation.noClick(false);
         }
         guestDateEl = $('#guestDates_' + 0);
         guestDateEl.datepicker(V3Reservation.datePickerSettings);
@@ -314,7 +311,6 @@ var V3Reservation = {
         let period = window.userPeriod,
             today = new Date(),
             guestDateEl,
-            titleString = '',
         otherClanDate = new Date();
         otherClanDate.setDate(otherClanDate.getDate() + 10);
         otherClanDate.setHours(0, 0, 0, 0);
@@ -332,9 +328,6 @@ var V3Reservation = {
         window.endDate.setHours(0, 0, 0, 0);
         $('#hideAll').hide();
         $('[id^="show_res"]').show();
-        if (window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')] !== undefined) {
-            titleString = window.datePickerPeriods[V3Reservation.formatDate(today, false, '_')].split('|')[1];
-        }
         V3Reservation.datePickerSettings = {
             format: "dd.mm.yyyy",
             weekStart: 1,
@@ -450,31 +443,28 @@ var V3Reservation = {
         V3Reservation.getFreeBeds(dates.startDate, dates.endDate, 'freeBeds_');
     },
     getFreeBeds: function (start, end, prefix) {
-        let reservations = window.reservationsPerPeriod;
-        if (reservations.length > 0) {
-            V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
+        let reservations = window.reservationsSums;
+        V3Reservation.writeFreeBedsStorage(reservations, prefix, start, end);
+        if (Object.keys(reservations).length === 0 && reservations.constructor === Object) {
         }
     },
     writeFreeBedsStorage: function (objects, prefix, start, end) {
         let len = (Object.keys(objects).length)
-        for (let i = 0; i < len; i++) {
-            let res = objects[i];
-            Object.keys(res)
-                .forEach(function (key) {
-                    let c,
-                        test = new RegExp('^' + prefix),
-                        free = window.settings.setting_num_bed;
-                    if (test.test(key)) {
-                        c = key.split('_');
-                        // total - (occupied + 1)
-                        if (window.parseInt(res[key], 10) > 0) {
-                            free -= (window.parseInt(res[key], 10) + 1)
-                            window.localStorage.setItem(c[1] + '-' + c[2] + '-' + c[3], free);
-                            V3Reservation.freeBeds[c[1] + '-' + c[2] + '-' + c[3]] = free;
-                        }
+        Object.keys(objects)
+            .forEach(function (key) {
+                let c,
+                    test = new RegExp('^' + prefix),
+                    free = window.settings.setting_num_bed;
+                if (test.test(key)) {
+                    c = key.split('_');
+                    // total - (occupied + 1)
+                    if (window.parseInt(objects[key], 10) > 0) {
+                        free -= window.parseInt(objects[key], 10)
+                        window.localStorage.setItem(c[1] + '-' + c[2] + '-' + c[3], free);
+                        V3Reservation.freeBeds[c[1] + '-' + c[2] + '-' + c[3]] = free;
                     }
-                });
-        }
+                }
+            });
         V3Reservation.setFreeBeds(start, end);
     },
     writeLocalStorage: function (data) {
@@ -730,23 +720,19 @@ var V3Reservation = {
             editRes = (window.localStorage.getItem('new_res') === '0') ? 'resId' + $('#id').val() : '',
             totalBeds = window.settings.setting_num_bed,
             checkAvailableBeds = function (str) {
-                let existentTotal = parseInt(window.localStorage.getItem(str + editRes), 10),
-                    checkBedStorage = parseInt(window.localStorage.getItem(str), 10);
+                let checkBedStorage = parseInt(window.localStorage.getItem(str), 10);
                 if (isNaN(checkBedStorage)) {
-                    checkBedStorage = 0;
-                }
-                if (isNaN(existentTotal)) {
-                    existentTotal = 0;
+                    checkBedStorage = totalBeds;
                 }
                 if (editRes !== '') {
-                    if ((checkBedStorage - existentTotal + total > totalBeds) && !tooMuch) {
+                    if (checkBedStorage < total && !tooMuch) {
                         tooMuch = true;
                         V3Reservation.tooMuchBeds(str);
 
                         return false;
                     }
                 } else {
-                    if ((checkBedStorage + total > totalBeds) && !tooMuch) {
+                    if ((total > checkBedStorage) && !tooMuch) {
                         tooMuch = true;
                         V3Reservation.tooMuchBeds(str);
 

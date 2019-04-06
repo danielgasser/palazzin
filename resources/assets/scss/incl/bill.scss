@@ -17,6 +17,11 @@
 
 }
 #bills_wrapper {
+    .dataTables_info {
+        position: fixed;
+        top: 132px;
+        font-weight: bold;
+    }
     #bills {
         tbody {
             tr {

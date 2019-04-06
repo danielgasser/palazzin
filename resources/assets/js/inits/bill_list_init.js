@@ -3,6 +3,13 @@
  */
 $(function () {
     $('#bill_all_totals').dataTable({
+        responsive: false,
+        autoWidth: true,
+        order: [
+            0,
+            'desc'
+        ],
+        paging: false,
         language: {
             emptyTable: 'Keine Daten vorhanden',
             paginate: {
@@ -13,8 +20,8 @@ $(function () {
             },
             search: window.langDialog.search,
             info: window.paginationLang.info,
-            sLengthMenu: window.paginationLang.length_menu
+            sLengthMenu: window.paginationLang.length_menu,
+            infoFiltered:   "(gefiltert von _MAX_ Total Einträgen)"
         },
-
     })
 })

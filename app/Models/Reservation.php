@@ -151,9 +151,9 @@ class Reservation extends Model {
             ->get();
         $reservations = self::setFreeBeds($reservations);
         if (!$isJson) {
-            return $reservations->toArray();
+            return [$reservations[0]->toArray(), $reservations[1]];
         }
-        return $reservations->toJson();
+        return [$reservations[0]->toJson(), $reservations[1]];
     }
 
     /**
@@ -528,7 +528,8 @@ class Reservation extends Model {
     {
         $ar = [];
         $cu = new User();
-        $reservations->each(function ($r) use ($ar, $cu, $preFix, $format, $withResID) {
+        $sums = [];
+        $reservations->each(function ($r) use ($ar, $cu, $preFix, $format, $withResID, &$sums) {
             if (isset($r->user_id_ab) && !empty($r->user_id_ab)) {
                 $cu = $cu->where('id', '=', $r->user_id_ab)->first();
                 $r->user_id_ab_name = $cu->user_login_name;
@@ -537,7 +538,7 @@ class Reservation extends Model {
             }
             if (!is_null($r->guests)) {
                 if ($r->guests->count() > 0) {
-                    $r->guests->each(function  ($j) use ($r, $preFix, $format, $withResID) {
+                    $r->guests->each(function  ($j) use ($r, $preFix, $format, $withResID, &$sums) {
                         $role_tax = Role::find($j->role_id);
                         $j->role_tax_night = $role_tax->role_tax_night;
                         $start = new DateTime(str_replace('_', '-', $j->guest_started_at));
@@ -551,17 +552,51 @@ class Reservation extends Model {
                             $dd = intval($d[1]) - 1;
                             $d[1] = ($dd < 10) ? '0' . $dd : $dd;
                             if ($date < $checkEnd) {
-                                $r->{$preFix . implode('_', $d)} += $j->guest_number;
                                 if ($withResID && Auth::id() == $r->user_id) {
-                                    $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += $j->guest_number;
-                                    $r->{$preFix . implode('_', $d) . 'uID' . $r->user_id} += $j->guest_number;
+                                    if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
+                                        $sums[$preFix . implode('_', $d) . 'resId' . $r->id] += $j->guest_number;
+                                    } else {
+                                        $sums[$preFix . implode('_', $d) . 'resId' . $r->id] = $j->guest_number;
+                                    }
+                                    if (array_key_exists($preFix . implode('_', $d) . 'uID' . $r->user_id, $sums)) {
+                                        $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] += $j->guest_number;
+                                    } else {
+                                        $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = $j->guest_number;
+                                    }
+                                }
+                                if (array_key_exists($preFix . implode('_', $d), $sums)) {
+                                    $sums[$preFix . implode('_', $d)] += $j->guest_number;
+                                } else {
+                                    $sums[$preFix . implode('_', $d)] = $j->guest_number;
                                 }
                             } else {
-                                $r->{$preFix . implode('_', $d)} += 0;
+
                                 if ($withResID && Auth::id() == $r->user_id) {
-                                    $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
-                                    $r->{$preFix . implode('_', $d) . 'uID' . $r->user_id} += 0;
+                                    if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
+                                        $sums[$preFix . implode('_', $d) . 'resId' . $r->id] += 1;
+                                    } else {
+                                        $sums[$preFix . implode('_', $d) . 'resId' . $r->id] = 1;
+                                    }
+                                    if (array_key_exists($preFix . implode('_', $d) . 'uID' . $r->user_id, $sums)) {
+                                        $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] += 1;
+                                    } else {
+                                        $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = 1;
+                                    }
                                 }
+                                if (array_key_exists($preFix . implode('_', $d), $sums)) {
+                                    $sums[$preFix . implode('_', $d)] += 1;
+                                } else {
+                                    $sums[$preFix . implode('_', $d)] = 1;
+                                }
+
+                            }
+                            // Gastgeber
+                            $sums[$preFix . implode('_', $d)] += 1;
+                            if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'resId' . $r->id] += 1;
+                            }
+                            if (array_key_exists($preFix . implode('_', $d) . 'uID' . $r->user_id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] += 1;
                             }
                         }
                     });
@@ -578,25 +613,52 @@ class Reservation extends Model {
                     $dd = intval($d[1]) - 1;
                     $d[1] = ($dd < 10) ? '0' . $dd : $dd;
                     if ($date < $checkEnd) {
-                        $r->{$preFix . implode('_', $d)} += 0;
                         if ($withResID && Auth::id() == $r->user_id) {
-                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
-                            $r->{$preFix . implode('_', $d) . 'uID' . $r->user_id} += 0;
+                            if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'resId' . $r->id] += 1;
+                            } else {
+                                $sums[$preFix . implode('_', $d) . 'resId' . $r->id] = 1;
+                            }
+                            if (array_key_exists($preFix . implode('_', $d) . 'uID' . $r->user_id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] += 1;
+                            } else {
+                                $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = 1;
+                            }
+                        }
+                        if (array_key_exists($preFix . implode('_', $d), $sums)) {
+                            $sums[$preFix . implode('_', $d)] += 1;
+                        } else {
+                            $sums[$preFix . implode('_', $d)] = 1;
                         }
                     } else {
-                        $r->{$preFix . implode('_', $d)} += 0;
+
                         if ($withResID && Auth::id() == $r->user_id) {
-                            $r->{$preFix . implode('_', $d) . 'resId' . $r->id} += 0;
-                            $r->{$preFix . implode('_', $d) . 'uID' . $r->user_id} += 0;
+                            if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'resId' . $r->id] += 1;
+                            } else {
+                                $sums[$preFix . implode('_', $d) . 'resId' . $r->id] = 1;
+                            }
+                            if (array_key_exists($preFix . implode('_', $d) . 'uID' . $r->user_id, $sums)) {
+                                $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] += 1;
+                            } else {
+                                $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = 1;
+                            }
                         }
+                        if (array_key_exists($preFix . implode('_', $d), $sums)) {
+                            $r->{$preFix . implode('_', $d)} += 1;
+                        } else {
+                            $r->{$preFix . implode('_', $d)} = 1;
+                        }
+
                     }
                 }
 
-                }
+            }
         });
+
         if ($asJSON) {
-            return $reservations->toJson();
+            return [$reservations->toJson(), $sums];
         }
-        return $reservations;
+        return [$reservations, $sums];
     }
 }

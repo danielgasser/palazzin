@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Bill;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use User;
 use Illuminate\Support\Facades\Input;
 use Response;
@@ -101,8 +102,15 @@ class BillController extends Controller
     {
         $fs = new Filesystem();
         $files = $fs->allFiles(public_path('/files/__clerk/'));
+        $directories = array_sort($files, function($file)
+        {
+            return $file->getCTime();
+        });
+        foreach ($directories as $key => $dir) {
+            $dir->sortNumber = preg_split('/-/', preg_split('/No-/', $dir->getFileName())[1])[0];
+        }
         return view('logged.admin.bill_list')
-            ->with('allBills', $files);
+            ->with('allBills', $directories);
     }
 
     /**

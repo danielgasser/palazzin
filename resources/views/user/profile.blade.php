@@ -181,7 +181,7 @@
                     <legend>{{trans('profile.actions')}}</legend>
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            {{Form::submit(trans('navigation.profile') . ' ' . trans('dialog.save'), array('class' => 'btn btn-success btn-lg', 'id' => 'saveIt'))}}
+                            {{Form::submit(trans('navigation.profile') . ' ' . trans('dialog.save'), array('class' => 'btn btn-success', 'id' => 'saveIt'))}}
                         </div>
                         <div class="col-sm-6 col-md-6">
                         <!-- button type="button" id="profilePrint" class="btn btn-default">{{trans('dialog.print')}}</button -->

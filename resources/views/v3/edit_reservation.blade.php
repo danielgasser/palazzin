@@ -59,7 +59,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12" id="res_info">
                     <div class="form-group">
                         <div class="alert alert-info" id="total_res">
-                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true">{{$userRes[0]->sum_guest}}</span> {{trans('reservation.guests.pe')}}&nbsp
+                            <span id="reservation_guest_num_total" data-toggle="tooltip" data-html="true">{{$userRes[0]->sum_guest + 1}}</span> {{trans('reservation.guests.pe')}}&nbsp
                             CHF <span id="reservation_costs_total">{{$userRes[0]->sum_total}}</span>
                         </div>
                         <div id="addZeroGuest" style="display: none">
@@ -70,7 +70,7 @@
                                     class="fas fa-plus"></i></button>
                         </div>
                         <input type="hidden" name="hidden_reservation_costs_total" id="hidden_reservation_costs_total" value="{{$userRes[0]->sum_total_hidden}}">
-                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{{$userRes[0]->sum_guest}}">
+                        <input type="hidden" name="hidden_reservation_guest_num_total" id="hidden_reservation_guest_num_total" value="{{$userRes[0]->sum_guest + 1}}">
                     </div>
                 </div>
             </div>
@@ -168,6 +168,7 @@
             datePickersStart = [],
             periods = JSON.parse('{!!json_encode($periods)!!}'),
             datePickerPeriods = JSON.parse('{!!json_encode($periodsDatePicker)!!}'),
+            reservationsSums = JSON.parse('{!! json_encode($reservationsSum) !!}'),
             periodID = '{{$userRes[0]->period_id}}',
             endDate,
             reservationsPerPeriod = JSON.parse('{!! $reservationsPerPeriod !!}'),
@@ -186,9 +187,11 @@
             userPeriod = GlobalFunctions.getUserPeriod(periods, 'freeBeds'),
             reservations = JSON.parse('{!!$my_reservations!!}'),
             guestEntryView = '{!!  $guestEntryView !!}',
-            newAllGuestBeds = GlobalFunctions.superFilter(reservationsPerPeriod, 'freeBeds_'),
+            newAllGuestBeds = GlobalFunctions.superFilter(reservationsSums, 'freeBeds_'),
             newUserRes = GlobalFunctions.superFilter(reservations, 'user_Res_Dates_'),
             allInputs = [];
+        console.log(newAllGuestBeds, newUserRes)
+
     </script>
     <script type="text/javascript"
             src="{{asset('libs/bootstrap-datepicker')}}/js/bootstrap-datepicker.min.js"></script>
@@ -196,6 +199,7 @@
             src="{{asset('libs/bootstrap-datepicker')}}/locales/bootstrap-datepicker.de.min.js"></script>
     <script src="{{asset('js/V3Reservation.min.js')}}"></script>
     <script>
+        V3Reservation.writeFreeBedsStorage(newAllGuestBeds, 'freeBeds_', today, today);
         V3Reservation.writeLocalStorage(periods);
         V3Reservation.createTimeLine(periods);
     </script>
