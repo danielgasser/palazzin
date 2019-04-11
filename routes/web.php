@@ -21,6 +21,12 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('cronjobs/reservation/reminder/{sendToHousekeeper?}', 'CronController@getFutureReservations'); // after midnight
 });
 
+// test
+
+Route::get('test', function () {
+    return view('test.test');
+});
+
 Route::get('logout', function () {
     Auth::logout();
     return redirect('/');
@@ -43,6 +49,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
     Route::group(['middleware' => ['clerk-reservator', 'revalidate']], function () {
         Route::get('/', 'HomeController@getHome')->name('home');
 
+        Route::get('bills/totals', 'BillController@getAllTotals');
         Route::post('userlist_search', 'UserController@searchUsers');
         Route::get('userlist', 'UserController@showUsers');
         Route::get('pricelist', 'RoleController@getPriceList');
@@ -102,11 +109,13 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::get('users', 'UserController@showUsers');
         Route::get('users/add', 'AdminController@showAddUser');
         Route::post('users/add', 'AdminController@addUser');
+        Route::get('users/add/sendnew/{email?}', 'AdminController@sendPasswordMail');
         Route::post('users/activate', 'UserController@activateUser');
         Route::post('users/addrole', 'RoleController@getRolesAjax');
         Route::post('users/edit/delete', 'UserController@deleteRoleUser');
         Route::get('users/edit/{id}', 'UserController@showEditUser');
-        Route::post('users/edit/{id}', 'UserController@addRoleUser');
+        Route::post('users/save/{id}', 'AdminController@saveUser');
+        Route::post('users/addrole', 'UserController@addRoleUser');
 
         // Roles
         Route::get('roles', 'RoleController@showRoles');

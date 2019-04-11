@@ -144,6 +144,15 @@ if (strlen($routeStr) === 0) {
             cursor: pointer !important;
         }
     </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-39618164-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-39618164-1');
+    </script>
 
 </head>
 @show
@@ -291,7 +300,16 @@ if (strlen($routeStr) === 0) {
                 @break
                 @case (strpos($route, 'user/profile') !== false)
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        @if($disabledForm == '')
+                        @if (User::isManager() || User::isLoggedAdmin() && $user->id !== Auth::id() && $disabledForm == '')
+                            <h1>{{trans('profile.title', array(
+             'first_name' => $user->user_first_name,
+             'name' => $user->user_name,
+             'login_name' => $user->user_login_name,
+             'id' => $user->id,
+             'files'=>true))}}
+                            </h1>
+
+                        @elseif($disabledForm == '')
                     <h1>{{trans('profile.title', array(
             'first_name' => User::find(Auth::id())->user_first_name,
             'name' => User::find(Auth::id())->user_name,
@@ -299,7 +317,6 @@ if (strlen($routeStr) === 0) {
             'id' => User::find(Auth::id())->id,
             'files'=>true))}}
                     </h1>
-                @else
                     <h1>{{trans('profile.title', array(
              'first_name' => $user->user_first_name,
              'name' => $user->user_name,
@@ -307,7 +324,8 @@ if (strlen($routeStr) === 0) {
              'id' => $user->id,
              'files'=>true))}}
                     </h1>
-                @endif   </div>
+                @endif
+                    </div>
                 @break
                 @case (strpos($route, 'users/edit') !== false)
                     <h1>{{trans('profile.title', array(
@@ -323,7 +341,7 @@ if (strlen($routeStr) === 0) {
             @break
         @endswitch
         </div>
-        <div class="col-md-1 col-sm-1 col-xs-1">
+        <div class="col-md-1 col-sm-12 col-xs-12">
             @if(strpos('new_reservation', $route) !== false || strpos('edit_reservation', $routeStr) !== false)
             <div id="reservationInfo"></div>
             @endif

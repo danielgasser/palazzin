@@ -52,7 +52,8 @@
             <thead>
                 <tr>
                     <th class="00" id="more"></th>
-                    <th class="000" id="more"></th>
+                    <th class="000" id="moreUID"></th>
+                    <th class="0000" id="moreEDIT"></th>
                     <th class="2" id="user_first_name">{{trans('userdata.user_first_name')}}</th>
                     <th class="3" id="user_name">{{trans('userdata.user_name')}}</th>
                     <th class="4" id="user_login_name">{{trans('userdata.user_login_name')}}</th>
@@ -74,6 +75,7 @@
                     <tr>
                         <td class="00"></td>
                         <td class="000"></td>
+                        <td class="0000"></td>
                         <td class="0"></td>
                         <td class="1"></td>
                         <td class="2"></td>

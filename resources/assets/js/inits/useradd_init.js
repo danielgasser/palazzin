@@ -9,16 +9,16 @@ function clan() {
     var clan_id = $("#clan_id").val(),
         fam = (typeof clan_id == 'string' && clan_id === '0') ? window.families : window.families[clan_id],
         is_none = (typeof clan_id == 'string' && clan_id === '0');
-    $("#user_family").find("option").remove();
-    $("#user_family").append(new window.Option('Bitte Halbstamm wählen', '0'));
+    $("#family_code").find("option").remove();
+    $("#family_code").append(new window.Option('Bitte Halbstamm wählen', '0'));
     if (!is_none) {
         $.each(fam, function(a, b) {
-            $("#user_family").append(new window.Option(b, a))
+            $("#family_code").append(new window.Option(b, a))
         })
     } else {
         $.each(window.families, function(i, n) {
             $.each(n, function(a, b) {
-                $("#user_family").append(new window.Option(b, a))
+                $("#family_code").append(new window.Option(b, a))
             })
         })
     }
@@ -33,8 +33,14 @@ $(document).ready(function () {
     clan();
 });
 $(document).on('change', '#clan_id', function () {
-    $('#user_family').attr('disabled', false)
+    $('#family_code').attr('disabled', false)
     clan();
+});
+$(document).on('change', '#email', function () {
+    $('#send').val(this.value);
+    $('#sendLink')
+        .prop('href', window.sendUserMail + this.value)
+        .attr('diabled', false);
 });
 $(document).on('click', '#add_role', function (e) {
     e.preventDefault();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\ResetPassword;
 use Clan;
 use Family;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class AdminController extends Controller
                 'user_name' => 'required|min:3|regex:/^[\pL\s\-]+$/u',
                 'user_first_name' => 'required|min:3|regex:/^[\pL\s\-]+$/u',
                 'clan_id' => 'required|not_in:0',
-                'user_family' => 'required|not_in:0',
+                'family_code' => 'required|not_in:0',
                 'email' => 'required|email|unique:users',
                 'user_active' => 'required',
                 'role_id_add' => 'required|not_in:0',
@@ -90,9 +91,72 @@ class AdminController extends Controller
         $user->user_country_code = 41;
         $user->user_fon1_label = 'x';
         $user->user_active = $request->input('user_active');
-        $user->save();
-        return back()
+        $user->push();
+        return redirect('/admin/users/edit/' . $user->id)
             ->with('info_message', trans('errors.data-saved', ['a' => 'Neuer', 'data' => 'Benutzer']));
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveUser($id)
+    {
+        $args = request()->except(['_token', 'role_id']);
+        $user = \User::find($id);
+        $validator = Validator::make(
+            $args,
+            [
+                'clan_id' => 'required|not_in:0',
+                'family_code' => 'required|not_in:0',
+                'user_active' => 'required',
+            ],
+            [
+                'regex' => '<div class="messagebox">Format des Felds <span class="error-field"><span class="error-field">:attribute</span></span> ist ungültig:<br>
+                            - Keine Umlaute<br>
+                            - Keine Sonderzeichen<br>
+                            Gültiges Format:
+                            <b>vorname.name</b></div>',
+                'not_in' => '<div class="messagebox">Das Feld <span class="error-field"><span class="error-field">:attribute</span></span> darf nicht leer sein</div>'
+            ]
+        );
+        if ($validator->fails()) {
+            foreach (explode(',', request()->input('role_id_add')) as $key => $r) {
+                $addedRoles[] = RoleController::getRolesAjax($r, false);
+            }
+            request()->flash();
+            Session::put('addedRoles', $addedRoles);
+            return back()->withErrors($validator->messages());
+        }
+        if (!is_object($user)) {
+            return back()->with('error', 'Benutzer nicht gefunden');
+        }
+        $user->update($args);
+        $user->push();
+        return back()
+            ->with('info_message', trans('errors.data-saved', ['a' => '', 'data' => 'Benutzer']))
+            ->with('saved', true);
+
+    }
+
+    /**
+     * @param null $email
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sendPasswordMail($email = null)
+    {
+        $user = User::where('email', '=', $email)->first();
+        if (is_object($user)) {
+            $user->notify(new ResetPassword(\request()->input('_token'), $user));
+            return back()
+                ->with('info_message', 'E-Mail wurde verschickt')
+                ->with('saved', true);
+        } else {
+            return back()
+                ->with('error', 'E-Mail wurde nicht gefunden')
+                ->with('saved', false);
+
+        }
     }
 
     /**

@@ -145,7 +145,7 @@ $(document).on('click', '[id*="clone_guest_"]', function (e) {
     $('#hidden_price_' + counter).val('');
     $('#reservation_guest_price_' + counter).val('');
     $('#guest_title_' + counter).html('');
-    $('#clone_guest_' + counter)
+    $('[id^="clone_guest_"]')
         .attr('disabled', true);
     guestDateEl = $('#guestDates_' + counter);
     guestDateEl.datepicker(V3Reservation.datePickerSettings);
@@ -170,8 +170,19 @@ $(document).on('click', '[id*="clone_guest_"]', function (e) {
     $.each($('input:not([type="hidden"]), select'), function () {
         window.allInputs.push($(this).attr('id'));
     });
+    $('html, body').animate({ scrollTop: $(document).height() }, "fast")
 });
 
+$(document).on('click', '.close-datepicker', function (e) {
+    let id = $(this).attr('id').split('_')[4];
+    if ($('.datepicker').is(':visible')) {
+        $.each(window.startGuestPicker, function () {
+            $(this).datepicker('hide')
+        });
+        window.resStartPicker.datepicker('hide')
+        window.resEndPicker.datepicker('hide')
+    }
+});
 $(document).on('DOMSubtreeModified', '#reservation_guest_num_total', function (e) {
     e.preventDefault();
     let id = $(this).attr('id').split('_').pop();
@@ -212,7 +223,7 @@ $(document).on('click', '#cancel_reservation_exists', function () {
         startDate: window.resStartPicker.datepicker('getDate'),
         endDate: window.resEndPicker.datepicker('getDate'),
     };
-    V3Reservation.adaptChanged(dates, window.endDate, true);
+    V3Reservation.adaptChanged(dates, window.endDate);
     $('#reservation_exists').hide();
     return true;
 });
@@ -287,38 +298,8 @@ $(document).on('changeDate', '#reservation_ended_at', function (e) {
 /**
  * Change reservations end date
  */
-$(document).on('click', '#reservation_ended_at', function (e) {
-    V3Reservation.firstTimeChangeEndDate++;
-});
-
-/**
- * Toggle guest entry
- */
-$(document).on('click', '[id^="hider_"]', function () {
-    let id = $(this).attr('id').split('_')[1];
-    $('#guests_date_' + id).find('[class^="col-"]:not(.no-hide)').slideToggle('slow');
-    $(this).children('#hide_guest_' + id).toggleClass('fa-caret-down');
-    $(this).children('#hide_guest_' + id).toggleClass('fa-caret-up');
-});
-
-/**
- * Toggle Res entry
- */
-$(document).on('click', '[id^="hide_all_res"]', function () {
-    $('[id^="show_res"]').find('[class^="col-"]').not('#res_info').slideToggle('slow');
-    $(this).children('span').toggleClass('fa-caret-down');
-    $(this).children('span').toggleClass('fa-caret-up');
-    let up = ($('#hide_res').hasClass('fa-caret-up'));
-
-    $.each($('[id^="guests_date_"]'), function (i, n) {
-        if (up) {
-            $(n).find('[class^="col-"]:not(.no-hide)').slideDown('slow');
-            $('#hide_guest_' + i).addClass('fa-caret-up').removeClass('fa-caret-down')
-        } else {
-            $(n).find('[class^="col-"]:not(.no-hide)').slideUp('slow');
-            $('#hide_guest_' + i).addClass('fa-caret-down').removeClass('fa-caret-up')
-        }
-    })
+$(document).on('blur', '#reservation_started_at', function (e) {
+    V3Reservation.onHide(e);
 });
 
 /**

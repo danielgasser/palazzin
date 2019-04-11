@@ -11,7 +11,7 @@
 
 
 </div>
-    {{Form::model($user, array('url' => array('admin/users/edit', $user->id), 'class' => '', 'files' => true))}}
+    {{Form::model($user, array('url' => array('admin/users/save', $user->id), 'class' => '', 'files' => true))}}
         {{Form::hidden('id', $user->id)}}
         <fieldset>
             <legend>{{trans('profile.names')}}</legend>
@@ -19,31 +19,31 @@
                 {{-- name --}}
                 {{Form::label('user_name', trans('userdata.user_name'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
-                    {{Form::text('user_name', $user->user_name, array('class' => 'form-control' . ' ' . trans('userdata.user_name'), 'disabled'))}}
+                    {{Form::text('user_name', $user->user_name, array('class' => 'form-control' . ' ' . trans('userdata.user_name')))}}
                 </div>
                 {{-- first name --}}
                 {{Form::label('user_first_name', trans('userdata.user_first_name'), array('class' => 'col-sm-2 col-md-1'))}}
                     <div class="col-sm-4 col-md-5">
-                {{Form::text('user_first_name', $user->user_first_name, array('class' => 'form-control' . ' ' . trans('userdata.user_first_name'), 'disabled'))}}
+                {{Form::text('user_first_name', $user->user_first_name, array('class' => 'form-control' . ' ' . trans('userdata.user_first_name')))}}
                 </div>
             </div>
             <div class="row">
                 {{-- login name --}}
-                {{Form::label('user_login_name', trans('userdata.user_login_name'), array('class' => 'col-sm-2 col-md-1'))}}
+                {{Form::label('user_login_name_show', trans('userdata.user_login_name'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
                     {{Form::text('user_login_name_show', $user->user_login_name, array('class' => 'form-control', 'disabled', 'id' => 'user_login_name_show'))}}
-                    {{Form::hidden('user_login_name', $user->user_login_name, array('class' => 'form-control'))}}
+                    {{Form::hidden('user_login_name', $user->user_login_name, array('class' => 'form-control', 'id' => 'user_login_name'))}}
                 </div>
              </div>
              <div class="row">
                {{-- clan --}}
                 {{Form::label('clan_id', trans('userdata.clan'), array('class' => 'col-sm-2 col-md-1'))}}
                 <div class="col-sm-4 col-md-5">
-                {{Form::select('clan_id', [trans('dialog.select')] + $clans, $user->clan_id, array('class' => 'form-control' . ' ' . trans('userdata.clan'), 'disabled' => 'disabled'))}}
+                {{Form::select('clan_id', [trans('dialog.select')] + $clans, $user->clan_id, array('class' => 'form-control required' . ' ' . trans('userdata.clan')))}}
                 </div>
-                 {{Form::label('user_family', trans('userdata.halfclan'), array('class' => 'col-sm-2 col-md-1'))}}
+                 {{Form::label('family_code', trans('userdata.halfclan'), array('class' => 'col-sm-2 col-md-1'))}}
                  <div class="col-sm-4 col-md-5">
-                     {{Form::text('user_family', $families[$user->clan_id][$user->family_code], array('class' => 'form-control required' . ' ' . trans('userdata.halfclan'), 'disabled' => 'disabled'))}}
+                     {{Form::select('family_code', [trans('dialog.select')] + $families, $user->family_code, array('class' => 'form-control required' . ' ' . trans('userdata.halfclan')))}}
                         </div>
 
             </div>
@@ -72,7 +72,7 @@
                             <th>{{trans('rights.right')}}</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="roles">
                     @if(sizeof($user->roles) > 0)
                        @foreach($user->roles as $key => $roles)
                         <tr>
@@ -126,11 +126,11 @@
              <legend>{{trans('userdata.email')}} {{trans('remind.user_send_man')}}</legend>
              <div class="row">
                  {{-- active --}}
-                 {{Form::label('send', trans('userdata.email'), array('class' => 'col-sm-2 col-md-1'))}}
+                 {{Form::label('email', trans('userdata.email'), array('class' => 'col-sm-2 col-md-1'))}}
                  <div class="col-sm-4 col-md-5">
-                 {{Form::text('send', $user->email, array('class' => 'form-control', 'disabled'))}}
+                 {{Form::text('email', $user->email, array('class' => 'form-control'))}}
                  </div>
-                  <div class="col-sm-6 col-md-6">
+                  <div class="col-sm-6 col-md-6">{{$saved}}
                      <a href="{{URL::to('admin/users/add/sendnew')}}/{{$user->email}}" class="btn btn-default" id="send">{{trans('dialog.send')}}</a>
                   </div>
             </div>
@@ -158,6 +158,7 @@
             change_clan = '{{URL::to('admin/users/changeclan')}}',
             user_activate = '{{URL::to('admin/users/activate')}}',
             user_id = '{{$user->id}}',
+            family_code = '{{$user->family_code}}',
             add_role = '{{URL::to('admin/users/addrole')}}',
             role_delete = '{{URL::to('admin/users/edit/delete')}}',
             families = {!!json_encode($families)!!},

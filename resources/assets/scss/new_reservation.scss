@@ -113,6 +113,9 @@
     button {
         width: 100%;
     }
+    [class^="col-"] {
+        padding: 0;
+    }
 }
 .show_reservation_guest {
   margin: 0;
@@ -130,9 +133,8 @@
 }
 [id^="remove_guest_"], [id^="clone_guest"], [id^="head_clone_guest_"] {
     font-size: 1em;
-    display: inline !important;
-    border: none !important;
     float: right;
+    width: 100%;
 }
 .show_reservation {
   margin: 0;
@@ -259,6 +261,8 @@ label {
 }
 [id^="guest_title_"] {
   font-weight: bold;
+    width: 100%;
+    display: block;
 }
 .sort-down {
   position: absolute;
@@ -456,10 +460,4 @@ label {
 .jquery-hover-a {
     background-color: #b7282e !important;
     color: white !important;
-}
-@media screen and (max-width: 425px) {
-
-    #guest_entries {
-        max-height: 42vh;
-    }
 }

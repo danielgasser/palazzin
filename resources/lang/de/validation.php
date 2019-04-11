@@ -108,7 +108,7 @@ return [
 	'attributes' => [
         'user_first_name' => 'Vorname',
         'user_name' => 'Name',
-        'user_family' => 'Halb-Stamm',
+        'family_code' => 'Halb-Stamm',
         'user_login_name' => 'Benutzername',
         'email' => 'E-Mail',
         'user_address' => 'Adresse',

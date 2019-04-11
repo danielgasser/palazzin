@@ -42,7 +42,7 @@
             </div>
             <div class="row show_total_res arrow" id="show_res" style="display: block">
                 <div class="hide-guest" id="hide_all_res">
-                    <span id="hide_res" class="fas fa-caret-up"></span>&nbsp;{{trans('reservation.title_short')}}:
+                    {{trans('reservation.title_short')}}:
                     <div id="res_header_text">{{ $userRes[0]->reservation_title }}</div>
                     <input id="reservation_title" name="reservation_title" type="hidden" value="{{ $userRes[0]->reservation_title }}">
                 </div>
@@ -79,15 +79,6 @@
                     @if((sizeof($userRes[0]->guests) > 0))
                         @foreach($userRes[0]->guests as $i => $guest)
                             <div class="row" id="guests_date_{{ $i }}">
-                                <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
-                                    <span id="hide_guest_{{ $i }}" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: {!! $guest->guest_title!!}</span>
-                                    <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]" value="{!! $guest->guest_title!!}">
-                                    <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
-                                            id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
-                                    <button title="{{trans('dialog.add_on_upper')}}"
-                                            class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}"><i
-                                            class="fas fa-plus"></i></button>
-                                </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <input type="hidden" id="guest_id_{{ $i }}" name="guest_id[]" value="{!! $guest->id!!}">
                                 </div>
@@ -132,6 +123,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
+                                    <span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: {!! $guest->guest_title!!}</span>
+                                    <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]" value="{!! $guest->guest_title!!}">
+                                    <button title="{!!trans('dialog.delete')!!}" class="btn btn-default btn-v3 show_reservation_guest"
+                                            id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i>Gast löschen</button>
+                                    <button title="{{trans('dialog.add_on_upper')}}"
+                                            class="btn btn-default btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}"><i
+                                            class="fas fa-plus"></i>Neuer Gast</button>
+                                </div>
+
                             </div>
                         @endforeach
                     @endif

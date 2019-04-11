@@ -42,6 +42,11 @@ class UserController extends Controller
             $disabledForm = '';
             $requIred = ['requ', 'required'];
         }
+        if (User::isManager() || User::isLoggedAdmin()) {
+            $user = User::find($id);
+            $disabledForm = '';
+            $requIred = ['requ', 'required'];
+        }
 
         $cs = DB::select(DB::raw("select country_name_" . trans('formats.langjs') . " as country_name, country_code from countries order by country_name_" . trans('formats.langjs') . " asc"));
         $countries = [];
@@ -83,7 +88,7 @@ class UserController extends Controller
         if (Input::hasFile('user_avatar')) {
             $file = Input::file('user_avatar');
         }
-        if (Input::get('id') != Auth::user()->id) {
+        if (Input::get('id') != Auth::user()->id && (!User::isManager() || !User::isLoggedAdmin())) {
             Session::put('error', '<div class="messagebox">Dies ist nicht Dein Profil</div>');
             return Redirect::back()->withErrors('<div class="messagebox">Dies ist nicht Dein Profil</div>');
         }
@@ -139,16 +144,17 @@ class UserController extends Controller
         $user->user_fon1_label  = $fon1label;
 
 
-        $user->save();
+        $user->push();
         $recipientUsers = User::find(1);
         $data = ['id' => $user->id, 'old_email' => $user_old_email, 'email' => $user->email, 'login' => $user->user_login_name];
         if (!str_is($user_old_email, $user->email)) {
             $new_mail_message = '<br>' . trans('errors.new_mail');
             \Notification::send($recipientUsers, (new ProfileChange($user, $data)));
         }
+        $tu = (User::isManager() || User::isLoggedAdmin()) ? 'Das' : 'Dein';
         return Redirect::back()
             ->with('user', $user)
-            ->with('info_message', trans('errors.data-saved', ['a' => 'Dein', 'data' => 'Profil']) . $new_mail_message);
+            ->with('info_message', trans('errors.data-saved', ['a' => $tu, 'data' => 'Profil']) . $new_mail_message);
     }
 
     /**
@@ -200,6 +206,7 @@ class UserController extends Controller
         return view('logged.admin.useredit')
             ->with('clans', $clans[0])
             ->with('user', $u)
+            ->with('saved', false)
             ->with('families', $allFams)
             ->with('countries', $countries)
             ->with('allRoles', $transRoles);
@@ -208,22 +215,33 @@ class UserController extends Controller
     /**
      * Attaches a role to a user
      *
-     * @param $id User->id
      * @return mixed Redirect
      */
-    public function addRoleUser($id)
+    public function addRoleUser()
     {
-        $i = Input::except('_token');
-        $user = User::find($id);
+        $user = User::find(\request()->input('user_id'));
         $r = DB::table('role_user')
-            ->where('user_id', '=', $id)
-            ->where('role_id', '=', $i['role_id'])
+            ->where('user_id', '=', \request()->input('user_id'))
+            ->where('role_id', '=', \request()->input('role_id'))
             ->count();
         if ($r > 0) {
-            return back();
+            return json_encode('false');
         }
-        $user->roles()->attach($i['role_id']);
-        return back();
+        $user->roles()->attach(\request()->input('role_id'));
+        $newRole = Role::find(\request()->input('role_id'));
+        $defRoles = [];
+        $defRoles[0]['id'] = $newRole->id;
+        $defRoles[0]['role_c'] = $newRole->role_code;
+        $defRoles[0]['role_code'] = trans('roles.' . $newRole->role_code);
+        $defRoles[0]['role_tax_annual'] = $newRole->role_tax_annual;
+        $defRoles[0]['role_tax_night'] = $newRole->role_tax_night;
+        $defRoles[0]['role_tax_stock'] = $newRole->role_tax_stock;
+        $defRoles[0]['role_guest'] = $newRole->role_guest;
+        foreach ($newRole->rights as $r) {
+            $defRoles[0]['role_rights'][] = trans('rights.' . $r->right_code);
+        }
+
+        return json_encode($defRoles);
     }
 
     /**

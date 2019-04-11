@@ -14,6 +14,9 @@
 @import "incl/links";
 @import "incl/navbar";
 @import "stats";
+.datepicker {
+    left: 50px !important;
+}
 #newsMessage {
   display: none;
 }
@@ -148,6 +151,7 @@ body, html {
   position: absolute;
   top: 0px;
   left: 0px;
+    overflow: auto;
   background-color: $body-bg;
   color: #333;
 }

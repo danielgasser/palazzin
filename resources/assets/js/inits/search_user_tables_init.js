@@ -24,6 +24,21 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
             {
                 targets: [1],
                 responsivePriority: 1,
+                visible: true,
+                orderable:      false,
+                sortable: false,
+                className: 'admin_edit',
+                render: function (data, type, row, meta) {
+                    if (window.isManager) {
+                        return '<a href="' + urlTo + '/admin/users/edit/' + row.user_id + '"><i class="fas fa-cog"></i></a>';
+                    }
+                    return '';
+                }
+
+            },
+            {
+                targets: [2],
+                responsivePriority: 1,
                 visible: false,
                 orderable:      false,
                 sortable: false,
@@ -31,28 +46,25 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 data: 'user_id'
             },
             {
-                targets: [2],
+                targets: [3],
                 responsivePriority: 2,
                 data: 'user_first_name'
             },
             {
-                targets: [3],
+                targets: [4],
                 responsivePriority: 4,
                 data: 'user_name'
             },
             {
-                targets: [4],
+                targets: [5],
                 responsivePriority: 5,
                 data: 'user_login_name',
                 render: function (data, type, row, meta) {
-                    if (window.isManager) {
-                        return '<a href="' + urlTo + '/admin/users/edit/' + row.user_id + '">' + data + '</a>';
-                    }
                     return '<a href="' + urlTo + '/user/profile/' + row.user_id + '">' + data + '</a>';
                 }
             },
             {
-                targets: [5],
+                targets: [6],
                 responsivePriority: 6,
                 data: 'email',
                 render: function (data, type, row, meta) {
@@ -67,7 +79,7 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [6],
+                targets: [7],
                 responsivePriority: 3,
                 data: 'user_fon1',
                 render: function (data, type, row, meta) {
@@ -78,7 +90,7 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [7],
+                targets: [8],
                 responsivePriority: 24,
                 data: 'user_www_label',
                 render: function (data, type, row, meta) {
@@ -92,22 +104,22 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [8],
+                targets: [9],
                 responsivePriority: 8,
                 data: 'user_address'
             },
             {
-                targets: [9],
+                targets: [10],
                 responsivePriority: 8,
                 data: 'user_zip'
             },
             {
-                targets: [10],
+                targets: [11],
                 responsivePriority: 8,
                 data: 'user_city'
             },
             {
-                targets: [11],
+                targets: [12],
                 responsivePriority: 8,
                 data: 'user_country_code',
                 render: function (data, type, row, meta) {
@@ -118,12 +130,12 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [12],
+                targets: [13],
                 responsivePriority: 24,
                 data: 'user_birthday'
             },
             {
-                targets: [13],
+                targets: [14],
                 responsivePriority: 24,
                 data: 'clans',
                 render: function (data, type, row, meta) {
@@ -134,7 +146,7 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [14],
+                targets: [15],
                 responsivePriority: 24,
                 data: 'families',
                 render: function (data, type, row, meta) {
@@ -146,7 +158,7 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                 }
             },
             {
-                targets: [15],
+                targets: [16],
                 responsivePriority: 24,
                 data: 'roles',
                 render: function (data) {
@@ -160,7 +172,7 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
             },
 
             {
-                targets: [16],
+                targets: [17],
                 responsivePriority: 25,
                 data: 'last_login',
                 visible: false

@@ -1,14 +1,4 @@
 <div class="row" id="guests_date_{{ $i }}">
-    <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
-        <span id="hide_guest_{{ $i }}" class="fas fa-caret-up"></span>&nbsp;<span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: </span>
-        <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]">
-        <button title="{!!trans('dialog.delete')!!}" class="btn btn-danger btn-v3 show_reservation_guest"
-                id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i></button>
-        <button title="{{trans('dialog.add_on_upper')}}"
-                class="btn btn-danger btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}" disabled="disabled"><i
-                class="fas fa-plus"></i></button>
-
-    </div>
     <div class="col-md-4 col-sm-12 col-xs-12">
         <label>{!!trans('reservation.arrival_departure')!!}</label>
         <div class="input-daterange input-group" id="guestDates_{{ $i }}">
@@ -50,4 +40,15 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 no-hide" id="hider_{{ $i }}">
+        <span id="guest_title_{{ $i }}">{!!trans('reservation.guest_many_no_js.one')!!}: </span>
+        <input type="hidden" id="hidden_guest_title_{{ $i }}" name="hidden_guest_title[]">
+        <button title="{!!trans('dialog.delete')!!}" class="btn btn-default btn-v3 show_reservation_guest"
+                id="remove_guest_{{ $i }}"><i class="fas fa-trash-alt"></i> Gast löschen</button>
+        <button title="{{trans('dialog.add_on_upper')}}"
+                class="btn btn-default btn-v3 show_reservation_guest" id="clone_guest_{{ $i }}" disabled="disabled"><i
+                class="fas fa-plus"></i>Neuer Gast</button>
+
+    </div>
+
 </div>

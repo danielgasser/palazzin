@@ -384,9 +384,10 @@ var billTable,
         $('#unpaid').html('CHF ' + unpaid);
     },
     getBillTotals = function (year) {
-        $.ajax({
+        let adminRoute = (window.route.indexOf('user/bills') > -1) ? '' : '/admin';
+    $.ajax({
             type: 'GET',
-            url: '/admin/bills/totals',
+            url: adminRoute + '/bills/totals',
             data: {
                 year: year,
                 user_id: (window.route.indexOf('user/bills') > -1)

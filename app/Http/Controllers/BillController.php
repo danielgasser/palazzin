@@ -119,7 +119,7 @@ class BillController extends Controller
     public function getAllTotals ()
     {
         $userBills = '';
-        if (request()->is('user/bills')) {
+        if (request()->input('user_id') === 'true') {
             $userBills .= ' and bill_user_id = ' . Auth::id();
         }
         if (request()->input('year') !== 'all') {

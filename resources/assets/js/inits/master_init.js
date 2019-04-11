@@ -6,10 +6,23 @@ var p = [/ü/gi, /ä/gi, /ö/gi, /ò/gi, /é/gi, /è/gi, /à/gi, '-'],
 
 jQuery(document).ready(function () {
     "use strict";
-    Notification.requestPermission().then(function(result) {
-        if (result === 'granted') {
+
+    try {
+        Notification.requestPermission().then(function(result) {
+            if (result === 'granted') {
+                console.log(result)
+            }
+        });
+    } catch (e) {
+        if (e instanceof TypeError) {
+            Notification.requestPermission(() => {
+                console.log('2. Trial ok')
+            });
+        } else {
+            console.log(e)
+            throw e;
         }
-    });
+    }
     if (window.location.hash) {
         window.localStorage.setItem('news_hash', window.location.hash)
     }
@@ -140,8 +153,8 @@ jQuery(document).on('keyup', '#user_first_name, #user_name', function (e) {
         endLogin = endLogin.replace(n, replaceWith[i]);
     });
     endLogin = endLogin.replace(/([^a-z.]+)/gi, '');
+    $('#user_login_name_show').val(endLogin);
     $('#user_login_name').val(endLogin);
-    $('#user_login_name_show').text(endLogin);
     jQuery(this).val(valStr);
 });
 

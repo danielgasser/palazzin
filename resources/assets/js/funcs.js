@@ -34,8 +34,10 @@ let GlobalFunctions = {
         var roleData = (isJson) ? data : $.parseJSON(data),
             dataStr = '',
             allRoles = [];
-        if ($('#no_role').length > 0) {
-            $('#no_role').hide();
+        if ($('#no_role') !== undefined) {
+            if ($('#no_role').length > 0) {
+                $('#no_role').hide();
+            }
         }
         dataStr += '<tr id="role_' + roleData.id + '">' +
             '<td id="deleteRole_' + roleData.id + '_' + roleData.role_c + '">' +

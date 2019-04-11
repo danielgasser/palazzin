@@ -24,6 +24,7 @@ return array(
     'GJ' => 'Gast von 18-25 Jahre',
     'GK' => 'Gast von 6-18 Jahre',
     'GE' => 'Gast ab 25 Jahre',
+    'KB' => 'Kind von BB bis 18 Jahre',
     'GU' => 'Übersee-Palazziner',
     'KP' => 'Haus-Wartung',
     'PB' => 'Palazzinberechtigter',
@@ -37,6 +38,7 @@ return array(
     'GK_short' => 'Gast von 6-18 J.',
     'GE_short' => 'Gast ab 25 J.',
     'GU_short' => 'Übersee-Palazziner',
+    'KB_short' => 'Kind von BB bis 18 J.',
     'KP_short' => 'Haus-Wartung',
     'PB_short' => 'Palazzinberechtigter'
 );
