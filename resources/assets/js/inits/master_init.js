@@ -4,29 +4,10 @@
 var p = [/ü/gi, /ä/gi, /ö/gi, /ò/gi, /é/gi, /è/gi, /à/gi, '-'],
     replaceWith = ['ue', 'ae', 'oe', 'o', 'e', 'e', 'a', '-'];
 
-jQuery(document).ready(function () {
-    "use strict";
-
-    try {
-        Notification.requestPermission().then(function(result) {
-            if (result === 'granted') {
-                console.log(result)
-            }
-        });
-    } catch (e) {
-        if (e instanceof TypeError) {
-            Notification.requestPermission(() => {
-                console.log('2. Trial ok')
-            });
-        } else {
-            console.log(e)
-            throw e;
-        }
-    }
+$(document).ready(function () {
     if (window.location.hash) {
         window.localStorage.setItem('news_hash', window.location.hash)
     }
-
     $('[data-toggle="popover"]').popover({
         html: true
     });

@@ -42,7 +42,7 @@
                     <label>{{trans('reservation.arrival_departure')}}</label>
                     <div class="input-daterange input-group">
                         <input type="text" id="reservation_started_at" name="reservation_started_at" class="input-sm form-control show_reservation{{ $errors->has('reservation_started_at') ? ' input-error' : ''}}"
-                               placeholder="{{trans('reservation.arrival')}}" value="{{ old('reservation_started_at') }}"/>
+                               placeholder="{{trans('reservation.arrival')}}" readonly value="{{ old('reservation_started_at') }}"/>
                         <span class="input-group-addon">bis</span>
                         <input type="text" id="reservation_ended_at" name="reservation_ended_at" class="noClick input-sm form-control show_reservation{{ $errors->has('reservation_ended_at') ? ' input-error' : ''}}"
                                placeholder="{{trans('reservation.depart')}}" readonly value="{{ old('reservation_ended_at') }}"/>

@@ -19,7 +19,10 @@ if (strlen($routeStr) === 0) {
     <meta name="robots" content="noindex">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     @if (strpos('edit_reservation', $routeStr) !== false)
         <title>Palazzin | {{Lang::get('reservation.edit_res')}}</title>
     @else
@@ -40,7 +43,10 @@ if (strlen($routeStr) === 0) {
             top: 0;
             border-radius: 0;
         }
-
+        html, body {
+            overflow-y: scroll; /* has to be scroll, not auto */
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 @if (Request::is('stats'))
         <style>
@@ -153,12 +159,29 @@ if (strlen($routeStr) === 0) {
 
         gtag('config', 'UA-39618164-1');
     </script>
-
+<style>
+    body.apple-ios.modal-open {
+        position: fixed;
+        width:100%;
+    }
+    .datepicker {
+        z-index: 2147483647;
+    }
+</style>
 </head>
 @show
-<body><button id="but" style="display: none">
-    Send Notification Now
-</button>
+<body>
+<script>
+    var isMobile = {
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        }
+    }
+    if(isMobile.iOS()) {
+        document.body.classList.add('apple-ios');
+    }
+</script>
+
 <div id="hideAll"></div>
     @if (Request::is('reservation'))
  @include('logged.reservation_edit')

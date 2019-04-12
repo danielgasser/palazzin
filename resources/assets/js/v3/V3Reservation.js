@@ -114,6 +114,7 @@ var V3Reservation = {
     addBeforeShowDayEdit: function (d, otherClanDate, isEdit) {
         let numBeds = window.settings.setting_num_bed,
             dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
+            dateStrUid = parseInt(window.newAllGuestBeds['freeBeds_' + dateStr + 'uID'], 10)
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
             oB = 0,
@@ -251,8 +252,10 @@ var V3Reservation = {
         }
         priority = $('.priority>li>.' + period.clan_code + '-datepicker-content');
         priorityContent = priority.html();
-        V3Reservation.periodEndDate = new Date(period.period_end);
-        window.endDate = new Date(window.settings.setting_calendar_start);
+        let pEnd = period.period_end.replace(' ', 'T');
+        V3Reservation.periodEndDate = new Date(pEnd);
+        pEnd = window.settings.setting_calendar_start.replace(' ', 'T');
+        window.endDate = new Date(pEnd);
         startDate.setHours(0, 0, 0, 0);
         window.endDate.setHours(0, 0, 0, 0);
         if (V3Reservation.fromPeriod) {
@@ -278,8 +281,6 @@ var V3Reservation = {
                 month: today.getMonth(),
                 day: today.getDate()
             },
-            //orientation: 'auto bottom',
-            immediateUpdates: true,
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayNew(Date, otherClanDate, false);
             }
@@ -353,8 +354,6 @@ var V3Reservation = {
                 month: today.getMonth(),
                 day: today.getDate()
             },
-     //       orientation: 'auto bottom',
-            immediateUpdates: true,
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayEdit(Date, otherClanDate, true, this.startDate);
             }

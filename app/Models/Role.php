@@ -23,6 +23,8 @@ class Role extends Model {
         'role_tax_annual',
         'role_tax_night',
         'role_tax_stock',
+        'role_code',
+        'role_description',
         'role_guest'
     );
 
@@ -124,7 +126,7 @@ class Role extends Model {
     public static function getRolesForGuestV3 () {
         $rolesTrans[] = trans('dialog.select');
         $roles = Role::select('id', 'role_code', 'role_tax_night')
-            ->orWhere('role_guest', '=', 1)
+            ->where('role_guest', '=', '1')
             ->orWhere('role_code', '=', 'BB')
             ->orWhere('role_code', '=', 'GU')
             ->orderBy('role_tax_night', 'desc')
