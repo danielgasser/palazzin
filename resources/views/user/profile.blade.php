@@ -118,21 +118,21 @@
                 @if($disabledForm == '')
                         {{Form::file('user_avatar', array('class' => 'form-control', $disabledForm))}}
                     @endif
-                    <img class="img-responsive" src="{{$user->user_avatar}}"/>
+                    <img class="img-responsive" src="{{asset($user->user_avatar)}}"/>
                 </div>
             </fieldset>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
             <fieldset>
                 <legend>{{trans('profile.roles')}}</legend>
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow: auto">
                     <table class="table">
                         <thead>
                         <tr>
                             <th>{{trans('roles.role_description', ['n' => ''])}}</th>
-                            <th>{{trans('roles.role_tax_annual', array('n' => 'CHF '))}}</th>
-                            <th>{{trans('roles.role_tax_night', array('n' => 'CHF '))}}</th>
-                            <th>{{trans('roles.role_tax_stock', array('n' => 'CHF '))}}</th>
+                            <th style="min-width: 100px">{{trans('roles.role_tax_annual', array('n' => 'CHF'))}}</th>
+                            <th style="min-width: 100px">{{trans('roles.role_tax_night', array('n' => 'CHF'))}}</th>
+                            <th style="min-width: 100px">{{trans('roles.role_tax_stock', array('n' => 'CHF'))}}</th>
                             <th>{{trans('rights.right')}}</th>
                         </tr>
                         </thead>
@@ -172,14 +172,14 @@
                 </div>
             </fieldset>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
             @if($disabledForm == '')
 
                 <fieldset>
                     <legend>{{trans('profile.actions')}}</legend>
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            {{Form::submit(trans('navigation.profile') . ' ' . trans('dialog.save'), array('class' => 'btn btn-success', 'id' => 'saveIt'))}}
+                            {{Form::submit(trans('navigation.profile') . ' ' . trans('dialog.save'), array('class' => 'btn btn-success', 'id' => 'saveIt', 'style' => 'width: 100%'))}}
                         </div>
                         <div class="col-sm-6 col-md-6">
                         <!-- button type="button" id="profilePrint" class="btn btn-default">{{trans('dialog.print')}}</button -->

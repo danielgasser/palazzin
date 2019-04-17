@@ -57,11 +57,18 @@ class UserController extends Controller
         } else {
             $user->family_description = '';
         }
+        $birthDayMsg = '';
         if (isset($user->user_birthday)) {
-            $user->user_birthday = \DateTime::createFromFormat('Y-m-d H:i:s', $user->user_birthday)->format('d.m.Y');
+            $d = \DateTime::createFromFormat('Y-m-d H:i:s', $user->user_birthday);
+            if ($d && $d->format('Y-m-d H:i:s') === $user->user_birthday) {
+                $user->user_birthday = \DateTime::createFromFormat('Y-m-d H:i:s', $user->user_birthday)->format('d.m.Y');
+            } else {
+                $user->user_birthday = null;
+                $birthDayMsg = 'Möchtest Du Dein Geburtsdatum angeben?';
+            }
         }
         return view('user.profile')
-            ->with('info_message', 'blah_')
+            ->with('info_message', $birthDayMsg)
             ->with('user', $user)
             ->with('countries', $countries)
             ->with('disabledForm', $disabledForm)
