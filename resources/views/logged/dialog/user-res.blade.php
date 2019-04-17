@@ -4,7 +4,7 @@
             <i class="fas fa-clock"></i>&nbsp;{{ trans('reservation.other_titles') }}
         </a>
         <ul class="dropdown-menu multi-level nav navbar-nav" role="menu" id="user-res">
-            <li>coming very soon...</li>
+            <li>Keine anderen Reservierungen</li>
             {{--
             @foreach($otherRes as $key => $res)
                 <li>{{$key}}

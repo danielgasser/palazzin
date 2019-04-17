@@ -299,8 +299,11 @@ $(document).on('click', '#deleteRes', function (e) {
 $(document).on('changeDate', '#reservation_ended_at', function () {
     let st = document.getElementById('reservation_started_at').value.split('.'),
         et = this.value.split('.'),
-        start = new Date(st[2], (parseInt(st[1], 10) - 1), st[0]),
-        end = new Date(et[2], (parseInt(et[1], 10) - 1), et[0]);
+        start = new Date(st[2], (parseInt(st[1], 10) - 1), st[0], 0, 0, 0, 0),
+        end = new Date(et[2], (parseInt(et[1], 10) - 1), et[0], 0, 0, 0, 0);
+    if (start.getTime() === end.getTime()) {
+        return false;
+    }
     V3Reservation.getNewResBeds();
     V3Reservation.checkExistentReservation(start, end);
 });

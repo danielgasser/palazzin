@@ -310,6 +310,25 @@ class ReservationController extends Controller
         return null;
     }
 
+    public function getOtherReservations()
+    {
+        $credentials = request()->all();
+        $start = $credentials['start'] . ' 00:00:00';
+        $end = $credentials['end'] . ' 00:00:00';
+        $res = new Reservation();
+        $existentRes = $res->checkExistentReservationV3($start, $end);
+        if (is_object($existentRes)) {
+            $existentRes->each(function ($res) {
+                $u = User::find($res->user_id);
+                $res->user_name = $u->getCompleteName();
+                $res->user_mail = $u->email;
+                $res->user_fon = $u->user_fon1;
+            });
+            return $existentRes->toJson();
+        }
+        return null;
+    }
+
     /**
      * @return false|string
      * @throws \Exception

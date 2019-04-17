@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::post('delete_reservation', 'ReservationController@deleteReservation')->name('delete_reservation');
         Route::post('delete_guest', 'ReservationController@deleteGuest')->name('delete_guest');
         Route::post('check_existent', 'ReservationController@checkExistentReservation')->name('check_existent');
+        Route::post('check_others', 'ReservationController@getOtherReservations')->name('check_others');
         Route::any('edit_reservation/{res_id}', 'ReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'ReservationController@getReservationsPerDateV3');
 

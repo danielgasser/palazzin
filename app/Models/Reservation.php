@@ -163,7 +163,6 @@ class Reservation extends Model {
      * @param $uID
      * @return mixed
      */
-    // ToDo Maybe it will be needed again in the future
 
     public function checkExistentReservationByUidV3($start, $end, $uID)
     {
@@ -191,6 +190,35 @@ class Reservation extends Model {
                 $q->where('user_id', '=', $uID);
             })
             ->first();
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public function checkExistentReservationV3($start, $end)
+    {
+        return self::where(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '>=', $end);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '<=', $start);
+                $q->where('reservation_ended_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $start);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '<=', $end);
+            })
+            ->orWhere(function ($q) use ($start, $end) {
+                $q->where('reservation_started_at', '>=', $start);
+                $q->where('reservation_started_at', '<=', $end);
+                $q->where('reservation_ended_at', '>=', $end);
+            })
+            ->get();
     }
 
     /**
@@ -664,5 +692,19 @@ class Reservation extends Model {
             return [$reservations->toJson(), $sums];
         }
         return [$reservations, $sums];
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    protected function getOtherReservationsPerDate($start, $end)
+    {
+        $reservations = $this->checkExistentReservationV3($start, $end);
+        $reservations->each(function ($res) {
+
+        });
+        return $reservations;
     }
 }

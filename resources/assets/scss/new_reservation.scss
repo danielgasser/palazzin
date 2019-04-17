@@ -273,6 +273,17 @@ label {
     padding-top: 18px;
     padding-bottom: 12px;
 }
+#user-res {
+    width: auto;
+    padding: 1em;
+    li {
+        a {
+            padding: 0;
+            color: #b7282e !important;
+            height: auto;
+        }
+    }
+}
 #timeliner-container {
     #timeliner-div {
         background-color: #fff;

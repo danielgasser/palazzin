@@ -812,6 +812,33 @@ var V3Reservation = {
         $('#save_reservation').attr('disabled', false);
         $('#clone_guest').attr('disabled', false);
     },
+    getOtherReservations: function (s, e) {
+        $.ajax({
+            url: 'check_others',
+            method: 'POST',
+            data: {
+                start: s,
+                end: e,
+                "_token": window.token,
+            },
+            success: function (data) {
+               let res = $.parseJSON(data),
+               str = '';
+               $.each(res, function () {
+                   str += '<li>' + this.reservation_started_at + '-' + this.reservation_ended_at + ':<br>' +
+                        '<a href="' + window.urlTo + '/user/profile/' + this.user_id + '">' + this.user_name + '</a><br>' +
+                        '<a href="mailto:' + this.user_mail + '">' + this.user_mail + '</a><br>' +
+                        '<a href="tel:' + this.user_fon + '">' + this.user_fon + '</a><br>' +
+                       '</li>';
+               })
+                if (str.length === 0) {
+                    $('#user-res').html('<li>Keine anderen Reservierungen</li>');
+                }else {
+                    $('#user-res').html(str);
+                }
+            }
+        });
+    },
     checkExistentReservation: function (s, e) {
         let start = s.getFullYear() + '-' + GlobalFunctions.smallerThenTen((s.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(s.getDate()),
             end = e.getFullYear() + '-' + GlobalFunctions.smallerThenTen((e.getMonth() + 1)) + '-' + GlobalFunctions.smallerThenTen(e.getDate());
@@ -832,6 +859,7 @@ var V3Reservation = {
                         keyboard: false
                     });
                 }
+                V3Reservation.getOtherReservations(start, end);
             }
         })
     },
