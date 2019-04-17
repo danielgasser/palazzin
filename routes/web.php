@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::get('userlist', 'UserController@showUsers');
         Route::get('pricelist', 'RoleController@getPriceList');
         Route::post('userlist/print', 'UserController@userListPrint')->name('userlist_print');
-        Route::get('user/profile/{id?}', 'UserController@showProfile');
+        Route::get('user/profile/{id}', 'UserController@showProfile');
 
     });
 
@@ -76,11 +76,12 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::post('save_reservation/{res_id?}', 'ReservationController@saveReservation')->name('save_reservation');
         Route::post('delete_reservation', 'ReservationController@deleteReservation')->name('delete_reservation');
         Route::post('delete_guest', 'ReservationController@deleteGuest')->name('delete_guest');
+        Route::post('check_existent', 'ReservationController@checkExistentReservation')->name('check_existent');
         Route::any('edit_reservation/{res_id}', 'ReservationController@editReservation')->name('edit_reservation');
         Route::get('reservation/month/v3', 'ReservationController@getReservationsPerDateV3');
 
 
-        Route::post('user/profile', 'UserController@saveProfile');
+        Route::post('user/profile/{id}', 'UserController@saveProfile')->name('save_user');
         Route::get('user/bills', 'BillController@showBills');
 
         // stats

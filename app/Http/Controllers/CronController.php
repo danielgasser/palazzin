@@ -155,7 +155,7 @@ class CronController extends Controller
         $user = User::find($id);
         if (is_object($user)) {
             Auth::login($user);
-            return redirect('user/profile');
+            return redirect('user/profile/' . $id);
         }
         return redirect('/');
 

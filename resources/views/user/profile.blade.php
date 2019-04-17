@@ -11,8 +11,7 @@
     @section('content')
 
     </div>
-    {{Form::model($user, array('url' => 'user/profile', 'class' => '', 'id' => 'userProfile', 'files' => true))}}
-    {{Form::hidden('id', $user->id)}}
+    {{Form::model($user, ['method' => 'post', 'route' => ['save_user', $user->id]], ['class' => '', 'id' => 'userProfile', 'files' => true])}}
     @if($disabledForm == '' && $user->user_new == 1)
         <fieldset>
             <legend>{{trans('profile.info')}}</legend>

@@ -28,22 +28,18 @@ class UserController extends Controller
 {
 
     /**
-     * @param null $id
+     * @param $id
      * @return mixed
      */
-    public function showProfile($id = null)
+    public function showProfile($id)
     {
-        if ($id != null) {
-            $user = User::find($id);
-            $disabledForm = 'disabled';
-            $requIred = ['', ''];
-        } else {
-            $user = User::find(Auth::id());
-            $disabledForm = '';
-            $requIred = ['requ', 'required'];
+        $user = User::find($id);
+        if (!is_object($user)) {
+            return back()->withErrors('Benutzer nicht gefunden');
         }
+        $disabledForm = 'disabled';
+        $requIred = ['', ''];
         if (User::isManager() || User::isLoggedAdmin()) {
-            $user = User::find($id);
             $disabledForm = '';
             $requIred = ['requ', 'required'];
         }
@@ -76,14 +72,18 @@ class UserController extends Controller
     /**
      * Saves the auth. users profile
      *
+     * @param $id
      * @return mixed Redirect
      */
-    public function saveProfile()
+    public function saveProfile($id)
     {
         $file = null;
         $new_mail_message = '';
         Input::flash();
-        $user = User::find(Input::get('id'));
+        $user = User::find($id);
+        if (!is_object($user)) {
+            return back()->withErrors('Benutzer nicht gefunden');
+        }
         $user_old_email = $user->email;
         if (Input::hasFile('user_avatar')) {
             $file = Input::file('user_avatar');

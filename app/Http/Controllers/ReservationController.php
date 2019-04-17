@@ -295,7 +295,6 @@ class ReservationController extends Controller
      *
      * @return bool|string
      */
-    // ToDo Maybe it will be needed again in the future
 
     public function checkExistentReservation()
     {
