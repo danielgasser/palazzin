@@ -298,7 +298,7 @@ if (strlen($routeStr) === 0) {
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @if(strpos('edit_reservation', $routeStr) === false)
                         {{-- ToDo--}}
-                       {{--  @include('logged.dialog.timeliner')--}}
+                         @include('logged.dialog.user-res', ['otherRes' => $otherRes])
                     @endif
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
@@ -332,7 +332,7 @@ if (strlen($routeStr) === 0) {
              'files'=>true))}}
                             </h1>
 
-                        @elseif($disabledForm == '')
+                        @elseif($disabledForm == '' ||  $user->id === Auth::id())
                     <h1>{{trans('profile.title', array(
             'first_name' => User::find(Auth::id())->user_first_name,
             'name' => User::find(Auth::id())->user_name,
@@ -340,6 +340,7 @@ if (strlen($routeStr) === 0) {
             'id' => User::find(Auth::id())->id,
             'files'=>true))}}
                     </h1>
+                        @else
                     <h1>{{trans('profile.title', array(
              'first_name' => $user->user_first_name,
              'name' => $user->user_name,

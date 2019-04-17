@@ -21,6 +21,10 @@ $(document).on('click', '#reset_reservation', function (e) {
     $('[id^="clone_guest_"]').attr('disabled', true);
 });
 
+$(document).on('change', 'th.clear', function (e) {
+   console.log(this)
+});
+
 /**
  * "Art des Gastes"
  */

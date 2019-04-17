@@ -14,9 +14,6 @@
 @import "incl/links";
 @import "incl/navbar";
 @import "stats";
-.datepicker {
-    left: 50px !important;
-}
 #newsMessage {
   display: none;
 }
@@ -364,7 +361,8 @@ table.tablesorter, table.tablesorter thead tr th {
 
 .smile {
   display: inline;
-  height: 50px;
+  height: 29px;
+    width: auto;
   border: none;
   -webkit-box-shadow: none;
   box-shadow: none;

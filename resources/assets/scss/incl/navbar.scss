@@ -237,19 +237,16 @@ ul {
     }
 }
 #res-nav {
-    min-height: 70px;
     width: 100%;
-    #free_beds, #timeliner-container, #timeliner, #legend-container, #your_roles, #your_clan {
-        height: 70px;
+    #free_beds, #legend-container, #your_roles, #your_clan {
+        background-color: transparent;
         border: none;
         .fa-clock:after {
             content: "\f078";
             padding-left: 8px;
         }
         li {
-            height: 70px;
             a {
-                height: 70px;
                 display: block;
                 font-size: 1.1em;
             }
@@ -277,8 +274,27 @@ ul {
         }
     }
 }
-#timeliner {
-    min-height: 350px;
+#user-res {
+    list-style-type: none;
+    margin: 0;
+    padding: 1em 0 0 1em;
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    background-color: white;
+    border: none;
+    li {
+        height: auto;
+        ul {
+            background-color: white;
+            li {
+                a {
+                    color: $brand-danger !important;
+                }
+            }
+        }
+    }
 }
 #all-nav-welcome, #all-nav-stats {
     width: 100%;

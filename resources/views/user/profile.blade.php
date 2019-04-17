@@ -18,8 +18,8 @@
             <legend>{{trans('profile.info')}}</legend>
             <div class="row">
                 <div class="col-sm-1 col-md-1"></div>
-                <div class="col-sm-10 col-md-10{{$requIred[0]}}ired">
-                    {{trans('userdata.profile_text')}} <img class="smile" src="{{asset('assets/img/smile_frech.png')}}"
+                <div class="col-sm-10 col-md-10 {{$requIred[0]}}ired">
+                    {!! trans('userdata.profile_text') !!} <img class="smile" src="{{asset('img/emoticons/smiley-wink.gif')}}"
                                                             alt="Zwinker" title="Zwinker">
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
@@ -41,10 +41,9 @@
                 {{-- login name --}}
                 <div class="form-group">
                     {{Form::label('user_login_name', trans('userdata.user_login_name'), ['style' => 'display: inline'])}}:&nbsp;
-                    <span id="user_login_name_show">{{$user->user_login_name}}</span>
-                    {{Form::hidden('user_login_name', $user->user_login_name, array('class' => 'form-control', $disabledForm))}}
+                    {{Form::text('user_login_name', $user->user_login_name, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
                     {{Form::label('clan_id', trans('userdata.clan'), ['style' => 'display: inline'])}}:&nbsp;
-                    <span id="clan_id">{{$clan_desc}}/{{$user->family_description}}</span>
+                    {{Form::text('clan_id', $clan_desc . '/' . $user->family_description, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
                 </div>
             </fieldset>
         </div>

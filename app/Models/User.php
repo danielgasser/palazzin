@@ -104,7 +104,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var string
      */
-    public static $userAvatar = '/files/daniel_gasser/1412091350_running_man-512.png';
+    public static $userAvatar = '/public/img/Profile_avatar_placeholder.png';
 
     /**
      *

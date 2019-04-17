@@ -42,6 +42,7 @@ class ReservationController extends Controller
             ->with('allClans', $clans)
             ->with('periods', $args['periods'])
             ->with('reservationsSum', $args['reservationsSum'])
+            ->with('otherRes', $args['otherRes'])
             ->with('userRes', $reservations[0])
             ->with('userClan', $args['userClan'])
             ->with('periodsDatePicker', $args['periodsDatePicker']);
@@ -103,6 +104,7 @@ class ReservationController extends Controller
             ->with('reservationsPerPeriod', $args['reservationsPerPeriod'])
             ->with('periods', $args['periods'])
             ->with('userClan', $args['userClan'])
+            ->with('otherRes', $args['otherRes'])
             ->with('reservationsSum', $args['reservationsSum'])
             ->with('my_reservations', json_encode($my_reservations[0], JSON_HEX_APOS))
             ->with('periodsDatePicker', $args['periodsDatePicker']);
@@ -260,6 +262,7 @@ class ReservationController extends Controller
                 ->with('roleTaxes', $resInfo['roleTaxes'])
                 ->with('guestEntryView', $resInfo['guestEntryView'])
                 ->with('reservationsPerPeriod', $resInfo['reservationsPerPeriod'])
+                ->with('otherRes', $args['otherRes'])
                 ->with('periods', $resInfo['periods'])
                 ->with('reservationsSum', $resInfo['reservationsSum'])
                 ->with('userClan', $resInfo['userClan'])
@@ -355,6 +358,25 @@ class ReservationController extends Controller
         $r = $this->getReservationsPerDateV3($args['periods']->first()->id);
         $args['reservationsPerPeriod'] = $r[0];
         $args['reservationsSum'] = $r[1];
+        $args['otherRes'] = [];
+        foreach ($r[1] as $key => $res) {
+            if (strstr($key, 'userID')) {
+                $k = str_replace('freeBeds_', '', $key);
+                $k2 = str_replace('userID', '', $k);
+                $ds = explode('_', $k2);
+                $d = \DateTime::createFromFormat('d/m/Y', $ds[2] . '/' . ($ds[1] + 1) . '/' . $ds[0]);
+                $today = new \DateTime();
+                if ($d >= $today) {
+                    $data = explode('|', $res);
+                    $u = User::find($data[2]);
+                    $rLink = '';
+                    if (is_object($u)) {
+                        $rLink = '<a href="' . \URL::to('user/profile/' .  $data[2]) . '">' . $u->getCompleteName() . '</a>';
+                    }
+                    $args['otherRes'][trans('calendar.month-names.' . $d->format('n')) . ', ' . $d->format('Y')][$data[2]] = $data[0] . '<br>' . $data[1] . ': ' . $rLink;
+                }
+            }
+        }
         return $args;
     }
 }

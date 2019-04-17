@@ -38,6 +38,10 @@ var V3Reservation = {
             $('#reservation_ended_at').removeClass('noClick');
             $('#show-all-free-beds').removeClass('noClick');
         }
+        if ($('#reservation_started_at').val() !== '') {
+            $('#reservation_ended_at').removeClass('noClick');
+            $('#show-all-free-beds').removeClass('noClick');
+        }
     },
     onHide: function (e) {
         let classList,
@@ -114,7 +118,7 @@ var V3Reservation = {
     addBeforeShowDayEdit: function (d, otherClanDate, isEdit) {
         let numBeds = window.settings.setting_num_bed,
             dateStr = d.getFullYear() + '_' + GlobalFunctions.smallerThenTen(d.getMonth()) + '_' + GlobalFunctions.smallerThenTen(d.getDate()),
-            dateStrUid = parseInt(window.newAllGuestBeds['freeBeds_' + dateStr + 'uID'], 10)
+            dateStrUid = parseInt(window.newAllGuestBeds['freeBeds_' + dateStr + 'uID'], 10),
             pickerDateStr = V3Reservation.formatDate(d, false, '_'),
             occupied = isNaN(parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10)) ? 0 : parseInt(window.newAllGuestBeds['freeBeds_' + dateStr], 10),
             oB = 0,
@@ -283,7 +287,8 @@ var V3Reservation = {
             },
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayNew(Date, otherClanDate, false);
-            }
+            },
+            orientation: 'bottom center'
         };
 
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('hide', function (e) {
@@ -356,7 +361,8 @@ var V3Reservation = {
             },
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayEdit(Date, otherClanDate, true, this.startDate);
-            }
+            },
+            orientation: 'bottom'
         };
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('hide', function (e) {
             V3Reservation.onHide(e);

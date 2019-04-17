@@ -1,6 +1,6 @@
 <ul id="legend-container" class="nav navbar-nav navbar-default multi-level" style="margin: 0; float: left;">
     <li class="dropdown-toggle" id="priority-div">
-        <a class="dropdown-toggle topNav" data-toggle="dropdown" href="#" id="show-priority">
+        <a class="dropdown-toggle topNav" data-toggle="dropdown" href="#" id="show-priority" style="padding: 18px">
             <i class="fas fa-th-list"></i>&nbsp;{{ trans('dialog.legend') }}
         </a>
         <ul class="dropdown-menu multi-level nav navbar-nav priority" role="menu" id="priority">

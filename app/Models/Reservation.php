@@ -582,6 +582,7 @@ class Reservation extends Model {
                                     } else {
                                         $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = 1;
                                     }
+                                    $sums[$preFix . implode('_', $d) . 'userID'] =  $r->user_id;
                                 }
                                 if (array_key_exists($preFix . implode('_', $d), $sums)) {
                                     $sums[$preFix . implode('_', $d)] += 1;
@@ -590,6 +591,7 @@ class Reservation extends Model {
                                 }
 
                             }
+                            $sums[$preFix . implode('_', $d) . 'userID'] = $r->reservation_started_at . '|' . $r->reservation_ended_at . '|' . $r->user_id;
                             // Gastgeber
                             $sums[$preFix . implode('_', $d)] += 1;
                             if (array_key_exists($preFix . implode('_', $d) . 'resId' . $r->id, $sums)) {
@@ -624,6 +626,7 @@ class Reservation extends Model {
                             } else {
                                 $sums[$preFix . implode('_', $d) . 'uID' . $r->user_id] = 1;
                             }
+                            $sums[$preFix . implode('_', $d) . 'uID'] = $r->user_id;
                         }
                         if (array_key_exists($preFix . implode('_', $d), $sums)) {
                             $sums[$preFix . implode('_', $d)] += 1;
@@ -651,6 +654,7 @@ class Reservation extends Model {
                         }
 
                     }
+                    $sums[$preFix . implode('_', $d) . 'userID'] = $r->user_id;
                 }
 
             }

@@ -7,6 +7,7 @@
  */
 return array(
     'your_title' => 'Deine Reservierungen',
+    'other_titles' => 'Andere Reservierungen',
     'no_bookings' => 'Keine Reservierungen',
     'title' => 'Name der Reservierung',
     'title_short' => 'Reservierung',

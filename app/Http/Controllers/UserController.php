@@ -95,8 +95,8 @@ class UserController extends Controller
         $validator = Validator::make(
             Input::all(),
             [
-                'user_first_name' => 'required|min:3|alpha',
-                'user_name' => 'required|min:3|regex:/^[a-zA-Z\.\-\ ]+$/',
+                'user_first_name' => 'required|min:3|regex:/^[a-zA-ZòùèàéèôâêöäüÜÖÄ\.\-\ ]+$/',
+                'user_name' => 'required|min:3|regex:/^[a-zA-ZòùèéàèôâêöäüÜÖÄ\.\-\ ]+$/',
                 'user_login_name' => 'required|regex:/^[a-zA-Z\.]+$/',
                 'email' => 'required|email',
                 'user_www_label' => 'max:50',
