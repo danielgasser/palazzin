@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use LoginStat;
 use Post;
 use User;
 use Auth;

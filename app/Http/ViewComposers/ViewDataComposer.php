@@ -32,7 +32,6 @@ class ViewDataComposer
         if (Auth::check()) {
             $userCompleteName = $user->getCompleteName();
         }
-        $login = \LoginStat::where('user_id', '=', Auth::id())->orderBy('created_at', 'DESC')->skip(1)->first();
         $userRole = [];
         $userClan = [];
         $userClanName = '';
@@ -41,7 +40,6 @@ class ViewDataComposer
             $userClan = $user->getUserClan();
             $userClanName = $user->getUserClanName($user->clan_id);
         }
-        $view->with('lastLogin', (!is_null($login)) ? $login->created_at : '');
         $view->with('monthColors', $this->monthColors);
         $view->with('yearColors', $this->yearColors);
         $view->with('toesslab', $this->toesslab);

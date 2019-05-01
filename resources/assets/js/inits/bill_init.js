@@ -14,8 +14,9 @@ var billTable,
         autoWidth: true,
         fixedHeader: {
             header: true,
-            footer: true
+            footer: false
         },
+        sDom: '<"top"if>',
         language: {
             emptyTable: 'Keine Rechungen vorhanden',
             paginate: {

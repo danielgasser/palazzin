@@ -41,7 +41,6 @@ return array(
     'admin/roles' => 'Rollen',
     'stats_calendar' => 'Statistiken: Jahreskalender (Logiernächte)',
     'stats_bill' => 'Statistiken: Jahresabrechnung',
-    'stats_login' => 'Statistiken: Logindaten',
     'stats_chron' => 'Statistiken: Chronologische Anmeldungen (Gästebuch)',
     'admin/roles/edit' => 'Administration - Rollen bearbeiten',
     'admin/rights/edit' => 'Administration - Rechte bearbeiten',

@@ -170,13 +170,6 @@ let urlTop = (window.route.indexOf('admin') > -1) ? '/admin/users/search' : '/us
                     return html;
                 }
             },
-
-            {
-                targets: [17],
-                responsivePriority: 25,
-                data: 'last_login',
-                visible: false
-            },
         ],
         searching: false,
         language: {

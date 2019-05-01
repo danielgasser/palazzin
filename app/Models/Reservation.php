@@ -307,6 +307,7 @@ class Reservation extends Model {
             $s = new \DateTime(str_replace('_', '-', $r->reservation_started_at));
             $d = new \DateTime(str_replace('_', '-', $r->reservation_ended_at));
             $r->reservation_started_at_show = $s->format(trans('formats.short-date-ts'));
+            $m = intval($s->format('n')) + 1;
             $r->reservation_started_at_month = $s->format('n');
             $r->reservation_started_at_year = $s->format('Y');
             $r->reservation_ended_at_show = $d->format(trans('formats.short-date-ts'));

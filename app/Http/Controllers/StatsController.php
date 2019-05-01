@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Bill;
-use LoginStat;
 use Reservation;
 use Illuminate\Support\Facades\Input;
 use Response;
@@ -151,27 +150,11 @@ class StatsController extends Controller
             $user_id = \Auth::id();
         }
 
-        $billPaid = $bill->getBillsTotalStatsPerYear([request()->input('year') . '-%'], $user_id);
+        $billPaid = $bill->getBillsTotalStatsPerYear(request()->input('year'), $user_id);
         if (Request::ajax()) {
             return Response::json($billPaid);
         }
         return view('logged.statistics.stats_bill')
             ->with('allReservations', $billPaid);
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showStatsLogin()
-    {
-        if (Input::get('year') == null) {
-            return view('logged.statistics.stats_login')
-                ->with('allReservations', '');
-        }
-        $logins = new LoginStat();
-        $res = $logins->filterLoginsStats(Input::get('year'));
-        if (Request::ajax()) {
-            return Response::json($res);
-        }
     }
 }

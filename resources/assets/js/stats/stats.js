@@ -7,10 +7,9 @@ var dataStatsTableOptions = {
                 orderable: true,
                 data: 'reservation_started_at_month',
                 render: function (data, type, full, meta) {
-                    console.log(data, type, full, meta)
                     if (type === 'sort') {
-                        let d_string = data.split(' '),
-                            d_month = window.langCalendar.indexOf(d_string[0]),
+                        let d_string = full.reservation_started_at.split('.'),
+                            d_month = window.langCalendar[d_string[1]],
                             d = new Date(d_string[1], d_month, 1, 0, 0, 0)
                         return d.getTime();
                     }

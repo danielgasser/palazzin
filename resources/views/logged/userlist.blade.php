@@ -68,7 +68,6 @@
                     <th class="0" id="clan_id">{{trans('userdata.clan')}}</th>
                     <th class="1" id="family_id">{{trans('userdata.halfclan')}}</th>
                     <th class="14" id="user_role">{{trans('userdata.roles')}}</th>
-                    <th class="13" id="user_last_login" class="date-header">{{trans('userdata.user_last_login')}}</th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -90,7 +89,6 @@
                         <td class="11"></td>
                         <td class="12"></td>
                         <td class="13"></td>
-                        <td class="14"></td>
                     </tr>
             </tbody>
         </table>

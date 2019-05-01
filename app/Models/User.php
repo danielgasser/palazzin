@@ -150,14 +150,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @return mixed
      */
-    public function login_stats(){
-        return $this->hasMany('LoginStat', 'user_id');
-    }
-
-    /**
-     *
-     * @return mixed
-     */
     public function posts(){
         return $this->hasMany('Post');
     }
@@ -421,12 +413,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ->get();
 
         $users->each(function ($u) {
-            $login = \LoginStat::where('user_id', '=', $u->getUserID())->orderBy('created_at', 'DESC')->skip(1)->first();
-            if (is_object($login)) {
-                $u->last_login = $login->created_at;
-            } else {
-                $u->last_login = '-';
-            }
             $u->user_birthday = ($u->user_birthday !== '0000-00-00 00:00:00') ? date('d.m.Y', strtotime($u->user_birthday)) : '';
             $u->user_id = $u->getUserID();
             $u->country = DB::table('countries')
@@ -454,7 +440,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
         }
         else {
-            $this->login_stats()->delete();
             $this->destroy($this->id);
             return true;
         }

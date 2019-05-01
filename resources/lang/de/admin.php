@@ -51,8 +51,4 @@ return array(
         'title' => 'Statistiken: Jahresabrechnung',
         'etc' => '...',
     ),
-    'stats_login' => array(
-        'title' => 'Statistiken: Logindaten',
-        'etc' => '...',
-    )
 );

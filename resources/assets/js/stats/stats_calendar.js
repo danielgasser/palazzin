@@ -75,7 +75,6 @@ var dataCalendarTableOptions = {
                 continue;
             }
             dataHtmlTable.append('<table autosize="1" width="547" style="font-size: 16px !important; border-collapse: collapse; width: 547px" cellpadding="0" cellspacing="0" id="datatable_' + theYear + '" class="datatable_month table table-stats"></table><pagebreak />');
-            //dataHtmlTable.append('<pagebreak />');
             dataHtml = $('#datatable_' + theYear);
             dataHtml.append('<thead><tr id="datatable-head-year_' + theYear + '"></tr><tr id="datatable-head_' + theYear + '"></tr></thead>');
             $('#datatable-head-year_' + theYear).append('<th colspan="32" style="text-align: center;font-weight: bold; height: 40px; background-color: white !important; vertical-align: middle">' + theYear + '</th>');
@@ -91,7 +90,7 @@ var dataCalendarTableOptions = {
                     }
                     daysString += '<td style="width: 12px; text-align: center;" id="' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '_' + GlobalFunctions.smallerThenTen(j) + '"></td>';
                 }
-                $('#year_' + theYear).append('<tr id="theMonth_' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '"><td>' + window.langCalendar[month - 1] + '</td>' + daysString + '</tr>');
+                $('#year_' + theYear).append('<tr id="theMonth_' + theYear + '_' + GlobalFunctions.smallerThenTen(month) + '"><td>' + window.langCalendar[month] + '</td>' + daysString + '</tr>');
             }
             if ($.fn.DataTable.isDataTable(this)) {
                 dataHtml.destroy();
@@ -121,7 +120,7 @@ var dataCalendarTableOptions = {
                     }
                 },
                 xAxis: {
-                    categories: window.langCalendar,
+                    categories: Object.values(window.langCalendar),
                     labels: {
                         style: {
                             fontSize: '16px'
@@ -200,9 +199,6 @@ var dataCalendarTableOptions = {
             window.all_charts.push(chart);
         }
         $('[data-empty="empty"]').hide();
-        if ($.fn.DataTable.isDataTable( '#datatable-short-calendar' )) {
-            $('#datatable-short-calendar').destroy();
-        }
         $('#datatable-short-calendar').DataTable(dataCalendarTableOptions);
     },
     fillTable = function (data, years) {
@@ -281,10 +277,10 @@ var dataCalendarTableOptions = {
                 for (month = 1; month < 13; month += 1) {
                     $('#chart_div').append('<div style="margin-bottom: 12px; width: 33%; float: left;" id="chart_year_month_' + y + '_' + month + '"></div>');
                     highChartOptionsDay.chart.renderTo = 'chart_year_month_' + y + '_' + month;
-                    highChartOptionsDay.tooltip.pointFormat = 'Logier-Nächte am {point.x}.' + window.langCalendar[month - 1] + ' ' + y + ': <b>{point.y}</b>';
+                    highChartOptionsDay.tooltip.pointFormat = 'Logier-Nächte am {point.x}.' + window.langCalendar[month] + ' ' + y + ': <b>{point.y}</b>';
                     chart = new window.Highcharts.Chart(highChartOptionsDay);
                     chart.setTitle({
-                        text: 'Logiernächte ' + window.langCalendar[month - 1] + ' ' + y
+                        text: 'Logiernächte ' + window.langCalendar[month] + ' ' + y
                     });
                     graphDaySeries = [];
                     for (day = 0; day < 32; day += 1) {

@@ -89,7 +89,6 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::get('stats_calendar', 'StatsController@showStatsReservationsCalendar');
         Route::get('stats', 'StatsController@showStatsMenu');
         Route::get('stats_bill', 'StatsController@showStatsBills');
-        Route::get('stats_login', 'StatsController@showStatsLogin');
         Route::get('stats_bill_total', 'StatsController@showStatsBillsTotal');
         Route::get('stats_bill_total_year', 'StatsController@showStatsBillsTotalPerYear');
         Route::get('stats_chron', 'StatsController@showStatsReservations');

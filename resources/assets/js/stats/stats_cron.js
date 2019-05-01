@@ -92,7 +92,7 @@ var distinctArray = function (arr) {
             htmlString = '';
             htmlString += '<tr>';
             htmlString += '<td style="vertical-align: top">';
-            htmlString += window.langCalendar[(n.reservation_started_at_month - 1)] + ' ' + n.reservation_started_at_year;
+            htmlString += window.langCalendar[n.reservation_started_at_month] + ' ' + n.reservation_started_at_year;
             htmlString += '</td>';
             htmlString += '<td style="vertical-align: top">';
             htmlString += n.user_first_name + ' ' + n.user_name;
@@ -135,7 +135,6 @@ var distinctArray = function (arr) {
             htmlString += '</tr>';
             $('#cron_year_' + n.reservation_started_at_year).append(htmlString);
         });
-
     },
     fillFamilyCakeStats = function (nights, yearLabel, el, t_nights, title, pie, props) {
         var options;

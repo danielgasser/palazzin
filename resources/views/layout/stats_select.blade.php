@@ -18,7 +18,7 @@ $j = 0;
     <p><b>Bitte wähle die gewünschten Jahre und klicke auf "Statistiken laden"</b></p>
     @for($i = $start; $i <= ($start + $duration); $i++)
         {{--@if($i <= intval($today->format('Y')))--}}
-            <div class="col-sm-3"><label style="color: {{$yearColors[$j]}}">{{$i}}</label><input name="year[]" data-toggle="toggle" data-on="<b>{{$i}}</b>" data-off="Aus" type="checkbox" value="{{$i}}" /></div>
+            <div class="col-sm-3"><label style="color: {{$yearColors[$j]}}; margin-right: 1em; font-size: 17px;">{{$i}}</label><input name="year[]" data-toggle="toggle" data-on="<b>{{$i}}</b>" data-off="Aus" type="checkbox" value="{{$i}}" /></div>
         {{--@endif--}}
         <?php $j++;
         ?>

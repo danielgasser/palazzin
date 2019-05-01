@@ -6,6 +6,9 @@
             border: 1px solid #333;
 
         }
+        #all-year-tables>.table>tbody>tr>td , #total-total-tables>.table>tbody>tr>td {
+            font-size: 17px;
+        }
 
     </style>
 @stop

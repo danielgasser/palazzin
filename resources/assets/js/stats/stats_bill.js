@@ -503,7 +503,7 @@ var dataTableOptions = {
                 amountPaidValue = (data_paid[ele_month] === undefined) ? '0.00' : data_paid[ele_month];
                 amountTUnpaidValue = (data_unpaid[ele_month] === undefined) ? '0.00' : data_unpaid[ele_month];
 
-                htmlStringMonth += '<th>' + window.langCalendar[month - 1] + '</th>';
+                htmlStringMonth += '<th>' + window.langCalendar[month] + '</th>';
                 htmlStringTotal += '<td class="total" id="total_month_short_' + ele_month + '">' + amountTotalValue + '</td>';
                 htmlStringPaid += '<td class="paid" id="paid_month_short_' + ele_month + '">' + amountPaidValue + '</td>';
                 htmlStringUnpaid += '<td class="unpaid" id="unpaid_month_short_' + ele_month + '">' + amountTUnpaidValue + '</td>';
@@ -534,7 +534,6 @@ var dataTableOptions = {
             totalTotalValue = 0;
             totalPaidValue = 0;
             totalUnpaidValue = 0;
-
             $('#month_' + year).append(htmlStringMonth);
             $('#data-total-short_' + year).append(htmlStringTotal);
             $('#data-total-short_' + year).append(htmlStringPaid);
@@ -573,7 +572,7 @@ var dataTableOptions = {
                             text: 'Rechnungen ' + year
                         },
                         xAxis: {
-                            categories: window.langCalendar,
+                            categories: Object.values(window.langCalendar),
                             labels: {
                                 style: {
                                     fontSize: '18px'

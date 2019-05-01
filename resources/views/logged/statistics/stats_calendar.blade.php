@@ -6,6 +6,9 @@
             border: 1px solid #333;
 
         }
+        #data-short tr td {
+            font-size: 15px;
+        }
 
     </style>
 @stop
@@ -17,10 +20,10 @@
             <th></th>
             <?php $i = 0; ?>
             @foreach(Lang::get('calendar.month-names') as $c)
-                <th id="month_long_{{$i}}"><h6>{{$c}}</h6></th>
+                <th id="month_long_{{$i}}"><b>{{$c}}</b></th>
                 <?php $i++ ?>
             @endforeach
-            <th><h6>Total</h6></th>
+            <th><b>Total</b></th>
         </tr>
         </thead>
         <tbody id="data-short">
