@@ -3,7 +3,8 @@ $(document).ready(function () {
         reservationTable = $('#table_all_reservations').DataTable({
             data: reservations,
             responsive: true,
-            autoWidth: false,
+            autoWidth: true,
+            order: [[ 1, "desc" ]],
             fixedHeader: {
                 header: true,
                 footer: true
