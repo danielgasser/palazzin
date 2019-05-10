@@ -230,6 +230,28 @@ if (strlen($routeStr) === 0) {
                  </div>
              </div>
             @endif
+            @if (Session::has('error'))
+                @php
+                $message = Session::get('error');
+                Session::forget(['error'])
+                @endphp
+                <div class="modal fade in" tabindex="-1" role="dialog">
+                 <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                             <h4 class="modal-title-info">{!! trans('dialog.info') !!}</h4>
+                         </div>
+                         <div class="modal-body">
+                             <p>{!! $message !!}</p>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">{!!trans('dialog.ok')!!}</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+            @endif
 
     @show
     @section('navigation')

@@ -131,7 +131,20 @@ class AdminController extends Controller
         if (!is_object($user)) {
             return back()->with('error', 'Benutzer nicht gefunden');
         }
-        $user->update($args);
+        try {
+            $user->update($args);
+        } catch (\Exception $e) {
+            $msg = [];
+            if ($e->getCode() === '23000') {
+                if (strpos($e->getMessage(), 'users_user_login_name_unique') !== false) {
+                    $msg[] = 'Der Benutzername: "' . $e->getBindings()[3] . '" gehört einem anderen Benutzer.';
+                }
+                if (strpos($e->getMessage(), 'users_email_unique') !== false) {
+                    $msg[] = 'Die E-Mail: "' . $e->getBindings()[1] . '" gehört einem anderen Benutzer.';
+                }
+                return back()->with('error', implode('<br>', $msg));
+            }
+        }
         $user->push();
         return back()
             ->with('info_message', trans('errors.data-saved', ['a' => '', 'data' => 'Benutzer']))
