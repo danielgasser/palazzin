@@ -318,10 +318,10 @@ if (strlen($routeStr) === 0) {
                     <h1>{{trans('navigation.' . $routeStr)}}</h1>
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
-                    @if(strpos('edit_reservation', $routeStr) === false)
+                    {{-- @if(strpos('edit_reservation', $routeStr) === false)--}}
                         {{-- ToDo--}}
                          @include('logged.dialog.user-res', ['otherRes' => $otherRes])
-                    @endif
+                    {{-- @endif--}}
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-12 title-res navbar-default">
                     @include('logged.dialog.free_beds_menu')

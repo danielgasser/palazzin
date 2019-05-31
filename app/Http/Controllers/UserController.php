@@ -92,16 +92,22 @@ class UserController extends Controller
             return back()->withErrors('Benutzer nicht gefunden');
         }
         $user_old_email = $user->email;
+        $rules = [
+            'user_first_name' => 'required|min:3|regex:/^[a-zA-ZòùèàéèôâêöäüÜÖÄ\.\-\ ]+$/',
+            'user_name' => 'required|min:3|regex:/^[a-zA-ZòùèéàèôâêöäüÜÖÄ\.\-\ ]+$/',
+            'user_login_name' => 'required|regex:/^[a-zA-Z\.]+$/',
+            'email' => 'required|email',
+            'user_www_label' => 'max:50',
+            'user_address' => 'required|min:3',
+            'user_city' => 'required|min:3',
+            'user_zip' => 'required|min:3',
+            'user_country_code' => 'required',
+            'user_fon1_label' => 'required',
+            'user_fon1' => 'required|min:3',
+        ];
         if (Input::hasFile('user_avatar')) {
             $file = Input::file('user_avatar');
-        }
-        if (Input::get('id') != Auth::user()->id && (!User::isManager() || !User::isLoggedAdmin())) {
-            Session::put('error', '<div class="messagebox">Dies ist nicht Dein Profil</div>');
-            return Redirect::back()->withErrors('<div class="messagebox">Dies ist nicht Dein Profil</div>');
-        }
-        $validator = Validator::make(
-            Input::all(),
-            [
+            $rules = [
                 'user_first_name' => 'required|min:3|regex:/^[a-zA-ZòùèàéèôâêöäüÜÖÄ\.\-\ ]+$/',
                 'user_name' => 'required|min:3|regex:/^[a-zA-ZòùèéàèôâêöäüÜÖÄ\.\-\ ]+$/',
                 'user_login_name' => 'required|regex:/^[a-zA-Z\.]+$/',
@@ -114,7 +120,15 @@ class UserController extends Controller
                 'user_fon1_label' => 'required',
                 'user_fon1' => 'required|min:3',
                 'user_avatar' => 'image',
-            ],
+            ];
+        }
+        if (Input::get('id') != Auth::user()->id && (!User::isManager() || !User::isLoggedAdmin())) {
+            Session::put('error', '<div class="messagebox">Dies ist nicht Dein Profil</div>');
+            return Redirect::back()->withErrors('<div class="messagebox">Dies ist nicht Dein Profil</div>');
+        }
+        $validator = Validator::make(
+            Input::all(),
+            $rules,
             [
                 'regex' => '<div class="messagebox">Format des Felds <span class="error-field"><span class="error-field">:attribute</span></span> ist ungültig:<br>
                             - Keine Umlaute<br>

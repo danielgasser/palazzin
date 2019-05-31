@@ -4,8 +4,9 @@
             <i class="fas fa-clock"></i>&nbsp;{{ trans('reservation.other_titles') }}
         </a>
         <ul class="dropdown-menu multi-level nav navbar-nav" role="menu" id="user-res">
+            @if(count($otherRes) === 0)
             <li>Keine anderen Reservierungen</li>
-            {{--
+            @else
             @foreach($otherRes as $key => $res)
                 <li>{{$key}}
                     <ul style="list-style-type: none">
@@ -15,7 +16,7 @@
                     </ul>
                 </li>
             @endforeach
-            --}}
+            @endif
         </ul>
     </li>
 </ul>

@@ -182,6 +182,7 @@ class ReservationController extends Controller
      * Gets reservations by period date
      *
      * @param null $periodID
+     * @param bool $isJson
      * @return mixed
      */
     public function getReservationsPerDateV3($periodID = null, $isJson = true)
@@ -254,6 +255,9 @@ class ReservationController extends Controller
             $saved = $res->push();
         }
         if ($saved) {
+            if (!array_key_exists('otherRes', $args)) {
+                $args['otherRes'] = [];
+            }
             $resInfo = $this->getReservationInfos();
             $my_reservations = Reservation::setFreeBeds($res, 'user_Res_Dates_', false, 'Y_m_d', false);
             return redirect('edit_reservation/' . $res->id)
@@ -341,8 +345,9 @@ class ReservationController extends Controller
             return json_encode(['error' => 'no_delete_reservation']);
         }
         $today = new \DateTime();
+        $today->modify('+ 1 day') ;
         $start = new \DateTime($res->reservation_ended_at);
-        if ($today > $start) {
+        if ($today->getTimestamp() > $start->getTimestamp()) {
             return json_encode(['error' => 'no_delete_reservation']);
         }
         $res->guests()->delete();
@@ -391,7 +396,7 @@ class ReservationController extends Controller
                     if (is_object($u)) {
                         $rLink = '<a href="' . \URL::to('user/profile/' .  $data[2]) . '">' . $u->getCompleteName() . '</a>';
                     }
-                    $args['otherRes'][trans('calendar.month-names.' . $d->format('n')) . ', ' . $d->format('Y')][$data[2]] = $data[0] . '<br>' . $data[1] . ': ' . $rLink;
+                    $args['otherRes'][trans('calendar.month-names.' . $d->format('n')) . ', ' . $d->format('Y')][$data[2]] = $data[0] . ' -<br>' . $data[1] . ':<br>' . $rLink;
                 }
             }
         }

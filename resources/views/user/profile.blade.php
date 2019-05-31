@@ -42,7 +42,8 @@
                     {{Form::label('user_login_name', trans('userdata.user_login_name'), ['style' => 'display: inline'])}}:&nbsp;
                     {{Form::text('user_login_name', $user->user_login_name, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
                     {{Form::label('clan_id', trans('userdata.clan'), ['style' => 'display: inline'])}}:&nbsp;
-                    {{Form::text('clan_id', $clan_desc . '/' . $user->family_description, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
+                    {{Form::text('clan_id_show', $clan_desc . '/' . $user->family_description, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
+                    {{Form::hidden('clan_id', $user->clan_id, array('class' => 'form-control', $disabledForm, 'readonly' => 'readonly'))}}
                 </div>
             </fieldset>
         </div>
