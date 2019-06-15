@@ -29,7 +29,7 @@
             <div class="row" id="resButtons">
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-default show_reservation" disabled
+                        <button type="submit" title="{{trans('dialog.save')}}" class="btn btn-default show_reservation"
                                 id="save_reservation"><i class="fas fa-save"></i>{{trans('reservation.book')}}</button>
                     </div>
                 </div>

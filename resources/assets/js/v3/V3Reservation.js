@@ -452,6 +452,11 @@ var V3Reservation = {
         V3Reservation.calcNights(dates.startDate, dates.endDate, '#reservation_nights_total');
         V3Reservation.setReservationHeaderText('#res_header_text', dates, $('#reservation_nights_total').text())
         V3Reservation.getFreeBeds(dates.startDate, dates.endDate, 'freeBeds_');
+        if (window.route.indexOf('edit_reservation') > -1) {
+            $.each($('[id^="reservation_guest_guests_"]'), function (i, n) {
+                $('#reservation_guest_guests_' + i).change();
+            })
+        }
     },
     getFreeBeds: function (start, end, prefix) {
         let reservations = window.reservationsSums;

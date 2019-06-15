@@ -55,10 +55,12 @@ $(document).on('change', '[id^="reservation_guest_guests_"]', function () {
     }
     if (this.value !== '0') {
         $('#reservation_guest_price_' + id).text(parseFloat(window.rolesTaxes[this.value]).toFixed(2));
+        $('#hidden_price_' + id).val(parseFloat(window.rolesTaxes[this.value]));
         $('#hidden_reservation_guest_price_' + id).val(window.rolesTaxes[this.value]);
         $('#reservation_guest_num_' + id).show().attr('disabled', false);
     } else {
         $('#reservation_guest_price_' + id).val('');
+        $('#hidden_price_' + id).val('');
         $('#hidden_reservation_guest_price_' + id).val('')
         $('#save_reservation').attr('disabled', true);
     }
@@ -116,7 +118,6 @@ $(document).on('input', '[id^="reservation_guest_num_"]:not(#reservation_guest_n
     V3Reservation.checkOccupiedBeds(parseInt($('#reservation_guest_num_total').text(), 10));
 
 });
-
 $(document).on('click', '.dropup:not(#show-all-free-beds), .dropdown-toggle:not(#show-all-free-beds)', function () {
     $('#all-free-beds-container').hide();
     $('#show-all-free-beds').removeClass('open');
@@ -296,7 +297,7 @@ $(document).on('click', '#deleteRes', function (e) {
 /**
  * Change reservations end date
  */
-$(document).on('changeDate', '#reservation_ended_at', function () {
+$(document).on('changeDate', '#reservation_ended_at', function (e) {
     let st = document.getElementById('reservation_started_at').value.split('.'),
         et = this.value.split('.'),
         start = new Date(st[2], (parseInt(st[1], 10) - 1), st[0], 0, 0, 0, 0),
@@ -305,7 +306,9 @@ $(document).on('changeDate', '#reservation_ended_at', function () {
         return false;
     }
     V3Reservation.getNewResBeds();
-    V3Reservation.checkExistentReservation(start, end);
+    if (window.route.indexOf('edit_reservation') === -1) {
+        V3Reservation.checkExistentReservation(start, end);
+    }
 });
 /**
  * Change reservations end date

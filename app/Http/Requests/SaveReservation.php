@@ -36,7 +36,7 @@ class SaveReservation extends FormRequest
     public function rules()
     {
         return [
-            'reservation_started_at' => 'bail|required|date|before:reservation_ended_at|after:yesterday',
+            'reservation_started_at' => 'bail|required|date|before:reservation_ended_at',
             'reservation_ended_at' => 'bail|required|date|after:reservation_started_at',
             'reservation_guest_started_at.*' => 'bail|required|date|before:reservation_guest_ended_at.*|after_or_equal:reservation_started_at',
             'reservation_guest_ended_at.*' => 'bail|required|date|after:reservation_guest_started_at.*|before_or_equal:reservation_ended_at',

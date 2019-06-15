@@ -7,6 +7,6 @@
  */
 return array(
     'title' => 'Passwort zurücksetzen',
-    'send' => 'Anfordern',
+    'send' => 'zurücksetzen',
     'user_send_man' => '"Neues Passwort erstellen" versenden'
 );
