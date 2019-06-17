@@ -22,6 +22,7 @@ return array(
     'new_reservation' => 'Neue Reservierung',
     'all_reservations' => 'Meine Reservierungen',
     'password/reset' => 'Passwort vergessen',
+    'history' => 'Baugeschichte',
     'pl' => 'Anmelde-Probleme',
     '/' => 'Willkommen ',
     'admin/settings' => 'Globale Einstellungen',

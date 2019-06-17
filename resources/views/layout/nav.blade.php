@@ -79,6 +79,7 @@
                     @else
                         <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{URL::to('login')}}"><i class="fas fa-sign-in-alt"></i><span class="hideContent">&nbsp;{{trans('navigation.login')}}</span></a></li>
                     @endif
+                        <li class="{{ Request::is('history') ? 'active' : '' }}"><a href="{{URL::to('history')}}"><i class="fas fa-archive"></i><span class="hideContent">&nbsp;{{trans('navigation.history')}}</span></a></li>
                 </ul>
             </div>
 

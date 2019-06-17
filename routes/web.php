@@ -20,19 +20,23 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('login_user/{id}', 'CronController@loginUser'); // after midnight
     Route::get('cronjobs/reservation/reminder/{sendToHousekeeper?}', 'CronController@getFutureReservations'); // after midnight
 });
+Route::get('history', function () {
+    return view('history');
+});
 
 // test
 
 Route::get('test', function () {
     return view('test.test');
 });
+/*
 Route::get('password/new/{pass}', function ($pass) {
     $password = \Hash::make($pass);
     \Tools::dd('neues pass: ' . $pass, false);
     \Tools::dd('neues pass: ' . $password, true);
 
 });
-
+*/
 Route::get('logout', function () {
     Auth::logout();
     return redirect('/');

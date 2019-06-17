@@ -300,6 +300,9 @@ if (strlen($routeStr) === 0) {
                 <h1>{{trans('home.welcome', array('back' => (User::find(Auth::id())->user_new == 0) ? 'zurück, ' : '',
 'name' => User::find(Auth::id())->user_first_name))}}</h1>
             @break
+            @case ('history')
+                <h1>Zur {{trans('navigation.history')}} des Palazzins</h1>
+            @break
             @case (strpos($route, 'stats_') !== false)
                 <div id="menu_stats">
                     @if ($route !== 'stats_list')
