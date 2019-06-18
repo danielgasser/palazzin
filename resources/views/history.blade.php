@@ -157,7 +157,7 @@
             Gang des 1. Stocks angebracht. Auf beiden Seiten des Raumes. Die Gänge waren hell und übersichtlich.
         </p>
     </div>
-    <div class="col-sm-6 col-md-6 col-xs-12">
+    <div class="col-sm-6 col-md-6 col-xs-12" style="border-top: .13333em solid #b7b7b7;">
         <p>
             Nun wurde der hintere Gang im 1. Stock zum Sääli ausgebaut. Ein Teil der, übrigens prachtvollen, Arvenkästen
             wurden im Gewölbe plaziert, der andere Teil links vom hinteren Eingang. Gleichzeitig wurde der äusserste
@@ -185,7 +185,8 @@
         </ul>
         </p>
     </div>
-    <div class="col-sm-6 col-md-6 col-xs-12">
+
+    <div class="col-sm-6 col-md-6 col-xs-12" style="border-top: .13333em solid #b7b7b7;">
         <p>
             Im Jahre 1949 wurde das Palazzin für 38.000 fr. von der Familie Stein…(?) verkauft an: Adolf Guggenbühl,
             Jaques Schmid, Willi Schohaus und Sigmund Wolf. In den folgenden Jahren, vor allem nach dem Ausscheiden von
