@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::get('pricelist', 'RoleController@getPriceList');
         Route::post('userlist/print', 'UserController@userListPrint')->name('userlist_print');
         Route::get('user/profile/{id}', 'UserController@showProfile');
-
+        Route::get('reservations', 'ReservationController@getAllReservations');
     });
 
         // Users

@@ -179,6 +179,26 @@ class ReservationController extends Controller
     }
 
     /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getAllReservations()
+    {
+        $res = new Reservation();
+        $rolesTrans = Role::getRolesForGuestV3();
+        $allRes = $res->getReservations();
+        $allRes->each(function ($ur) {
+            if ($ur->guests->isEmpty()) {
+                $ur->guests = [];
+            }
+        });
+        return view('logged.all_reservation')
+            ->with('roles', Role::getRolesTaxV3())
+            ->with('rolesTrans', $rolesTrans)
+            ->with('allRes', $allRes);
+    }
+
+    /**
      * Gets reservations by period date
      *
      * @param null $periodID

@@ -15,6 +15,8 @@
                              <li class="{{ Request::is('new_reservation') ? 'active' : '' }}"><a href="{{URL::to('new_reservation')}}"><i class="fas fa-bed"></i>&nbsp;{{trans('navigation.new_reservation')}}</a></li>
                             <li class="{{ Request::is('all_reservations') ? 'active' : '' }}"><a href="{{URL::to('all_reservations')}}"><i class="fa fa-hotel"></i>&nbsp;{{trans('navigation.all_reservations')}}</a>
                             </li>
+                            <li class="{{ Request::is('reservations') ? 'active' : '' }}"><a href="{{URL::to('reservations')}}"><i class="fa fa-hotel"></i>&nbsp;{{trans('navigation.reservations')}}</a>
+                            </li>
                             <li class="{{ Request::is('user/bills') ? 'active' : '' }}"><a href="{{URL::to('user/bills')}}"><i class="fa fa-credit-card" aria-hidden="true"></i> {{trans('navigation.user/bills')}}</a></li>
                             <li class="{{ Request::is('userlist') ? 'active' : '' }}"><a href="{{URL::to('userlist')}}"><i class="fas fa-users"></i>&nbsp;{{trans('navigation.userlist')}}</a></li>
                             <li class="{{ Request::is('pricelist') ? 'active' : '' }}"><a href="{{URL::to('pricelist')}}"><i class="fas fa-dollar-sign"></i>&nbsp;{{trans('navigation.pricelist')}}</a></li>

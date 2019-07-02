@@ -19,7 +19,6 @@
         .row {
             margin-right: -8px;
         }
-
     </style>
 @stop
 @section('content')
@@ -37,7 +36,8 @@
                 <th class="3" id="total_nights">{{trans('reservation.guests.total_nights')}}</th>
                 <th class="4" id="total_all_bill">{{trans('bill.total_all_bill')}}</th>
                 <th class="5" id="reservation_guest_num">{{trans('validation.attributes.reservation_guest_num')}}</th>
-                <th class="6" id="reservation_bill_sent">{{trans('bill.bill_sent')}}</th>
+                <th class="6" id="reservation_edit"><i class="fas fa-edit"></i></th>
+                <th class="7" id="reservation_delete"><i class="fas fa-trash"></i></th>
             </tr>
             </thead>
             <tbody>
@@ -66,11 +66,13 @@
             reservations = JSON.parse('{!!$allRes!!}'),
             guestTitle = '{{trans('reservation.guest_many_no_js.one')}}: ',
             datePickersEnd = [],
+            csrf = '{{ csrf_field() }}',
+            auth = parseInt('{{Auth::id()}}', 10),
+            today = new Date(),
             reservationStrings = JSON.parse('{!!json_encode(trans('reservation'))!!}');
     </script>
     <script src="{{asset('js/V3Reservation.min.js')}}"></script>
-    <script src="{{asset('js/events.min.js')}}"></script>
-    <script src="{{asset('js/reservation_init.min.js')}}"></script>
+    <script src="{{asset('js/all_reservation_init.min.js')}}"></script>
 
 @stop
 @stop

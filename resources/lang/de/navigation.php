@@ -31,6 +31,7 @@ return array(
     'admin/stats' => 'Statistiken',
     'admin/stats_list' => 'Alle Statistiken (PDF)',
     'admin/reservations' => 'Reservierungen',
+    'reservations' => 'Alle Reservierungen',
     'user/reservations' => 'Deine Reservierungen',
     'admin/bills' => 'Rechnungen',
     'admin/bills/filelist' => 'Liste Rechnungen (PDF\'s)',
