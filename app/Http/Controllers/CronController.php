@@ -61,7 +61,7 @@ class CronController extends Controller
         $today = new \DateTime();
         $tomorrow = new \DateTime();
         $set = $this->setting;
-        $tomorrow->setDate(2019, 6, 2);
+        //$tomorrow->setDate(2019, 7, 30);
         $tomorrow->modify('+' . $set->setting_reminder_days . ' day');
         $today->setTime(0, 0, 0);
         $tomorrow->setTime(0, 0, 0);
