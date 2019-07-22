@@ -56,7 +56,7 @@ class CronController extends Controller
      * @return array
      * @throws \Exception
      */
-    public function getFutureReservations ($sendToHousekeeper = false) {
+    public function getFutureReservations ($sendToHousekeeper = true) {
         $sendToHousekeeper = ($sendToHousekeeper === '1') ? true : false;
         $today = new \DateTime();
         $tomorrow = new \DateTime();
@@ -112,6 +112,7 @@ class CronController extends Controller
             }
             $data['addressHK'] = $houseKeeper->user_name;
             $data['message_text'] = trans('reservation.begin_res_housekeeper', ['z' => $total]);
+            $data['to'] = $houseKeeper->email;
             $data['text'] = $str;
             $data['total'] = $total;
             if ($sendToHousekeeper) {
