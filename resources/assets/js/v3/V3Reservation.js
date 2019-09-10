@@ -226,6 +226,10 @@ var V3Reservation = {
         if (!hasFreeBeds) {
             isEnabled = false;
         }
+        // check if its needed in edit mode too
+        if (str[3] === 'end') {
+            isEnabled = true;
+        }
         returnObject = {
             enabled: isEnabled,
             tooltip: str[1],

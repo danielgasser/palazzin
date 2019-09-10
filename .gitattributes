@@ -1,2 +1,4 @@
 * linguist-vendored
 *.php linguist-vendored=true
+# Ignore all differences in line endings
+*        -crlf

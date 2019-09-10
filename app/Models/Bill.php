@@ -91,7 +91,7 @@ class Bill extends Model {
                     'bill_sub_total' => $r->reservation_sum,
                     'bill_total' => $r->reservation_sum + round($r->reservation_sum / 100 * intval($set->setting_global_tax), 1),
                     'reservation_id' => $r->id,
-                    'bill_bill_date' => str_replace('_', '-', $r->reservation_ended_at . ' 00:00:00'),
+                    'bill_bill_date' => str_replace('.', '-', $r->reservation_ended_at . ' 00:00:00'),
                     'bill_path' => '/',
                     'bill_tax' => 0,
                     'bill_currency' => 'CHF',

@@ -21,7 +21,7 @@
                             <li class="{{ Request::is('userlist') ? 'active' : '' }}"><a href="{{URL::to('userlist')}}"><i class="fas fa-users"></i>&nbsp;{{trans('navigation.userlist')}}</a></li>
                             <li class="{{ Request::is('pricelist') ? 'active' : '' }}"><a href="{{URL::to('pricelist')}}"><i class="fas fa-dollar-sign"></i>&nbsp;{{trans('navigation.pricelist')}}</a></li>
                             <li class="{{ Request::is('pricelist') ? 'active' : '' }}"><a href="{{URL::to('stats')}}"><i class="fas fa-thermometer-half"></i>&nbsp;{{trans('navigation.admin/stats')}}</a></li>
-                            <li class=""><a href="https://www.youtube.com/playlist?list=PLoOaTd4jidmek3D-4yQal-_-C0DytLFTC" target="_blank"><i class="fa fa-question" aria-hidden="true"></i>&nbsp;Anleitungen</a>
+                            <li class=""><a href="https://xn--tsslab-wxa.ch/kurse/palazzin" target="_blank"><i class="fa fa-question" aria-hidden="true"></i>&nbsp;Anleitungen</a>
                             </li>
 
                         @endif
