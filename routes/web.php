@@ -14,6 +14,7 @@ Route::get('check-session', 'CronController@getSession');
 
 //cronjobs
 Route::group(['middleware' => 'guest'], function () {
+    Route::get('cronjobs/test', 'CronController@test'); // after midnight
     Route::get('cronjobs/bills', 'CronController@sendBill'); // after midnight
     Route::get('cronjobs/birthdays', 'CronController@sendBirthdayNotification'); // after midnight
     Route::get('cronjobs/moving', 'CronController@sendMovingNotification'); // after midnight

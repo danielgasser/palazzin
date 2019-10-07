@@ -27,6 +27,11 @@ class CronController extends Controller
         $this->setting = $setting::getStaticSettings();
     }
 
+    public function test()
+    {
+        mail('daniel@daniel-gasser.com', 'tehest', 'funztr');
+    }
+
     /**
      * @throws \Exception
      */
