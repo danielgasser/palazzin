@@ -203,3 +203,4 @@ public/testit/locales/bootstrap-datepicker.uz-latn.min.js
 public/testit/locales/bootstrap-datepicker.vi.min.js
 public/testit/locales/bootstrap-datepicker.zh-CN.min.js
 public/testit/locales/bootstrap-datepicker.zh-TW.min.js
+*.env
