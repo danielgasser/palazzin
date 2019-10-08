@@ -39,7 +39,7 @@ class UserController extends Controller
         }
         $disabledForm = 'disabled';
         $requIred = ['', ''];
-        if (User::isManager() || User::isLoggedAdmin()) {
+        if (User::isManager() || User::isLoggedAdmin() || $id == auth()->id()) {
             $disabledForm = '';
             $requIred = ['requ', 'required'];
         }
