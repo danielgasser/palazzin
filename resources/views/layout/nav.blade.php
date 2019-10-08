@@ -47,7 +47,7 @@
                                         </li>
                                     @endforeach
                                     <li class="divider"></li>
-                                    <li class="{{ Request::is('user/profile') ? 'active' : '' }}"><a href="{{URL::to('user/profile', [Auth::id()])}}">{{trans('address.your_m')}} {{trans('navigation.profile')}}</a></li>
+                                    <li class="{{ Request::is('user/profile') ? 'active' : '' }}"><a href="{{URL::to('user/profile', [Auth::id()])}}">{{trans('address.my_m')}} {{trans('navigation.profile')}}</a></li>
                                     @if(!User::isKeeper() && !User::isClerk())
                                         <li class="{{ Request::is('user/bills') ? 'active' : '' }}"><a href="{{URL::to('user/bills')}}">{{trans('navigation.user/bills')}}</a></li>
                                     @endif
