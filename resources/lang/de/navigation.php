@@ -51,7 +51,7 @@ return array(
     'admin/roles/edit/{id}' => 'Rollen bearbeiten',
     'admin/rights/edit/{id}' => 'Rechte bearbeiten',
     'admin/users/edit/{id}' => 'Benutzer bearbeiten',
-    'user/profile/{id?}' => 'Profil',
+    'user/profile/{id}' => 'Profil',
     'userlist/print' => '',
     'password/reset/{token}' => 'Neues Passwort erstellen',
     'lastlogin' => 'Mein letzter Besuch',
