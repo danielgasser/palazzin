@@ -6,7 +6,7 @@
  * Time: 20:21
  */
 return array(
-    'your_title' => 'Deine Reservierungen',
+    'your_title' => 'Meine Reservierungen',
     'other_titles' => 'Andere Reservierungen',
     'no_bookings' => 'Keine Reservierungen',
     'title' => 'Name der Reservierung',
@@ -53,7 +53,7 @@ return array(
     'calStart' => 'Kalenderstart: :start',
     'calEnd' => 'Kalender Ende: :end',
     'duration' => 'Kalender Dauer: :end Jahre',
-    'yourperiods' => 'Deine Primärberechtigungen',
+    'yourperiods' => 'Meine Primärberechtigungen',
     'book' => 'Reservierung speichern',
     'delete' => 'Reservierung löschen',
     'periods' => 'Perioden',
