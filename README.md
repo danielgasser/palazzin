@@ -1,4 +1,4 @@
-# RoomApp - Reservation-System for families and small business
+# RoomApp - Reservation-System for families
 ## Beschreibung
 Es soll eine Online-Applikation erstellt werden, die es registrierten Benutzern erlaubt, ihre Palazzin-Reservationen
 zu handhaben. Reservationen werden verrechnet. Dies ist ein 2-jähriger Pilotversuch.
