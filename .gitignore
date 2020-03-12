@@ -16,6 +16,7 @@ public/assets/img/fkkq7rr1u7.png
 public/assets/img/jpie56ufw5.png
 public/assets/img/sgmnwmmrqz.png
 public/assets/img/neif7pxjnz.png
+node_modules/
 *.map
 *.DS_Store
 /.env

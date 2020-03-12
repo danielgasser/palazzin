@@ -12,6 +12,11 @@
 
     <link rel="stylesheet" href="{{asset('css')}}/bootstrap-datepicker.min.css"
           rel="stylesheet" media="screen" type="text/css">
+    <style>
+        .datepicker {
+            z-index: 9999 !important;
+        }
+    </style>
 
 @stop
 

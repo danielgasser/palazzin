@@ -21,6 +21,9 @@ class IsAdmin
         if (\User::isClerk() && ($request->is('admin/bills*') || $request->is('admin/send_bill*'))) {
             return $next($request);
         }
+        if (\User::isKeeper()) {
+            return $next($request);
+        }
         return redirect()->back()->withErrors(['error' => '"' . trans('navigation.' . ltrim($request->getPathInfo(), '/')) . '" ist nur für Administratoren']);
     }
 }

@@ -53,7 +53,7 @@ ul {
             background-color: #333;
             position: absolute;
             min-width: 55px;
-            border: 1px solid rgba(0, 0, 0, 1);
+            border: 1px solid #b7282e;
             border-radius: 4px;
             -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -119,15 +119,14 @@ ul {
           opacity:0;
           transition: left 0.3s linear,opacity 0.3s linear;
       }
-    padding: 18px;
+    padding: 11px;
   }
   .navbar-nav>li>a:hover, .navbar-nav>li>a:focus, .navbar-nav>li>a:active {
     background-color: $color-h1 !important;
     color: white !important;
-      padding: 18px 18px;
   }
   .navbar-nav>li:not(.nav-clan)>a:not([href]):hover, .navbar-nav>li:not(.nav-clan)>a:not([href]):focus, .navbar-nav>li:not(.nav-clan)>a:not([href]):active {
-    background-color: #333 !important;
+    background-color: $color-h1 !important;
     color: white !important;
   }
 
@@ -351,6 +350,10 @@ ul {
         position: absolute;
         width: 100%;
         top: 112px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
+        background: #333;
     }
 }
 #closeNav {
@@ -403,6 +406,9 @@ ul {
     #closeNav:before {
         content: "\f060";
         font-weight: 900;
+    }
+    #main-nav {
+        height: 130%;
     }
     #top-nav, #main-nav, #bottom-nav, #bottom-bottom-nav, #hide-top-nav {
         li {

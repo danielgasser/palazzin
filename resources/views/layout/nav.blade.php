@@ -32,14 +32,14 @@
                             <li class="dropdown-toggle" style="border-bottom: 1px solid white;">
                                 <a href="#" class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown"><i class="fas fa-user"></i><span class="hideContent">&nbsp;{{$userCompleteName}}</span></a>{{--{{User::find(Auth::id())->user_first_name}} {{User::find(Auth::id())->user_name}}--}}
                                 <ul class="dropdown-menu multi-level nav navbar-nav" id="userNav" role="menu">
-                                    <li><a style="font-weight: bold">{{trans('home.yourroles')}}:</a></li>
+                                    <li><a style="font-weight: bold; height: 18px;">{{trans('home.yourroles')}}:</a></li>
                                     @foreach($roles as $role)
                                         <li class="{{ Request::is('user/profile') ? 'active' : '' }}"><a>{{ trans('roles.' . $role->role_code) }} ({{ $role->role_code }})</a></li>
                                     @endforeach
                                     <li class="divider"></li>
-                                    <li><a style="font-weight: bold">{{trans('home.yourclan')}}:</a></li>
+                                    <li><a style="font-weight: bold; height: 18px;">{{trans('home.yourclan')}}:</a></li>
                                     @foreach($clan_name as $clan)
-                                        <li style="font-weight: bold">
+                                        <li style="font-weight: bold;">
                                             <a class="nav-clan">
                                                 <img style="width: 22px" src="{{asset('img/' . $clan->clan_code . '.png')}}" alt="{{ $clan->clan_description }}" title="{{ $clan->clan_description }}" />
                                                 <span class="{{ $clan->clan_code }}-text" style="color: white;">{{ $clan->clan_description }} ({{ $clan->clan_code }})</span>

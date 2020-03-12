@@ -15,7 +15,7 @@ class IsKeeper
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isKeeper() || \User::isLoggedAdmin() || \User::isManager()) {
+        if (\User::isKeeper()) {
             return $next($request);
         }
         return redirect()->back()->withErrors(['error' => 'Nur für Administratoren']);

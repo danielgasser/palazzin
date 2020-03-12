@@ -11,7 +11,7 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('userdata.user_login_name') . ' ' . __('dialog.or') . ' ' . __('userdata.email') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('userdata.user_login_name') . '/' . __('userdata.email') }}</label>
 
                                 <input id="usernameOrEmail" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="usernameOrEmail" value="{{ old('email') }}" required autofocus>
 

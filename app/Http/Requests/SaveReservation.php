@@ -124,7 +124,7 @@ class SaveReservation extends FormRequest
     {
         foreach ($args['occupiedBeds'] as $beds) {
             foreach ($beds as $key => $bed) {
-                if (preg_match('/freeBeds/', $key) && array_key_exists($args['compDate']->format('\f\r\e\e\B\e\d\s\_' . 'Y_m_d'), $beds)) {
+                if (preg_match('/freeBeds/', $key) && array_key_exists($args['compDate']->format('\f\r\e\e\B\e\d\s\_' . 'Y_m_d'), $beds) && array_key_exists($args['compDate']->format('Y_m_d'), $beds)) {
                     if ($beds[$args['compDate']->format('\f\r\e\e\B\e\d\s\_' . 'Y_m_d')] + $args['newBeds'][$args['compDate']->format('Y_m_d')] > 15) {
                         return true;
                     }

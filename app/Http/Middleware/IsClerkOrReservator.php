@@ -15,7 +15,7 @@ class IsClerkOrReservator
      */
     public function handle($request, Closure $next)
     {
-        if (\User::isReservator() || \User::isClerk() || \User::isLoggedAdmin() || \User::isManager()) {
+        if (\User::isKeeper() || \User::isReservator() || \User::isClerk() || \User::isLoggedAdmin() || \User::isManager()) {
             return $next($request);
         }
         return redirect()->intended('/');

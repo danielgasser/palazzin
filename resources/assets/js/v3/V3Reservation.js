@@ -292,7 +292,7 @@ var V3Reservation = {
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayNew(Date, otherClanDate, false);
             },
-            orientation: 'bottom center'
+            orientation: 'center'
         };
 
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('hide', function (e) {
@@ -366,7 +366,7 @@ var V3Reservation = {
             beforeShowDay: function (Date) {
                 return V3Reservation.addBeforeShowDayEdit(Date, otherClanDate, true, this.startDate);
             },
-            orientation: 'bottom'
+            orientation: 'center'
         };
         $('.input-daterange').datepicker(V3Reservation.datePickerSettings).on('hide', function (e) {
             V3Reservation.onHide(e);

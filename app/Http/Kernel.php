@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => IsAdmin::class,
-        'keeper' => IsKeeper::class,
+        //'keeper' => IsKeeper::class,
         'reservator' => IsReservator::class,
         'clerk' => IsClerk::class,
         'clerk-reservator' => IsClerkOrReservator::class,
