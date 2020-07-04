@@ -122,7 +122,7 @@ class UserController extends Controller
                 'user_avatar' => 'image',
             ];
         }
-        if (Input::get('id') != Auth::user()->id && (!User::isManager() || !User::isLoggedAdmin())) {
+        if ($id != Auth::user()->id && (!User::isManager() || !User::isLoggedAdmin())) {
             Session::put('error', '<div class="messagebox">Dies ist nicht Dein Profil</div>');
             return Redirect::back()->withErrors('<div class="messagebox">Dies ist nicht Dein Profil</div>');
         }

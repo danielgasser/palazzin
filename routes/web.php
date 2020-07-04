@@ -145,7 +145,6 @@ Route::group(['middleware' => ['auth', 'revalidate']], function () {
         Route::post('rights/edit/{id}', 'RightController@saveRight');
 
         // Manual Passwords
-       // Route::get('password/new/{pass}', 'AdminController@manualPass');
         Route::get('bills/filelist', 'BillController@getBillFilesList');
     });
 });

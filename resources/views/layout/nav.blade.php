@@ -69,7 +69,7 @@
                             <li class="{{ Request::is('pricelist') ? 'active' : '' }}"><a href="{{URL::to('pricelist')}}"><i class="fas fa-dollar-sign"></i><span class="hideContent">&nbsp;{{trans('navigation.pricelist')}}</span></a>
                             </li>
                             <li class="dropdown-toggle">
-                                <a class="dropdown-toggle dropdownToggleUp" data-toggle="dropdown" href="#"><i class="fas fa-thermometer-half"></i><span class="hideContent">&nbsp;{{trans('navigation.admin/stats')}}</span></a>
+                                <a class="dropdown-toggle dropdownToggleUp" href="{{URL::to('stats')}}"><i class="fas fa-thermometer-half"></i><span class="hideContent">&nbsp;{{trans('navigation.admin/stats')}}</span></a>
                                 <ul class="dropdown-menu multi-level nav navbar-nav" role="menu">
                                     <li class="{{ Request::is('stats_chron') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_chron')}}">Gästebuch</a></li>
                                     <li class="{{ Request::is('stats_calendar') ? 'active' : '' }}"><a class="sub-menu" href="{{URL::to('stats_calendar')}}">Logiernächte</a></li>
