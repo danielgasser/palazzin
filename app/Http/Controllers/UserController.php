@@ -166,7 +166,12 @@ class UserController extends Controller
 
 
         $user->push();
-        $recipientUsers = User::find(1);
+        // Receiver of the email for making changes in the mailing list
+        $recipientUsers = User::whereHas(
+            'roles', function ($q) {
+                $q->where('role_code', 'ADMIN');
+        }
+        )->get();
         $data = ['id' => $user->id, 'old_email' => $user_old_email, 'email' => $user->email, 'login' => $user->user_login_name];
         if (!str_is($user_old_email, $user->email)) {
             $new_mail_message = '<br>' . trans('errors.new_mail');
