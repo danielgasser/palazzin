@@ -20,5 +20,6 @@ return array(
     'PAY' => 'Bezahlen',
     'TEDIT' => 'Preise & Tarife bearbeiten',
     'COMM' => 'Palazziner kontaktieren',
-    'BILL' => 'Rechnungen einsehen'
+    'BILL' => 'Rechnungen einsehen',
+    'NONE' => 'Keine Rechte'
 );

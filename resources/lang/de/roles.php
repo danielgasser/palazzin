@@ -30,6 +30,7 @@ return array(
     'PB' => 'Palazzinberechtigter',
     'AB' => 'Anderer Gastgeber',
     'DM' => 'Gastkonto',
+    'XX' => 'Inaktiv',
     'BUHA' => 'Buchhaltung',
     'AB_short' => 'Anderer Gastgeber',
     'BB_short' => 'Benutzungsberechtigter',
