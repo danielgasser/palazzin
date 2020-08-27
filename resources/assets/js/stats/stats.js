@@ -137,7 +137,7 @@ var dataStatsTableOptions = {
             header: false,
             footer: false
         }
-},
+    },
     getStatsData = function (url, year, callback) {
     'use strict';
     if (year.length === 0) {

@@ -5,49 +5,49 @@ var distinctArray = function (arr) {
                 newArray.push(arr[i]);
         }
         return newArray;
-},fillTable = function (data, years, family_sum, guest_sum) {
-    'use strict';
-    var htmlString = '',
-        i,
-        y,
-        yy = [],
-        fam_sum = (family_sum !== undefined) ? family_sum : null,
-        g_sum = (guest_sum !== undefined) ? guest_sum : null,
-        total_nights = null,
-        total_family = null,
-        family_props = null,
-        total_nights_guest = {},
-        total_guests = null,
-        tableHeader = '',
-        the_years = years,
-        dataTable = $('#datatable'),
-        guest_props = [],
-        last = window.route.substr(window.route.lastIndexOf('/') + 1),
-        further_url = window.route.replace(last, '');
+    },fillTable = function (data, years, family_sum, guest_sum) {
+        'use strict';
+        var htmlString = '',
+            i,
+            y,
+            yy = [],
+            fam_sum = (family_sum !== undefined) ? family_sum : null,
+            g_sum = (guest_sum !== undefined) ? guest_sum : null,
+            total_nights = null,
+            total_family = null,
+            family_props = null,
+            total_nights_guest = {},
+            total_guests = null,
+            tableHeader = '',
+            the_years = years,
+            dataTable = $('#datatable'),
+            guest_props = [],
+            last = window.route.substr(window.route.lastIndexOf('/') + 1),
+            further_url = window.route.replace(last, '');
         dataTable.html('');
         $.ajax({
-        type: 'GET',
-        url: further_url + 'stats_chron_guest_night_total',
-        data: {
-            year: the_years
-        },
-        success: function (d) {
-            total_nights = d.total_family[1];
-            total_family = d.total_family[0];
-            family_props =  d.total_family[2];
-            guest_props = d.guest_props;
-            total_guests = d.total_guests;
-            total_nights_guest = d.total_year_guests;
-            fillFamilyCakeStats(total_family, yy, 'chart_div_three', total_nights, 'Übernachtungen pro Halbstamm ', 'pie_nights_', family_props);
-            if (total_family !== null) {
-                fillBarStats(fam_sum, g_sum, yy, 'chart_div');
+            type: 'GET',
+            url: further_url + 'stats_chron_guest_night_total',
+            data: {
+                year: the_years
+            },
+            success: function (d) {
+                total_nights = d.total_family[1];
+                total_family = d.total_family[0];
+                family_props =  d.total_family[2];
+                guest_props = d.guest_props;
+                total_guests = d.total_guests;
+                total_nights_guest = d.total_year_guests;
+                fillFamilyCakeStats(total_family, yy, 'chart_div_three', total_nights, 'Übernachtungen pro Halbstamm ', 'pie_nights_', family_props);
+                if (total_family !== null) {
+                    fillBarStats(fam_sum, g_sum, yy, 'chart_div');
+                }
+                if (total_guests !== null) {
+                    fillBarStats(g_sum, g_sum, yy, 'chart_div_two', guest_props);
+                }
+                fillFamilyCakeStats(total_guests, yy, 'chart_div_four', total_nights_guest, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', guest_props);
             }
-            if (total_guests !== null) {
-                fillBarStats(g_sum, g_sum, yy, 'chart_div_two', guest_props);
-            }
-            fillFamilyCakeStats(total_guests, yy, 'chart_div_four', total_nights_guest, 'Übernachtungen pro Art des Gastes ', 'pie_guest_nights_', guest_props);
-        }
-    });
+        });
         tableHeader = '<thead>' +
             '<tr>' +
             '<th>' +
@@ -94,7 +94,7 @@ var distinctArray = function (arr) {
             htmlString += '<td style="vertical-align: top">';
             htmlString += window.langCalendar[n.reservation_started_at_month] + ' ' + n.reservation_started_at_year;
             htmlString += '</td>';
-            htmlString += '<td style="vertical-align: top">';
+            htmlString += '<td style="vertical-align: top" data-user="' + n.user_first_name + ' ' + n.user_name + '">';
             htmlString += n.user_first_name + ' ' + n.user_name;
             htmlString += '</td>';
             htmlString += '<td style="vertical-align: top">';
@@ -127,7 +127,7 @@ var distinctArray = function (arr) {
                     var endline = (j === (n.guest.length - 1)) ? '' : '<br>';
                     htmlString += m.guest_number + ' x ' + m.role_description + endline;
                 });
-                htmlString += '<hr>' + n.guest_sum + ' Gäste Total';
+                htmlString += '<hr><span class="guest-total" data-guest-total-adult="' + n.guest_sum_adult_only + '">' + n.guest_sum + '</span> Gäste Total';
             } else {
                 htmlString += 'Keine Gäste';
             }
@@ -135,6 +135,59 @@ var distinctArray = function (arr) {
             htmlString += '</tr>';
             $('#cron_year_' + n.reservation_started_at_year).append(htmlString);
         });
+        calculateYearTotals(yy[yy.length - 1]);
+    },
+    calculateYearTotals = function (y) {
+        var userData = [],
+            finalUserData = [];
+        $.each($('[data-user]'), function (i, n){
+            var content = $(this).text(),
+                guest_data = $(this).parent().find('.guest-total'),
+                guest_number = parseInt(guest_data.attr('data-guest-total-adult')),
+                guest_total = 0;
+            if (!isNaN(guest_number)) {
+                guest_total += guest_number;
+            }
+            if (!userData.hasOwnProperty(content)) {
+                userData.push({
+                    name: content,
+                    total: guest_total
+                });
+            }
+        });
+        userData.forEach(function (a) {
+            if (!this[a.name]) {
+                this[a.name] = { name: a.name, total: 0 };
+                finalUserData.push(this[a.name]);
+            }
+            this[a.name].total += a.total;
+        }, Object.create(null));
+        fillUserYearTotals(finalUserData, y);
+    },
+    fillUserYearTotals = function (data, y) {
+        var htmlString = '',
+            tableHeader = '<thead>' +
+                '<tr>' +
+                '<th>' +
+                '<h6>Name/Vorname</h6>' +
+                '</th>' +
+                '<th>' +
+                '<h6>Total Gäste</h6>' +
+                '</th>' +
+                '</tr>' +
+                '</thead>';
+        $('#datatable')
+            .append('<h4>Total pro Benutzer ' + y + '</h4>')
+            .append('<table id="dataTableTotalPerUser_' + y + '" style="width: 100%">' + tableHeader + '<tbody id="dataTotalPerUser_' + y + '"></tbody></table>');
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+            htmlString += '<tr>' +
+                '<td>' + d.name + '</td>' +
+                '<td>' + d.total + '</td>' +
+                '</tr>';
+        }
+        $('#dataTotalPerUser_' + y).append(htmlString);
+        $('#dataTableTotalPerUser_' + y).DataTable();
     },
     fillFamilyCakeStats = function (nights, yearLabel, el, t_nights, title, pie, props) {
         var options;
@@ -258,14 +311,14 @@ var distinctArray = function (arr) {
             },
             legend: {
                 layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-                    shadow: true
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
             },
             series: []
         };

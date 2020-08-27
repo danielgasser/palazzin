@@ -315,6 +315,9 @@ class Reservation extends Model {
                 ->join('roles', 'roles.id', '=', 'guests.role_id')->get();
             foreach($r->guest as $guest) {
                 $r->guest_sum += $guest->guest_number;
+                if ($guest->role_id !== 5 && $guest->role_id !== 4) {
+                    $r->guest_sum_adult_only += $guest->guest_number;
+                }
                 if(isset($reservations->guest_kind_sum[$r->reservation_started_at_year][$guest->role_description])) {
                     $reservations->guest_kind_sum[$r->reservation_started_at_year][$guest->role_description] += $guest->guest_number;
                 } else {
