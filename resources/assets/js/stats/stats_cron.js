@@ -127,7 +127,7 @@ var distinctArray = function (arr) {
                     var endline = (j === (n.guest.length - 1)) ? '' : '<br>';
                     htmlString += m.guest_number + ' x ' + m.role_description + endline;
                 });
-                htmlString += '<hr><span class="guest-total" data-guest-total-adult="' + n.guest_sum_adult_only + '">' + n.guest_sum + '</span> Gäste Total';
+                htmlString += '<hr><span class="guest-total" data-guest-total-adult="' + n.guest_sum_adult_only + '" data-guest-night-total-adult="' + n.guest_sum_adult_only_guest_nights + '">' + n.guest_sum + '</span> Gäste Total';
             } else {
                 htmlString += 'Keine Gäste';
             }
@@ -144,23 +144,30 @@ var distinctArray = function (arr) {
             var content = $(this).text(),
                 guest_data = $(this).parent().find('.guest-total'),
                 guest_number = parseInt(guest_data.attr('data-guest-total-adult')),
-                guest_total = 0;
+                guest_number_night = parseInt(guest_data.attr('data-guest-night-total-adult')),
+                guest_total = 0,
+                guest_total_night = 0;
             if (!isNaN(guest_number)) {
                 guest_total += guest_number;
+            }
+            if (!isNaN(guest_number_night)) {
+                guest_total_night += guest_number_night;
             }
             if (!userData.hasOwnProperty(content)) {
                 userData.push({
                     name: content,
-                    total: guest_total
+                    total: guest_total,
+                    total_n: guest_total_night
                 });
             }
         });
         userData.forEach(function (a) {
             if (!this[a.name]) {
-                this[a.name] = { name: a.name, total: 0 };
+                this[a.name] = { name: a.name, total: 0, total_n: 0 };
                 finalUserData.push(this[a.name]);
             }
             this[a.name].total += a.total;
+            this[a.name].total_n += a.total_n;
         }, Object.create(null));
         fillUserYearTotals(finalUserData, y);
     },
@@ -174,6 +181,9 @@ var distinctArray = function (arr) {
                 '<th>' +
                 '<h6>Total Gäste</h6>' +
                 '</th>' +
+                '<th>' +
+                '<h6>Total Gastnächte</h6>' +
+                '</th>' +
                 '</tr>' +
                 '</thead>';
         $('#datatable')
@@ -184,6 +194,7 @@ var distinctArray = function (arr) {
             htmlString += '<tr>' +
                 '<td>' + d.name + '</td>' +
                 '<td>' + d.total + '</td>' +
+                '<td>' + d.total_n + '</td>' +
                 '</tr>';
         }
         $('#dataTotalPerUser_' + y).append(htmlString);
