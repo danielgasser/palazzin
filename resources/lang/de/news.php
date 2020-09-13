@@ -9,7 +9,7 @@ return array(
     'title' => 'Newsticker',
     'yourroles' => 'Meine Rollen',
     'yourclan' => 'Mein Stamm',
-    'notify' => 'Möchtest Du alle Palazziner über Deinen neuen Beitrag benachrichtigen?',
+    'notify' => 'Dein Beitrag wurde an alle Palazziner geschickt',
     'new_post' => 'Neuer Beitrag',
     'post_from' => 'Beitrag von',
     'show_' => 'Zeige',

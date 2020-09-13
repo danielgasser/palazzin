@@ -10,11 +10,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">
-                    {{ trans('dialog.n') }}
+                    {{ trans('dialog.ok') }}
                 </button>
-                <button class="btn btn-default btn-dialog-right" id="confirm_notify_new_post">
-                  {{ trans('dialog.y') }}
-              </button>
             </div>
         </div>
     </div>

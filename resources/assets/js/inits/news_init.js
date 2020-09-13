@@ -119,8 +119,33 @@ $(document).ready(function () {
                     $('#newsticker').prepend(str);
                 }
                 $('#confirm_notify_new_post').attr('data-id', data.id);
-                $('#notify_new_post').modal();
-                BrowserNotification.notifyMe('Neuer Beitrag auf palazzin.ch', 'Neuer Post im News-Ticker', '/news#link_post_' + data.id);
+                $.ajax({
+                    url: 'notify_new_post',
+                    method: 'POST',
+                    data: {
+                        post_id: data.id
+                    },
+                    success: function (data) {
+                        let el = $('#notify_new_post'),
+                            elHeader = el.find('.modal-header'),
+                            elBody = el.find('.modal-body'),
+                            elFooter = el.find('.modal-footer'),
+                            d = $.parseJSON(data);
+                        $('#notify_new_post').modal();
+                        if (d.hasOwnProperty('success')) {
+                            elBody.html('<p>' + d.success + '</p>');
+                            elFooter.html('<button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">Ok</button>');
+                        } else {
+                            elHeader
+                                .addClass('modal-title-info')
+                                .removeClass('modal-title-warning')
+                                .html('<h4>Warnung</h4>');
+                            elBody.html('<p>' + d.error + '</p>');
+                            elFooter.html('<button class="btn btn-default btn-dialog-left close" data-dismiss="modal" aria-label="Close">Ok</button>');
+                        }
+                        $('#loading').hide();
+                    }
+                });
             }
         });
     });
