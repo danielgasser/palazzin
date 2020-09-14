@@ -143,8 +143,8 @@ var distinctArray = function (arr) {
         $.each($('[data-user]'), function (i, n){
             var content = $(this).text(),
                 guest_data = $(this).parent().find('.guest-total'),
-                guest_number = parseInt(guest_data.attr('data-guest-total-adult')),
-                guest_number_night = parseInt(guest_data.attr('data-guest-night-total-adult')),
+                guest_number = parseFloat(guest_data.attr('data-guest-total-adult')),
+                guest_number_night = parseFloat(guest_data.attr('data-guest-night-total-adult')),
                 guest_total = 0,
                 guest_total_night = 0;
             if (!isNaN(guest_number)) {

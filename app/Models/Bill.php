@@ -70,18 +70,31 @@ class Bill extends Model {
                 },
             ))
             ->get();
-        $reservations->each(function ($r) use ($set) {
-            $r->guests->each(function ($g) use ($r) {
+        $arr = array();
+        $overSeaUser = false;
+        $reservations->each(function ($r) use ($arr, $set, $overSeaUser) {
+            $userRoles = \User::getRolesByID($r->user_id);
+            $r->guests->each(function ($g) use ($arr, $r, $userRoles) {
                 $g->calcGuestSumTotals();
                 $r->reservation_sum += (float)$g->guestSum;
             });
+            foreach($userRoles as $u) {
+                /*
+                if($u->role_code == 'GU'){
+                    $role = Role::getRoleByRoleCode('GU');
+                    //$r->reservation_sum += $r->reservation_nights * $role['role_tax_night'];
+                    $r->guests[0]->guest_number += 1;
+                    break;
+                }
+                */
+            }
             if ((float)$r->reservation_sum > 0) {
                 $billDBDate = new DateTime($r->reservation_ended_at);
                 $credentials = [
                     'bill_sub_total' => $r->reservation_sum,
                     'bill_total' => $r->reservation_sum + round($r->reservation_sum / 100 * intval($set->setting_global_tax), 1),
                     'reservation_id' => $r->id,
-                    'bill_bill_date' => $billDBDate->format('Y-m-d H:i:s'),
+                    'bill_bill_date' => $billDBDate->format('Y-m-d H:i:s.ms'),
                     'bill_path' => '/',
                     'bill_tax' => 0,
                     'bill_currency' => 'CHF',

@@ -48,7 +48,7 @@ class SendBill extends Notification
     {
         return (new MailMessage)
             ->from(env('MAIL_USERNAME'), env('APP_NAME'))
-            ->subject(env('MAIL_SUBJECT') . ' ' . trans('bill.bill_noo'))
+            ->subject(env('MAIL_SUBJECT') . ' ' . trans('bill.bill_noo_reminder'))
             ->line($this->data['billusertext'])
             ->line('<hr>')
             ->line($this->data['billtext'])

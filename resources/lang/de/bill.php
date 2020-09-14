@@ -25,6 +25,7 @@ return array(
     'date' => 'Rechnungsdatum',
     'bill_no' => 'Rechnung für Ferien im Palazzin<br>Rechnungs-N°',
     'bill_noo' => 'Rechnung für Ferien im Palazzin',
+    'bill_noo_reminder' => 'Erinnerung an Rechnung für Ferien im Palazzin',
     'bill_mail' => 'Hallo :u<p>Wir hoffen, Du hattest eine schöne Zeit im Palazzin</p>',
     'bill-user-delete' => 'Dieser Benutzer kann nicht gelöscht werden, da für den Benutzer Rechnungen abgelegt sind!'
 );
