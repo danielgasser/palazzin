@@ -1,3 +1,12 @@
+table.dataTable thead th.sorting_asc:before {
+    background: url("http://cdn.datatables.net/1.10.0/images/sort_asc.png") no-repeat center left;
+}
+table.dataTable thead th.sorting_desc:before {
+    background: url("http://cdn.datatables.net/1.10.0/images/sort_desc.png") no-repeat center left;
+}
+table.dataTable thead th.sorting:before {
+    background: url("http://cdn.datatables.net/1.10.0/images/sort_both.png") no-repeat center left;
+}
 .dataTables_scrollHeadInner {
     table {
         thead {

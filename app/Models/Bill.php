@@ -115,6 +115,7 @@ class Bill extends Model {
                 chmod($path, 0777);
                 $billDate = new \DateTime($bill->bill_bill_date);
                 $userForBillCountry = DB::select(DB::raw('select `country_name_' . trans('formats.langjs') . '` from countries where country_code = ' . $userForBill['user_country_code']));
+
                 $billPDFNo = 'No-' . substr($bill->id . '-' . str_replace([' ', ':', '-', '.'], '', $bill->bill_bill_date), 0, -6);
                 $resStart = date("d.m.Y", strtotime($r->reservation_started_at));
                 $resEnd = date("d.m.Y", strtotime($r->reservation_ended_at));

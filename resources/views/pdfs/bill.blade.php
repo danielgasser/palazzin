@@ -3,7 +3,7 @@
         <tr>
             <td colspan="7" style="border-bottom: none">
                 <a href="{{ $url }}">
-                    <img src="{{ $url }}/public/img/logo.png" alt="{!!$settings['setting_app_owner']!!}" title="{!!$settings['setting_app_owner']!!}">
+                    <img style="width: 182px; height: auto;" src="{{ $url }}/public/img/Palazzin_Logo.png" alt="{!!$settings['setting_app_owner']!!}" title="{!!$settings['setting_app_owner']!!}">
                 </a>
             </td>
         </tr>
