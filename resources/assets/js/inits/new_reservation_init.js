@@ -16,6 +16,7 @@ $(document).ready(function () {
         $('#reservation_guest_started_at_' + i).addClass('noClick');
         $('#reservation_guest_guests_' + i).addClass('noClick');
     });
+
     $('#reservation_started_at').addClass('giveFocus');
     $.each($('input:not([type="hidden"]), select'), function () {
         window.allInputs.push($(this).attr('id'));

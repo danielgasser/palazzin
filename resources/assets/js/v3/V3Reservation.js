@@ -207,7 +207,13 @@ var V3Reservation = {
             isEnabled = true;
         }
         if (window.uID.clan_code !== str[0] && otherClanMaxDate > otherClanMinDate) {
-            isEnabled = false;
+            /**
+             *
+             * Reservieren immer erlauben!!! GV Entscheid über Sekundär-Belegungen 10. April 2021
+             * ursprünglicher Wert: isEnabled = false;
+             *
+             */
+            isEnabled = true;
         }
         if (isEdit) {
             oB = window.newUserRes['user_Res_Dates_' + dateStr];
