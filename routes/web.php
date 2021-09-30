@@ -43,6 +43,7 @@ Route::get('logout', function () {
     return redirect('/');
 });
 Auth::routes();
+Route::post('upload_image','ArticleController@uploadImage')->name('ckeditor.upload');
 
 Route::group(['middleware' => ['auth', 'revalidate']], function () {
 

@@ -1,18 +1,6 @@
-var fillPostContent =  function(d, editCheck) {
-        if ($('#edit').val() === '1') {
-            return '<a id="link_post_' + d.id + '"></a>' +
-                '<div class="row postrow">' +
-                '<div class="col-sm-3 col-md-3 col-xs-12 posts">' +
-                d.created_at + '<br><h4><a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_first_name + ' ' + d.user_name + '</a></h4>' +
-                editCheck +
-                '</div>' +
-                '<div class="col-sm-9 col-md-9 col-xs-12 post-entry">' +
-                d.post_text +
-                '</div>' +
-                '</div>';
-        }
-        return '<div id="post_' + d.id + '">' +
-            '<a id="link_post_' + d.id + '"></a>' +
+var fillPostContent = function (d, editCheck) {
+    if ($('#edit').val() === '1') {
+        return '<a id="link_post_' + d.id + '"></a>' +
             '<div class="row postrow">' +
             '<div class="col-sm-3 col-md-3 col-xs-12 posts">' +
             d.created_at + '<br><h4><a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_first_name + ' ' + d.user_name + '</a></h4>' +
@@ -21,16 +9,28 @@ var fillPostContent =  function(d, editCheck) {
             '<div class="col-sm-9 col-md-9 col-xs-12 post-entry">' +
             d.post_text +
             '</div>' +
-            '</div>' +
             '</div>';
-    };
+    }
+    return '<div id="post_' + d.id + '">' +
+        '<a id="link_post_' + d.id + '"></a>' +
+        '<div class="row postrow">' +
+        '<div class="col-sm-3 col-md-3 col-xs-12 posts">' +
+        d.created_at + '<br><h4><a href="' + window.urlTo + 'user/profile/' + d.user_id + '">' + d.user_first_name + ' ' + d.user_name + '</a></h4>' +
+        editCheck +
+        '</div>' +
+        '<div class="col-sm-9 col-md-9 col-xs-12 post-entry">' +
+        d.post_text +
+        '</div>' +
+        '</div>' +
+        '</div>';
+};
 $(document).ready(function () {
     "use strict";
-    CKEDITOR.replace( 'post_text', {
-        config: {
-            extraPlugins: 'uploadimage',
-        }
-    } );
+    CKEDITOR.replace('post_text', {
+        filebrowserUploadUrl: window.imgRoute,
+        filebrowserUploadMethod: 'form'
+    });
+
     if (window.localStorage.hasOwnProperty('news_hash')) {
         window.location.hash = window.localStorage.getItem('news_hash');
         window.localStorage.removeItem('news_hash');
@@ -119,9 +119,6 @@ $(document).ready(function () {
                     $('#newsticker').prepend(str);
                 }
                 $('#confirm_notify_new_post').attr('data-id', data.id);
-                /**
-                 * send directly to all users
-                 */
                 $.ajax({
                     url: 'notify_new_post',
                     method: 'POST',
@@ -156,9 +153,9 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).attr('data-id'),
             el = $('#notify_new_post'),
-        elHeader = el.find('.modal-header'),
-        elBody = el.find('.modal-body'),
-        elFooter = el.find('.modal-footer');
+            elHeader = el.find('.modal-header'),
+            elBody = el.find('.modal-body'),
+            elFooter = el.find('.modal-footer');
         $.ajax({
             url: 'notify_new_post',
             method: 'POST',
