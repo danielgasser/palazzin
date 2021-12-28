@@ -243,6 +243,7 @@ $(document).on('click', '[id^="remove_guest_"]', function () {
         backdrop: 'static',
         keyboard: false
     });
+    $('#save_reservation').trigger('click');
     return false;
 });
 
