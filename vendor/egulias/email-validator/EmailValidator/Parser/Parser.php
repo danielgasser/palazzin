@@ -144,11 +144,13 @@ abstract class Parser
     {
         $previous = $this->lexer->getPrevious();
 
-        if ($previous['type'] === EmailLexer::S_BACKSLASH
-            &&
-            $this->lexer->token['type'] !== EmailLexer::GENERIC
-        ) {
-            return true;
+        if (isset($previous['type']) && isset($this->lexer->token['type'])) {
+            if ($previous['type'] === EmailLexer::S_BACKSLASH
+                &&
+                $this->lexer->token['type'] !== EmailLexer::GENERIC
+            ) {
+                return true;
+            }
         }
 
         return false;
