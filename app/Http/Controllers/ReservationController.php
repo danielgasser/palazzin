@@ -269,8 +269,10 @@ class ReservationController extends Controller
                 } else {
                     $guest = Guest::find($credentials['guest_id'][$i]);
                 }
-                $guest->fill($args);
-                $res->guests()->save($guest);
+                if (!is_null($args)) {
+                    $guest->fill($args);
+                    $res->guests()->save($guest);
+                }
             }
             $saved = $res->push();
         }
