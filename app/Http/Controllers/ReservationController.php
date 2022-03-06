@@ -221,6 +221,7 @@ class ReservationController extends Controller
      */
     public function saveReservation(SaveReservation $request)
     {
+        $args = [];
         $credentials = request()->all();
         $validated = $request->validated();
         $resID = request()->all('id');
@@ -269,7 +270,7 @@ class ReservationController extends Controller
                 } else {
                     $guest = Guest::find($credentials['guest_id'][$i]);
                 }
-                if (!is_null($args)) {
+                if (is_object($guest)) {
                     $guest->fill($args);
                     $res->guests()->save($guest);
                 }
